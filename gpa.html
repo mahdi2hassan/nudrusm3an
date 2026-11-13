@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+        
+        :root {
+            --bg-color: #f4f7f6;
+            --container-bg: #ffffff;
+            --text-color: #333333;
+            --text-muted: #7f8c8d;
+            --border-color: #eeeeee;
+            --input-bg: #ffffff;
+            --input-border: #cccccc;
+            --section-bg: #fdfdfd;
+            --result-bg: #e8f6f3;
+            --result-border: #1abc9c;
+            --result-text: #16a085;
+            --primary-color: #3498db;
+        }
+
+        .dark-mode {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #f1f1f1;
+            --text-muted: #aaaaaa;
+            --border-color: #333333;
+            --input-bg: #2c2c2c;
+            --input-border: #444444;
+            --section-bg: #252525;
+            --result-bg: #1e3a34;
+            --result-border: #1abc9c;
+            --result-text: #2ecc71;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            background: var(--container-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .section {
+            background: var(--section-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .section-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group > div {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--input-border);
+            border-radius: 5px;
+            font-size: 0.95em;
+            outline: none;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+        }
+
+        .subject-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .col-name { flex: 2; min-width: 120px; }
+        .col-hours { flex: 1; min-width: 70px; }
+        .col-score { flex: 1.5; min-width: 90px; }
+        .col-grade { flex: 1.5; min-width: 100px; }
+        .col-btn { flex: 0.5; min-width: 40px; text-align: left; }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover { background-color: #2980b9; }
+        
+        .btn-add {
+            background-color: #2ecc71;
+            width: auto;
+            padding: 8px 15px;
+            font-size: 0.9em;
+        }
+        .btn-add:hover { background-color: #27ae60; }
+
+        .btn-remove {
+            background-color: #e74c3c;
+            padding: 8px;
+            width: 100%;
+            margin-top: 0;
+        }
+        .btn-remove:hover { background-color: #c0392b; }
+
+        .results {
+            margin-top: 25px;
+            padding: 20px;
+            background: var(--result-bg);
+            border-radius: 8px;
+            border: 1px solid var(--result-border);
+            text-align: center;
+            display: none;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .results h3 {
+            margin: 0 0 15px 0;
+            color: var(--result-text);
+        }
+
+        .result-item {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <button class="theme-toggle" onclick="toggleDarkMode()" id="themeBtn">🌙</button>
+    
+    <h2>حاسبة المعدل التراكمي (مقياس 60%)</h2>
+
+    <!-- بيانات الفصول السابقة -->
+    <div class="section">
+        <div class="section-title">البيانات التراكمية السابقة</div>
+        <div class="form-group">
+            <div>
+                <label>التراكمي السابق (GPA)</label>
+                <input type="number" id="prevGpa" step="0.01" min="0" max="4" placeholder="مثال: 2.38">
+            </div>
+            <div>
+                <label>إجمالي الساعات المكتسبة للسنوات السابقة</label>
+                <input type="number" id="prevHours" min="0" placeholder="مثال: 70">
+            </div>
+        </div>
+    </div>
+
+    <!-- بيانات الفصل الحالي -->
+    <div class="section">
+        <div class="section-title">مواد الفصل الحالي</div>
+        <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 0;">(المادة بساعة نهايتها 50 درجة، وبساعتين نهايتها 100 درجة)</p>
+        <div id="subjectsContainer"></div>
+        <button class="btn btn-add" onclick="addSubject()">+ إضافة مادة</button>
+    </div>
+
+    <button class="btn" onclick="calculateGPA()">احسب المعدل التراكمي النهائي</button>
+
+    <!-- عرض النتائج -->
+    <div class="results" id="resultsArea">
+        <h3>النتائج</h3>
+        <div class="result-item" id="termGpaResult">المعدل الفصلي: -</div>
+        <div class="result-item" id="cumGpaResult">المعدل التراكمي الكلي: -</div>
+    </div>
+</div>
+
+<script>
+    // جدول التقديرات المستخرج من لائحة الكلية
+    const gradePoints = [
+        { grade: 'A',  points: 4.0, minPercent: 93 },
+        { grade: 'A-', points: 3.7, minPercent: 90 },
+        { grade: 'B+', points: 3.3, minPercent: 85 },
+        { grade: 'B',  points: 3.0, minPercent: 80 },
+        { grade: 'B-', points: 2.7, minPercent: 75 },
+        { grade: 'C+', points: 2.3, minPercent: 73 },
+        { grade: 'C',  points: 2.0, minPercent: 70 },
+        { grade: 'C-', points: 1.7, minPercent: 67 },
+        { grade: 'D+', points: 1.3, minPercent: 64 },
+        { grade: 'D',  points: 1.0, minPercent: 60 },
+        { grade: 'F',  points: 0.0, minPercent: 0 }
+    ];
+
+    const gradeOptionsHtml = gradePoints.map(g => 
+        `<option value="${g.points}">${g.grade}</option>`
+    ).join('');
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        document.getElementById('themeBtn').innerText = isDark ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDark);
+    }
+
+    function addSubject() {
+        const container = document.getElementById('subjectsContainer');
+        const row = document.createElement('div');
+        row.className = 'subject-row';
+        row.innerHTML = `
+            <div class="col-name"><input type="text" placeholder="اسم المادة"></div>
+            <div class="col-hours">
+                <input type="number" class="credit-hours" min="1" max="10" placeholder="الساعات" oninput="triggerAutoSelect(this)">
+            </div>
+            <div class="col-score">
+                <input type="number" class="score-input" min="0" placeholder="الدرجة" oninput="autoSelectGrade(this)">
+            </div>
+            <div class="col-grade">
+                <select class="grade-select">
+                    <option value="" disabled selected>التقدير</option>
+                    ${gradeOptionsHtml}
+                </select>
+            </div>
+            <div class="col-btn"><button class="btn btn-remove" onclick="this.parentElement.parentElement.remove()" title="حذف">✕</button></div>
+        `;
+        container.appendChild(row);
+    }
+
+    function triggerAutoSelect(hoursInput) {
+        const row = hoursInput.closest('.subject-row');
+        const scoreInput = row.querySelector('.score-input');
+        if (scoreInput.value !== "") autoSelectGrade(scoreInput);
+    }
+
+    function autoSelectGrade(inputElement) {
+        const row = inputElement.closest('.subject-row');
+        const score = parseFloat(inputElement.value);
+        const hours = parseFloat(row.querySelector('.credit-hours').value);
+        const selectElement = row.querySelector('.grade-select');
+
+        if (isNaN(score) || score < 0 || isNaN(hours) || hours <= 0) {
+            selectElement.value = ""; 
+            return;
+        }
+
+        const maxMarks = hours * 50;
+        const percent = (score / maxMarks) * 100;
+
+        for (let g of gradePoints) {
+            if (percent >= g.minPercent) {
+                selectElement.value = g.points;
+                break;
+            }
+        }
+    }
+
+    function calculateGPA() {
+        const prevGpa = parseFloat(document.getElementById('prevGpa').value) || 0;
+        const prevHours = parseFloat(document.getElementById('prevHours').value) || 0;
+        
+        localStorage.setItem('savedGpa', document.getElementById('prevGpa').value);
+        localStorage.setItem('savedHours', document.getElementById('prevHours').value);
+
+        let prevPoints = prevGpa * prevHours;
+        let termPoints = 0, termHours = 0, validSubjectsCount = 0;
+
+        const rows = document.querySelectorAll('.subject-row');
+        rows.forEach(row => {
+            const hours = parseFloat(row.querySelector('.credit-hours').value);
+            const points = parseFloat(row.querySelector('.grade-select').value);
+
+            if (!isNaN(hours) && !isNaN(points)) {
+                termPoints += hours * points;
+                termHours += hours;
+                validSubjectsCount++;
+            }
+        });
+
+        if (validSubjectsCount === 0 && prevHours === 0) {
+            alert("يرجى إدخال بيانات مادة واحدة على الأقل للاستمرار.");
+            return;
+        }
+
+        let termGPA = termHours > 0 ? (termPoints / termHours) : 0;
+        let totalHours = prevHours + termHours;
+        let totalPoints = prevPoints + termPoints;
+        let cumulativeGPA = totalHours > 0 ? (totalPoints / totalHours) : 0;
+
+        document.getElementById('termGpaResult').innerText = termHours > 0 
+            ? `المعدل الفصلي: ${termGPA.toFixed(2)}` 
+            : 'المعدل الفصلي: -';
+        document.getElementById('cumGpaResult').innerText = `المعدل التراكمي الكلي: ${cumulativeGPA.toFixed(2)}`;
+        document.getElementById('resultsArea').style.display = 'block';
+    }
+
+    window.onload = () => {
+        if (localStorage.getItem('darkMode') === 'true') toggleDarkMode();
+        document.getElementById('prevGpa').value = localStorage.getItem('savedGpa') || '';
+        document.getElementById('prevHours').value = localStorage.getItem('savedHours') || '';
+        for(let i=0; i<6; i++) addSubject(); 
+    };
+</script>
+
+</body>
+</html>
