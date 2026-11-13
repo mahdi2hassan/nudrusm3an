@@ -68,7 +68,7 @@
   .intro-legal{margin-top:18px; font-size:10.5px; color:var(--ink-soft); line-height:1.8;}
   .intro-legal a{color:var(--brick); font-weight:800;}
 
-  #screen-acctype, #screen-signup, #screen-plans, #screen-verify, #screen-payment, #screen-login, #screen-google-complete{
+  #screen-bio, #screen-acctype, #screen-signup, #screen-plans, #screen-verify, #screen-payment, #screen-login, #screen-google-complete{
     min-height:100vh; display:none; align-items:center; justify-content:center; padding:32px 20px;
     background: radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%), radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%), var(--paper);}
   .auth-panel{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:34px 30px; width:100%; max-width:400px; box-shadow:0 20px 45px rgba(27,42,65,0.08);}
@@ -775,7 +775,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
 .tour-dots span.active{background:var(--gold);}
 
 /* ---------- auth + plans screens ---------- */
-#screen-acctype,#screen-signup,#screen-plans,#screen-verify,#screen-payment,#screen-login,#screen-google-complete{
+#screen-bio,#screen-acctype,#screen-signup,#screen-plans,#screen-verify,#screen-payment,#screen-login,#screen-google-complete{
   background:
     radial-gradient(700px 380px at 90% 0%, rgba(227,168,43,.14), transparent 60%),
     radial-gradient(700px 380px at 0% 100%, rgba(44,65,148,.12), transparent 60%), var(--paper);
@@ -914,6 +914,47 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
 .sup-grade{background:rgba(29,154,108,.1); border-radius:10px; padding:8px 10px; font-size:13px;}
 .sup-hint{font-size:12.5px; color:var(--ink-soft); margin-top:12px;}
 .sup-media audio{max-width:100%;} .sup-media .msg-img{max-width:100%;}
+.sup-thread{background:rgba(0,0,0,.025); border:1px solid var(--line); border-radius:12px; padding:10px; margin-top:8px;}
+.sup-cmt{font-size:12.5px; line-height:1.7; padding:5px 8px; border-radius:10px; margin-bottom:4px; background:var(--white); border:1px solid var(--line);}
+.sup-cmt.mine{background:rgba(29,154,108,.08);}
+.sup-chk{display:flex; align-items:center; gap:8px; font-size:13px; padding:4px 0;}
+.sup-table{width:100%; border-collapse:collapse; font-size:12.5px; background:var(--white);}
+.sup-table th,.sup-table td{border:1px solid var(--line); padding:7px 9px; text-align:center;}
+.sup-table th{background:var(--accent-soft); font-weight:800;}
+/* ===== القوائم المنسدلة + البصمة ===== */
+.nav-group-label.nav-grp-toggle{cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; opacity:.75;}
+.nav-group-label.nav-grp-toggle::after{content:'▾'; font-size:11px; transition:transform .18s;}
+.nav-group-label.nav-grp-toggle.closed::after{transform:rotate(90deg);}
+.nav-group-label.nav-grp-toggle.closed + .nav-group-body{display:none;}
+.acc-dd{margin:10px 0 6px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:12px;}
+.acc-dd-btn{width:100%; display:flex; align-items:center; gap:8px; padding:10px 12px; background:none; border:0; color:inherit; font-family:inherit; font-size:13px; font-weight:800; cursor:pointer;}
+.acc-dd-btn .icon{width:16px; height:16px;}
+.acc-dd-btn .acc-chev{margin-inline-start:auto; transition:transform .18s;}
+.acc-dd.open .acc-chev{transform:rotate(180deg);}
+.acc-dd-panel{display:none; padding:4px 12px 12px; font-size:12px;}
+.acc-dd.open .acc-dd-panel{display:block;}
+.acc-line{display:flex; justify-content:space-between; gap:8px; padding:5px 0; opacity:.9; border-bottom:1px dashed rgba(255,255,255,.12);}
+.acc-act{display:block; width:100%; margin-top:8px; padding:8px 10px; border-radius:9px; border:1px solid rgba(255,255,255,.2); background:transparent; color:inherit; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; text-align:center;}
+.acc-act.primary{background:var(--gold); color:var(--navy-1); border-color:transparent;}
+.bio-avatar{width:76px; height:76px; border-radius:50%; background:linear-gradient(135deg,var(--navy-3),var(--brick)); color:#fff; font-size:32px; font-weight:800; display:flex; align-items:center; justify-content:center; margin:16px auto 8px;}
+.bio-offer{position:fixed; bottom:18px; inset-inline-start:18px; z-index:9999; max-width:300px; background:var(--white); border:1px solid var(--line); border-radius:16px; box-shadow:0 18px 40px rgba(0,0,0,.25); padding:14px 16px; font-size:12.5px; line-height:1.8;}
+.bio-offer-btns{display:flex; gap:8px; margin-top:8px;}
+.land-menu{display:flex; gap:6px; align-items:center;}
+.land-menu .dd{position:relative;}
+.land-menu .dd-btn{background:transparent; color:var(--ink); border:0; font-family:inherit; font-size:14px; font-weight:700; padding:8px 12px; border-radius:10px; cursor:pointer;}
+.land-menu .dd-btn:hover,.land-menu .dd.open .dd-btn{background:rgba(27,42,90,.08);}
+.land-menu .dd-panel{display:none; position:absolute; top:calc(100% + 8px); inset-inline-start:0; width:330px; background:var(--white); color:var(--ink); border-radius:16px; box-shadow:0 24px 50px rgba(0,0,0,.3); padding:8px; z-index:50; text-align:right;}
+.land-menu .dd.open .dd-panel{display:block;}
+.land-menu .dd-item{display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; padding:10px 12px; border-radius:11px; border:0; background:none; font-family:inherit; text-align:right; cursor:pointer; color:inherit;}
+.land-menu .dd-item:hover:not([disabled]){background:var(--accent-soft);}
+.land-menu .dd-item[disabled]{opacity:.5; cursor:not-allowed;}
+.land-menu .dd-t{font-weight:800; font-size:13.5px;}
+.land-menu .dd-d{display:block; font-size:11.5px; color:var(--ink-soft); font-weight:500; margin-top:1px;}
+.land-menu .dd-p{font-size:12.5px; font-weight:800; color:var(--brick); white-space:nowrap;}
+.land-menu .dd-p.free{color:#1f8a4c;}
+.land-menu .dd-sep{font-size:11px; font-weight:800; color:var(--ink-soft); padding:8px 12px 2px;}
+.land-menu .dd-foot{font-size:11.5px; color:var(--ink-soft); padding:8px 12px 4px; border-top:1px dashed var(--line); margin-top:6px;}
+@media (max-width:640px){ .land-menu{order:3; width:100%; justify-content:center;} .land-nav{flex-wrap:wrap;} .land-menu .dd{position:static;} .land-menu .dd-panel{inset-inline:12px; width:auto; top:60px; position:fixed;} }
 </style>
 </head>
 <body>
@@ -996,6 +1037,20 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
 <div id="screen-role">
   <header class="land-nav">
     <div class="brand-mark">نُدرس <span>معًا</span></div>
+    <nav class="land-menu">
+      <div class="dd"><button class="dd-btn" onclick="toggleLandDd(this)">المميزات ▾</button>
+        <div class="dd-panel">
+          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">التعلم والموارد<span class="dd-d">دورات ودروس ودفاتر تحضير جاهزة</span></span></button>
+          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">أدوات المعلم<span class="dd-d">تحضير، بنك أسئلة، اختبارات، شهادات</span></span></button>
+          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">مجتمع المعلمين<span class="dd-d">أسئلة، خبراء، مجموعات تخصص</span></span></button>
+          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">التربية العملية<span class="dd-d">سجل زيارات وتقرير جاهز للطباعة</span></span></button>
+          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">الدكتور المشرف والإدارة<span class="dd-d">غرف صوت/فيديو، تكاليف، متابعة وتقارير</span></span></button>
+          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">دردشة بمرفقات<span class="dd-d">صور، ملفات، تسجيلات صوتية، روابط</span></span></button>
+          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">نقاط وتحفيز<span class="dd-d">شارات، تحدي أسبوعي، لوحة متصدرين</span></span></button>
+        </div></div>
+      <div class="dd" data-kind="pricing"><button class="dd-btn" onclick="toggleLandDd(this)">الاشتراك ▾</button>
+        <div class="dd-panel" id="land-dd-pricing"><div class="dd-foot" style="border:0;">جاري التحميل...</div></div></div>
+    </nav>
     <div class="land-nav-actions">
       <button class="land-btn install-nav" onclick="installApp()"><svg class="icon"><use href="#i-star"></use></svg> ثبّت التطبيق</button>
       <button class="land-btn solid" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
@@ -1023,7 +1078,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
     <div class="land-trial">اشتراك <b>مرة واحدة</b> بدون تجديد — والدكتور المشرف والإدارة <b>مجانًا</b></div>
   </section>
 
-  <section class="land-section">
+  <section class="land-section" id="land-features">
     <h2>كل اللي محتاجه في مكان واحد</h2>
     <div class="land-sub">أدوات عملية بدون تعقيد</div>
     <div class="land-grid">
@@ -1093,6 +1148,18 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
     </div>
   </div>
 </div>
+<div id="screen-bio">
+  <div class="auth-panel" style="text-align:center;">
+    <div class="auth-logo"><svg class="icon"><use href="#i-user"></use></svg></div>
+    <div class="brand-mark" style="text-align:center;">نُدرس <span>معًا</span></div>
+    <div class="bio-avatar" id="bio-avatar">م</div>
+    <div class="step-tag" id="bio-name" style="text-align:center;"></div>
+    <button class="btn-primary btn-block" id="bio-btn" onclick="bioUnlock(false)" style="margin-top:14px;">☝️ الدخول بالبصمة</button>
+    <div class="auth-status" id="bio-status"></div>
+    <button class="back-link" onclick="bioUsePassword()">استخدام كلمة المرور / حساب آخر</button>
+  </div>
+</div>
+
 <div id="screen-acctype">
   <div class="auth-panel" style="max-width:560px;">
     <div class="auth-logo"><svg class="icon"><use href="#i-cap"></use></svg></div>
@@ -1199,6 +1266,10 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <div class="pm-num">01007586279</div>
       </div>
 
+      <div id="pay-coupon-wrap" style="display:none; margin:12px 0;">
+        <div style="display:flex; gap:8px;"><input type="text" id="coupon-code" placeholder="كود الخصم (إن وُجد)" style="flex:1; text-transform:uppercase; padding:10px 12px; border:1px solid var(--line); border-radius:10px; font-family:inherit;"><button type="button" class="btn-primary" style="width:auto; padding:10px 18px;" onclick="applyCoupon()">تطبيق</button></div>
+        <div class="auth-status" id="coupon-status"></div>
+      </div>
       <a class="wa-btn" id="wa-confirm-link" href="#" target="_blank">تأكيد الدفع عبر واتساب</a>
 
       <button class="btn-primary btn-block pay-confirm-btn" onclick="finalizePaidPlan()">لقد حوّلت المبلغ — فعّل حسابي</button>
@@ -1265,6 +1336,10 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <button class="nav-item install-nav" style="display:none;" onclick="installApp()"><svg class="icon"><use href="#i-sparkle"></use></svg> ثبّت التطبيق على موبايلك</button>
       </div>
 
+      <div class="acc-dd" id="acc-dd">
+        <button class="acc-dd-btn" onclick="toggleAccDd()"><svg class="icon"><use href="#i-user"></use></svg> <span id="acc-dd-title">حسابي والاشتراك</span><svg class="icon acc-chev"><use href="#i-chevron" style="transform:rotate(90deg); transform-origin:center;"></use></svg></button>
+        <div class="acc-dd-panel" id="acc-dd-panel"></div>
+      </div>
       <div id="nav-sup" style="display:none;">
         <button class="nav-item active" data-views="v-sup" onclick="showView('v-sup', this)"><svg class="icon"><use href="#i-home"></use></svg> لوحتي</button>
         <button class="nav-item" data-views="v-chats" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات</button>
@@ -2053,7 +2128,6 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -2070,7 +2144,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
 
 /* ================= وضع الصيانة (siteSettings/maintenance) ================= */
 (function(){
@@ -2395,7 +2468,7 @@ async function finalizePaidPlan(){
   try{
     if(currentUid){
       await db.collection('users').doc(currentUid).update({
-        plan: selectedPlanKey, status:'pending_payment', feeAmount: plan.price,
+        plan: selectedPlanKey, status:'pending_payment', feeAmount: plan.price, ...(selectedPlanKey === 'onetime' && feeCoupon ? { couponCode: feeCoupon.code, feeBase } : {}),
         planRequestedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
     }
@@ -2472,6 +2545,7 @@ function openExamform(btn){
 
 function enterApp(role){
   document.getElementById('screen-acctype').style.display = 'none';
+  document.getElementById('screen-bio').style.display = 'none';
   document.getElementById('screen-role').style.display = 'none';
   document.getElementById('screen-signup').style.display = 'none';
   document.getElementById('screen-verify').style.display = 'none';
@@ -4775,9 +4849,7 @@ async function onProfilePhotoSelected(evt){
   toast('جاري رفع الصورة...');
   try{
     const compressed = await compressImageFile(file, 400, 0.85);
-    const ref = storage.ref().child(`profiles/${currentUid}.jpg`);
-    const task = await ref.put(compressed, { contentType: 'image/jpeg' });
-    const url = await task.ref.getDownloadURL();
+    const url = await uploadFile(`profiles/${currentUid}.jpg`, compressed);
     await db.collection('users').doc(currentUid).set({ photoURL: url }, { merge: true });
     pendingUser.photoURL = url;
     await syncPublicProfile();
@@ -4984,9 +5056,7 @@ async function createPost(){
       progress.textContent = 'جاري ضغط ورفع الصورة...';
       const compressed = await compressImageFile(composerImageFile, 1280, 0.8);
       const path = `communityPosts/${currentUid}/${Date.now()}.jpg`;
-      const ref = storage.ref().child(path);
-      const task = await ref.put(compressed, { contentType: 'image/jpeg' });
-      imageUrl = await task.ref.getDownloadURL();
+      imageUrl = await uploadFile(path, compressed);
       progress.textContent = '';
     }
     await db.collection('communityPosts').add({
@@ -5353,6 +5423,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
 }
 
 async function reLogin(){
+  { const _b = bioGet(); if(_b && auth.currentUser && _b.uid === auth.currentUser.uid){ location.reload(); return; } }
   try{ logoutUser(); await auth.signOut(); }catch(e){ console.warn(e); }
   try{ sessionStorage.setItem('ndm_relogin', '1'); }catch(e){}
   location.reload();
@@ -5505,6 +5576,7 @@ function highlightNav(id){
   if(!match) return;
   nav.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   match.classList.add('active');
+  const _gb = match.closest('.nav-group-body'); if(_gb && _gb.previousElementSibling) _gb.previousElementSibling.classList.remove('closed');
 }
 (function(){
   const baseShowView = showView;
@@ -5534,7 +5606,8 @@ async function renderHomeStats(){
 }
 
 /* ================= مرفقات الدردشة: صور / ملفات / تسجيلات صوتية / روابط ================= */
-const CHAT_MAX_BYTES = 15 * 1024 * 1024; // الحد الأقصى للمرفق الواحد: 15 ميجا
+let CHAT_MAX_BYTES = 10 * 1024 * 1024; // الحد الأقصى للمرفق (قابل للتعديل من الأدمن)
+let CHAT_REC_MAX_SEC = 180;            // أقصى مدة تسجيل صوتي (قابلة للتعديل من الأدمن)
 function chatSafeUrl(u){ return /^https:\/\//i.test(u || '') ? u : ''; }
 function chatLinkify(escaped){
   return escaped.replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline; word-break:break-all;">${u}</a>`);
@@ -5575,17 +5648,14 @@ function chatKindOf(file){
 }
 async function chatSendFile(file, extra){
   const ctx = chatCtx(); if(!ctx) return;
-  if(file.size > CHAT_MAX_BYTES){ toast('الملف أكبر من 15 ميجا — صغّره أو ابعت رابطه.', {type:'err'}); return; }
+  if(file.size > CHAT_MAX_BYTES){ toast('الملف أكبر من ' + Math.round(CHAT_MAX_BYTES/1048576) + ' ميجا — صغّره أو ابعت رابطه.', {type:'err'}); return; }
   const kind = (extra && extra.type) || chatKindOf(file);
   const safeName = (file.name || (kind + '.bin')).replace(/[^\w.\-؀-ۿ]+/g, '_').slice(-80);
   const path = `chatFiles/${ctx.convId}/${ctx.uid}_${Date.now()}_${safeName}`;
   chatSetStatus('⏳ جاري رفع المرفق… <b id="chat-upl-pct">0%</b>');
   try{
-    const task = storage.ref().child(path).put(file, { contentType: file.type || 'application/octet-stream' });
-    task.on('state_changed', s => { const p = document.getElementById('chat-upl-pct'); if(p) p.textContent = Math.round(100 * s.bytesTransferred / s.totalBytes) + '%'; });
-    await task;
-    const url = await task.snapshot.ref.getDownloadURL();
-    await chatPost(ctx, Object.assign({ type: kind, text: '', fileUrl: url, fileName: file.name || safeName, fileSize: file.size, filePath: path }, (extra && extra.meta) || {}));
+    const url = await uploadFile(path, file, p => { const el = document.getElementById('chat-upl-pct'); if(el) el.textContent = Math.round(p * 100) + '%'; });
+    await chatPost(ctx, Object.assign({ type: kind, text: '', fileUrl: url, fileName: file.name || safeName, fileSize: file.size }, (extra && extra.meta) || {}));
     chatSetStatus('');
   }catch(err){
     chatSetStatus('');
@@ -5604,7 +5674,7 @@ async function chatToggleRecord(btn){
     const mr = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
     const chunks = []; const startedAt = Date.now(); let cancelled = false;
     mr.ondataavailable = e => { if(e.data.size) chunks.push(e.data); };
-    const tick = setInterval(() => { const s = Math.round((Date.now() - startedAt)/1000); chatSetStatus(`🔴 جاري التسجيل… ${s} ث <button class="chat-mini-btn" onclick="chatCancelRecord()">إلغاء</button> <button class="chat-mini-btn ok" onclick="chatToggleRecord()">إرسال</button>`); if(s >= 180) mr.stop(); }, 500);
+    const tick = setInterval(() => { const s = Math.round((Date.now() - startedAt)/1000); chatSetStatus(`🔴 جاري التسجيل… ${s} ث <button class="chat-mini-btn" onclick="chatCancelRecord()">إلغاء</button> <button class="chat-mini-btn ok" onclick="chatToggleRecord()">إرسال</button>`); if(s >= CHAT_REC_MAX_SEC) mr.stop(); }, 500);
     mr.onstop = async () => {
       clearInterval(tick); stream.getTracks().forEach(t => t.stop());
       if(btn) btn.classList.remove('rec'); chatRec = null; chatSetStatus('');
@@ -5620,6 +5690,35 @@ async function chatToggleRecord(btn){
   }catch(err){ toast('مقدرناش نوصل للميكروفون — اسمح بالإذن من المتصفح.', {type:'err'}); }
 }
 function chatCancelRecord(){ if(chatRec) chatRec.cancel(); }
+
+/* ================= رفع الملفات عبر Cloudinary (بديل Firebase Storage — شغّال على الخطة المجانية) =================
+   الإعداد (cloudName + uploadPreset) بيتحفظ من لوحة الأدمن في siteSettings/uploadConfig. */
+let UPLOAD_CFG = { cloudName: '', uploadPreset: '' };
+function uploadReady(){ return !!(UPLOAD_CFG.cloudName && UPLOAD_CFG.uploadPreset); }
+function uploadFile(path, file, onProgress){
+  return new Promise((resolve, reject) => {
+    if(!uploadReady()){ reject(new Error('رفع الملفات لسه غير مفعّل — الأدمن لازم يضبط إعداد Cloudinary من لوحة التحكم.')); return; }
+    const t = file.type || '';
+    const rt = t.startsWith('image/') ? 'image' : (t.startsWith('video/') || t.startsWith('audio/')) ? 'video' : 'raw';
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', UPLOAD_CFG.uploadPreset);
+    if(rt === 'raw') fd.append('public_id', path);                      // بيحافظ على امتداد الملف (pdf/docx...)
+    else fd.append('folder', path.split('/').slice(0, -1).join('/'));
+    const x = new XMLHttpRequest();
+    x.open('POST', 'https://api.cloudinary.com/v1_1/' + encodeURIComponent(UPLOAD_CFG.cloudName) + '/' + rt + '/upload');
+    x.upload.onprogress = e => { if(e.lengthComputable && onProgress) onProgress(e.loaded / e.total); };
+    x.onload = () => {
+      try{
+        const j = JSON.parse(x.responseText);
+        if(x.status >= 200 && x.status < 300 && j.secure_url) resolve(j.secure_url);
+        else reject(new Error((j.error && j.error.message) || ('HTTP ' + x.status)));
+      }catch(e){ reject(e); }
+    };
+    x.onerror = () => reject(new Error('فشل الاتصال بخدمة الرفع'));
+    x.send(fd);
+  });
+}
 
 /* =====================================================================
    أنواع الحسابات (طالب معلم / طالب جامعي / معلم غير تربوي / دكتور مشرف / الإدارة)
@@ -5673,13 +5772,43 @@ async function proceedAfterSignup(){
   }
   openFeePayment(fee);
 }
+let feeBase = 0, feeCoupon = null;
 function openFeePayment(fee){
-  plansMode = 'signup';
-  PLANS.onetime.price = fee; PLANS.onetime.name = 'رسوم الاشتراك — ' + accLabelOf();
+  plansMode = 'signup'; feeBase = fee; feeCoupon = null;
   selectedPlanKey = 'onetime';
   document.getElementById('screen-app').style.display = 'none';
-  selectPlan('onetime');
+  renderFeePayment();
+}
+function feeNet(){
+  if(!feeCoupon) return feeBase;
+  const off = feeCoupon.type === 'percent' ? feeBase * feeCoupon.value / 100 : feeCoupon.value;
+  return Math.max(0, Math.round(feeBase - off));
+}
+function renderFeePayment(){
+  const net = feeNet();
+  PLANS.onetime.price = net; PLANS.onetime.name = 'رسوم الاشتراك — ' + accLabelOf();
+  document.getElementById('pay-plan-title').textContent = 'تأكيد اشتراك: ' + PLANS.onetime.name;
+  document.getElementById('pay-plan-sub').textContent = 'رسوم لمرة واحدة — المبلغ: ' + net + ' جنيه' + (feeCoupon ? ' (بعد كوبون ' + feeCoupon.code + ' — بدل ' + feeBase + ')' : '');
+  const msg = encodeURIComponent(`مرحبًا، أنا ${pendingUser.name || ''} حوّلت مبلغ ${net} جنيه لرسوم حساب "${accLabelOf()}" على نُدرس معًا${feeCoupon ? ' (كوبون ' + feeCoupon.code + ')' : ''}، برجاء تفعيل الحساب.`);
+  document.getElementById('wa-confirm-link').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  document.getElementById('pay-coupon-wrap').style.display = 'block';
+  document.getElementById('coupon-code').value = feeCoupon ? feeCoupon.code : '';
+  document.getElementById('screen-plans').style.display = 'none';
+  document.getElementById('screen-payment').style.display = 'flex';
   const b = document.querySelector('#screen-payment .back-link'); if(b) b.textContent = 'الدخول وإكمال الدفع لاحقًا';
+}
+async function applyCoupon(){
+  const st = document.getElementById('coupon-status'), code = document.getElementById('coupon-code').value.trim().toUpperCase();
+  if(!code){ feeCoupon = null; renderFeePayment(); st.textContent = ''; return; }
+  st.className = 'auth-status pending'; st.textContent = 'جاري التحقق...';
+  try{
+    const d = await db.collection('coupons').doc(code).get();
+    const c = d.exists ? d.data() : null;
+    const bad = !c || c.active === false || (c.expiresMs && Date.now() > c.expiresMs) || (c.maxUses && (c.used || 0) >= c.maxUses) || ((c.appliesTo || []).length && !c.appliesTo.includes(pendingType));
+    if(bad){ feeCoupon = null; renderFeePayment(); st.className = 'auth-status err'; st.textContent = 'الكوبون غير صالح أو منتهي.'; return; }
+    feeCoupon = { code, type: c.type, value: Number(c.value) || 0 };
+    renderFeePayment(); st.className = 'auth-status ok'; st.textContent = '✓ اتطبّق الخصم — المبلغ الجديد ' + feeNet() + ' جنيه.';
+  }catch(err){ st.className = 'auth-status err'; st.textContent = 'تعذّر التحقق من الكوبون.'; }
 }
 function renderTypedStatusUI(){
   const key = userStatus.accountType; const t = ACCOUNT_TYPES[key];
@@ -5709,8 +5838,19 @@ function isAccountLocked(){
   return t.paid ? (userStatus.status === 'awaiting_fee' || userStatus.status === 'pending_payment') : userStatus.status === 'pending_approval';
 }
 function onAccountLoaded(){
+  loadLimits(); checkDueReminders(); renderAccDropdown(); setTimeout(maybeOfferBio, 2500);
   const show = !!userStatus.supervisorId && (ACCOUNT_TYPES[userStatus.accountType] || {}).paid !== false;
   ['navi-sup-t','navi-sup-s'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = show ? '' : 'none'; });
+}
+async function loadLimits(){
+  try{
+    try{ const u = await db.collection('siteSettings').doc('uploadConfig').get(); if(u.exists) UPLOAD_CFG = { cloudName: u.data().cloudName || '', uploadPreset: u.data().uploadPreset || '' }; }catch(e){}
+    const d = await db.collection('siteSettings').doc('limits').get();
+    if(d.exists){ const x = d.data();
+      if(x.maxFileMB) CHAT_MAX_BYTES = Math.min(100, Math.max(1, Number(x.maxFileMB) || 10)) * 1048576;
+      if(x.maxRecordSec) CHAT_REC_MAX_SEC = Math.min(1800, Math.max(30, Number(x.maxRecordSec) || 180));
+    }
+  }catch(e){}
 }
 (function(){
   const prev = showView;
@@ -5727,21 +5867,59 @@ function onAccountLoaded(){
 
 /* =====================================================================
    لوحة الدكتور المشرف / الإدارة  +  "مشرفي وتكاليفي" للطلاب والمعلمين
-   (غرف صوت/فيديو، تكاليف وتسليمات، وسائط وملفات)
+   (فرق، إعلانات، غرف + حضور، تكاليف + تسليمات + ردود، وسائط، تقارير)
    ===================================================================== */
-let supTab = null, supMembers = [], supUp = null;
+let supTab = null, supMembers = [], supUp = null, supGroups = [], myGroupIds = [];
+let supRoomsCache = {}, supTaskCache = {};
 function supIsStaff(){ return (ACCOUNT_TYPES[userStatus.accountType || pendingType] || {}).paid === false; }
 function supFmt(ms){ return ms ? new Date(ms).toLocaleString('ar-EG', { dateStyle:'medium', timeStyle:'short' }) : ''; }
 function supSafeName(n){ return String(n || 'file').replace(/[^\w.\-؀-ۿ]+/g, '_').slice(-80); }
+function supMB(){ return Math.round(CHAT_MAX_BYTES / 1048576); }
 async function supUpload(path, file){
-  if(file.size > CHAT_MAX_BYTES) throw new Error('الملف أكبر من 15 ميجا');
-  const ref = storage.ref().child(path);
-  await ref.put(file, { contentType: file.type || 'application/octet-stream' });
-  return ref.getDownloadURL();
+  if(file.size > CHAT_MAX_BYTES) throw new Error('الملف أكبر من ' + supMB() + ' ميجا');
+  return uploadFile(path, file);
 }
 function supSortDesc(docs, key){ return docs.map(d => Object.assign({ id: d.id }, d.data())).sort((a, b) => (b[key] || 0) - (a[key] || 0)); }
-function supNotifyMembers(text){ supMembers.forEach(m => createNotification(m.id, 'message', text, 'v-sup')); }
 function supEmpty(msg){ return `<div class="empty-state">${msg}</div>`; }
+function supDownloadCsv(name, rows){
+  const csv = '﻿' + rows.map(r => r.map(c => '"' + String(c == null ? '' : c).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' })); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+}
+/* ----- الفرق: تصنيف الأعضاء داخل الدكتور الواحد ----- */
+async function supLoadGroups(){
+  supGroups = []; myGroupIds = [];
+  try{
+    if(supIsStaff()){ const d = await db.collection('supGroups').doc(currentUid).get(); supGroups = d.exists ? (d.data().groups || []) : []; }
+    if(supUp){ const d = await db.collection('supGroups').doc(supUp.id).get(); const gs = d.exists ? (d.data().groups || []) : []; myGroupIds = gs.filter(g => (g.members || []).includes(currentUid)).map(g => g.id); }
+  }catch(e){ console.warn('supGroups', e); }
+}
+function supVisible(item){ return !item.groupId || myGroupIds.includes(item.groupId); }
+function supGroupName(id){ const g = supGroups.find(x => x.id === id); return g ? g.name : ''; }
+function supGroupSelect(id){
+  return supGroups.length ? `<div class="field"><label>الفئة المستهدفة</label><select id="${id}"><option value="">كل الأعضاء</option>${supGroups.map(g => `<option value="${escapeAttr(g.id)}">${escapeHtml(g.name)}</option>`).join('')}</select></div>` : `<input type="hidden" id="${id}" value="">`;
+}
+function supTargets(groupId){
+  if(!groupId) return supMembers;
+  const g = supGroups.find(x => x.id === groupId); const ids = g ? (g.members || []) : [];
+  return supMembers.filter(m => ids.includes(m.id));
+}
+function supNotifyMembers(text, groupId){ supTargets(groupId).forEach(m => createNotification(m.id, 'message', text, 'v-sup')); }
+async function supSaveGroups(){ await db.collection('supGroups').doc(currentUid).set({ groups: supGroups, updatedMs: Date.now() }); }
+async function supAddGroup(){
+  const el = document.getElementById('grp-name'); const name = el.value.trim(); if(!name) return;
+  supGroups.push({ id: 'g' + Date.now().toString(36), name, members: [] });
+  try{ await supSaveGroups(); supRenderMembers(); }catch(err){ supGroups.pop(); toast('تعذّر حفظ الفريق (' + (err.code || err.message) + ')', {type:'err'}); }
+}
+async function supToggleGroupMember(gid, uid, on){
+  const g = supGroups.find(x => x.id === gid); if(!g) return;
+  g.members = (g.members || []).filter(x => x !== uid); if(on) g.members.push(uid);
+  try{ await supSaveGroups(); const b = document.getElementById('grp-cnt-' + gid); if(b) b.textContent = g.members.length + ' عضو'; }catch(err){ toast('تعذّر الحفظ.', {type:'err'}); }
+}
+async function supDelGroup(gid){
+  if(!confirm('حذف الفريق ده؟ العناصر اللي اتبعتتله هتبقى مخفية عن أعضائه.')) return;
+  supGroups = supGroups.filter(g => g.id !== gid);
+  try{ await supSaveGroups(); supRenderMembers(); }catch(err){ toast('تعذّر الحذف.', {type:'err'}); }
+}
 
 async function initSup(){
   const body = document.getElementById('sup-body'), tabsEl = document.getElementById('sup-tabs');
@@ -5763,13 +5941,15 @@ async function initSup(){
     }
   }catch(err){ body.innerHTML = supEmpty('تعذّر التحميل (' + escapeHtml(err.code || err.message) + ')'); return; }
   if(!staff && !supUp){ tabsEl.innerHTML = ''; body.innerHTML = supEmpty('لسه ماتربطتش بدكتور مشرف. لما الإدارة تربط حسابك بدكتور هتلاقي هنا التكاليف والغرف.'); return; }
-  const tabs = staff ? [['members','الأعضاء'],['rooms','الغرف'],['tasks','التكاليف'],['media','الوسائط والملفات']] : [['tasks','التكاليف'],['rooms','الغرف'],['media','الوسائط والملفات'],['mine','مشرفي']];
+  await supLoadGroups();
+  const tabs = staff ? [['members','الأعضاء والفرق'],['news','الإعلانات'],['rooms','الغرف'],['tasks','التكاليف'],['media','الوسائط والملفات'],['reports','التقارير']]
+                     : [['tasks','التكاليف'],['news','الإعلانات'],['rooms','الغرف'],['media','الوسائط والملفات'],['mine','مشرفي']];
   if(!supTab || !tabs.some(t => t[0] === supTab)) supTab = tabs[0][0];
   tabsEl.innerHTML = tabs.map(t => `<button class="filter-tab ${t[0] === supTab ? 'active' : ''}" onclick="setSupTab('${t[0]}')">${t[1]}</button>`).join('');
   renderSupTab();
 }
 function setSupTab(t){ supTab = t; document.querySelectorAll('#sup-tabs .filter-tab').forEach(b => b.classList.toggle('active', b.getAttribute('onclick') === `setSupTab('${t}')`)); renderSupTab(); }
-function renderSupTab(){ ({ members: supRenderMembers, mine: supRenderMine, rooms: supRenderRooms, tasks: supRenderTasks, media: supRenderMedia })[supTab](); }
+function renderSupTab(){ ({ members: supRenderMembers, mine: supRenderMine, news: supRenderNews, rooms: supRenderRooms, tasks: supRenderTasks, media: supRenderMedia, reports: supRenderReports })[supTab](); }
 function supPersonCard(p, badge){
   return `<div class="sup-card sup-person"><div class="mini-avatar">${escapeHtml((p.name || '؟').trim().charAt(0))}</div><div style="flex:1; min-width:0;"><b>${escapeHtml(p.name)}</b> ${badge ? `<span class="sup-badge">${badge}</span>` : ''}<div class="sup-meta">${escapeHtml(p.email || '')}</div></div><button class="sup-btn" onclick="openChatWith('${escapeAttr(p.id)}','${escapeAttr(p.name)}')">${ic('chat-circle')} دردشة</button></div>`;
 }
@@ -5778,13 +5958,55 @@ function supRenderMembers(){
   let h = '';
   if(supUp) h += '<h3 class="sup-h">جهة الإشراف عليّ</h3>' + supPersonCard({ id: supUp.id, name: supUp.name }, 'مسؤولي');
   h += `<h3 class="sup-h">${noun} التابعين لي (${supMembers.length})</h3>` + (supMembers.length ? supMembers.map(m => supPersonCard(m, ACCOUNT_TYPES[m.type] ? ACCOUNT_TYPES[m.type].label : '')).join('') : supEmpty('لسه مفيش حسابات مرتبطة بيك. الإدارة بتحدد الحسابات التابعة لك من لوحة التحكم.'));
+  h += `<h3 class="sup-h">الفرق (شُعَب / مجموعات)</h3><div class="sup-hint" style="margin:0 0 8px;">قسّم ${noun} لفرق، وبعدها تقدر توجّه أي تكليف أو غرفة أو إعلان لفريق معين.</div>
+    <div class="sup-form"><div style="display:flex; gap:8px;"><input type="text" id="grp-name" placeholder="اسم الفريق" style="flex:1; border:1px solid var(--line); border-radius:10px; padding:8px 10px; font-family:inherit;"><button class="sup-btn primary" onclick="supAddGroup()">إضافة فريق</button></div></div>`;
+  h += supGroups.map(g => `<details class="sup-card sup-det"><summary><b>${escapeHtml(g.name)}</b> <span class="sup-badge" id="grp-cnt-${g.id}">${(g.members || []).length} عضو</span></summary><div class="sup-det-body">
+    ${supMembers.map(m => `<label class="sup-chk"><input type="checkbox" ${(g.members || []).includes(m.id) ? 'checked' : ''} onchange="supToggleGroupMember('${g.id}','${m.id}',this.checked)"> ${escapeHtml(m.name)}</label>`).join('') || '<div class="sup-meta">مفيش أعضاء.</div>'}
+    <button class="sup-btn danger" style="margin-top:10px;" onclick="supDelGroup('${g.id}')">حذف الفريق</button></div></details>`).join('');
   document.getElementById('sup-body').innerHTML = h;
 }
 function supRenderMine(){
   document.getElementById('sup-body').innerHTML = '<h3 class="sup-h">الدكتور المشرف</h3>' + supPersonCard({ id: supUp.id, name: supUp.name }, 'مشرفي') + '<div class="sup-hint">تقدر تبعتله رسائل وصور وملفات وتسجيلات صوتية من الدردشة، وتسلّم التكاليف من تبويب "التكاليف".</div>';
 }
 
-/* ---------- الغرف ---------- */
+/* ---------- الإعلانات (رسالة جماعية) ---------- */
+async function supRenderNews(){
+  const body = document.getElementById('sup-body'), staff = supIsStaff();
+  body.innerHTML = supEmpty('جاري التحميل...');
+  try{
+    const [mine, recv] = await Promise.all([
+      staff ? db.collection('broadcasts').where('ownerUid', '==', currentUid).get() : null,
+      supUp ? db.collection('broadcasts').where('ownerUid', '==', supUp.id).get() : null
+    ]);
+    const card = (b, own) => `<div class="sup-card sup-col"><div><b>${escapeHtml(b.ownerName || '')}</b> <span class="sup-meta">${supFmt(b.createdMs)}${own && b.groupId ? ' · ' + escapeHtml(supGroupName(b.groupId) || 'فريق') : ''}</span>${own ? `<button class="sup-btn danger" style="float:left;" onclick="supDelBroadcast('${b.id}')">حذف</button>` : ''}</div><p>${chatLinkify(escapeHtml(b.text || ''))}</p></div>`;
+    let h = '';
+    if(staff){
+      h += `<div class="sup-form"><h3 class="sup-h" style="margin-top:0;">إعلان جماعي</h3>
+        <div class="field"><label>نص الإعلان</label><textarea id="bc-text" rows="3" placeholder="رسالة تصل لكل الأعضاء (أو فريق معين) وتظهر كإشعار..."></textarea></div>
+        ${supGroupSelect('bc-group')}<button class="btn-primary" id="bc-btn" onclick="supSendBroadcast()">إرسال الإعلان</button></div>`;
+      const list = supSortDesc(mine.docs, 'createdMs');
+      h += `<h3 class="sup-h">إعلاناتي (${list.length})</h3>` + (list.length ? list.map(b => card(b, true)).join('') : supEmpty('لسه ماأرسلتش إعلانات.'));
+    }
+    if(supUp){
+      const list = supSortDesc(recv.docs, 'createdMs').filter(supVisible);
+      h += `<h3 class="sup-h">إعلانات من ${escapeHtml(supUp.name)}</h3>` + (list.length ? list.map(b => card(b, false)).join('') : supEmpty('مفيش إعلانات.'));
+    }
+    body.innerHTML = h;
+  }catch(err){ body.innerHTML = supEmpty('تعذّر تحميل الإعلانات (' + escapeHtml(err.code || err.message) + ')'); }
+}
+async function supSendBroadcast(){
+  const text = document.getElementById('bc-text').value.trim(); if(!text){ toast('اكتب نص الإعلان.', {type:'err'}); return; }
+  const groupId = document.getElementById('bc-group').value || null;
+  const btn = document.getElementById('bc-btn'); btn.disabled = true;
+  try{
+    await db.collection('broadcasts').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', text, groupId, createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    supNotifyMembers('📣 إعلان من ' + (pendingUser.name || 'المشرف') + ': ' + text.slice(0, 80), groupId);
+    toast('اتبعت الإعلان.'); supRenderNews();
+  }catch(err){ toast('تعذّر الإرسال (' + (err.code || err.message) + ')', {type:'err'}); btn.disabled = false; }
+}
+async function supDelBroadcast(id){ if(!confirm('حذف الإعلان؟')) return; try{ await db.collection('broadcasts').doc(id).delete(); supRenderNews(); }catch(e){ toast('تعذّر الحذف.', {type:'err'}); } }
+
+/* ---------- الغرف + الحضور ---------- */
 async function supRenderRooms(){
   const body = document.getElementById('sup-body'), staff = supIsStaff();
   body.innerHTML = supEmpty('جاري التحميل...');
@@ -5793,21 +6015,23 @@ async function supRenderRooms(){
       staff ? db.collection('liveRooms').where('ownerUid', '==', currentUid).get() : null,
       supUp ? db.collection('liveRooms').where('ownerUid', '==', supUp.id).get() : null
     ]);
-    const roomHtml = (r, own) => `<div class="sup-card"><div style="flex:1; min-width:0;"><b>${r.mode === 'voice' ? '🎙️' : '🎥'} ${escapeHtml(r.title)}</b> ${r.active === false ? '<span class="sup-badge off">انتهت</span>' : ''}<div class="sup-meta">${r.mode === 'voice' ? 'غرفة صوتية' : 'غرفة فيديو'} · ${r.startsAtMs ? 'موعدها: ' + supFmt(r.startsAtMs) : 'مفتوحة الآن'} · ${escapeHtml(r.ownerName || '')}</div></div>
-      ${r.active === false ? '' : `<a class="sup-btn primary" href="${escapeAttr(chatSafeUrl(r.url))}" target="_blank" rel="noopener">دخول</a>`}
-      ${own ? `<button class="sup-btn" onclick="navigator.clipboard.writeText('${escapeAttr(r.url)}').then(()=>toast('اتنسخ الرابط.'))">نسخ الرابط</button>${r.active === false ? '' : `<button class="sup-btn danger" onclick="supEndRoom('${r.id}')">إنهاء</button>`}` : ''}</div>`;
+    supRoomsCache = {};
+    const roomHtml = (r, own) => { supRoomsCache[r.id] = r; return `<div class="sup-card sup-col"><div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;"><div style="flex:1; min-width:0;"><b>${r.mode === 'voice' ? '🎙️' : '🎥'} ${escapeHtml(r.title)}</b> ${r.active === false ? '<span class="sup-badge off">انتهت</span>' : ''}${own && r.groupId ? `<span class="sup-badge warn">${escapeHtml(supGroupName(r.groupId) || 'فريق')}</span>` : ''}<div class="sup-meta">${r.mode === 'voice' ? 'غرفة صوتية' : 'غرفة فيديو'} · ${r.startsAtMs ? 'موعدها: ' + supFmt(r.startsAtMs) : 'مفتوحة الآن'} · ${escapeHtml(r.ownerName || '')}</div></div>
+      ${r.active === false ? '' : `<button class="sup-btn primary" onclick="supJoinRoom('${r.id}')">دخول</button>`}
+      ${own ? `<button class="sup-btn" onclick="supShowAttendance('${r.id}')">الحضور</button><button class="sup-btn" onclick="navigator.clipboard.writeText(supRoomsCache['${r.id}'].url).then(()=>toast('اتنسخ الرابط.'))">نسخ الرابط</button>${r.active === false ? '' : `<button class="sup-btn danger" onclick="supEndRoom('${r.id}')">إنهاء</button>`}` : ''}</div><div id="att-${r.id}"></div></div>`; };
     let h = '';
     if(staff){
       h += `<div class="sup-form"><h3 class="sup-h" style="margin-top:0;">إنشاء غرفة جديدة</h3>
         <div class="field"><label>عنوان الغرفة</label><input type="text" id="room-title" placeholder="مثال: مراجعة المحاضرة الثالثة"></div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;"><div class="field" style="flex:1; min-width:150px;"><label>النوع</label><select id="room-mode"><option value="voice">غرفة صوتية</option><option value="video">غرفة فيديو</option></select></div>
         <div class="field" style="flex:1; min-width:170px;"><label>الموعد (اختياري)</label><input type="datetime-local" id="room-start"></div></div>
+        ${supGroupSelect('room-group')}
         <button class="btn-primary" id="room-create-btn" onclick="supCreateRoom()">إنشاء وفتح الغرفة وإبلاغ الأعضاء</button></div>`;
       const list = supSortDesc(mine.docs, 'createdMs');
       h += `<h3 class="sup-h">غرفي</h3>` + (list.length ? list.map(r => roomHtml(r, true)).join('') : supEmpty('لسه ماعملتش غرف.'));
     }
     if(supUp){
-      const list = supSortDesc(recv.docs, 'createdMs').filter(r => r.active !== false);
+      const list = supSortDesc(recv.docs, 'createdMs').filter(r => r.active !== false && supVisible(r));
       h += `<h3 class="sup-h">غرف من ${escapeHtml(supUp.name)}</h3>` + (list.length ? list.map(r => roomHtml(r, false)).join('') : supEmpty('مفيش غرف مفتوحة حاليًا.'));
     }
     body.innerHTML = h;
@@ -5816,21 +6040,50 @@ async function supRenderRooms(){
 async function supCreateRoom(){
   const title = document.getElementById('room-title').value.trim();
   if(!title){ toast('اكتب عنوان الغرفة.', {type:'err'}); return; }
-  const mode = document.getElementById('room-mode').value;
-  const st = document.getElementById('room-start').value;
+  const mode = document.getElementById('room-mode').value, st = document.getElementById('room-start').value, groupId = document.getElementById('room-group').value || null;
   const roomName = 'NudrusMaan-' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
   const url = 'https://meet.jit.si/' + roomName + (mode === 'voice' ? '#config.startWithVideoMuted=true&config.prejoinPageEnabled=false' : '');
   const btn = document.getElementById('room-create-btn'); btn.disabled = true;
   try{
-    await db.collection('liveRooms').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title, mode, url, startsAtMs: st ? new Date(st).getTime() : null, active: true, createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    supNotifyMembers((pendingUser.name || 'المشرف') + ' فتح ' + (mode === 'voice' ? 'غرفة صوتية' : 'غرفة فيديو') + ': ' + title);
+    await db.collection('liveRooms').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title, mode, url, groupId, startsAtMs: st ? new Date(st).getTime() : null, active: true, createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    supNotifyMembers((pendingUser.name || 'المشرف') + ' فتح ' + (mode === 'voice' ? 'غرفة صوتية' : 'غرفة فيديو') + ': ' + title, groupId);
     window.open(url, '_blank', 'noopener');
     supRenderRooms();
   }catch(err){ toast('تعذّر إنشاء الغرفة (' + (err.code || err.message) + ')', {type:'err'}); btn.disabled = false; }
 }
+async function supJoinRoom(id){
+  const r = supRoomsCache[id]; if(!r) return;
+  window.open(r.url, '_blank', 'noopener');
+  if(r.ownerUid === currentUid) return;
+  try{
+    const ref = db.collection('roomAttendance').doc(id + '_' + currentUid), snap = await ref.get(), now = Date.now();
+    if(snap.exists) await ref.update({ lastJoinMs: now, joins: firebase.firestore.FieldValue.increment(1) });
+    else await ref.set({ roomId: id, ownerUid: r.ownerUid, uid: currentUid, name: pendingUser.name || '', firstJoinMs: now, lastJoinMs: now, joins: 1 });
+  }catch(e){ console.warn('attendance', e); }
+}
+async function supShowAttendance(id){
+  const box = document.getElementById('att-' + id), r = supRoomsCache[id]; if(!box || !r) return;
+  if(box.dataset.open === '1'){ box.dataset.open = '0'; box.innerHTML = ''; return; }
+  box.dataset.open = '1'; box.innerHTML = '<div class="sup-meta">جاري التحميل...</div>';
+  try{
+    const snap = await db.collection('roomAttendance').where('ownerUid', '==', currentUid).where('roomId', '==', id).get();
+    const att = snap.docs.map(d => d.data()).sort((a, b) => (a.firstJoinMs || 0) - (b.firstJoinMs || 0));
+    const missing = supTargets(r.groupId).filter(m => !att.some(a => a.uid === m.id));
+    box.innerHTML = `<div class="sup-thread"><b>حضروا (${att.length})</b>${att.map(a => `<div class="sup-meta">✓ ${escapeHtml(a.name || '—')} — أول دخول ${supFmt(a.firstJoinMs)} (${a.joins || 1} مرة)</div>`).join('') || '<div class="sup-meta">لسه محدش دخل.</div>'}
+      <b style="display:block; margin-top:8px;">لم يحضروا (${missing.length})</b><div class="sup-meta">${missing.map(m => escapeHtml(m.name)).join('، ') || '—'}</div>
+      <button class="sup-btn" style="margin-top:8px;" onclick="supExportAttendance('${id}')">تصدير الحضور CSV</button></div>`;
+    supRoomsCache[id].__att = att;
+  }catch(err){ box.innerHTML = '<div class="sup-meta">تعذّر تحميل الحضور (' + escapeHtml(err.code || err.message) + ')</div>'; }
+}
+function supExportAttendance(id){
+  const r = supRoomsCache[id]; if(!r) return; const att = r.__att || [];
+  const rows = [['الاسم','الحالة','أول دخول','عدد مرات الدخول']];
+  supTargets(r.groupId).forEach(m => { const a = att.find(x => x.uid === m.id); rows.push([m.name, a ? 'حضر' : 'لم يحضر', a ? supFmt(a.firstJoinMs) : '', a ? (a.joins || 1) : 0]); });
+  supDownloadCsv('حضور-' + supSafeName(r.title) + '.csv', rows);
+}
 async function supEndRoom(id){ try{ await db.collection('liveRooms').doc(id).update({ active: false }); supRenderRooms(); }catch(err){ toast('تعذّر إنهاء الغرفة.', {type:'err'}); } }
 
-/* ---------- التكاليف والتسليمات ---------- */
+/* ---------- التكاليف والتسليمات + الردود + التصدير + التذكير ---------- */
 async function supRenderTasks(){
   const body = document.getElementById('sup-body'), staff = supIsStaff();
   body.innerHTML = supEmpty('جاري التحميل...');
@@ -5841,6 +6094,7 @@ async function supRenderTasks(){
       supUp ? db.collection('assignments').where('ownerUid', '==', supUp.id).get() : null,
       supUp ? db.collection('submissions').where('studentUid', '==', currentUid).get() : null
     ]);
+    supTaskCache = {};
     const fileLink = a => a.fileUrl ? `<a class="sup-link" href="${escapeAttr(chatSafeUrl(a.fileUrl))}" target="_blank" rel="noopener">📎 ${escapeHtml(a.fileName || 'ملف')}</a>` : '';
     let h = '';
     if(staff){
@@ -5849,23 +6103,28 @@ async function supRenderTasks(){
         <div class="field"><label>التفاصيل</label><textarea id="as-desc" rows="3" placeholder="المطلوب بالتفصيل..."></textarea></div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;"><div class="field" style="flex:1; min-width:170px;"><label>آخر موعد للتسليم</label><input type="datetime-local" id="as-due"></div>
         <div class="field" style="flex:1; min-width:170px;"><label>ملف مرفق (اختياري)</label><input type="file" id="as-file"></div></div>
+        ${supGroupSelect('as-group')}
         <button class="btn-primary" id="as-btn" onclick="supCreateAssignment()">نشر التكليف</button></div>`;
       const subs = postedSubs.docs.map(d => Object.assign({ id: d.id }, d.data()));
       const list = supSortDesc(posted.docs, 'createdMs');
       h += `<h3 class="sup-h">تكاليفي (${list.length})</h3>` + (list.length ? list.map(a => {
         const mine = subs.filter(s => s.assignmentId === a.id).sort((x, y) => (y.submittedMs || 0) - (x.submittedMs || 0));
-        return `<details class="sup-card sup-det"><summary><b>${escapeHtml(a.title)}</b> <span class="sup-badge">${mine.length}/${supMembers.length} سلّموا</span><div class="sup-meta">${a.dueMs ? 'آخر موعد: ' + supFmt(a.dueMs) : 'بدون موعد'} · نُشر ${supFmt(a.createdMs)}</div></summary>
+        const targets = supTargets(a.groupId), missing = targets.filter(t => !mine.some(s => s.studentUid === t.id));
+        supTaskCache[a.id] = { a, mine, targets };
+        return `<details class="sup-card sup-det"><summary><b>${escapeHtml(a.title)}</b> <span class="sup-badge">${mine.length}/${targets.length} سلّموا</span>${a.groupId ? `<span class="sup-badge warn">${escapeHtml(supGroupName(a.groupId) || 'فريق')}</span>` : ''}<div class="sup-meta">${a.dueMs ? 'آخر موعد: ' + supFmt(a.dueMs) : 'بدون موعد'} · نُشر ${supFmt(a.createdMs)}</div></summary>
           <div class="sup-det-body">${a.description ? `<p>${chatLinkify(escapeHtml(a.description))}</p>` : ''}${fileLink(a)}
+          <div class="sup-meta" style="margin:8px 0;">لم يسلّموا (${missing.length}): ${missing.map(m => escapeHtml(m.name)).join('، ') || '—'}</div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">${missing.length ? `<button class="sup-btn" onclick="supRemind('${a.id}')">🔔 تذكير من لم يسلّم</button>` : ''}<button class="sup-btn" onclick="supExportGrades('${a.id}')">تصدير الدرجات CSV</button></div>
           ${mine.length ? mine.map(s => `<div class="sup-sub"><b>${escapeHtml(s.studentName || '—')}</b> <span class="sup-meta">${supFmt(s.submittedMs)}</span>${s.status === 'graded' ? '<span class="sup-badge">اتقيّم</span>' : ''}
             ${s.text ? `<div>${chatLinkify(escapeHtml(s.text))}</div>` : ''}${fileLink(s)}
             <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;"><input type="text" id="gr-${s.id}" placeholder="الدرجة" value="${escapeAttr(s.grade || '')}" style="width:90px;"><input type="text" id="fb-${s.id}" placeholder="ملاحظاتك للطالب" value="${escapeAttr(s.feedback || '')}" style="flex:1; min-width:140px;"><button class="sup-btn primary" onclick="supGrade('${s.id}','${escapeAttr(s.studentUid)}')">حفظ التقييم</button>
-            <button class="sup-btn" onclick="openChatWith('${escapeAttr(s.studentUid)}','${escapeAttr(s.studentName || '')}')">${ic('chat-circle')}</button></div></div>`).join('') : '<div class="sup-meta" style="margin-top:8px;">لسه محدش سلّم.</div>'}
+            <button class="sup-btn" onclick="supToggleThread('${s.id}','${escapeAttr(s.studentUid)}')">💬 الردود</button></div><div id="th-${s.id}"></div></div>`).join('') : '<div class="sup-meta">لسه محدش سلّم.</div>'}
           <button class="sup-btn danger" style="margin-top:10px;" onclick="supDelAssignment('${a.id}')">حذف التكليف</button></div></details>`;
       }).join('') : supEmpty('لسه ماعملتش تكاليف.'));
     }
     if(supUp){
-      const subMap = {}; mySubs.docs.forEach(d => { subMap[d.data().assignmentId] = d.data(); });
-      const list = supSortDesc(recv.docs, 'createdMs');
+      const subMap = {}; mySubs.docs.forEach(d => { subMap[d.data().assignmentId] = Object.assign({ id: d.id }, d.data()); });
+      const list = supSortDesc(recv.docs, 'createdMs').filter(supVisible);
       h += `<h3 class="sup-h">مطلوب مني من ${escapeHtml(supUp.name)} (${list.length})</h3>` + (list.length ? list.map(a => {
         const s = subMap[a.id]; const late = a.dueMs && Date.now() > a.dueMs;
         return `<div class="sup-card sup-col"><div><b>${escapeHtml(a.title)}</b> ${s ? `<span class="sup-badge">${s.status === 'graded' ? 'اتقيّم' : 'تم التسليم'}</span>` : (late ? '<span class="sup-badge off">متأخر</span>' : '<span class="sup-badge warn">مطلوب</span>')}
@@ -5873,7 +6132,8 @@ async function supRenderTasks(){
           ${a.description ? `<p>${chatLinkify(escapeHtml(a.description))}</p>` : ''}${fileLink(a)}
           ${s && s.status === 'graded' ? `<div class="sup-grade">الدرجة: <b>${escapeHtml(s.grade || '—')}</b>${s.feedback ? ' — ' + escapeHtml(s.feedback) : ''}</div>` : ''}
           ${s && s.status === 'graded' ? '' : `<textarea id="sub-txt-${a.id}" rows="2" placeholder="إجابتك أو رابط تسليمك (اختياري لو هترفع ملف)">${escapeHtml(s ? (s.text || '') : '')}</textarea>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"><input type="file" id="sub-file-${a.id}"><button class="sup-btn primary" id="sub-btn-${a.id}" onclick="supSubmit('${a.id}')">${s ? 'تحديث التسليم' : 'تسليم'}</button></div>`}${s && s.fileUrl ? `<div class="sup-meta">آخر ملف سلّمته: ${fileLink(s)}</div>` : ''}</div>`;
+          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"><input type="file" id="sub-file-${a.id}"><button class="sup-btn primary" id="sub-btn-${a.id}" onclick="supSubmit('${a.id}')">${s ? 'تحديث التسليم' : 'تسليم'}</button></div>`}${s && s.fileUrl ? `<div class="sup-meta">آخر ملف سلّمته: ${fileLink(s)}</div>` : ''}
+          ${s ? `<div><button class="sup-btn" onclick="supToggleThread('${s.id}','${escapeAttr(supUp.id)}')">💬 الردود مع الدكتور</button></div><div id="th-${s.id}"></div>` : ''}</div>`;
       }).join('') : supEmpty('مفيش تكاليف حاليًا.'));
     }
     body.innerHTML = h;
@@ -5884,14 +6144,26 @@ async function supCreateAssignment(){
   if(!title){ toast('اكتب عنوان التكليف.', {type:'err'}); return; }
   const btn = document.getElementById('as-btn'); btn.disabled = true; btn.textContent = 'جاري النشر...';
   try{
-    const f = document.getElementById('as-file').files[0];
+    const f = document.getElementById('as-file').files[0], groupId = document.getElementById('as-group').value || null;
     let fileUrl = '', fileName = '';
     if(f){ fileUrl = await supUpload(`assignments/${currentUid}/${Date.now()}_${supSafeName(f.name)}`, f); fileName = f.name; }
     const due = document.getElementById('as-due').value;
-    await db.collection('assignments').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title, description: document.getElementById('as-desc').value.trim(), dueMs: due ? new Date(due).getTime() : null, fileUrl, fileName, createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    supNotifyMembers('تكليف جديد من ' + (pendingUser.name || 'المشرف') + ': ' + title);
+    await db.collection('assignments').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title, description: document.getElementById('as-desc').value.trim(), groupId, dueMs: due ? new Date(due).getTime() : null, fileUrl, fileName, createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    supNotifyMembers('تكليف جديد من ' + (pendingUser.name || 'المشرف') + ': ' + title, groupId);
     toast('اتنشر التكليف.'); supRenderTasks();
   }catch(err){ toast('تعذّر نشر التكليف (' + (err.code || err.message) + ')', {type:'err'}); btn.disabled = false; btn.textContent = 'نشر التكليف'; }
+}
+function supRemind(aid){
+  const c = supTaskCache[aid]; if(!c) return;
+  const missing = c.targets.filter(t => !c.mine.some(s => s.studentUid === t.id));
+  missing.forEach(m => createNotification(m.id, 'message', '🔔 تذكير: لسه ماسلّمتش تكليف "' + c.a.title + '"', 'v-sup'));
+  toast('اتبعت تذكير لـ ' + missing.length + ' عضو.');
+}
+function supExportGrades(aid){
+  const c = supTaskCache[aid]; if(!c) return;
+  const rows = [['الاسم','الإيميل','الحالة','وقت التسليم','الدرجة','الملاحظات']];
+  c.targets.forEach(t => { const s = c.mine.find(x => x.studentUid === t.id); rows.push([t.name, t.email, s ? (s.status === 'graded' ? 'تم التقييم' : 'سلّم') : 'لم يسلّم', s ? supFmt(s.submittedMs) : '', s ? (s.grade || '') : '', s ? (s.feedback || '') : '']); });
+  supDownloadCsv('درجات-' + supSafeName(c.a.title) + '.csv', rows);
 }
 async function supDelAssignment(id){
   if(!confirm('حذف التكليف ده؟ التسليمات هتفضل محفوظة.')) return;
@@ -5917,8 +6189,49 @@ async function supGrade(subId, studentUid){
     toast('اتحفظ التقييم.'); supRenderTasks();
   }catch(err){ toast('تعذّر حفظ التقييم (' + (err.code || err.message) + ')', {type:'err'}); }
 }
+async function supToggleThread(subId, otherUid){
+  const box = document.getElementById('th-' + subId); if(!box) return;
+  if(box.dataset.open === '1' && !box.dataset.reload){ box.dataset.open = '0'; box.innerHTML = ''; return; }
+  delete box.dataset.reload; box.dataset.open = '1'; box.innerHTML = '<div class="sup-meta">جاري التحميل...</div>';
+  try{
+    const snap = await db.collection('submissions').doc(subId).collection('comments').get();
+    const list = snap.docs.map(d => d.data()).sort((a, b) => (a.createdMs || 0) - (b.createdMs || 0));
+    box.innerHTML = `<div class="sup-thread">${list.map(c => `<div class="sup-cmt ${c.uid === currentUid ? 'mine' : ''}"><b>${escapeHtml(c.name || '')}</b> ${chatLinkify(escapeHtml(c.text || ''))}<span class="sup-meta"> ${supFmt(c.createdMs)}</span></div>`).join('') || '<div class="sup-meta">مفيش ردود لسه.</div>'}
+      <div style="display:flex; gap:6px; margin-top:6px;"><input type="text" id="thi-${subId}" placeholder="اكتب ردًا..." style="flex:1; border:1px solid var(--line); border-radius:10px; padding:7px 10px; font-family:inherit;"><button class="sup-btn primary" onclick="supSendComment('${subId}','${escapeAttr(otherUid)}')">إرسال</button></div></div>`;
+  }catch(err){ box.innerHTML = '<div class="sup-meta">تعذّر تحميل الردود (' + escapeHtml(err.code || err.message) + ')</div>'; }
+}
+async function supSendComment(subId, otherUid){
+  const inp = document.getElementById('thi-' + subId); const text = inp.value.trim(); if(!text) return;
+  try{
+    await db.collection('submissions').doc(subId).collection('comments').add({ uid: currentUid, name: pendingUser.name || '', text, createdMs: Date.now() });
+    createNotification(otherUid, 'message', (pendingUser.name || 'مستخدم') + ' رد على تسليم', 'v-sup');
+    const box = document.getElementById('th-' + subId); box.dataset.reload = '1'; supToggleThread(subId, otherUid);
+  }catch(err){ toast('تعذّر إرسال الرد (' + (err.code || err.message) + ')', {type:'err'}); }
+}
+/* تذكير تلقائي للطالب بالتكاليف اللي موعدها خلال 24 ساعة (بيشتغل عند فتح الموقع) */
+async function checkDueReminders(){
+  if(!userStatus.supervisorId || window.__dueChecked) return; window.__dueChecked = true;
+  try{
+    const up = userStatus.supervisorId;
+    const [as, subs, gd] = await Promise.all([ db.collection('assignments').where('ownerUid', '==', up).get(), db.collection('submissions').where('studentUid', '==', currentUid).get(), db.collection('supGroups').doc(up).get() ]);
+    const done = new Set(subs.docs.map(d => d.data().assignmentId));
+    const gs = gd.exists ? (gd.data().groups || []) : [], mine = gs.filter(g => (g.members || []).includes(currentUid)).map(g => g.id);
+    let seen = {}; try{ seen = JSON.parse(localStorage.getItem('ndm_due_seen') || '{}'); }catch(e){}
+    const now = Date.now();
+    as.docs.forEach(d => {
+      const a = d.data(); if(!a.dueMs || done.has(d.id) || (a.groupId && !mine.includes(a.groupId))) return;
+      const left = a.dueMs - now;
+      if(left > 0 && left <= 24 * 3600 * 1000 && !seen[d.id]){
+        seen[d.id] = 1; const hrs = Math.max(1, Math.round(left / 3600000));
+        toast('⏰ تكليف "' + a.title + '" ينتهي خلال ' + hrs + ' ساعة', {duration: 6500});
+        createNotification(currentUid, 'message', '⏰ تكليف "' + a.title + '" ينتهي خلال ' + hrs + ' ساعة', 'v-sup');
+      }
+    });
+    try{ localStorage.setItem('ndm_due_seen', JSON.stringify(seen)); }catch(e){}
+  }catch(e){ console.warn('due reminders', e); }
+}
 
-/* ---------- الوسائط والملفات (صور / فيديو / تسجيلات / ملفات) ---------- */
+/* ---------- الوسائط والملفات ---------- */
 async function supRenderMedia(){
   const body = document.getElementById('sup-body'), staff = supIsStaff();
   body.innerHTML = supEmpty('جاري التحميل...');
@@ -5926,15 +6239,16 @@ async function supRenderMedia(){
     const q = [ db.collection('mediaShares').where('fromUid', '==', currentUid).get(), db.collection('mediaShares').where('toUid', '==', currentUid).get() ];
     if(supUp) q.push(db.collection('mediaShares').where('fromUid', '==', supUp.id).where('toUid', '==', null).get());
     const [sent, direct, bcast] = await Promise.all(q);
-    const item = (m, own) => `<div class="sup-card sup-col"><div><b>${escapeHtml(m.fromName || '')}</b> <span class="sup-meta">${supFmt(m.createdMs)}${own ? ' · ' + (m.toUid ? 'إلى مشرفي' : 'لكل أعضائي') : ''}</span>${own ? `<button class="sup-btn danger" style="float:left;" onclick="supDelMedia('${m.id}')">حذف</button>` : ''}</div>
+    const item = (m, own) => `<div class="sup-card sup-col"><div><b>${escapeHtml(m.fromName || '')}</b> <span class="sup-meta">${supFmt(m.createdMs)}${own ? ' · ' + (m.toUid ? 'إلى مشرفي' : (m.groupId ? 'إلى فريق ' + escapeHtml(supGroupName(m.groupId) || '') : 'لكل أعضائي')) : ''}</span>${own ? `<button class="sup-btn danger" style="float:left;" onclick="supDelMedia('${m.id}')">حذف</button>` : ''}</div>
       <div class="sup-media">${chatMsgBodyHtml(m)}</div></div>`;
     const sentL = supSortDesc(sent.docs, 'createdMs');
-    const recvL = supSortDesc(direct.docs, 'createdMs').concat(bcast ? supSortDesc(bcast.docs, 'createdMs') : []).sort((a, b) => (b.createdMs || 0) - (a.createdMs || 0));
-    const targets = (supUp ? `<option value="up">إلى ${escapeHtml(supUp.name)}</option>` : '') + (staff && supMembers.length ? '<option value="down">إلى كل الأعضاء التابعين لي</option>' : '');
+    const recvL = supSortDesc(direct.docs, 'createdMs').concat(bcast ? supSortDesc(bcast.docs, 'createdMs').filter(supVisible) : []).sort((a, b) => (b.createdMs || 0) - (a.createdMs || 0));
+    const targets = (supUp ? `<option value="up">إلى ${escapeHtml(supUp.name)}</option>` : '') + (staff && supMembers.length ? '<option value="down">إلى الأعضاء التابعين لي</option>' : '');
     body.innerHTML = `<div class="sup-form"><h3 class="sup-h" style="margin-top:0;">رفع وسائط أو ملف</h3>
-      <div class="field"><label>الملف (صورة / فيديو / تسجيل صوتي / مستند — حتى 15 ميجا)</label><input type="file" id="md-file"></div>
+      <div class="field"><label>الملف (صورة / فيديو / تسجيل صوتي / مستند — حتى ${supMB()} ميجا)</label><input type="file" id="md-file"></div>
       <div class="field"><label>ملاحظة (اختياري)</label><input type="text" id="md-note"></div>
       <div class="field"><label>إرسال إلى</label><select id="md-target">${targets}</select></div>
+      ${staff ? supGroupSelect('md-group') : '<input type="hidden" id="md-group" value="">'}
       <button class="btn-primary" id="md-btn" onclick="supUploadMedia()">رفع وإرسال</button></div>
       <h3 class="sup-h">وصلني (${recvL.length})</h3>${recvL.length ? recvL.map(m => item(m, false)).join('') : supEmpty('مفيش وسائط واصلة.')}
       <h3 class="sup-h">اللي أرسلته (${sentL.length})</h3>${sentL.length ? sentL.map(m => item(m, true)).join('') : supEmpty('لسه ماأرسلتش حاجة.')}`;
@@ -5947,18 +6261,207 @@ async function supUploadMedia(){
   const btn = document.getElementById('md-btn'); btn.disabled = true; btn.textContent = 'جاري الرفع...';
   try{
     const url = await supUpload(`supMedia/${currentUid}/${Date.now()}_${supSafeName(f.name)}`, f);
-    const toUid = target === 'up' ? supUp.id : null;
-    await db.collection('mediaShares').add({ fromUid: currentUid, fromName: pendingUser.name || '', toUid, type: chatKindOf(f), fileUrl: url, fileName: f.name, fileSize: f.size, text: document.getElementById('md-note').value.trim(), createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    if(toUid) createNotification(toUid, 'message', (pendingUser.name || 'مستخدم') + ' أرسل لك ملف/وسائط', 'v-sup'); else supNotifyMembers((pendingUser.name || 'المشرف') + ' شارك ملف/وسائط جديدة');
+    const toUid = target === 'up' ? supUp.id : null, groupId = toUid ? null : (document.getElementById('md-group').value || null);
+    await db.collection('mediaShares').add({ fromUid: currentUid, fromName: pendingUser.name || '', toUid, groupId, type: chatKindOf(f), fileUrl: url, fileName: f.name, fileSize: f.size, text: document.getElementById('md-note').value.trim(), createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    if(toUid) createNotification(toUid, 'message', (pendingUser.name || 'مستخدم') + ' أرسل لك ملف/وسائط', 'v-sup'); else supNotifyMembers((pendingUser.name || 'المشرف') + ' شارك ملف/وسائط جديدة', groupId);
     toast('اتبعت.'); supRenderMedia();
   }catch(err){ toast('تعذّر الرفع (' + (err.code || err.message) + ')', {type:'err'}); btn.disabled = false; btn.textContent = 'رفع وإرسال'; }
 }
 async function supDelMedia(id){ if(!confirm('حذف المرفق ده؟')) return; try{ await db.collection('mediaShares').doc(id).delete(); supRenderMedia(); }catch(err){ toast('تعذّر الحذف.', {type:'err'}); } }
 
+/* ---------- التقارير الشهرية ---------- */
+function supRenderReports(){
+  const now = new Date(), val = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+  const isOffice = (userStatus.accountType || pendingType) === 'office';
+  document.getElementById('sup-body').innerHTML = `<div class="sup-form"><h3 class="sup-h" style="margin-top:0;">تقرير شهري ${isOffice ? 'لكل دكتور مشرف' : 'لنشاطي وطلابي'}</h3>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:end;"><div class="field" style="margin:0;"><label>الشهر</label><input type="month" id="rp-month" value="${val}"></div><button class="sup-btn primary" onclick="supBuildReport()">عرض التقرير</button></div></div><div id="rp-out"></div>`;
+  supBuildReport();
+}
+let supReportRows = null;
+async function supBuildReport(){
+  const out = document.getElementById('rp-out'); out.innerHTML = supEmpty('جاري إعداد التقرير...');
+  const v = document.getElementById('rp-month').value.split('-'), from = new Date(+v[0], +v[1] - 1, 1).getTime(), to = new Date(+v[0], +v[1], 1).getTime();
+  const inR = ms => ms >= from && ms < to;
+  const isOffice = (userStatus.accountType || pendingType) === 'office';
+  const owners = isOffice ? supMembers : [{ id: currentUid, name: pendingUser.name || 'أنا' }];
+  try{
+    const rows = [], perStudent = [];
+    for(const o of owners){
+      const [as, rooms, subs, media, att, studs] = await Promise.all([
+        db.collection('assignments').where('ownerUid', '==', o.id).get(), db.collection('liveRooms').where('ownerUid', '==', o.id).get(),
+        db.collection('submissions').where('ownerUid', '==', o.id).get(), db.collection('mediaShares').where('fromUid', '==', o.id).get(),
+        db.collection('roomAttendance').where('ownerUid', '==', o.id).get(), isOffice ? db.collection('users').where('supervisorId', '==', o.id).get() : null
+      ]);
+      const nStud = isOffice ? studs.size : supMembers.length;
+      const aN = as.docs.filter(d => inR(d.data().createdMs || 0)).length;
+      const sL = subs.docs.map(d => d.data()).filter(s => inR(s.submittedMs || 0));
+      const grades = sL.map(s => parseFloat(String(s.grade || '').replace(',', '.'))).filter(n => !isNaN(n));
+      const avg = grades.length ? (grades.reduce((a, b) => a + b, 0) / grades.length).toFixed(1) : '—';
+      const rate = nStud && aN ? Math.min(100, Math.round(100 * sL.length / (nStud * aN))) + '%' : '—';
+      rows.push([o.name, nStud, aN, sL.length, rate, avg, rooms.docs.filter(d => inR(d.data().createdMs || 0)).length, att.docs.filter(d => inR(d.data().firstJoinMs || 0)).length, media.docs.filter(d => inR(d.data().createdMs || 0)).length]);
+      if(!isOffice) supMembers.forEach(m => {
+        const ms = sL.filter(s => s.studentUid === m.id), gr = ms.map(s => parseFloat(String(s.grade || '').replace(',', '.'))).filter(n => !isNaN(n));
+        perStudent.push([m.name, ms.length, gr.length ? (gr.reduce((a, b) => a + b, 0) / gr.length).toFixed(1) : '—', att.docs.filter(d => d.data().uid === m.id && inR(d.data().firstJoinMs || 0)).length]);
+      });
+    }
+    supReportRows = { head: [isOffice ? 'الدكتور' : 'الدكتور','عدد الأعضاء','تكاليف نُشرت','تسليمات','نسبة التسليم','متوسط الدرجات','غرف','حضور غرف','وسائط'], rows, perStudent };
+    const tbl = (head, rs) => `<div style="overflow-x:auto;"><table class="sup-table"><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr>${rs.map(r => `<tr>${r.map(c => `<td>${escapeHtml(String(c))}</td>`).join('')}</tr>`).join('') || `<tr><td colspan="${head.length}">لا توجد بيانات.</td></tr>`}</table></div>`;
+    out.innerHTML = tbl(supReportRows.head, rows) + (perStudent.length ? '<h3 class="sup-h">تفصيل الطلاب</h3>' + tbl(['الطالب','تسليمات','متوسط الدرجات','حضور غرف'], perStudent) : '') + `<button class="sup-btn" style="margin-top:10px;" onclick="supExportReport()">تصدير التقرير CSV</button>`;
+  }catch(err){ out.innerHTML = supEmpty('تعذّر إعداد التقرير (' + escapeHtml(err.code || err.message) + ')'); }
+}
+function supExportReport(){
+  if(!supReportRows) return;
+  const rows = [supReportRows.head].concat(supReportRows.rows);
+  if(supReportRows.perStudent.length){ rows.push([]); rows.push(['الطالب','تسليمات','متوسط الدرجات','حضور غرف']); supReportRows.perStudent.forEach(r => rows.push(r)); }
+  supDownloadCsv('تقرير-' + document.getElementById('rp-month').value + '.csv', rows);
+}
+
 function chatCtx(){
   if(!activeConvId || !activeOtherUid) return null;
   const other = activeOtherUid;
   return { convId: activeConvId, otherUid: other, uid: currentUid, name: pendingUser.name || 'مستخدم', after: () => createNotification(other, 'message', (pendingUser.name || 'مستخدم') + ' أرسل لك مرفق', 'v-chats') };
+}
+
+/* =====================================================================
+   الدخول بالبصمة (WebAuthn) — بيفتح الجلسة المحفوظة على الجهاز ببصمة/وجه/قفل الجهاز
+   ===================================================================== */
+const b64u = {
+  enc: buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''),
+  dec: s => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0))
+};
+function bioGet(){ try{ return JSON.parse(localStorage.getItem('ndm_bio') || 'null'); }catch(e){ return null; } }
+async function bioAvailable(){
+  try{ return !!(window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable && await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()); }catch(e){ return false; }
+}
+async function bioEnable(){
+  if(!currentUid) return false;
+  if(!(await bioAvailable())){ toast('جهازك أو متصفحك مش بيدعم الدخول بالبصمة (محتاج موقع https وبصمة/قفل شاشة مفعّل).', {type:'err', duration:5000}); return false; }
+  try{
+    const cred = await navigator.credentials.create({ publicKey: {
+      challenge: crypto.getRandomValues(new Uint8Array(32)),
+      rp: { name: 'نُدرس معًا' },
+      user: { id: new TextEncoder().encode(currentUid).slice(0, 64), name: pendingUser.email || currentUid, displayName: pendingUser.name || 'مستخدم' },
+      pubKeyCredParams: [{ type:'public-key', alg:-7 }, { type:'public-key', alg:-257 }],
+      authenticatorSelection: { authenticatorAttachment:'platform', userVerification:'required', residentKey:'discouraged' },
+      timeout: 60000, attestation: 'none'
+    }});
+    localStorage.setItem('ndm_bio', JSON.stringify({ uid: currentUid, credId: b64u.enc(cred.rawId), name: pendingUser.name || '' }));
+    toast('تم تفعيل الدخول بالبصمة على الجهاز ده.'); renderAccDropdown(); return true;
+  }catch(err){ toast('ماتفعّلتش البصمة (' + (err.name || err.message) + ')', {type:'err'}); return false; }
+}
+function bioDisable(){ try{ localStorage.removeItem('ndm_bio'); }catch(e){} toast('اتلغى الدخول بالبصمة.'); renderAccDropdown(); }
+async function toggleBio(){ const b = bioGet(); if(b && b.uid === currentUid) bioDisable(); else await bioEnable(); }
+async function bioVerifyCred(credId){
+  await navigator.credentials.get({ publicKey: {
+    challenge: crypto.getRandomValues(new Uint8Array(32)),
+    allowCredentials: [{ type:'public-key', id: b64u.dec(credId), transports:['internal'] }],
+    userVerification: 'required', timeout: 60000
+  }});
+}
+function showBioScreen(user, b){
+  ['screen-role','screen-login','screen-signup','screen-acctype','screen-verify','screen-plans','screen-payment','screen-google-complete'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
+  document.getElementById('bio-name').textContent = b.name || user.email || '';
+  document.getElementById('bio-avatar').textContent = ((b.name || user.email || '؟').trim().charAt(0)).toUpperCase();
+  document.getElementById('screen-bio').style.display = 'flex';
+  setTimeout(() => bioUnlock(true), 400);
+}
+let bioBusy = false;
+async function bioUnlock(auto){
+  const b = bioGet(), user = auth.currentUser, st = document.getElementById('bio-status');
+  if(bioBusy || !b || !user) return; bioBusy = true;
+  st.className = 'auth-status pending'; st.textContent = 'ضع بصمتك للتحقق...';
+  try{ await bioVerifyCred(b.credId); }
+  catch(e){ bioBusy = false; if(auto){ st.textContent = ''; } else { st.className = 'auth-status err'; st.textContent = 'ماتمش التحقق بالبصمة — جرّب تاني أو استخدم كلمة المرور.'; } return; }
+  try{
+    currentUid = user.uid;
+    const doc = await db.collection('users').doc(currentUid).get();
+    if(!doc.exists) throw new Error('الحساب مش موجود.');
+    const d = doc.data();
+    pendingUser = { name: d.name, email: d.email, phone: d.phone };
+    pendingRole = d.role; pendingType = d.accountType || null;
+    st.textContent = '';
+    document.getElementById('screen-bio').style.display = 'none';
+    enterApp(pendingRole);
+  }catch(err){ st.className = 'auth-status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+  finally{ bioBusy = false; }
+}
+async function bioUsePassword(){
+  try{ localStorage.removeItem('ndm_bio'); }catch(e){}
+  try{ await auth.signOut(); }catch(e){}
+  document.getElementById('screen-bio').style.display = 'none'; showLogin();
+}
+auth.onAuthStateChanged(user => {
+  if(window.__authInit) return; window.__authInit = true;
+  const b = bioGet();
+  if(user && b && b.uid === user.uid && !currentUid) showBioScreen(user, b);
+});
+async function maybeOfferBio(){
+  try{
+    const b = bioGet();
+    if((b && b.uid === currentUid) || localStorage.getItem('ndm_bio_no_' + currentUid) || document.getElementById('bio-offer')) return;
+    if(!(await bioAvailable())) return;
+    const d = document.createElement('div'); d.id = 'bio-offer'; d.className = 'bio-offer';
+    d.innerHTML = '<b>🔐 الدخول بالبصمة</b><div>ادخل المرة الجاية بلمسة واحدة بدل كلمة المرور.</div><div class="bio-offer-btns"><button class="sup-btn primary" id="bio-offer-yes">تفعيل</button><button class="sup-btn" id="bio-offer-no">لاحقًا</button></div>';
+    document.body.appendChild(d);
+    document.getElementById('bio-offer-yes').onclick = async () => { d.remove(); await bioEnable(); };
+    document.getElementById('bio-offer-no').onclick = () => { d.remove(); try{ localStorage.setItem('ndm_bio_no_' + currentUid, '1'); }catch(e){} };
+  }catch(e){}
+}
+
+/* =====================================================================
+   قوائم منسدلة: مجموعات القائمة الجانبية + "حسابي والاشتراك" + قوائم الصفحة الرئيسية
+   ===================================================================== */
+function initNavGroups(){
+  let closed = {}; try{ closed = JSON.parse(localStorage.getItem('ndm_nav_open') || '{}'); }catch(e){}
+  ['nav-teacher','nav-student','nav-sup'].forEach(id => {
+    const root = document.getElementById(id); if(!root || root.dataset.grp) return; root.dataset.grp = '1';
+    let cur = null;
+    Array.from(root.children).forEach(k => {
+      if(k.classList.contains('nav-group-label')){
+        const body = document.createElement('div'); body.className = 'nav-group-body'; k.after(body); cur = body;
+        k.classList.add('nav-grp-toggle'); k.setAttribute('role', 'button');
+        if(!closed[k.textContent.trim()]) k.classList.add('closed');
+        k.addEventListener('click', () => {
+          k.classList.toggle('closed');
+          const st = {}; try{ st = JSON.parse(localStorage.getItem('ndm_nav_open') || '{}'); }catch(e){}
+          st[k.textContent.trim()] = !k.classList.contains('closed'); try{ localStorage.setItem('ndm_nav_open', JSON.stringify(st)); }catch(e){}
+        });
+      }else if(cur){ cur.appendChild(k); }
+    });
+  });
+}
+initNavGroups();
+function toggleAccDd(){ document.getElementById('acc-dd').classList.toggle('open'); }
+async function payFeeNow(){ const pr = await loadPricing(); openFeePayment(Number((pr[userStatus.accountType] || {}).fee) || userStatus.feeAmount || 0); }
+function renderAccDropdown(){
+  const p = document.getElementById('acc-dd-panel'); if(!p) return;
+  const t = ACCOUNT_TYPES[userStatus.accountType], b = bioGet(), bioOn = !!(b && b.uid === currentUid);
+  const title = document.getElementById('acc-dd-title'); if(title) title.textContent = t ? t.label : accLabelOf();
+  let state = '';
+  if(!t) state = 'حساب قديم — ' + ((PLANS[userStatus.plan] || {}).name || '');
+  else if(t.paid) state = ({ awaiting_fee:'بانتظار دفع الرسوم', pending_payment:'قيد مراجعة الدفع', active:'مفعّل — دفعت مرة واحدة' })[userStatus.status] || userStatus.status;
+  else state = userStatus.status === 'pending_approval' ? 'بانتظار الاعتماد' : 'حساب مجاني بدون اشتراك';
+  p.innerHTML = `<div class="acc-line"><b>${t ? t.label : accLabelOf()}</b><span>${state}</span></div>
+    ${t && t.paid && userStatus.feeAmount ? `<div class="acc-line"><span>الرسوم</span><span>${userStatus.feeAmount} جنيه (مرة واحدة)</span></div>` : ''}
+    ${t && t.paid && userStatus.status === 'awaiting_fee' ? '<button class="acc-act primary" onclick="payFeeNow()">إتمام الدفع</button>' : ''}
+    ${!(t && !t.paid) ? '<button class="acc-act" onclick="showView(\'v-upgrade\')">تفاصيل الاشتراك</button>' : ''}
+    <button class="acc-act" onclick="toggleBio()">${bioOn ? '🔓 إيقاف الدخول بالبصمة' : '☝️ تفعيل الدخول بالبصمة'}</button>
+    ${bioOn ? '<button class="acc-act" onclick="location.reload()">🔒 قفل التطبيق الآن</button>' : ''}`;
+}
+/* قوائم الصفحة الرئيسية (المميزات / الاشتراك) */
+function toggleLandDd(btn){
+  const dd = btn.parentElement, was = dd.classList.contains('open');
+  document.querySelectorAll('.land-menu .dd').forEach(d => d.classList.remove('open'));
+  if(!was){ dd.classList.add('open'); if(dd.dataset.kind === 'pricing') renderLandPricing(); }
+}
+document.addEventListener('click', e => { if(!e.target.closest('.land-menu')) document.querySelectorAll('.land-menu .dd').forEach(d => d.classList.remove('open')); });
+function landGoto(id){ document.querySelectorAll('.land-menu .dd').forEach(d => d.classList.remove('open')); const el = document.getElementById(id); if(el) el.scrollIntoView({ behavior:'smooth', block:'start' }); }
+async function renderLandPricing(){
+  const el = document.getElementById('land-dd-pricing'); if(!el) return;
+  const pr = await loadPricing();
+  const row = key => { const t = ACCOUNT_TYPES[key], c = pr[key] || {}, fee = Number(c.fee) || 0, closed = t.paid && c.enabled === false;
+    return `<button class="dd-item" ${closed ? 'disabled' : `onclick="startSignup('${key}')"`}><span class="dd-t">${t.label}</span><span class="dd-p ${(!t.paid || !fee) ? 'free' : ''}">${closed ? 'مغلق مؤقتًا' : (!t.paid ? 'مجاني' : (fee ? fee + ' جنيه · مرة واحدة' : 'مجاني'))}</span></button>`; };
+  el.innerHTML = ['student_teacher','university_student','non_edu_teacher'].map(row).join('') + '<div class="dd-sep">مجاني — بدون اشتراك</div>' + ['supervisor','office'].map(row).join('') + '<div class="dd-foot">الدفع مرة واحدة بدون تجديد، وعندك كوبون خصم؟ هتكتبه في شاشة الدفع.</div>';
 }
 </script>
 </body>

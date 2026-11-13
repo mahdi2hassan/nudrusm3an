@@ -257,6 +257,7 @@
     <button class="tab" onclick="switchTab('challenges', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
     <button class="tab" onclick="switchTab('accounts', this)"><svg class="icon"><use href="#i-card"></use></svg> الحسابات والأسعار</button>
     <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
+    <button class="tab" onclick="switchTab('audit', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> سجل التدقيق</button>
     <button class="tab" onclick="switchTab('users', this)"><svg class="icon"><use href="#i-user"></use></svg> المستخدمين</button>
     <button class="tab" onclick="switchTab('reports', this)"><svg class="icon"><use href="#i-flag"></use></svg> البلاغات</button>
     <button class="tab" onclick="switchTab('analytics', this)"><svg class="icon"><use href="#i-chart"></use></svg> الإحصائيات</button>
@@ -359,6 +360,21 @@
       <button class="btn" onclick="saveAccessMatrix()"><svg class="icon"><use href="#i-check"></use></svg> حفظ صلاحيات الميزات</button>
       <div class="status" id="acc-matrix-status"></div>
     </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">🎟️ كوبونات الخصم</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">بيكتبها المستخدم في شاشة الدفع. لو كوبون بنفس الكود موجود هيتعدّل. بيتزوّد عداد الاستخدام عند "تأكيد الدفع".</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:10px;">
+        <div class="field"><label>الكود</label><input type="text" id="cp-code" placeholder="WELCOME20"></div>
+        <div class="field"><label>النوع</label><select id="cp-type"><option value="percent">نسبة %</option><option value="amount">مبلغ ثابت (جنيه)</option></select></div>
+        <div class="field"><label>القيمة</label><input type="number" id="cp-value" min="1"></div>
+        <div class="field"><label>أقصى استخدامات (0 = بلا حد)</label><input type="number" id="cp-max" min="0" value="0"></div>
+        <div class="field"><label>ينتهي في (اختياري)</label><input type="date" id="cp-exp"></div>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin:6px 0 12px; font-size:12.5px; font-weight:700;">يسري على: <label><input type="checkbox" class="cp-type" value="student_teacher" style="width:auto;"> طالب معلم</label><label><input type="checkbox" class="cp-type" value="university_student" style="width:auto;"> طالب جامعي</label><label><input type="checkbox" class="cp-type" value="non_edu_teacher" style="width:auto;"> معلم غير تربوي</label><span style="color:var(--ink-soft); font-weight:500;">(بدون تحديد = كل الأنواع)</span></div>
+      <button class="btn" onclick="saveCoupon()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الكوبون</button>
+      <div class="status" id="coupon-adm-status"></div>
+      <div id="coupon-list" style="margin-top:12px;"></div>
+    </div>
   </div>
 
   <div class="panel" id="panel-supervisors">
@@ -382,6 +398,15 @@
       <div id="assign-list" style="max-height:380px; overflow:auto; margin-bottom:10px;"></div>
       <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;"><button class="btn" onclick="saveAssignments()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الربط</button><span id="assign-count" style="font-size:12.5px; font-weight:700;"></span></div>
       <div class="status" id="assign-status"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-audit">
+    <div class="card">
+      <h3 style="margin-bottom:6px;">🧾 سجل التدقيق</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;">آخر 300 إجراء إداري: من اعتمد، ومن ربط، ومن أكّد دفع، ومتى.</p>
+      <div style="display:flex; gap:8px; margin-bottom:12px;"><input type="text" id="audit-q" oninput="renderAudit()" placeholder="ابحث في السجل..." style="flex:1;"><button class="btn" onclick="loadAudit()">تحديث</button></div>
+      <div id="audit-list"></div>
     </div>
   </div>
 
@@ -462,13 +487,42 @@
       <button class="btn" onclick="saveFeatureFlags()"><svg class="icon"><use href="#i-check"></use></svg> حفظ إعدادات الظهور</button>
       <div class="status" id="ff-status"></div>
     </div>
+
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">☁️ رفع الملفات (Cloudinary — مجاني)</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.9; margin-bottom:12px;">Firebase Storage مش متاح على الخطة المجانية، فالرفع (صور، ملفات، تسجيلات، فيديو، تكاليف) بيتم عبر Cloudinary:<br>
+      ١) اعمل حساب مجاني على cloudinary.com — وانسخ <b>Cloud name</b> من لوحة Dashboard.<br>
+      ٢) من Settings ← Upload ← Add upload preset: خلّي <b>Signing mode = Unsigned</b> واحفظ، وانسخ اسم الـ preset.<br>
+      ٣) (مهم) في نفس الـ preset حدّد حجم أقصى للملف وأنواع مسموحة عشان محدش يستغل الرفع.<br>
+      ٤) حط القيمتين تحت واحفظ. بعدها الرفع بيشتغل لكل المستخدمين فورًا.</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;"><div class="field" style="flex:1; min-width:200px;"><label>Cloud name</label><input type="text" id="set-cld-name" placeholder="مثال: dxyz123abc"></div>
+      <div class="field" style="flex:1; min-width:200px;"><label>Upload preset (Unsigned)</label><input type="text" id="set-cld-preset" placeholder="مثال: nudrus_unsigned"></div></div>
+      <button class="btn" onclick="saveUploadConfig()"><svg class="icon"><use href="#i-check"></use></svg> حفظ إعداد الرفع</button>
+      <button class="btn" style="background:var(--ink-soft);" onclick="testUploadConfig()">اختبار الرفع</button>
+      <div class="status" id="cld-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">📎 حدود المرفقات</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">أقصى حجم للملف الواحد (دردشة، تكاليف، وسائط) وأقصى مدة للتسجيل الصوتي. حدود Cloudinary المجانية: 10 ميجا للصور والملفات و100 ميجا للفيديو والصوت — فخلّي الحد هنا مناسب (الافتراضي 10).</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;"><div class="field" style="flex:1; min-width:170px;"><label>أقصى حجم ملف (ميجا، حتى 100)</label><input type="number" id="set-maxfile" min="1" max="100"></div>
+      <div class="field" style="flex:1; min-width:170px;"><label>أقصى مدة تسجيل (ثانية، حتى 1800)</label><input type="number" id="set-maxrec" min="30" max="1800"></div></div>
+      <button class="btn" onclick="saveLimits()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الحدود</button>
+      <div class="status" id="limits-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">✉️ إيميل إشعارات الحسابات</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">عشان يوصل إيميل للمستخدم عند اعتماد حسابه أو تأكيد دفعه: أنشئ قالب جديد في EmailJS (نفس الخدمة الحالية) بالمتغيرات <b>{{to_email}}</b> للمستلم، و<b>{{to_name}}</b> و<b>{{subject}}</b> و<b>{{message}}</b>، وحط معرّف القالب هنا. سيبه فاضي لو مش عايز إيميلات.</p>
+      <div class="field"><label>معرّف القالب (Template ID)</label><input type="text" id="set-notify-tpl" placeholder="template_xxxxxxx"></div>
+      <button class="btn" onclick="saveEmailConfig()"><svg class="icon"><use href="#i-check"></use></svg> حفظ</button>
+      <div class="status" id="emailcfg-status"></div>
+    </div>
+
   </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 <script src="https://apis.google.com/js/api.js"></script>
 <script src="https://accounts.google.com/gsi/client"></script>
 <script>
@@ -604,7 +658,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-const storage = firebase.storage();
 
 async function checkGate(){
   const email = document.getElementById('gate-email').value.trim();
@@ -641,6 +694,7 @@ async function checkGate(){
     loadFeatureFlags();
     loadAccountsAdmin();
     loadSupervisorsAdmin();
+    loadCouponsAdmin(); loadAudit(); loadLimitsAdmin(); loadEmailConfig(); loadUploadConfigAdmin();
   }catch(e){
     err.textContent = 'دخول فشل: ' + (e.message || e.code);
   }
@@ -1194,7 +1248,7 @@ async function loadUsers(){
       return `<div class="urow" id="urow-${d.id}">
         <div class="u-top">
           <div><div class="u-name">${escapeHtml(u.name||'—')} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span>${isExpert?' <span class="badge active">⭐ معلم خبير</span>':''}${isVerified?' <span class="badge active">✓ موثّق</span>':''}</div>
-          <div class="u-meta">${escapeHtml(u.email||'')} · ${escapeHtml(u.phone||'')} · ${accLabel(u)}${u.supervisorId?' · تابع لمشرف':''}</div></div>
+          <div class="u-meta">${escapeHtml(u.email||'')} · ${escapeHtml(u.phone||'')} · ${accLabel(u)}${u.supervisorId?' · تابع لمشرف':''}${PAID_TYPES.includes(u.accountType) && u.feeAmount!=null ? ' · رسوم: '+u.feeAmount+' ج'+(u.couponCode?' (كوبون '+escapeHtml(u.couponCode)+')':'') : ''}</div></div>
         </div>
         <div class="u-controls">
           <select id="plan-${d.id}">${Object.keys(PLAN_LABELS).map(k=>`<option value="${k}" ${k===plan?'selected':''}>${PLAN_LABELS[k]}</option>`).join('')}</select>
@@ -1202,6 +1256,7 @@ async function loadUsers(){
           <button class="save-btn" onclick="saveUser('${d.id}')">${ic('check')} حفظ</button>
           <button class="edit-btn" onclick="toggleExpert('${d.id}', ${!isExpert})">${isExpert ? '✕ شيل شارة الخبير' : '⭐ امنح شارة خبير'}</button>
           <button class="edit-btn" onclick="toggleVerified('${d.id}', ${!isVerified})">${isVerified ? '✕ شيل التوثيق' : '✓ وثّق الحساب'}</button>
+          ${(status==='pending_payment'||status==='awaiting_fee') && PAID_TYPES.includes(u.accountType) ? `<button class="save-btn" onclick="confirmPayment('${d.id}')">✓ تأكيد الدفع وتفعيل الحساب</button>` : ''}
         </div>
       </div>`;
     }).join('');
@@ -1210,6 +1265,7 @@ async function loadUsers(){
 async function toggleExpert(uid, makeExpert){
   try{
     await db.collection('users').doc(uid).update({ isExpert: makeExpert });
+    audit('expert', uid, nameOfUid(uid), makeExpert ? 'منح' : 'سحب');
     // مزامنة الشارة مع الملف الاحترافي العام لو المستخدم عمله قبل كده
     try{ await db.collection('publicProfiles').doc(uid).set({ isExpert: makeExpert }, { merge: true }); }catch(e){ console.warn('publicProfile sync failed', e); }
     toast(makeExpert ? 'اتمنحت شارة معلم خبير.' : 'اتشالت شارة معلم خبير.');
@@ -1219,6 +1275,7 @@ async function toggleExpert(uid, makeExpert){
 async function toggleVerified(uid, makeVerified){
   try{
     await db.collection('users').doc(uid).update({ verified: makeVerified });
+    audit('verified', uid, nameOfUid(uid), makeVerified ? 'توثيق' : 'سحب التوثيق');
     try{ await db.collection('publicProfiles').doc(uid).set({ verified: makeVerified }, { merge: true }); }catch(e){ console.warn('publicProfile sync failed', e); }
     toast(makeVerified ? 'اتوثّق الحساب.' : 'اتشال التوثيق.');
     loadUsers();
@@ -1356,6 +1413,7 @@ async function saveUser(uid){
   const statusEl = document.getElementById('users-status');
   try{
     await db.collection('users').doc(uid).update({ plan, status });
+    audit('save_user', uid, nameOfUid(uid), 'الخطة: ' + plan + ' / الحالة: ' + status);
     statusEl.className = 'status ok'; statusEl.textContent = '✓ تم تحديث المستخدم.';
     toast('تم تحديث بيانات المستخدم.');
     db.collection('notifications').add({
@@ -1367,7 +1425,8 @@ async function saveUser(uid){
 }
 
 /* ================= مرفقات الدردشة: صور / ملفات / تسجيلات صوتية / روابط ================= */
-const CHAT_MAX_BYTES = 15 * 1024 * 1024; // الحد الأقصى للمرفق الواحد: 15 ميجا
+let CHAT_MAX_BYTES = 10 * 1024 * 1024; // الحد الأقصى للمرفق (قابل للتعديل من الأدمن)
+let CHAT_REC_MAX_SEC = 180;            // أقصى مدة تسجيل صوتي (قابلة للتعديل من الأدمن)
 function chatSafeUrl(u){ return /^https:\/\//i.test(u || '') ? u : ''; }
 function chatLinkify(escaped){
   return escaped.replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline; word-break:break-all;">${u}</a>`);
@@ -1408,17 +1467,14 @@ function chatKindOf(file){
 }
 async function chatSendFile(file, extra){
   const ctx = chatCtx(); if(!ctx) return;
-  if(file.size > CHAT_MAX_BYTES){ toast('الملف أكبر من 15 ميجا — صغّره أو ابعت رابطه.', {type:'err'}); return; }
+  if(file.size > CHAT_MAX_BYTES){ toast('الملف أكبر من ' + Math.round(CHAT_MAX_BYTES/1048576) + ' ميجا — صغّره أو ابعت رابطه.', {type:'err'}); return; }
   const kind = (extra && extra.type) || chatKindOf(file);
   const safeName = (file.name || (kind + '.bin')).replace(/[^\w.\-؀-ۿ]+/g, '_').slice(-80);
   const path = `chatFiles/${ctx.convId}/${ctx.uid}_${Date.now()}_${safeName}`;
   chatSetStatus('⏳ جاري رفع المرفق… <b id="chat-upl-pct">0%</b>');
   try{
-    const task = storage.ref().child(path).put(file, { contentType: file.type || 'application/octet-stream' });
-    task.on('state_changed', s => { const p = document.getElementById('chat-upl-pct'); if(p) p.textContent = Math.round(100 * s.bytesTransferred / s.totalBytes) + '%'; });
-    await task;
-    const url = await task.snapshot.ref.getDownloadURL();
-    await chatPost(ctx, Object.assign({ type: kind, text: '', fileUrl: url, fileName: file.name || safeName, fileSize: file.size, filePath: path }, (extra && extra.meta) || {}));
+    const url = await uploadFile(path, file, p => { const el = document.getElementById('chat-upl-pct'); if(el) el.textContent = Math.round(p * 100) + '%'; });
+    await chatPost(ctx, Object.assign({ type: kind, text: '', fileUrl: url, fileName: file.name || safeName, fileSize: file.size }, (extra && extra.meta) || {}));
     chatSetStatus('');
   }catch(err){
     chatSetStatus('');
@@ -1437,7 +1493,7 @@ async function chatToggleRecord(btn){
     const mr = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
     const chunks = []; const startedAt = Date.now(); let cancelled = false;
     mr.ondataavailable = e => { if(e.data.size) chunks.push(e.data); };
-    const tick = setInterval(() => { const s = Math.round((Date.now() - startedAt)/1000); chatSetStatus(`🔴 جاري التسجيل… ${s} ث <button class="chat-mini-btn" onclick="chatCancelRecord()">إلغاء</button> <button class="chat-mini-btn ok" onclick="chatToggleRecord()">إرسال</button>`); if(s >= 180) mr.stop(); }, 500);
+    const tick = setInterval(() => { const s = Math.round((Date.now() - startedAt)/1000); chatSetStatus(`🔴 جاري التسجيل… ${s} ث <button class="chat-mini-btn" onclick="chatCancelRecord()">إلغاء</button> <button class="chat-mini-btn ok" onclick="chatToggleRecord()">إرسال</button>`); if(s >= CHAT_REC_MAX_SEC) mr.stop(); }, 500);
     mr.onstop = async () => {
       clearInterval(tick); stream.getTracks().forEach(t => t.stop());
       if(btn) btn.classList.remove('rec'); chatRec = null; chatSetStatus('');
@@ -1453,6 +1509,35 @@ async function chatToggleRecord(btn){
   }catch(err){ toast('مقدرناش نوصل للميكروفون — اسمح بالإذن من المتصفح.', {type:'err'}); }
 }
 function chatCancelRecord(){ if(chatRec) chatRec.cancel(); }
+
+/* ================= رفع الملفات عبر Cloudinary (بديل Firebase Storage — شغّال على الخطة المجانية) =================
+   الإعداد (cloudName + uploadPreset) بيتحفظ من لوحة الأدمن في siteSettings/uploadConfig. */
+let UPLOAD_CFG = { cloudName: '', uploadPreset: '' };
+function uploadReady(){ return !!(UPLOAD_CFG.cloudName && UPLOAD_CFG.uploadPreset); }
+function uploadFile(path, file, onProgress){
+  return new Promise((resolve, reject) => {
+    if(!uploadReady()){ reject(new Error('رفع الملفات لسه غير مفعّل — الأدمن لازم يضبط إعداد Cloudinary من لوحة التحكم.')); return; }
+    const t = file.type || '';
+    const rt = t.startsWith('image/') ? 'image' : (t.startsWith('video/') || t.startsWith('audio/')) ? 'video' : 'raw';
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', UPLOAD_CFG.uploadPreset);
+    if(rt === 'raw') fd.append('public_id', path);                      // بيحافظ على امتداد الملف (pdf/docx...)
+    else fd.append('folder', path.split('/').slice(0, -1).join('/'));
+    const x = new XMLHttpRequest();
+    x.open('POST', 'https://api.cloudinary.com/v1_1/' + encodeURIComponent(UPLOAD_CFG.cloudName) + '/' + rt + '/upload');
+    x.upload.onprogress = e => { if(e.lengthComputable && onProgress) onProgress(e.loaded / e.total); };
+    x.onload = () => {
+      try{
+        const j = JSON.parse(x.responseText);
+        if(x.status >= 200 && x.status < 300 && j.secure_url) resolve(j.secure_url);
+        else reject(new Error((j.error && j.error.message) || ('HTTP ' + x.status)));
+      }catch(e){ reject(e); }
+    };
+    x.onerror = () => reject(new Error('فشل الاتصال بخدمة الرفع'));
+    x.send(fd);
+  });
+}
 
 /* ================= الحسابات والأسعار وصلاحيات الميزات لكل نوع حساب ================= */
 const ACC_TYPES = { student_teacher:'طالب معلم', university_student:'طالب جامعي', non_edu_teacher:'معلم غير تربوي', supervisor:'دكتور مشرف', office:'الإدارة' };
@@ -1484,14 +1569,14 @@ async function saveAccountPricing(){
   const st = document.getElementById('acc-pricing-status');
   const data = { updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
   PAID_TYPES.forEach(t => { data[t] = { fee: Math.max(0, Number(document.getElementById('acc-fee-'+t).value) || 0), enabled: document.getElementById('acc-on-'+t).checked }; });
-  try{ await db.collection('siteSettings').doc('pricing').set(data, { merge: true }); st.className = 'status ok'; st.textContent = '✓ اتحفظت الرسوم.'; toast('اتحفظت الرسوم.'); }
+  try{ await db.collection('siteSettings').doc('pricing').set(data, { merge: true }); audit('pricing', '', '', PAID_TYPES.map(t => ACC_TYPES[t] + ': ' + data[t].fee + (data[t].enabled ? '' : ' (مغلق)')).join(' | ')); st.className = 'status ok'; st.textContent = '✓ اتحفظت الرسوم.'; toast('اتحفظت الرسوم.'); }
   catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
 }
 async function saveAccessMatrix(){
   const st = document.getElementById('acc-matrix-status');
   const data = { updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
   PAID_TYPES.forEach(t => { data[t] = { hidden: Array.from(document.querySelectorAll('.acc-chk[data-type="'+t+'"]')).filter(c => !c.checked).map(c => c.dataset.key) }; });
-  try{ await db.collection('siteSettings').doc('accessByType').set(data, { merge: true }); st.className = 'status ok'; st.textContent = '✓ اتحفظت صلاحيات الميزات.'; toast('اتحفظت صلاحيات الميزات.'); }
+  try{ await db.collection('siteSettings').doc('accessByType').set(data, { merge: true }); audit('access', '', '', PAID_TYPES.map(t => ACC_TYPES[t] + ': ' + data[t].hidden.length + ' مقفولة').join(' | ')); st.className = 'status ok'; st.textContent = '✓ اتحفظت صلاحيات الميزات.'; toast('اتحفظت صلاحيات الميزات.'); }
   catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
 }
 
@@ -1525,6 +1610,8 @@ async function setApproved(uid, val){
   try{
     await db.collection('users').doc(uid).update({ approved: val, status: val ? 'active' : 'pending_approval' });
     if(val) db.collection('notifications').add({ recipientUid: uid, type: 'plan', text: 'تم اعتماد حسابك — أهلًا بيك.', viewId: 'v-sup', read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
+    audit(val ? 'approve' : 'suspend', uid, nameOfUid(uid));
+    if(val) emailAfter(uid, 'تم اعتماد حسابك في نُدرس معًا', 'أهلًا ' + (nameOfUid(uid) || '') + '، تم اعتماد حسابك. تقدر تسجّل الدخول وتبدأ استخدام لوحتك.');
     toast(val ? 'اتعتمد الحساب.' : 'اتوقف الحساب.'); loadSupervisorsAdmin();
   }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
 }
@@ -1532,6 +1619,7 @@ async function saveSupOffice(uid){
   const v = document.getElementById('sup-off-' + uid).value;
   try{
     await db.collection('users').doc(uid).update({ supervisorId: v || firebase.firestore.FieldValue.delete() });
+    audit('link_office', uid, nameOfUid(uid), v ? 'إدارة: ' + nameOfUid(v) : 'بدون إدارة');
     toast('اتحفظ ربط الدكتور بالإدارة.'); loadSupervisorsAdmin();
   }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
 }
@@ -1544,6 +1632,8 @@ async function promoteAccount(){
     const q = await db.collection('users').where('email', '==', email).limit(1).get();
     if(q.empty){ st.className = 'status err'; st.textContent = 'مفيش حساب بالإيميل ده — اطلب منه يسجّل الأول (أو يختار "دكتور مشرف / إدارة" من شاشة التسجيل).'; return; }
     await q.docs[0].ref.update({ accountType: type, role: type, approved: true, plan: 'free', status: 'active' });
+    audit('promote', q.docs[0].id, q.docs[0].data().name || email, 'إلى ' + ACC_TYPES[type]);
+    emailAfter(q.docs[0].id, 'تم تفعيل حسابك في نُدرس معًا', 'أهلًا، تم تحويل حسابك إلى ' + ACC_TYPES[type] + ' وتفعيله. سجّل دخولك لتبدأ.');
     st.className = 'status ok'; st.textContent = '✓ اتحوّل الحساب إلى: ' + ACC_TYPES[type] + ' (مجاني، بدون اشتراك).';
     document.getElementById('promote-email').value = ''; loadSupervisorsAdmin();
   }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
@@ -1592,6 +1682,7 @@ async function saveAssignments(){
       await batch.commit();
     }
     ops.filter(o => o.set).forEach(o => db.collection('notifications').add({ recipientUid: o.id, type: 'plan', text: 'تم ربطك بدكتور مشرف — افتح "مشرفي وتكاليفي".', viewId: 'v-sup', read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{}));
+    audit('assign', sup, nameOfUid(sup), ops.length + ' تغيير (إضافة ' + ops.filter(o => o.set).length + ' / إزالة ' + ops.filter(o => !o.set).length + ')');
     st.className = 'status ok'; st.textContent = '✓ اتحفظ الربط (' + ops.length + ' تغيير).'; toast('اتحفظ الربط.');
     loadSupervisorsAdmin();
   }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
@@ -1599,6 +1690,145 @@ async function saveAssignments(){
 function chatCtx(){
   if(!adminActiveConvId) return null;
   return { convId: adminActiveConvId, otherUid: adminActiveConvId.split('_').find(u => u !== SUPPORT_UID), uid: SUPPORT_UID, name: SUPPORT_NAME };
+}
+
+/* ================= تأكيد الدفع + إيميلات الإشعارات + سجل التدقيق ================= */
+const EMAILJS_PUBLIC_KEY = 'oxTulRj_SvhD_-rHR';
+const EMAILJS_SERVICE_ID = 'service_h61jmbn';
+function nameOfUid(uid){ const u = (typeof ALL_USERS !== 'undefined' ? ALL_USERS : []).find(x => x.id === uid); return u ? (u.name || u.email || '') : ''; }
+async function audit(action, targetUid, targetName, details){
+  try{
+    const u = auth.currentUser;
+    await db.collection('auditLog').add({ adminUid: u ? u.uid : '', adminEmail: u ? (u.email || '') : '', action, targetUid: targetUid || '', targetName: targetName || nameOfUid(targetUid) || '', details: details || '', createdMs: Date.now() });
+  }catch(e){ console.warn('audit', e); }
+}
+// بيبعت إيميل إشعار عبر قالب EmailJS اتحدد من الإعدادات (siteSettings/emailConfig.notifyTemplateId)
+async function sendNotifyEmail(toEmail, toName, subject, message){
+  try{
+    if(!toEmail) return false;
+    const cfg = await db.collection('siteSettings').doc('emailConfig').get();
+    const tpl = cfg.exists ? cfg.data().notifyTemplateId : '';
+    if(!tpl) return false;
+    const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', { method:'POST', headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ service_id: EMAILJS_SERVICE_ID, template_id: tpl, user_id: EMAILJS_PUBLIC_KEY, template_params: { to_email: toEmail, to_name: toName || '', subject, message } }) });
+    return res.ok;
+  }catch(e){ console.warn('email', e); return false; }
+}
+async function emailAfter(uid, subject, message){
+  const u = ALL_USERS.find(x => x.id === uid) || {};
+  let email = u.email, name = u.name;
+  if(!email){ try{ const d = (await db.collection('users').doc(uid).get()).data() || {}; email = d.email; name = d.name; }catch(e){} }
+  const ok = await sendNotifyEmail(email, name, subject, message);
+  if(!ok) toast('اتنفّذ الإجراء، لكن الإيميل ماتبعتش — راجع إعداد قالب الإيميل في الإعدادات.', {type:'err', duration:4500});
+}
+async function confirmPayment(uid){
+  try{
+    const d = (await db.collection('users').doc(uid).get()).data() || {};
+    if(!confirm('تأكيد استلام رسوم ' + (d.feeAmount != null ? d.feeAmount + ' جنيه ' : '') + 'من ' + (d.name || d.email) + ' وتفعيل حسابه؟')) return;
+    await db.collection('users').doc(uid).update({ status: 'active', plan: 'onetime', paidMs: Date.now(), confirmedBy: (auth.currentUser && auth.currentUser.email) || '' });
+    if(d.couponCode){ try{ await db.collection('coupons').doc(d.couponCode).update({ used: firebase.firestore.FieldValue.increment(1) }); }catch(e){ console.warn(e); } }
+    db.collection('notifications').add({ recipientUid: uid, type: 'plan', text: '✓ تم تأكيد دفعك وتفعيل حسابك — أهلًا بيك!', viewId: null, read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
+    audit('confirm_payment', uid, d.name || d.email, 'رسوم ' + (d.feeAmount != null ? d.feeAmount : '?') + (d.couponCode ? ' — كوبون ' + d.couponCode : ''));
+    emailAfter(uid, 'تم تفعيل حسابك في نُدرس معًا', 'أهلًا ' + (d.name || '') + '، تم تأكيد دفع رسوم الاشتراك وتفعيل حسابك. تقدر تسجّل الدخول وتستخدم كل الأدوات المتاحة لحسابك.');
+    toast('اتفعّل الحساب.'); loadUsers(); loadSupervisorsAdmin();
+  }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
+}
+const AUDIT_LABELS = { confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط دكتور بالإدارة', assign:'ربط حسابات بدكتور', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل' };
+async function loadAudit(){
+  const el = document.getElementById('audit-list'); if(!el) return;
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('auditLog').orderBy('createdMs', 'desc').limit(300).get();
+    window.__audit = snap.docs.map(d => d.data()); renderAudit();
+  }catch(err){ el.innerHTML = '<div class="urow">تعذّر تحميل السجل: ' + escapeHtml(err.message) + '</div>'; }
+}
+function renderAudit(){
+  const el = document.getElementById('audit-list'), q = (document.getElementById('audit-q').value || '').trim().toLowerCase();
+  const rows = (window.__audit || []).filter(a => !q || [a.action, AUDIT_LABELS[a.action], a.adminEmail, a.targetName, a.details].join(' ').toLowerCase().includes(q));
+  el.innerHTML = rows.length ? rows.map(a => `<div class="urow"><div class="u-top"><div><div class="u-name">${escapeHtml(AUDIT_LABELS[a.action] || a.action)} ${a.targetName ? '— ' + escapeHtml(a.targetName) : ''}</div>
+    <div class="u-meta">${escapeHtml(a.adminEmail || '')} · ${new Date(a.createdMs).toLocaleString('ar-EG')}${a.details ? ' · ' + escapeHtml(a.details) : ''}</div></div></div></div>`).join('') : '<div class="urow">مفيش سجلات.</div>';
+}
+
+/* ================= كوبونات الخصم ================= */
+async function loadCouponsAdmin(){
+  const el = document.getElementById('coupon-list'); if(!el) return;
+  try{
+    const snap = await db.collection('coupons').get();
+    const list = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+    el.innerHTML = list.length ? list.map(c => `<div class="urow"><div class="u-top"><div><div class="u-name">${escapeHtml(c.id)} <span class="badge ${c.active === false ? 'pending_payment' : 'active'}">${c.active === false ? 'موقوف' : 'فعّال'}</span></div>
+      <div class="u-meta">${c.type === 'percent' ? c.value + '%' : c.value + ' جنيه'} · استُخدم ${c.used || 0}${c.maxUses ? ' / ' + c.maxUses : ''}${c.expiresMs ? ' · ينتهي ' + new Date(c.expiresMs).toLocaleDateString('ar-EG') : ''}${(c.appliesTo || []).length ? ' · ' + c.appliesTo.map(t => ACC_TYPES[t]).join('، ') : ' · كل الأنواع'}</div></div></div>
+      <div class="u-controls"><button class="edit-btn" onclick="toggleCoupon('${escapeHtml(c.id)}', ${c.active === false})">${c.active === false ? 'تفعيل' : 'إيقاف'}</button><button class="edit-btn" onclick="deleteCoupon('${escapeHtml(c.id)}')">حذف</button></div></div>`).join('') : '<div class="urow">لسه مفيش كوبونات.</div>';
+  }catch(err){ el.innerHTML = '<div class="urow">تعذّر تحميل الكوبونات: ' + escapeHtml(err.message) + '</div>'; }
+}
+async function saveCoupon(){
+  const st = document.getElementById('coupon-adm-status');
+  const code = document.getElementById('cp-code').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '');
+  const type = document.getElementById('cp-type').value, value = Number(document.getElementById('cp-value').value) || 0;
+  if(!code || value <= 0 || (type === 'percent' && value > 100)){ st.className = 'status err'; st.textContent = 'اكتب كود وقيمة صحيحة (النسبة من 1 إلى 100).'; return; }
+  const exp = document.getElementById('cp-exp').value;
+  const appliesTo = Array.from(document.querySelectorAll('.cp-type:checked')).map(c => c.value);
+  try{
+    const ref = db.collection('coupons').doc(code), old = await ref.get();
+    await ref.set({ code, type, value, maxUses: Number(document.getElementById('cp-max').value) || 0, expiresMs: exp ? new Date(exp).getTime() + 86399000 : null, appliesTo, active: true, used: old.exists ? (old.data().used || 0) : 0, updatedMs: Date.now() });
+    audit('coupon', '', code, 'إنشاء/تعديل كوبون ' + (type === 'percent' ? value + '%' : value + ' جنيه'));
+    st.className = 'status ok'; st.textContent = '✓ اتحفظ الكوبون.'; loadCouponsAdmin();
+  }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+async function toggleCoupon(code, on){ try{ await db.collection('coupons').doc(code).update({ active: on }); audit('coupon', '', code, on ? 'تفعيل' : 'إيقاف'); loadCouponsAdmin(); }catch(e){ toast('حصل خطأ: ' + e.message, {type:'err'}); } }
+async function deleteCoupon(code){ if(!confirm('حذف الكوبون ' + code + '؟')) return; try{ await db.collection('coupons').doc(code).delete(); audit('coupon', '', code, 'حذف'); loadCouponsAdmin(); }catch(e){ toast('حصل خطأ: ' + e.message, {type:'err'}); } }
+
+/* ================= حدود الملفات + إعداد إيميل الإشعارات ================= */
+async function loadLimitsAdmin(){
+  try{
+    const d = await db.collection('siteSettings').doc('limits').get(), x = d.exists ? d.data() : {};
+    document.getElementById('set-maxfile').value = x.maxFileMB || 10; document.getElementById('set-maxrec').value = x.maxRecordSec || 180;
+    if(x.maxFileMB) CHAT_MAX_BYTES = Number(x.maxFileMB) * 1048576; if(x.maxRecordSec) CHAT_REC_MAX_SEC = Number(x.maxRecordSec);
+  }catch(e){ console.warn(e); }
+}
+async function saveLimits(){
+  const st = document.getElementById('limits-status');
+  const maxFileMB = Math.min(100, Math.max(1, Number(document.getElementById('set-maxfile').value) || 10));
+  const maxRecordSec = Math.min(1800, Math.max(30, Number(document.getElementById('set-maxrec').value) || 180));
+  try{
+    await db.collection('siteSettings').doc('limits').set({ maxFileMB, maxRecordSec, updatedMs: Date.now() }, { merge: true });
+    CHAT_MAX_BYTES = maxFileMB * 1048576; CHAT_REC_MAX_SEC = maxRecordSec;
+    audit('limits', '', '', maxFileMB + ' ميجا / ' + maxRecordSec + ' ثانية');
+    st.className = 'status ok'; st.textContent = '✓ اتحفظت. (حد Cloudinary نفسه بيتظبط من إعدادات الـ preset).';
+  }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+async function loadEmailConfig(){
+  try{ const d = await db.collection('siteSettings').doc('emailConfig').get(); document.getElementById('set-notify-tpl').value = d.exists ? (d.data().notifyTemplateId || '') : ''; }catch(e){}
+}
+async function saveEmailConfig(){
+  const st = document.getElementById('emailcfg-status'), v = document.getElementById('set-notify-tpl').value.trim();
+  try{ await db.collection('siteSettings').doc('emailConfig').set({ notifyTemplateId: v, updatedMs: Date.now() }, { merge: true }); audit('email_config', '', '', v ? 'تفعيل قالب ' + v : 'إيقاف'); st.className = 'status ok'; st.textContent = '✓ اتحفظ.'; }
+  catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+
+async function loadUploadConfigAdmin(){
+  try{
+    const d = await db.collection('siteSettings').doc('uploadConfig').get(), x = d.exists ? d.data() : {};
+    UPLOAD_CFG = { cloudName: x.cloudName || '', uploadPreset: x.uploadPreset || '' };
+    document.getElementById('set-cld-name').value = UPLOAD_CFG.cloudName; document.getElementById('set-cld-preset').value = UPLOAD_CFG.uploadPreset;
+  }catch(e){ console.warn(e); }
+}
+async function saveUploadConfig(){
+  const st = document.getElementById('cld-status');
+  const cloudName = document.getElementById('set-cld-name').value.trim(), uploadPreset = document.getElementById('set-cld-preset').value.trim();
+  if(!cloudName || !uploadPreset){ st.className = 'status err'; st.textContent = 'اكتب Cloud name واسم الـ preset.'; return; }
+  try{
+    await db.collection('siteSettings').doc('uploadConfig').set({ cloudName, uploadPreset, updatedMs: Date.now() }, { merge: true });
+    UPLOAD_CFG = { cloudName, uploadPreset }; audit('limits', '', '', 'إعداد رفع الملفات: ' + cloudName);
+    st.className = 'status ok'; st.textContent = '✓ اتحفظ — جرّب "اختبار الرفع".';
+  }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+async function testUploadConfig(){
+  const st = document.getElementById('cld-status'); st.className = 'status'; st.textContent = 'جاري اختبار الرفع...';
+  try{
+    const png = Uint8Array.from(atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='), c => c.charCodeAt(0));
+    const url = await uploadFile('nudrus/test/' + Date.now() + '.png', new Blob([png], { type:'image/png' }));
+    st.className = 'status ok'; st.textContent = '✓ الرفع شغّال: ' + url;
+  }catch(err){ st.className = 'status err'; st.textContent = 'فشل الاختبار: ' + err.message + ' — اتأكد إن الـ preset نوعه Unsigned وإن الـ Cloud name صح.'; }
 }
 </script>
 </body>
