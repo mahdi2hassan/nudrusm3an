@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نُدرس معًا — لوحة التحكم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#1B2A41; --ink-soft:#3A4B66; --paper:#FBF8F2; --paper-dim:#F1ECE1; --brick:#B8532E; --brick-dark:#94411F; --sage:#5C8368; --gold:#C79A2B; --line:#E4DDD0; --white:#FFFFFF; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Almarai',sans-serif; background:var(--paper); color:var(--ink);}
+  h1,h2{font-family:'Cairo',sans-serif;}
+  button{font-family:inherit; cursor:pointer; border:none;}
+
+  #gate, #localgate{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;}
+  #gate{display:none;}
+  .gate-box{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:30px; width:100%; max-width:360px; text-align:center;}
+  .gate-box h1{font-size:20px; margin-bottom:6px;}
+  .gate-box p{font-size:12.5px; color:var(--ink-soft); margin-bottom:18px;}
+  .gate-box input{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:4px; margin-bottom:12px; font-family:inherit;}
+  .gate-box button{width:100%; background:var(--brick); color:#fff; padding:10px; border-radius:4px; font-weight:800;}
+  .gate-err{font-size:12px; color:var(--brick); margin-top:10px; min-height:14px;}
+
+  #dash{display:none; padding:26px 28px; max-width:900px; margin:0 auto;}
+  .head{margin-bottom:24px;}
+  .head h1{font-size:22px;}
+  .head p{font-size:13px; color:var(--ink-soft); margin-top:4px;}
+  .tabs{display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap;}
+  .tab{background:var(--white); border:1px solid var(--line); padding:9px 16px; border-radius:5px; font-weight:700; font-size:13.5px; opacity:.65;}
+  .tab.active{opacity:1; border-color:var(--brick); color:var(--brick);}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .card{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:22px; margin-bottom:20px;}
+  .field{margin-bottom:12px;}
+  .field label{display:block; font-size:12.5px; font-weight:700; color:var(--ink-soft); margin-bottom:5px;}
+  .field input, .field textarea{width:100%; padding:9px 11px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:13.5px; background:var(--paper);}
+  .btn{background:var(--brick); color:#fff; padding:9px 18px; border-radius:4px; font-weight:800; font-size:13px;}
+  .status{font-size:12px; margin-top:10px; min-height:14px;}
+  .status.ok{color:var(--sage); font-weight:700;} .status.err{color:var(--brick); font-weight:700;}
+  .item{display:flex; justify-content:space-between; align-items:center; gap:10px; background:var(--white); border:1px solid var(--line); border-radius:5px; padding:12px 14px; margin-bottom:8px;}
+  .item .t{font-weight:800; font-size:13.5px;}
+  .item .d{font-size:12px; color:var(--ink-soft);}
+  .del{background:var(--paper-dim); color:var(--brick); padding:6px 12px; border-radius:4px; font-size:12px; font-weight:700;}
+  .warn{background:#FBEFE9; border:1px solid var(--brick); color:var(--brick-dark); border-radius:6px; padding:14px 16px; font-size:12.5px; line-height:1.8; margin-bottom:22px;}
+  .urow{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:14px 16px; margin-bottom:10px;}
+  .urow .u-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;}
+  .urow .u-name{font-weight:800; font-size:14px;}
+  .urow .u-meta{font-size:11.5px; color:var(--ink-soft);}
+  .urow .u-controls{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .urow select{padding:6px 8px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:12.5px;}
+  .urow .save-btn{background:var(--sage); color:#fff; padding:6px 14px; border-radius:4px; font-size:12px; font-weight:700;}
+  .badge{font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:10px;}
+  .badge.active{background:#E3EFE6; color:#3d6b47;}
+  .badge.pending_payment,.badge.pending_approval,.badge.awaiting_fee{background:#FBEFE0; color:#94411F;}
+  .badge.expired, .badge.rejected{background:#F1ECE1; color:#8a8478;}
+
+  /* ---------- icon system ---------- */
+  .icon{width:1em; height:1em; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:-0.15em; flex-shrink:0;}
+  .tab{display:inline-flex; align-items:center; gap:7px;}
+  .tab .icon{width:15px; height:15px;}
+  .btn{display:inline-flex; align-items:center; gap:6px;}
+  .item, .urow, .card{transition:box-shadow .15s ease;}
+  .del{display:inline-flex; align-items:center; gap:5px;}
+
+  /* ---------- professional polish ---------- */
+  body{-webkit-font-smoothing:antialiased; min-height:100vh;}
+  #dash{max-width:960px;}
+  .panel{animation:panelIn .2s ease;}
+  @keyframes panelIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .card, .item, .urow{box-shadow:0 1px 2px rgba(27,42,65,0.04);}
+  .card:hover{box-shadow:0 4px 14px rgba(27,42,65,0.06);}
+  .btn:hover{background:var(--brick-dark);}
+  .btn:disabled{opacity:.55; cursor:default;}
+  .head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .head-actions{display:flex; gap:8px;}
+  .icon-btn{background:var(--paper-dim); color:var(--ink-soft); padding:8px 12px; border-radius:5px; font-size:12.5px; font-weight:700; display:inline-flex; align-items:center; gap:6px;}
+  .icon-btn:hover{background:var(--line); color:var(--ink);}
+  .edit-btn{background:var(--paper-dim); color:var(--ink-soft); padding:6px 12px; border-radius:4px; font-size:12px; font-weight:700; display:inline-flex; align-items:center; gap:5px;}
+  .edit-btn:hover{background:var(--line); color:var(--ink);}
+  .item{align-items:flex-start;}
+  .item .actions{display:flex; gap:6px; flex-shrink:0;}
+  .item .edit-form{width:100%;}
+  .item .edit-form input, .item .edit-form textarea{width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:4px; font-family:inherit; font-size:13px; margin-bottom:8px; background:var(--paper);}
+  .item .edit-form .actions-row{display:flex; gap:8px;}
+  .save-sm{background:var(--sage); color:#fff; padding:7px 14px; border-radius:4px; font-size:12px; font-weight:700;}
+  .cancel-sm{background:var(--paper-dim); color:var(--ink-soft); padding:7px 14px; border-radius:4px; font-size:12px; font-weight:700;}
+
+  /* toast notifications */
+  #toast-stack{position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; gap:8px; z-index:999; width:min(92vw,380px);}
+  .toast{background:var(--ink); color:var(--paper); border-radius:7px; padding:11px 14px; font-size:13px; display:flex; align-items:center; gap:10px; box-shadow:0 12px 28px rgba(27,42,65,0.28); animation:toastIn .2s ease;}
+  .toast.err{background:var(--brick-dark);}
+  .toast .toast-msg{flex:1; line-height:1.5;}
+  .toast .toast-undo{background:none; color:var(--gold); font-weight:800; font-size:12.5px; text-decoration:underline; flex-shrink:0;}
+  @keyframes toastIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ---------- local device lock ---------- */
+  #localgate .gate-box{max-width:380px;}
+  .pw-row{position:relative;}
+  .pw-row .pw-toggle{position:absolute; left:8px; top:9px; background:none; color:var(--ink-soft); padding:4px;}
+  .lg-tag{font-size:11.5px; color:var(--ink-soft); background:var(--paper-dim); border-radius:5px; padding:8px 10px; margin-bottom:14px; line-height:1.7; text-align:right;}
+  .lg-switch{background:none; color:var(--brick); font-size:12px; text-decoration:underline; margin-top:10px;}
+
+  /* community moderation */
+  .mod-post{background:var(--white); border:1px solid var(--line); border-radius:6px; padding:14px 16px; margin-bottom:10px;}
+  .mod-post .mp-head{display:flex; justify-content:space-between; align-items:center; font-size:12px; color:var(--ink-soft); margin-bottom:8px;}
+  .mod-post .mp-body{font-size:13.5px; line-height:1.7; margin-bottom:8px; white-space:pre-wrap;}
+  .mod-post img{max-width:220px; border-radius:5px; display:block; margin-bottom:8px;}
+
+  /* ---------- admin support chat ---------- */
+  .chat-shell{display:flex; border:1px solid var(--line); border-radius:12px; overflow:hidden; height:min(600px,72vh); background:var(--white);}
+  .chat-list-pane{width:280px; flex-shrink:0; border-left:1px solid var(--line); overflow-y:auto;}
+  .conv-item{display:flex; align-items:center; gap:10px; padding:11px 12px; cursor:pointer; border-bottom:1px solid var(--paper-dim);}
+  .conv-item:hover{background:var(--paper-dim);}
+  .conv-item.active{background:rgba(184,83,46,0.08);}
+  .conv-item .conv-info{flex:1; min-width:0;}
+  .conv-item .conv-name{font-weight:800; font-size:13px; color:var(--ink);}
+  .conv-item .conv-preview{font-size:11.5px; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .conv-item .conv-badge{background:var(--brick); color:#fff; font-size:10px; font-weight:800; min-width:17px; height:17px; padding:0 4px; border-radius:9px; display:flex; align-items:center; justify-content:center;}
+  .mini-avatar{width:32px; height:32px; border-radius:50%; background:var(--brick); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;}
+  .chat-thread-pane{flex:1; display:flex; flex-direction:column; min-width:0;}
+  .chat-thread-empty{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--ink-soft); font-size:13px; text-align:center; padding:20px;}
+  .chat-thread-active{flex:1; display:flex; flex-direction:column; min-height:0;}
+  .chat-thread-head{display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid var(--line);}
+  .chat-back-btn{display:none; background:var(--paper-dim); border-radius:50%; width:30px; height:30px; align-items:center; justify-content:center; flex-shrink:0;}
+  .chat-thread-name{font-weight:800; font-size:13.5px; color:var(--ink);}
+  .chat-messages{flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:8px; background:var(--paper-dim);}
+  .msg-bubble{max-width:72%; padding:9px 13px; border-radius:14px; font-size:13px; line-height:1.6; word-break:break-word;}
+  .msg-bubble.mine{align-self:flex-end; background:var(--brick); color:#fff; border-bottom-left-radius:4px;}
+  .msg-bubble.theirs{align-self:flex-start; background:var(--white); color:var(--ink); border:1px solid var(--line); border-bottom-right-radius:4px;}
+  .msg-time{font-size:9.5px; opacity:.7; margin-top:3px; display:block;}
+  .msg-img{max-width:230px; max-height:260px; border-radius:10px; display:block; margin-bottom:4px; object-fit:cover;}
+  .msg-bubble audio{max-width:230px; height:38px; display:block;}
+  .msg-file{display:flex; align-items:center; gap:6px; color:inherit; text-decoration:none; font-weight:700; font-size:12.5px; word-break:break-all;}
+  .msg-file small{opacity:.7; font-weight:500;}
+  .chat-input-row .att-btn{background:transparent; color:var(--ink-soft); border:1px solid var(--line); cursor:pointer;}
+  .chat-input-row .att-btn.rec{background:#c0392b; color:#fff; border-color:#c0392b; animation:recpulse 1s infinite;}
+  .chat-input-row .att-btn .icon{width:18px; height:18px;}
+  @keyframes recpulse{50%{opacity:.55}}
+  #chat-upload-status{display:none; align-items:center; gap:8px; padding:7px 14px; font-size:12px; background:rgba(199,154,43,.12); border-top:1px solid var(--line);}
+  .chat-mini-btn{border:1px solid var(--line); background:#fff; border-radius:8px; padding:2px 10px; font-family:inherit; font-size:11.5px; cursor:pointer;}
+  .chat-mini-btn.ok{background:#1f8a4c; color:#fff; border-color:#1f8a4c;}
+  .chat-input-row{display:flex; gap:8px; padding:12px; border-top:1px solid var(--line); align-items:center;}
+  .chat-input-row input{flex:1; padding:10px 14px; border:1px solid var(--line); border-radius:20px; font-family:inherit; font-size:13px;}
+  .chat-input-row button{background:var(--brick); color:#fff; width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  @media (max-width:760px){
+    .chat-shell{position:relative;}
+    .chat-list-pane{position:absolute; inset:0; width:100%; z-index:1; border-left:none; transition:transform .2s ease;}
+    .chat-list-pane.hide-mobile{transform:translateX(105%);}
+    .chat-thread-pane{position:absolute; inset:0; width:100%;}
+    .chat-back-btn{display:flex;}
+  }
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true">
+<symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+<symbol id="i-notebook" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+<symbol id="i-chat-square" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-chat-circle" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></symbol>
+<symbol id="i-grad" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 3 3 6 3s6-1.3 6-3v-5"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="18" rx="2"/><path d="M9 2h6a1 1 0 0 1 1 1v2H8V3a1 1 0 0 1 1-1z"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="16" y2="15"/></symbol>
+<symbol id="i-thumb" viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></symbol>
+<symbol id="i-paperclip" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+<symbol id="i-cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
+<symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6L12 2z"/><path d="M19 15l.9 2.6L22 18.5l-2.1.9L19 22l-.9-2.6-2.1-.9 2.1-.9L19 15z"/></symbol>
+<symbol id="i-wave" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 12V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12.5V6a1.5 1.5 0 0 1 3 0v8"/><path d="M17 14v-2a1.5 1.5 0 0 1 3 0v3a6 6 0 0 1-6 6h-2a7 7 0 0 1-6-3.5L4 14.8a1.3 1.3 0 0 1 2.1-1.5L8 15"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="3"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.6 21.6 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+<symbol id="i-check-double" viewBox="0 0 24 24"><polyline points="18 6 7 17 2 12"/><polyline points="22 10 13 19 11 17"/></symbol>
+</svg>
+
+<div id="toast-stack"></div>
+
+<!-- ========== LOCAL DEVICE LOCK (يوز وباسورد محلي) ========== -->
+<div id="localgate">
+  <div class="gate-box">
+    <div class="auth-logo" style="width:48px; height:48px; border-radius:50%; background:var(--paper-dim); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; color:var(--brick);"><svg class="icon" style="width:22px; height:22px;"><use href="#i-lock"></use></svg></div>
+    <h1 id="lg-title">قفل الجهاز</h1>
+    <p id="lg-sub">اليوزر والباسورد بتوعك متخزنين على الجهاز ده بس</p>
+    <div class="lg-tag" id="lg-setup-tag">أول مرة بتفتح اللوحة من الجهاز ده — اختار يوزر وباسورد محليين لقفل الشاشة دي (منفصلين عن حساب الأدمن على Firebase اللي جاي بعد كده).</div>
+    <input type="text" id="lg-user" placeholder="اليوزر" autocomplete="off">
+    <div class="pw-row">
+      <input type="password" id="lg-pass" placeholder="الباسورد" autocomplete="off">
+      <button type="button" class="pw-toggle" onclick="toggleLgPw()"><svg class="icon" id="lg-pw-icon"><use href="#i-eye"></use></svg></button>
+    </div>
+    <input type="password" id="lg-pass-confirm" placeholder="تأكيد الباسورد" autocomplete="off" style="display:none">
+    <button onclick="submitLocalGate()" id="lg-submit-btn">حفظ وتأمين الجهاز</button>
+    <div class="gate-err" id="lg-err"></div>
+    <button class="lg-switch" id="lg-reset-btn" onclick="resetLocalGate()" style="display:none">نسيت الباسورد؟ إعادة ضبط قفل الجهاز</button>
+  </div>
+</div>
+
+<div id="gate">
+  <div class="gate-box">
+    <h1>لوحة تحكم نُدرس معًا</h1>
+    <p>دخول الأدمن (حساب Firebase حقيقي)</p>
+    <input type="email" id="gate-email" placeholder="إيميل الأدمن">
+    <input type="password" id="gate-pass" placeholder="كلمة المرور">
+    <button onclick="checkGate()">دخول</button>
+    <div class="gate-err" id="gate-err"></div>
+  </div>
+</div>
+
+<div id="dash">
+  <div class="head">
+    <div><h1>لوحة تحكم نُدرس معًا</h1>
+    <p>تحكم كامل في المنصة — محتوى، مستخدمين، مجتمع، ودفاتر تحضير</p></div>
+    <div class="head-actions">
+      <button class="icon-btn" onclick="lockDeviceNow()"><svg class="icon"><use href="#i-lock"></use></svg> قفل الجهاز</button>
+      <button class="icon-btn" onclick="adminLogout()"><svg class="icon"><use href="#i-logout"></use></svg> خروج</button>
+    </div>
+  </div>
+
+  <div class="warn"><svg class="icon" style="margin-left:6px;"><use href="#i-alert"></use></svg>
+    الدخول هنا بحساب Firebase حقيقي، لكن لازم تكون سجّلت بيه من المنصة الأساسية الأول (نفس الإيميل وكلمة المرور)، وبعدين تضيف الـ uid بتاعه يدويًا في كولكشن <b>admins</b> من Firebase Console — غير كده هيدخلّك يقولك "معندوش صلاحية أدمن" حتى لو الإيميل والباسورد صح. قفل الجهاز اللي قبل الشاشة دي طبقة إضافية بسيطة على نفس الجهاز، مش بديل عن حساب Firebase.
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('lessons', this)"><svg class="icon"><use href="#i-book"></use></svg> تعلم كيف</button>
+    <button class="tab" onclick="switchTab('tips', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> التربية العملية</button>
+    <button class="tab" onclick="switchTab('videos', this)"><svg class="icon"><use href="#i-video"></use></svg> بحوث الفعل</button>
+    <button class="tab" onclick="switchTab('courses', this)"><svg class="icon"><use href="#i-grad"></use></svg> الدورات</button>
+    <button class="tab" onclick="switchTab('community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
+    <button class="tab" onclick="switchTab('notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر التحضير</button>
+    <button class="tab" onclick="switchTab('wallet', this)"><svg class="icon"><use href="#i-check"></use></svg> المحفظة</button>
+    <button class="tab" onclick="switchTab('referrals', this)"><svg class="icon"><use href="#i-users"></use></svg> الإحالات</button>
+    <button class="tab" onclick="switchTab('challenges', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
+    <button class="tab" onclick="switchTab('accounts', this)"><svg class="icon"><use href="#i-card"></use></svg> الحسابات والأسعار</button>
+    <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
+    <button class="tab" onclick="switchTab('audit', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> سجل التدقيق</button>
+    <button class="tab" onclick="switchTab('users', this)"><svg class="icon"><use href="#i-user"></use></svg> المستخدمين</button>
+    <button class="tab" onclick="switchTab('reports', this)"><svg class="icon"><use href="#i-flag"></use></svg> البلاغات</button>
+    <button class="tab" onclick="switchTab('analytics', this)"><svg class="icon"><use href="#i-chart"></use></svg> الإحصائيات</button>
+    <button class="tab" onclick="switchTab('support', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> دردشات الدعم</button>
+    <button class="tab" onclick="switchTab('settings', this)"><svg class="icon"><use href="#i-settings"></use></svg> الإعدادات</button>
+  </div>
+
+  <div class="panel active" id="panel-lessons">
+    <div class="card">
+      <div class="field"><label>عنوان الدرس</label><input type="text" id="l-title"></div>
+      <div class="field"><label>وصف مختصر</label><textarea rows="2" id="l-desc"></textarea></div>
+      <div class="field"><label>رابط الفيديو</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="l-video" placeholder="يوتيوب / درايف...">
+          <button type="button" class="btn" style="background:var(--ink); white-space:nowrap;" onclick="openDrivePicker('l-video')"><svg class="icon"><use href="#i-folder"></use></svg> من Drive</button>
+        </div>
+      </div>
+      <button class="btn" onclick="addItem('lessons', ['title:l-title','description:l-desc','videoUrl:l-video'])"><svg class="icon"><use href="#i-check"></use></svg> إضافة درس</button>
+      <div class="status" id="lessons-status"></div>
+    </div>
+    <div id="lessons-list"></div>
+  </div>
+
+  <div class="panel" id="panel-tips">
+    <div class="card">
+      <div class="field"><label>عنوان النصيحة</label><input type="text" id="t-title"></div>
+      <div class="field"><label>المحتوى</label><textarea rows="3" id="t-content"></textarea></div>
+      <button class="btn" onclick="addItem('practicalTips', ['title:t-title','content:t-content'])"><svg class="icon"><use href="#i-check"></use></svg> إضافة نصيحة</button>
+      <div class="status" id="tips-status"></div>
+    </div>
+    <div id="tips-list"></div>
+  </div>
+
+  <div class="panel" id="panel-videos">
+    <div class="card">
+      <div class="field"><label>عنوان الفيديو</label><input type="text" id="v-title"></div>
+      <div class="field"><label>رابط الفيديو</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="v-video">
+          <button type="button" class="btn" style="background:var(--ink); white-space:nowrap;" onclick="openDrivePicker('v-video')"><svg class="icon"><use href="#i-folder"></use></svg> من Drive</button>
+        </div>
+      </div>
+      <button class="btn" onclick="addItem('actionResearchVideos', ['title:v-title','videoUrl:v-video'])"><svg class="icon"><use href="#i-check"></use></svg> إضافة فيديو</button>
+      <div class="status" id="videos-status"></div>
+    </div>
+    <div id="videos-list"></div>
+  </div>
+
+  <div class="panel" id="panel-courses">
+    <div class="card">
+      <div class="field"><label>عنوان الدورة</label><input type="text" id="co-title"></div>
+      <div class="field"><label>وصف مختصر</label><textarea rows="2" id="co-desc"></textarea></div>
+      <button class="btn" onclick="addCourse()"><svg class="icon"><use href="#i-check"></use></svg> إضافة دورة</button>
+      <div class="status" id="courses-status"></div>
+    </div>
+    <div id="courses-list"></div>
+  </div>
+
+  <div class="panel" id="panel-community">
+    <div class="status" id="community-status" style="margin-bottom:10px;"></div>
+    <div id="community-mod-list"></div>
+  </div>
+
+  <div class="panel" id="panel-notebooks">
+    <div class="status" id="notebooks-status" style="margin-bottom:10px;"></div>
+    <div id="notebooks-mod-list"></div>
+  </div>
+
+  <div class="panel" id="panel-wallet">
+    <div class="d" style="margin-bottom:10px;">طلبات خصم الرصيد من اشتراك المستخدم (750 نقطة = 1 جنيه). اخصم المبلغ عند تفعيل الاشتراك يدويًا ثم اضغط "اتطبّق".</div>
+    <div id="wallet-admin-list"></div>
+  </div>
+
+  <div class="panel" id="panel-referrals">
+    <div class="d" style="margin-bottom:10px;">إحالات جديدة سجّلت حساب عن طريق رابط دعوة زميل — امنح المُحيل نقاطه بعد التأكد.</div>
+    <div id="referrals-admin-list"></div>
+  </div>
+
+  <div class="panel" id="panel-challenges">
+    <div class="card">
+      <div class="field"><label>عنوان التحدي</label><input type="text" id="chl-title"></div>
+      <div class="field"><label>الوصف</label><textarea rows="2" id="chl-desc"></textarea></div>
+      <button class="btn" onclick="addChallenge()"><svg class="icon"><use href="#i-check"></use></svg> إطلاق التحدي</button>
+    </div>
+    <div id="challenges-list"></div>
+  </div>
+
+  <div class="panel" id="panel-accounts">
+    <div class="card">
+      <h3 style="margin-bottom:6px;">💰 رسوم أنواع الحسابات (دفع مرة واحدة)</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">بتحدد مبلغ الاشتراك مرة واحدة لكل نوع، وبيظهر للمستخدم أثناء التسجيل. حط 0 لو النوع مجاني. حسابات الدكتور المشرف والإدارة مجانية دايمًا وبدون اشتراك.</p>
+      <div id="acc-pricing" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin-bottom:14px;"></div>
+      <button class="btn" onclick="saveAccountPricing()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الرسوم</button>
+      <div class="status" id="acc-pricing-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">🔓 الميزات المفتوحة لكل نوع حساب</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">علامة الصح = الميزة مفتوحة لهذا النوع. شيل العلامة عشان تتقفل وتختفي من القائمة ومركز الأدوات. (الإخفاء العام من تبويب الإعدادات لسه بيشتغل فوق ده.)</p>
+      <div style="overflow-x:auto; margin-bottom:14px;"><table id="acc-matrix" style="width:100%; border-collapse:collapse; min-width:420px;"></table></div>
+      <button class="btn" onclick="saveAccessMatrix()"><svg class="icon"><use href="#i-check"></use></svg> حفظ صلاحيات الميزات</button>
+      <div class="status" id="acc-matrix-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">🎟️ كوبونات الخصم</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">بيكتبها المستخدم في شاشة الدفع. لو كوبون بنفس الكود موجود هيتعدّل. بيتزوّد عداد الاستخدام عند "تأكيد الدفع".</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:10px;">
+        <div class="field"><label>الكود</label><input type="text" id="cp-code" placeholder="WELCOME20"></div>
+        <div class="field"><label>النوع</label><select id="cp-type"><option value="percent">نسبة %</option><option value="amount">مبلغ ثابت (جنيه)</option></select></div>
+        <div class="field"><label>القيمة</label><input type="number" id="cp-value" min="1"></div>
+        <div class="field"><label>أقصى استخدامات (0 = بلا حد)</label><input type="number" id="cp-max" min="0" value="0"></div>
+        <div class="field"><label>ينتهي في (اختياري)</label><input type="date" id="cp-exp"></div>
+      </div>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin:6px 0 12px; font-size:12.5px; font-weight:700;">يسري على: <label><input type="checkbox" class="cp-type" value="student_teacher" style="width:auto;"> طالب معلم</label><label><input type="checkbox" class="cp-type" value="university_student" style="width:auto;"> طالب جامعي</label><label><input type="checkbox" class="cp-type" value="non_edu_teacher" style="width:auto;"> معلم غير تربوي</label><span style="color:var(--ink-soft); font-weight:500;">(بدون تحديد = كل الأنواع)</span></div>
+      <button class="btn" onclick="saveCoupon()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الكوبون</button>
+      <div class="status" id="coupon-adm-status"></div>
+      <div id="coupon-list" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-supervisors">
+    <div class="card">
+      <h3 style="margin-bottom:6px;">➕ ترقية حساب موجود إلى دكتور مشرف / إدارة</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">الحسابات دي مجانية وبدون اشتراك. الحساب لازم يكون مسجّل بالفعل بالإيميل ده.</p>
+      <div class="field"><label>إيميل الحساب</label><input type="text" id="promote-email" placeholder="doctor@example.com"></div>
+      <div class="field"><label>النوع</label><select id="promote-type"><option value="supervisor">دكتور مشرف</option><option value="office">الإدارة</option></select></div>
+      <button class="btn" onclick="promoteAccount()"><svg class="icon"><use href="#i-check"></use></svg> ترقية</button>
+      <div class="status" id="promote-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:10px;">👨‍🏫 الدكاترة المشرفين والإدارة</h3>
+      <div id="sup-list">جاري التحميل...</div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">🔗 تحديد الحسابات التابعة لكل دكتور</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">اختار الدكتور، علّم على الطلاب اللي تبعه، واحفظ. الدكتور هيقدر يتواصل معاهم وينظم لهم غرف ويرفع تكاليف ويستلمها منهم.</p>
+      <div class="field"><label>الدكتور المشرف</label><select id="assign-sup" onchange="onAssignPick()"></select></div>
+      <div class="field"><label>بحث بالاسم أو الإيميل</label><input type="text" id="assign-search" oninput="renderAssignList()" placeholder="ابحث..."></div>
+      <div id="assign-list" style="max-height:380px; overflow:auto; margin-bottom:10px;"></div>
+      <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;"><button class="btn" onclick="saveAssignments()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الربط</button><span id="assign-count" style="font-size:12.5px; font-weight:700;"></span></div>
+      <div class="status" id="assign-status"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-audit">
+    <div class="card">
+      <h3 style="margin-bottom:6px;">🧾 سجل التدقيق</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;">آخر 300 إجراء إداري: من اعتمد، ومن ربط، ومن أكّد دفع، ومتى.</p>
+      <div style="display:flex; gap:8px; margin-bottom:12px;"><input type="text" id="audit-q" oninput="renderAudit()" placeholder="ابحث في السجل..." style="flex:1;"><button class="btn" onclick="loadAudit()">تحديث</button></div>
+      <div id="audit-list"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-users">
+    <div class="status" id="users-status" style="margin-bottom:10px;"></div>
+    <div id="users-list"></div>
+  </div>
+
+  <div class="panel" id="panel-reports">
+    <div id="reports-list"></div>
+  </div>
+
+  <div class="panel" id="panel-analytics">
+    <div id="analytics-content"><div class="empty-state">جاري تحميل الإحصائيات...</div></div>
+  </div>
+
+  <div class="panel" id="panel-support">
+    <div class="chat-shell" id="admin-chat-shell">
+      <div class="chat-list-pane" id="admin-chat-list-pane">
+        <div id="admin-conv-list"><div class="empty-state" style="padding:16px;">جاري تحميل المحادثات...</div></div>
+      </div>
+      <div class="chat-thread-pane" id="admin-chat-thread-pane">
+        <div class="chat-thread-empty" id="admin-chat-thread-empty">
+          <svg class="icon" style="width:40px; height:40px; color:var(--line); margin-bottom:10px;"><use href="#i-chat-circle"></use></svg>
+          اختار محادثة من القائمة عشان ترد كـ "فريق الدعم الفني"
+        </div>
+        <div class="chat-thread-active" id="admin-chat-thread-active" style="display:none;">
+          <div class="chat-thread-head">
+            <button class="chat-back-btn" onclick="closeAdminChatThread()"><svg class="icon"><use href="#i-chevron" style="transform:scaleX(-1)"></use></svg></button>
+            <div class="mini-avatar" id="admin-chat-thread-avatar"></div>
+            <div class="chat-thread-name" id="admin-chat-thread-name"></div>
+          </div>
+          <div class="chat-messages" id="admin-chat-messages"></div>
+          <div id="chat-upload-status"></div>
+          <div class="chat-input-row">
+            <input type="file" id="chat-file-input" style="display:none;" onchange="chatPickFile(this)">
+            <input type="file" id="chat-img-input" accept="image/*" style="display:none;" onchange="chatPickFile(this)">
+            <button class="att-btn" title="إرفاق ملف" onclick="document.getElementById('chat-file-input').click()"><svg class="icon"><use href="#i-paperclip"></use></svg></button>
+            <button class="att-btn" title="إرسال صورة" onclick="document.getElementById('chat-img-input').click()"><svg class="icon"><use href="#i-image"></use></svg></button>
+            <button class="att-btn" title="تسجيل صوتي" onclick="chatToggleRecord(this)"><svg class="icon"><use href="#i-mic"></use></svg></button>
+            <input type="text" id="admin-chat-input" placeholder="اكتب رد كفريق الدعم..." onkeydown="if(event.key==='Enter'){event.preventDefault(); sendAdminChatMessage();}">
+            <button onclick="sendAdminChatMessage()"><svg class="icon"><use href="#i-send"></use></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-settings">
+    <div class="card">
+      <div class="field"><label>رقم واتساب (بالصيغة الدولية بدون +، مثال: 201234567890)</label><input type="text" id="set-whatsapp" placeholder="201007586279"></div>
+      <div class="field"><label>رقم هاتف للاتصال</label><input type="text" id="set-phone"></div>
+      <div class="field"><label>إيميل التواصل</label><input type="text" id="set-email"></div>
+      <div class="field"><label>رابط جروب فيسبوك</label><input type="text" id="set-fb"></div>
+      <div class="field"><label>رابط تليجرام</label><input type="text" id="set-tg"></div>
+      <button class="btn" onclick="saveContactSettings()"><svg class="icon"><use href="#i-check"></use></svg> حفظ إعدادات التواصل</button>
+      <div class="status" id="settings-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:10px;">📣 إعلان عام لكل المستخدمين</h3>
+      <div class="field"><label>نص الإعلان (هيظهر فورًا فوق الصفحة لكل المعلمين وطلاب المعلم)</label><textarea id="set-announce-text" rows="2" placeholder="مثال: صيانة مجدولة غدًا من 2 إلى 4 عصرًا"></textarea></div>
+      <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; margin-bottom:12px;"><input type="checkbox" id="set-announce-active" style="width:auto;"> تفعيل عرض الإعلان الآن</label>
+      <button class="btn" onclick="saveAnnouncement()"><svg class="icon"><use href="#i-check"></use></svg> نشر الإعلان</button>
+      <div class="status" id="announce-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:10px;">🛠️ وضع الصيانة</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">لما تفعّله، الموقع بيتقفل بالكامل قدام كل المستخدمين (المعلمين وطلاب المعلم) برسالة الصيانة، لحد ما توقفه تاني. لوحة الأدمن دي مش بتتأثر.</p>
+      <div class="field"><label>رسالة الصيانة</label><textarea id="set-maint-msg" rows="2" placeholder="بنشتغل على تحسينات هنرجعلكم قريب."></textarea></div>
+      <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; margin-bottom:12px; color:var(--brick);"><input type="checkbox" id="set-maint-active" style="width:auto;"> تفعيل وضع الصيانة الآن (هيقفل الموقع فورًا)</label>
+      <button class="btn" style="background:var(--brick);" onclick="saveMaintenance()"><svg class="icon"><use href="#i-check"></use></svg> حفظ وضع الصيانة</button>
+      <div class="status" id="maint-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">🧩 التحكم في ظهور أدوات القائمة الجانبية</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">شيل علامة الصح عن أي أداة عشان تختفي من القائمة الجانبية لكل المعلمين وطلاب المعلم فورًا (من غير ما تحذف حاجة من الكود).</p>
+      <div id="ff-list" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:6px 14px; margin-bottom:14px;"></div>
+      <button class="btn" onclick="saveFeatureFlags()"><svg class="icon"><use href="#i-check"></use></svg> حفظ إعدادات الظهور</button>
+      <div class="status" id="ff-status"></div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">☁️ رفع الملفات (Cloudinary — مجاني)</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.9; margin-bottom:12px;">Firebase Storage مش متاح على الخطة المجانية، فالرفع (صور، ملفات، تسجيلات، فيديو، تكاليف) بيتم عبر Cloudinary:<br>
+      ١) اعمل حساب مجاني على cloudinary.com — وانسخ <b>Cloud name</b> من لوحة Dashboard.<br>
+      ٢) من Settings ← Upload ← Add upload preset: خلّي <b>Signing mode = Unsigned</b> واحفظ، وانسخ اسم الـ preset.<br>
+      ٣) (مهم) في نفس الـ preset حدّد حجم أقصى للملف وأنواع مسموحة عشان محدش يستغل الرفع.<br>
+      ٤) حط القيمتين تحت واحفظ. بعدها الرفع بيشتغل لكل المستخدمين فورًا.</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;"><div class="field" style="flex:1; min-width:200px;"><label>Cloud name</label><input type="text" id="set-cld-name" placeholder="مثال: dxyz123abc"></div>
+      <div class="field" style="flex:1; min-width:200px;"><label>Upload preset (Unsigned)</label><input type="text" id="set-cld-preset" placeholder="مثال: nudrus_unsigned"></div></div>
+      <button class="btn" onclick="saveUploadConfig()"><svg class="icon"><use href="#i-check"></use></svg> حفظ إعداد الرفع</button>
+      <button class="btn" style="background:var(--ink-soft);" onclick="testUploadConfig()">اختبار الرفع</button>
+      <div class="status" id="cld-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">📎 حدود المرفقات</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">أقصى حجم للملف الواحد (دردشة، تكاليف، وسائط) وأقصى مدة للتسجيل الصوتي. حدود Cloudinary المجانية: 10 ميجا للصور والملفات و100 ميجا للفيديو والصوت — فخلّي الحد هنا مناسب (الافتراضي 10).</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;"><div class="field" style="flex:1; min-width:170px;"><label>أقصى حجم ملف (ميجا، حتى 100)</label><input type="number" id="set-maxfile" min="1" max="100"></div>
+      <div class="field" style="flex:1; min-width:170px;"><label>أقصى مدة تسجيل (ثانية، حتى 1800)</label><input type="number" id="set-maxrec" min="30" max="1800"></div></div>
+      <button class="btn" onclick="saveLimits()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الحدود</button>
+      <div class="status" id="limits-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">✉️ إيميل إشعارات الحسابات</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">عشان يوصل إيميل للمستخدم عند اعتماد حسابه أو تأكيد دفعه: أنشئ قالب جديد في EmailJS (نفس الخدمة الحالية) بالمتغيرات <b>{{to_email}}</b> للمستلم، و<b>{{to_name}}</b> و<b>{{subject}}</b> و<b>{{message}}</b>، وحط معرّف القالب هنا. سيبه فاضي لو مش عايز إيميلات.</p>
+      <div class="field"><label>معرّف القالب (Template ID)</label><input type="text" id="set-notify-tpl" placeholder="template_xxxxxxx"></div>
+      <button class="btn" onclick="saveEmailConfig()"><svg class="icon"><use href="#i-check"></use></svg> حفظ</button>
+      <div class="status" id="emailcfg-status"></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
+<script>
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+function sortSnap(snap, field, dir, limit){
+  const key = d => { const v = d.data()[field]; return v === undefined ? 0 : v === null ? Infinity : (v.toMillis ? v.toMillis() : v); };
+  const cmp = (a,b) => { const x = key(a), y = key(b); return typeof x === 'string' ? x.localeCompare(y) : (x === y ? 0 : x < y ? -1 : 1); };
+  let docs = [...snap.docs].sort(cmp); if(dir !== 'asc') docs.reverse(); if(limit) docs = docs.slice(0, limit);
+  return { docs, empty: !docs.length, size: docs.length, forEach: f => docs.forEach(f) };
+}
+function ic(name){ return `<svg class="icon"><use href="#i-${name}"></use></svg>`; }
+
+/* ---------- toast notifications (replaces alert/confirm) ---------- */
+function toast(msg, opts){
+  opts = opts || {};
+  const stack = document.getElementById('toast-stack');
+  const el = document.createElement('div');
+  el.className = 'toast ' + (opts.type === 'err' ? 'err' : 'ok');
+  const iconName = opts.type === 'err' ? 'alert' : 'check';
+  el.innerHTML = `${ic(iconName)}<span class="toast-msg">${escapeHtml(msg)}</span>` +
+    (opts.undo ? `<button class="toast-undo">تراجع</button>` : '');
+  stack.appendChild(el);
+  let removed = false;
+  const remove = () => { if(removed) return; removed = true; el.remove(); };
+  if(opts.undo){ el.querySelector('.toast-undo').onclick = () => { opts.undo(); remove(); }; }
+  setTimeout(remove, opts.duration || (opts.undo ? 5000 : 3200));
+  return remove;
+}
+
+/* ================= LOCAL DEVICE LOCK (يوز وباسورد محلي) =================
+   ده قفل بسيط على مستوى الجهاز نفسه: بيتخزن في localStorage بتاع المتصفح ده بس،
+   والباسورد بيتخزن كـ hash (SHA-256 + salt) مش نص صريح. مهم: القفل ده طبقة
+   حماية إضافية على جهازك (يمنع حد يفتح اللوحة لو حصل على اللابتوب/الموبايل)،
+   لكنه مش بديل عن أمان Firebase الحقيقي اللي بيتحقق منه بعد كده — أي حد يمسح
+   بيانات المتصفح أو يفتح من جهاز تاني هيحتاج يعمل الإعداد من الأول برضو. */
+const LOCK_KEY = 'ndm_admin_local_lock';
+
+function bufToHex(buf){ return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }
+async function hashPass(pass, salt){
+  const enc = new TextEncoder();
+  const data = enc.encode(salt + ':' + pass);
+  const digest = await crypto.subtle.digest('SHA-256', data);
+  return bufToHex(digest);
+}
+function randomSalt(){ return bufToHex(crypto.getRandomValues(new Uint8Array(16)).buffer); }
+function getLocalLock(){ try{ return JSON.parse(localStorage.getItem(LOCK_KEY) || 'null'); }catch(e){ return null; } }
+
+let lgMode = 'setup'; // 'setup' | 'unlock'
+function initLocalGate(){
+  const lock = getLocalLock();
+  const setupTag = document.getElementById('lg-setup-tag');
+  const confirmInput = document.getElementById('lg-pass-confirm');
+  const resetBtn = document.getElementById('lg-reset-btn');
+  if(lock){
+    lgMode = 'unlock';
+    document.getElementById('lg-title').textContent = 'قفل الجهاز';
+    document.getElementById('lg-sub').textContent = 'ادخل يوزر وباسورد الجهاز عشان تكمل';
+    setupTag.style.display = 'none';
+    confirmInput.style.display = 'none';
+    document.getElementById('lg-submit-btn').textContent = 'فتح القفل';
+    document.getElementById('lg-user').value = lock.user || '';
+    resetBtn.style.display = 'block';
+  }else{
+    lgMode = 'setup';
+    document.getElementById('lg-title').textContent = 'أول استخدام — أمّن الجهاز';
+    document.getElementById('lg-sub').textContent = 'اختار يوزر وباسورد محليين لقفل الشاشة دي';
+    setupTag.style.display = 'block';
+    confirmInput.style.display = 'block';
+    document.getElementById('lg-submit-btn').textContent = 'حفظ وتأمين الجهاز';
+    resetBtn.style.display = 'none';
+  }
+}
+function toggleLgPw(){
+  const inp = document.getElementById('lg-pass');
+  const icon = document.getElementById('lg-pw-icon');
+  if(inp.type === 'password'){ inp.type = 'text'; icon.innerHTML = '<use href="#i-eye-off"></use>'; }
+  else{ inp.type = 'password'; icon.innerHTML = '<use href="#i-eye"></use>'; }
+}
+async function submitLocalGate(){
+  const user = document.getElementById('lg-user').value.trim();
+  const pass = document.getElementById('lg-pass').value;
+  const err = document.getElementById('lg-err');
+  err.textContent = '';
+  if(!user || !pass){ err.textContent = 'اكتب اليوزر والباسورد.'; return; }
+  if(lgMode === 'setup'){
+    const confirmPass = document.getElementById('lg-pass-confirm').value;
+    if(pass.length < 4){ err.textContent = 'الباسورد لازم يكون 4 حروف/أرقام على الأقل.'; return; }
+    if(pass !== confirmPass){ err.textContent = 'تأكيد الباسورد مش مطابق.'; return; }
+    const salt = randomSalt();
+    const hash = await hashPass(pass, salt);
+    localStorage.setItem(LOCK_KEY, JSON.stringify({ user, salt, hash }));
+    unlockToGate();
+  }else{
+    const lock = getLocalLock();
+    if(!lock || lock.user !== user){ err.textContent = 'اليوزر غلط.'; return; }
+    const hash = await hashPass(pass, lock.salt);
+    if(hash !== lock.hash){ err.textContent = 'الباسورد غلط.'; return; }
+    unlockToGate();
+  }
+}
+function unlockToGate(){
+  document.getElementById('localgate').style.display = 'none';
+  document.getElementById('gate').style.display = 'flex';
+  document.getElementById('gate-email').focus();
+}
+function lockDeviceNow(){
+  document.getElementById('dash').style.display = 'none';
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('lg-user').value = ''; document.getElementById('lg-pass').value = '';
+  initLocalGate();
+  document.getElementById('localgate').style.display = 'flex';
+}
+function resetLocalGate(){
+  localStorage.removeItem(LOCK_KEY);
+  document.getElementById('lg-user').value = ''; document.getElementById('lg-pass').value = '';
+  document.getElementById('lg-err').textContent = '';
+  initLocalGate();
+  toast('اتمسح قفل الجهاز — اعمل إعداد جديد.');
+}
+initLocalGate();
+
+/* ================= Firebase ================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyCM4lbv83xStvHDB31CqPTpb40ss9q04so",
+  authDomain: "studytogether-e8108.firebaseapp.com",
+  projectId: "studytogether-e8108",
+  storageBucket: "studytogether-e8108.firebasestorage.app",
+  messagingSenderId: "1019488103298",
+  appId: "1:1019488103298:web:0ff82b789018ff1418fd9b",
+  measurementId: "G-DKCCXL9WTL"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+async function checkGate(){
+  const email = document.getElementById('gate-email').value.trim();
+  const pass = document.getElementById('gate-pass').value;
+  const err = document.getElementById('gate-err');
+  err.textContent = '';
+  if(!email || !pass){ err.textContent = 'اكتب الإيميل وكلمة المرور.'; return; }
+  try{
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    const adminDoc = await db.collection('admins').doc(cred.user.uid).get();
+    if(!adminDoc.exists){
+      err.textContent = 'الحساب ده معندوش صلاحية أدمن.';
+      await auth.signOut();
+      return;
+    }
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('dash').style.display = 'block';
+    loadList('lessons','lessons-list',['title','description']);
+    loadList('practicalTips','tips-list',['title','content']);
+    loadList('actionResearchVideos','videos-list',['title','videoUrl']);
+    loadCoursesAdmin();
+    loadUsers();
+    loadReports();
+    loadAnalytics();
+    loadCommunityMod();
+    loadNotebooksMod();
+    loadWalletAdmin();
+    loadReferralsAdmin();
+    loadChallengesAdmin();
+    subscribeAdminConvList();
+    loadContactSettings();
+    loadAnnouncement();
+    loadMaintenance();
+    loadFeatureFlags();
+    loadAccountsAdmin();
+    loadSupervisorsAdmin();
+    loadCouponsAdmin(); loadAudit(); loadLimitsAdmin(); loadEmailConfig(); loadUploadConfigAdmin();
+  }catch(e){
+    err.textContent = 'دخول فشل: ' + (e.message || e.code);
+  }
+}
+function adminLogout(){
+  auth.signOut();
+  document.getElementById('dash').style.display = 'none';
+  document.getElementById('gate').style.display = 'flex';
+}
+function switchTab(name, btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+}
+
+/* ================= لسه كيف / التربية العملية / بحوث الفعل ================= */
+const COLLECTION_META = {
+  lessons: { listId:'lessons-list', statusId:'lessons-status', fields:['title','description'], labels:['العنوان','الوصف'], types:['text','textarea'] },
+  practicalTips: { listId:'tips-list', statusId:'tips-status', fields:['title','content'], labels:['العنوان','المحتوى'], types:['text','textarea'] },
+  actionResearchVideos: { listId:'videos-list', statusId:'videos-status', fields:['title','videoUrl'], labels:['العنوان','رابط الفيديو'], types:['text','text'] },
+};
+async function addItem(collection, fieldMap){
+  const data = {};
+  fieldMap.forEach(pair=>{
+    const [key, elId] = pair.split(':');
+    data[key] = document.getElementById(elId).value.trim();
+  });
+  const meta = COLLECTION_META[collection];
+  const status = document.getElementById(meta.statusId);
+  if(!data.title){ status.className='status err'; status.textContent='اكتب العنوان.'; return; }
+  try{
+    data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+    await db.collection(collection).add(data);
+    status.className='status ok'; status.textContent='✓ تمت الإضافة.';
+    fieldMap.forEach(pair=>{ document.getElementById(pair.split(':')[1]).value=''; });
+    loadList(collection, meta.listId, meta.fields);
+  }catch(err){ status.className='status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+async function loadList(collection, listId, fields){
+  const el = document.getElementById(listId);
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection(collection).orderBy('createdAt','desc').limit(50).get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">لسه مفيش عناصر.</div></div>'; return; }
+    el.innerHTML = snap.docs.map(d=>{
+      const it = d.data();
+      return `<div class="item" id="row-${collection}-${d.id}">
+        <div><div class="t">${escapeHtml(it[fields[0]]||'')}</div><div class="d">${escapeHtml((it[fields[1]]||'').toString().slice(0,90))}</div></div>
+        <div class="actions">
+          <button class="edit-btn" onclick="startEditItem('${collection}','${d.id}')">${ic('edit')} تعديل</button>
+          <button class="del" onclick="deleteItem('${collection}','${d.id}','${listId}')">${ic('trash')} حذف</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function startEditItem(collection, id){
+  const meta = COLLECTION_META[collection];
+  const row = document.getElementById(`row-${collection}-${id}`);
+  if(!row) return;
+  row.innerHTML = '<div class="edit-form">جاري التحميل...</div>';
+  try{
+    const doc = await db.collection(collection).doc(id).get();
+    const it = doc.data() || {};
+    const f0 = meta.fields[0], f1 = meta.fields[1];
+    const field1Html = meta.types[1] === 'textarea'
+      ? `<textarea rows="3" id="ed-${f1}-${id}">${escapeHtml(it[f1]||'')}</textarea>`
+      : `<input type="text" id="ed-${f1}-${id}" value="${escapeAttr(it[f1]||'')}">`;
+    row.innerHTML = `<div class="edit-form">
+      <input type="text" id="ed-${f0}-${id}" value="${escapeAttr(it[f0]||'')}" placeholder="${meta.labels[0]}">
+      ${field1Html}
+      <div class="actions-row">
+        <button class="save-sm" onclick="saveEditItem('${collection}','${id}')">${ic('check')} حفظ</button>
+        <button class="cancel-sm" onclick="loadList('${collection}','${meta.listId}',['${f0}','${f1}'])">إلغاء</button>
+      </div>
+    </div>`;
+  }catch(err){ row.innerHTML = `<div class="d">تعذّر التحميل: ${escapeHtml(err.message)}</div>`; }
+}
+async function saveEditItem(collection, id){
+  const meta = COLLECTION_META[collection];
+  const f0 = meta.fields[0], f1 = meta.fields[1];
+  const v0 = document.getElementById(`ed-${f0}-${id}`).value.trim();
+  const v1 = document.getElementById(`ed-${f1}-${id}`).value.trim();
+  if(!v0){ toast('اكتب العنوان.', {type:'err'}); return; }
+  try{
+    await db.collection(collection).doc(id).update({ [f0]: v0, [f1]: v1 });
+    toast('تم حفظ التعديل.');
+    loadList(collection, meta.listId, meta.fields);
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+async function deleteItem(collection, id, listId){
+  const meta = COLLECTION_META[collection];
+  let snapshotData = null;
+  try{ const doc = await db.collection(collection).doc(id).get(); snapshotData = doc.data(); }catch(e){}
+  try{
+    await db.collection(collection).doc(id).delete();
+    loadList(collection, listId, meta.fields);
+    toast('تم الحذف.', { undo: async () => {
+      if(!snapshotData) return;
+      try{ await db.collection(collection).doc(id).set(snapshotData); loadList(collection, listId, meta.fields); toast('اترجع العنصر.'); }
+      catch(e){ toast('تعذّر التراجع.', {type:'err'}); }
+    }});
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+
+/* ================= الدورات ================= */
+async function addCourse(){
+  const title = document.getElementById('co-title').value.trim();
+  const desc = document.getElementById('co-desc').value.trim();
+  const status = document.getElementById('courses-status');
+  if(!title){ status.className='status err'; status.textContent='اكتب عنوان الدورة.'; return; }
+  try{
+    await db.collection('courses').add({ title, description: desc, lessons: [], createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    status.className='status ok'; status.textContent='✓ تمت الإضافة.';
+    document.getElementById('co-title').value=''; document.getElementById('co-desc').value='';
+    loadCoursesAdmin();
+  }catch(err){ status.className='status err'; status.textContent='حصل خطأ: '+err.message; }
+}
+async function loadCoursesAdmin(){
+  const el = document.getElementById('courses-list');
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('courses').orderBy('createdAt','desc').limit(50).get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">لسه مفيش دورات.</div></div>'; return; }
+    el.innerHTML = snap.docs.map(d=>{
+      const c = d.data();
+      const lessons = c.lessons || [];
+      return `<div class="item" id="row-courses-${d.id}" style="flex-direction:column; align-items:stretch;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
+          <div><div class="t">${escapeHtml(c.title||'')}</div><div class="d">${escapeHtml((c.description||'').slice(0,120))}</div></div>
+          <div class="actions">
+            <button class="edit-btn" onclick="startEditCourse('${d.id}')">${ic('edit')} تعديل</button>
+            <button class="del" onclick="deleteCourseAdmin('${d.id}')">${ic('trash')} حذف</button>
+          </div>
+        </div>
+        <button class="edit-btn" style="margin-top:10px; align-self:flex-start;" onclick="toggleLessonsPanel('${d.id}')">${ic('book')} إدارة الدروس (${lessons.length})</button>
+        <div id="lessons-panel-${d.id}" style="display:none; margin-top:12px; border-top:1px dashed var(--line); padding-top:12px;"></div>
+      </div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+function toggleLessonsPanel(courseId){
+  const panel = document.getElementById('lessons-panel-'+courseId);
+  if(!panel) return;
+  if(panel.style.display === 'none'){ panel.style.display = 'block'; renderLessonsPanel(courseId); }
+  else panel.style.display = 'none';
+}
+async function renderLessonsPanel(courseId){
+  const panel = document.getElementById('lessons-panel-'+courseId);
+  panel.innerHTML = 'جاري التحميل...';
+  try{
+    const doc = await db.collection('courses').doc(courseId).get();
+    const c = doc.data() || {};
+    const lessons = c.lessons || [];
+    panel.innerHTML = `
+      <div class="field"><label>عنوان الدرس الجديد</label><input type="text" id="nl-title-${courseId}"></div>
+      <div class="field"><label>رابط الفيديو (اختياري)</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="nl-video-${courseId}">
+          <button type="button" class="btn" style="background:var(--ink); white-space:nowrap;" onclick="openDrivePicker('nl-video-${courseId}')">${ic('folder')} من Drive</button>
+        </div>
+      </div>
+      <button class="btn" onclick="addLessonToCourse('${courseId}')">${ic('check')} إضافة الدرس</button>
+      <div style="margin-top:12px;">
+        ${lessons.length ? lessons.map(l => `<div class="item"><div><div class="t">${escapeHtml(l.title||'')}</div>${l.videoUrl?`<div class="d">${escapeHtml(l.videoUrl)}</div>`:''}</div><div class="actions"><button class="del" onclick="removeLessonFromCourse('${courseId}','${l.id}')">${ic('trash')} حذف</button></div></div>`).join('') : '<div class="item"><div class="d">لسه مفيش دروس في الدورة دي.</div></div>'}
+      </div>
+    `;
+  }catch(err){ panel.innerHTML = 'تعذّر التحميل: '+escapeHtml(err.message); }
+}
+async function addLessonToCourse(courseId){
+  const titleEl = document.getElementById('nl-title-'+courseId);
+  const videoEl = document.getElementById('nl-video-'+courseId);
+  const title = titleEl.value.trim();
+  const videoUrl = videoEl.value.trim();
+  if(!title){ toast('اكتب عنوان الدرس.', {type:'err'}); return; }
+  const lessonId = 'L' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+  try{
+    await db.collection('courses').doc(courseId).update({
+      lessons: firebase.firestore.FieldValue.arrayUnion({ id: lessonId, title, videoUrl: videoUrl||null })
+    });
+    titleEl.value=''; videoEl.value='';
+    toast('اتضاف الدرس.');
+    renderLessonsPanel(courseId);
+    loadCoursesAdmin();
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+async function removeLessonFromCourse(courseId, lessonId){
+  try{
+    const doc = await db.collection('courses').doc(courseId).get();
+    const c = doc.data() || {};
+    const lessons = (c.lessons||[]).filter(l => l.id !== lessonId);
+    await db.collection('courses').doc(courseId).update({ lessons });
+    toast('اتحذف الدرس.');
+    renderLessonsPanel(courseId);
+    loadCoursesAdmin();
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+async function startEditCourse(id){
+  const row = document.getElementById('row-courses-'+id);
+  if(!row) return;
+  try{
+    const doc = await db.collection('courses').doc(id).get();
+    const c = doc.data() || {};
+    row.innerHTML = `<div class="edit-form">
+      <input type="text" id="ed-co-title-${id}" value="${escapeAttr(c.title||'')}" placeholder="العنوان">
+      <textarea rows="3" id="ed-co-desc-${id}">${escapeHtml(c.description||'')}</textarea>
+      <div class="actions-row">
+        <button class="save-sm" onclick="saveEditCourse('${id}')">${ic('check')} حفظ</button>
+        <button class="cancel-sm" onclick="loadCoursesAdmin()">إلغاء</button>
+      </div>
+    </div>`;
+  }catch(err){ row.innerHTML = 'تعذّر التحميل: '+escapeHtml(err.message); }
+}
+async function saveEditCourse(id){
+  const title = document.getElementById('ed-co-title-'+id).value.trim();
+  const desc = document.getElementById('ed-co-desc-'+id).value.trim();
+  if(!title){ toast('اكتب العنوان.', {type:'err'}); return; }
+  try{
+    await db.collection('courses').doc(id).update({ title, description: desc });
+    toast('تم حفظ التعديل.');
+    loadCoursesAdmin();
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+async function deleteCourseAdmin(id){
+  let snapshotData = null;
+  try{ const doc = await db.collection('courses').doc(id).get(); snapshotData = doc.data(); }catch(e){}
+  try{
+    await db.collection('courses').doc(id).delete();
+    loadCoursesAdmin();
+    toast('تم الحذف.', { undo: async () => {
+      if(!snapshotData) return;
+      try{ await db.collection('courses').doc(id).set(snapshotData); loadCoursesAdmin(); toast('اترجعت الدورة.'); }
+      catch(e){ toast('تعذّر التراجع.', {type:'err'}); }
+    }});
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+
+/* ================= مجتمع المعلمين — إشراف كامل ================= */
+async function loadCommunityMod(){
+  const el = document.getElementById('community-mod-list');
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('communityPosts').orderBy('createdAt','desc').limit(50).get();
+    if(snap.empty){ el.innerHTML = '<div class="mod-post">لسه مفيش منشورات في المجتمع.</div>'; return; }
+    el.innerHTML = snap.docs.map(d=>{
+      const p = d.data();
+      return `<div class="mod-post" id="mp-${d.id}">
+        <div class="mp-head"><span>${escapeHtml(p.authorName||'مستخدم')} · ${escapeHtml(p.tag||'عام')}</span>
+          <button class="del" onclick="deleteCommunityPost('${d.id}')">${ic('trash')} حذف</button></div>
+        ${p.imageUrl ? `<img src="${escapeAttr(p.imageUrl)}" alt="">` : ''}
+        ${p.content ? `<div class="mp-body">${escapeHtml(p.content)}</div>` : ''}
+        <div style="font-size:11.5px; color:var(--ink-soft);">${ic('thumb')} ${p.likesCount||0} · ${ic('chat-circle')} ${p.commentsCount||0}</div>
+      </div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="mod-post">تعذّر التحميل: '+escapeHtml(err.message)+'</div>'; }
+}
+async function deleteCommunityPost(id){
+  let snapshotData = null;
+  try{ const doc = await db.collection('communityPosts').doc(id).get(); snapshotData = doc.data(); }catch(e){}
+  const row = document.getElementById('mp-'+id);
+  if(row) row.style.display = 'none';
+  try{
+    await db.collection('communityPosts').doc(id).delete();
+    toast('تم حذف المنشور.', { undo: async () => {
+      if(!snapshotData) return;
+      try{ await db.collection('communityPosts').doc(id).set(snapshotData); loadCommunityMod(); toast('اترجع المنشور.'); }
+      catch(e){ toast('تعذّر التراجع.', {type:'err'}); }
+    }});
+  }catch(err){ if(row) row.style.display=''; toast('تعذّر الحذف: '+err.message, {type:'err'}); }
+}
+
+/* ================= دفاتر التحضير — إشراف ================= */
+async function loadNotebooksMod(){
+  const el = document.getElementById('notebooks-mod-list');
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('prepNotebooks').orderBy('createdAt','desc').limit(50).get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">لسه مفيش دفاتر.</div></div>'; return; }
+    el.innerHTML = snap.docs.map(d=>{
+      const n = d.data();
+      return `<div class="item" id="nb-${d.id}">
+        <div><div class="t">${escapeHtml(n.title||'')}</div><div class="d">${escapeHtml(n.subject||'')} — بواسطة ${escapeHtml(n.ownerName||'مستخدم')}</div></div>
+        <div class="actions">
+          <a class="edit-btn" href="${escapeAttr(n.link)}" target="_blank">فتح</a>
+          <button class="del" onclick="deleteNotebookMod('${d.id}')">${ic('trash')} حذف</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function deleteNotebookMod(id){
+  let snapshotData = null;
+  try{ const doc = await db.collection('prepNotebooks').doc(id).get(); snapshotData = doc.data(); }catch(e){}
+  try{
+    await db.collection('prepNotebooks').doc(id).delete();
+    loadNotebooksMod();
+    toast('تم حذف الدفتر.', { undo: async () => {
+      if(!snapshotData) return;
+      try{ await db.collection('prepNotebooks').doc(id).set(snapshotData); loadNotebooksMod(); toast('اترجع الدفتر.'); }
+      catch(e){ toast('تعذّر التراجع.', {type:'err'}); }
+    }});
+  }catch(err){ toast('تعذّر الحذف: '+err.message, {type:'err'}); }
+}
+
+/* ================= دردشات الدعم الفني — الأدمن بيرد كـ "فريق الدعم الفني" ================= */
+const SUPPORT_UID = 'support-team';
+const SUPPORT_NAME = 'فريق الدعم الفني — نُدرس معًا';
+let adminActiveConvId = null;
+let adminConvListUnsub = null;
+let adminMsgUnsub = null;
+function initials(name){ return (name||'؟').trim().split(' ').slice(0,2).map(w=>w[0]).join(' '); }
+
+function subscribeAdminConvList(){
+  if(adminConvListUnsub) adminConvListUnsub();
+  adminConvListUnsub = db.collection('conversations')
+    .where('participants', 'array-contains', SUPPORT_UID)
+    .onSnapshot(snap0 => { const snap = sortSnap(snap0, 'lastMessageAt');
+      const el = document.getElementById('admin-conv-list');
+      if(!el) return;
+      if(snap.empty){ el.innerHTML = '<div class="empty-state" style="padding:16px;">لسه مفيش محادثات دعم.</div>'; return; }
+      el.innerHTML = snap.docs.map(d => {
+        const c = d.data();
+        const otherUid = (c.participants || []).find(u => u !== SUPPORT_UID) || '';
+        const otherName = (c.participantNames && c.participantNames[otherUid]) || 'مستخدم';
+        const unread = (c.unread && c.unread[SUPPORT_UID]) || 0;
+        return `<div class="conv-item ${d.id===adminActiveConvId?'active':''}" onclick="openAdminChat('${d.id}','${escapeAttr(otherUid)}','${escapeAttr(otherName)}')">
+          <div class="mini-avatar">${escapeHtml(initials(otherName))}</div>
+          <div class="conv-info"><div class="conv-name">${escapeHtml(otherName)}</div><div class="conv-preview">${escapeHtml(c.lastMessage||'')}</div></div>
+          ${unread>0 ? `<span class="conv-badge">${unread}</span>` : ''}
+        </div>`;
+      }).join('');
+    }, err => console.warn(err));
+}
+async function openAdminChat(convId, otherUid, otherName){
+  adminActiveConvId = convId;
+  document.getElementById('admin-chat-thread-empty').style.display = 'none';
+  document.getElementById('admin-chat-thread-active').style.display = 'flex';
+  document.getElementById('admin-chat-thread-name').textContent = otherName;
+  document.getElementById('admin-chat-thread-avatar').textContent = initials(otherName);
+  document.getElementById('admin-chat-list-pane').classList.add('hide-mobile');
+  try{ await db.collection('conversations').doc(convId).update({ [`unread.${SUPPORT_UID}`]: 0 }); }catch(e){}
+  if(adminMsgUnsub) adminMsgUnsub();
+  adminMsgUnsub = db.collection('conversations').doc(convId).collection('messages')
+    .orderBy('createdAt','asc').limit(200)
+    .onSnapshot(snap => {
+      const el = document.getElementById('admin-chat-messages');
+      if(!el) return;
+      el.innerHTML = snap.docs.map(d => {
+        const m = d.data();
+        const mine = m.senderUid === SUPPORT_UID;
+        const time = m.createdAt && m.createdAt.toDate ? m.createdAt.toDate().toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'}) : '';
+        return `<div class="msg-bubble ${mine?'mine':'theirs'}">${chatMsgBodyHtml(m)}<span class="msg-time">${time}</span></div>`;
+      }).join('');
+      el.scrollTop = el.scrollHeight;
+    }, err => console.warn(err));
+}
+function closeAdminChatThread(){ document.getElementById('admin-chat-list-pane').classList.remove('hide-mobile'); }
+async function sendAdminChatMessage(){
+  const input = document.getElementById('admin-chat-input');
+  const text = input.value.trim();
+  if(!text || !adminActiveConvId) return;
+  const convId = adminActiveConvId;
+  const otherUid = convId.split('_').find(u => u !== SUPPORT_UID);
+  input.value = '';
+  try{
+    await db.collection('conversations').doc(convId).collection('messages').add({
+      senderUid: SUPPORT_UID, senderName: SUPPORT_NAME, text, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await db.collection('conversations').doc(convId).update({
+      lastMessage: text, lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(), lastSenderUid: SUPPORT_UID,
+      [`unread.${otherUid}`]: firebase.firestore.FieldValue.increment(1)
+    });
+  }catch(err){ toast('تعذّر إرسال الرسالة: '+err.message, {type:'err'}); }
+}
+
+/* ================= إعدادات التواصل (siteSettings/contact) ================= */
+async function loadContactSettings(){
+  try{
+    const doc = await db.collection('siteSettings').doc('contact').get();
+    const s = doc.exists ? doc.data() : {};
+    document.getElementById('set-whatsapp').value = s.whatsapp || '';
+    document.getElementById('set-phone').value = s.phone || '';
+    document.getElementById('set-email').value = s.email || '';
+    document.getElementById('set-fb').value = s.facebookGroup || '';
+    document.getElementById('set-tg').value = s.telegram || '';
+  }catch(err){ console.warn(err); }
+}
+async function saveContactSettings(){
+  const status = document.getElementById('settings-status');
+  const data = {
+    whatsapp: document.getElementById('set-whatsapp').value.trim(),
+    phone: document.getElementById('set-phone').value.trim(),
+    email: document.getElementById('set-email').value.trim(),
+    facebookGroup: document.getElementById('set-fb').value.trim(),
+    telegram: document.getElementById('set-tg').value.trim(),
+  };
+  try{
+    await db.collection('siteSettings').doc('contact').set(data, { merge: true });
+    status.className = 'status ok'; status.textContent = '✓ تم حفظ إعدادات التواصل.';
+    toast('اتحفظت إعدادات التواصل.');
+  }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
+}
+
+/* ================= إعلان عام (siteSettings/announcement) — يظهر فورًا لكل المستخدمين ================= */
+async function loadAnnouncement(){
+  try{
+    const doc = await db.collection('siteSettings').doc('announcement').get();
+    const d = doc.exists ? doc.data() : {};
+    document.getElementById('set-announce-text').value = d.text || '';
+    document.getElementById('set-announce-active').checked = !!d.active;
+  }catch(err){ console.warn(err); }
+}
+async function saveAnnouncement(){
+  const status = document.getElementById('announce-status');
+  const text = document.getElementById('set-announce-text').value.trim();
+  const active = document.getElementById('set-announce-active').checked;
+  try{
+    await db.collection('siteSettings').doc('announcement').set({ text, active, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    status.className = 'status ok'; status.textContent = active ? '✓ الإعلان ظاهر الآن لكل المستخدمين.' : '✓ تم الحفظ (الإعلان متوقف حاليًا).';
+    toast('اتحفظ الإعلان.');
+  }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
+}
+
+/* ================= وضع الصيانة (siteSettings/maintenance) ================= */
+async function loadMaintenance(){
+  try{
+    const doc = await db.collection('siteSettings').doc('maintenance').get();
+    const d = doc.exists ? doc.data() : {};
+    document.getElementById('set-maint-msg').value = d.message || '';
+    document.getElementById('set-maint-active').checked = !!d.active;
+  }catch(err){ console.warn(err); }
+}
+async function saveMaintenance(){
+  const status = document.getElementById('maint-status');
+  const message = document.getElementById('set-maint-msg').value.trim();
+  const active = document.getElementById('set-maint-active').checked;
+  try{
+    await db.collection('siteSettings').doc('maintenance').set({ message, active, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    status.className = 'status ok'; status.textContent = active ? '⚠️ الموقع مقفول دلوقتي على كل المستخدمين.' : '✓ تم الحفظ (الموقع شغال عادي).';
+    toast(active ? 'اتفعّل وضع الصيانة.' : 'اتحفظ — الموقع شغال عادي.');
+  }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
+}
+
+/* ================= التحكم في ظهور أدوات القائمة الجانبية (siteSettings/featureFlags) ================= */
+const FEATURE_FLAG_ITEMS = [
+  ['v-learn','تعلم كيف'], ['v-library','مكتبة الموارد'], ['v-courses','الدورات والتعلم'],
+  ['v-notebooks','دفاتر تحضير'], ['v-lesson-planner','مولد تحضير الدروس'], ['v-assistant','مساعد المعلم'],
+  ['v-questions','بنك الأسئلة (معلم)'], ['v-quizzes','مصنع الاختبارات (معلم)'], ['exam-easy','امتحانك بسهولة'],
+  ['v-certificates','مولد الشهادات (معلم)'], ['v-prep-room','غرفة التحضير الجماعي (معلم)'], ['v-tools-hub','مركز الأدوات (معلم)'],
+  ['boardplus','سبورة إلكترونية'], ['v-saved','المحفوظات'], ['t-community','المجتمع'],
+  ['v-leaderboard','لوحة المتصدرين'], ['v-wallet','المحفظة'], ['v-challenge','تحدي الأسبوع'],
+  ['v-career','مساري كمعلم'], ['v-sim','محاكاة المواقف الصفية'], ['v-qa','الأسئلة'],
+  ['v-groups','مجموعات التخصص'], ['v-expert','اسأل معلماً خبيراً'], ['v-problems','مشكلتي في الفصل'],
+  ['v-chats','الدردشات'], ['v-take-quiz-list','اختبارات متاحة (طالب معلم)'], ['s-practical','التربية العملية (طالب معلم)'],
+  ['s-research','بحوث الفعل (طالب معلم)'], ['s-myresearch','أبحاثي (طالب معلم)'], ['v-portfolio','ملف الإنجاز (طالب معلم)'],
+  ['v-tasks','سجل المهام (طالب معلم)'], ['v-calendar','التقويم (طالب معلم)'],
+];
+function renderFeatureFlagList(hidden){
+  const el = document.getElementById('ff-list');
+  if(!el) return;
+  el.innerHTML = FEATURE_FLAG_ITEMS.map(([key,label]) =>
+    `<label style="display:flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700;">
+      <input type="checkbox" class="ff-check" data-key="${key}" style="width:auto;" ${hidden.includes(key)?'':'checked'}> ${label}
+    </label>`).join('');
+}
+async function loadFeatureFlags(){
+  try{
+    const doc = await db.collection('siteSettings').doc('featureFlags').get();
+    const hidden = (doc.exists && Array.isArray(doc.data().hidden)) ? doc.data().hidden : [];
+    renderFeatureFlagList(hidden);
+  }catch(err){ renderFeatureFlagList([]); console.warn(err); }
+}
+async function saveFeatureFlags(){
+  const status = document.getElementById('ff-status');
+  const hidden = Array.from(document.querySelectorAll('.ff-check')).filter(c => !c.checked).map(c => c.dataset.key);
+  try{
+    await db.collection('siteSettings').doc('featureFlags').set({ hidden, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    status.className = 'status ok'; status.textContent = '✓ اتحفظت إعدادات الظهور.';
+    toast('اتحفظت إعدادات الظهور.');
+  }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
+}
+
+/* ---------- Google Drive Picker ----------
+   لازم تحط بياناتك من Google Cloud Console (Credentials) قبل ما الزرار يشتغل:
+   1) فعّل Google Picker API و Google Drive API في مشروعك على Google Cloud.
+   2) اعمل OAuth 2.0 Client ID (نوعه Web application) وحط الدومين بتاعك في Authorized JavaScript origins.
+   3) اعمل API Key وقيّدها على Picker API.
+   4) حط القيمتين تحت بدل الـ placeholders. */
+const GOOGLE_API_KEY = 'YOUR_GOOGLE_API_KEY';
+const GOOGLE_CLIENT_ID = 'YOUR_OAUTH_CLIENT_ID.apps.googleusercontent.com';
+
+let gTokenClient = null;
+let gAccessToken = null;
+let gPickerTargetInput = null;
+
+function openDrivePicker(targetInputId){
+  gPickerTargetInput = targetInputId;
+  if(GOOGLE_API_KEY.startsWith('YOUR_') || GOOGLE_CLIENT_ID.startsWith('YOUR_')){
+    toast('لسه محتاج تظبط GOOGLE_API_KEY و GOOGLE_CLIENT_ID عشان زرار Drive يشتغل.', {type:'err', duration:5000});
+    return;
+  }
+  if(!gTokenClient){
+    gTokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: GOOGLE_CLIENT_ID,
+      scope: 'https://www.googleapis.com/auth/drive.readonly',
+      callback: (resp) => {
+        if(resp.error){ toast('تعذّر الاتصال بجوجل درايف.', {type:'err'}); return; }
+        gAccessToken = resp.access_token;
+        showPicker();
+      },
+    });
+  }
+  gTokenClient.requestAccessToken({ prompt: gAccessToken ? '' : 'consent' });
+}
+function showPicker(){
+  gapi.load('picker', () => {
+    const view = new google.picker.DocsView().setIncludeFolders(true);
+    const picker = new google.picker.PickerBuilder()
+      .addView(view)
+      .setOAuthToken(gAccessToken)
+      .setDeveloperKey(GOOGLE_API_KEY)
+      .setCallback(pickerCallback)
+      .build();
+    picker.setVisible(true);
+  });
+}
+function pickerCallback(data){
+  if(data.action === google.picker.Action.PICKED){
+    const file = data.docs[0];
+    const link = file.url || ('https://drive.google.com/file/d/' + file.id + '/view');
+    if(gPickerTargetInput) document.getElementById(gPickerTargetInput).value = link;
+  }
+}
+
+const PLAN_LABELS = { onetime:'رسوم مرة واحدة', free:'تجربة مجانية', sub1:'الاشتراك الأول', sub2:'الاشتراك الثاني', sub3:'الاشتراك الثالث', pro:'البرو (مدى الحياة)' };
+const STATUS_LABELS = { awaiting_fee:'لم يدفع بعد', pending_approval:'بانتظار الموافقة', active:'نشط', pending_payment:'قيد المراجعة', expired:'منتهي', rejected:'مرفوض' };
+
+async function loadUsers(){
+  const el = document.getElementById('users-list');
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('users').orderBy('createdAt','desc').limit(100).get();
+    if(snap.empty){ el.innerHTML = '<div class="urow">لسه مفيش مستخدمين.</div>'; return; }
+    el.innerHTML = snap.docs.map(d=>{
+      const u = d.data();
+      const plan = u.plan || 'free';
+      const status = u.status || 'active';
+      const isExpert = !!u.isExpert;
+      const isVerified = !!u.verified;
+      return `<div class="urow" id="urow-${d.id}">
+        <div class="u-top">
+          <div><div class="u-name">${escapeHtml(u.name||'—')} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span>${isExpert?' <span class="badge active">⭐ معلم خبير</span>':''}${isVerified?' <span class="badge active">✓ موثّق</span>':''}</div>
+          <div class="u-meta">${escapeHtml(u.email||'')} · ${escapeHtml(u.phone||'')} · ${accLabel(u)}${u.supervisorId?' · تابع لمشرف':''}${PAID_TYPES.includes(u.accountType) && u.feeAmount!=null ? ' · رسوم: '+u.feeAmount+' ج'+(u.couponCode?' (كوبون '+escapeHtml(u.couponCode)+')':'') : ''}</div></div>
+        </div>
+        <div class="u-controls">
+          <select id="plan-${d.id}">${Object.keys(PLAN_LABELS).map(k=>`<option value="${k}" ${k===plan?'selected':''}>${PLAN_LABELS[k]}</option>`).join('')}</select>
+          <select id="status-${d.id}">${Object.keys(STATUS_LABELS).map(k=>`<option value="${k}" ${k===status?'selected':''}>${STATUS_LABELS[k]}</option>`).join('')}</select>
+          <button class="save-btn" onclick="saveUser('${d.id}')">${ic('check')} حفظ</button>
+          <button class="edit-btn" onclick="toggleExpert('${d.id}', ${!isExpert})">${isExpert ? '✕ شيل شارة الخبير' : '⭐ امنح شارة خبير'}</button>
+          <button class="edit-btn" onclick="toggleVerified('${d.id}', ${!isVerified})">${isVerified ? '✕ شيل التوثيق' : '✓ وثّق الحساب'}</button>
+          ${(status==='pending_payment'||status==='awaiting_fee') && PAID_TYPES.includes(u.accountType) ? `<button class="save-btn" onclick="confirmPayment('${d.id}')">✓ تأكيد الدفع وتفعيل الحساب</button>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }catch(err){ el.innerHTML = '<div class="urow">تعذّر تحميل المستخدمين: '+escapeHtml(err.message)+'</div>'; }
+}
+async function toggleExpert(uid, makeExpert){
+  try{
+    await db.collection('users').doc(uid).update({ isExpert: makeExpert });
+    audit('expert', uid, nameOfUid(uid), makeExpert ? 'منح' : 'سحب');
+    // مزامنة الشارة مع الملف الاحترافي العام لو المستخدم عمله قبل كده
+    try{ await db.collection('publicProfiles').doc(uid).set({ isExpert: makeExpert }, { merge: true }); }catch(e){ console.warn('publicProfile sync failed', e); }
+    toast(makeExpert ? 'اتمنحت شارة معلم خبير.' : 'اتشالت شارة معلم خبير.');
+    loadUsers();
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+async function toggleVerified(uid, makeVerified){
+  try{
+    await db.collection('users').doc(uid).update({ verified: makeVerified });
+    audit('verified', uid, nameOfUid(uid), makeVerified ? 'توثيق' : 'سحب التوثيق');
+    try{ await db.collection('publicProfiles').doc(uid).set({ verified: makeVerified }, { merge: true }); }catch(e){ console.warn('publicProfile sync failed', e); }
+    toast(makeVerified ? 'اتوثّق الحساب.' : 'اتشال التوثيق.');
+    loadUsers();
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+
+/* ================= البلاغات ================= */
+async function loadReports(){
+  const el = document.getElementById('reports-list'); if(!el) return;
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = sortSnap(await db.collection('reports').where('status','==','open').get(), 'createdAt', 'desc', 100);
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">مفيش بلاغات مفتوحة دلوقتي.</div></div>'; return; }
+    const rows = await Promise.all(snap.docs.map(async d => {
+      const r = d.data();
+      let postPreview = '(المنشور اتحذف بالفعل)';
+      try{
+        const postDoc = await db.collection('communityPosts').doc(r.postId).get();
+        if(postDoc.exists) postPreview = (postDoc.data().content||'').slice(0,150);
+      }catch(e){}
+      return `<div class="item" id="report-${d.id}" style="flex-direction:column; align-items:stretch;">
+        <div class="t">بلاغ من ${escapeHtml(r.reporterName||'مستخدم')}</div>
+        <div class="d">السبب: ${escapeHtml(r.reason||'(مفيش سبب مكتوب)')}</div>
+        <div class="d" style="margin-top:6px; padding:8px; background:var(--paper); border-radius:6px;">نص المنشور: ${escapeHtml(postPreview)}</div>
+        <div class="actions" style="margin-top:10px;">
+          <button class="edit-btn" onclick="dismissReport('${d.id}')">${ic('check')} تجاهل البلاغ</button>
+          <button class="del" onclick="deleteReportedPost('${d.id}','${r.postId}')">${ic('trash')} احذف المنشور</button>
+        </div>
+      </div>`;
+    }));
+    el.innerHTML = rows.join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر تحميل البلاغات: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function dismissReport(reportId){
+  try{ await db.collection('reports').doc(reportId).update({ status: 'dismissed' }); toast('اتجوهل البلاغ.'); loadReports(); }
+  catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+async function deleteReportedPost(reportId, postId){
+  try{
+    await db.collection('communityPosts').doc(postId).delete().catch(()=>{});
+    await db.collection('reports').doc(reportId).update({ status: 'resolved' });
+    toast('اتحذف المنشور وتم إغلاق البلاغ.');
+    loadReports();
+  }catch(err){ toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+
+/* ================= الإحالات ================= */
+async function loadReferralsAdmin(){
+  const el = document.getElementById('referrals-admin-list'); if(!el) return;
+  try{
+    const snap = await db.collection('referrals').where('rewarded','==',false).get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">مفيش إحالات معلّقة.</div></div>'; return; }
+    const rows = [];
+    for(const d of snap.docs){ const r = d.data(); rows.push({id:d.id, ...r}); }
+    el.innerHTML = rows.map(r => `<div class="item"><div><div class="t">${escapeHtml(r.newName||'مستخدم')}</div><div class="d">دعوة من: ${escapeHtml(r.referrerUid)}</div></div><div class="actions"><button class="edit-btn" onclick="rewardReferral('${r.id}','${r.referrerUid}')">${ic('check')} امنح ${REFERRAL_POINTS_ADMIN} نقطة</button></div></div>`).join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+const REFERRAL_POINTS_ADMIN = 30;
+async function rewardReferral(id, referrerUid){
+  try{
+    await db.collection('pointsLedger').add({ uid: referrerUid, amount: REFERRAL_POINTS_ADMIN, reason: 'referral', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    await db.collection('referrals').doc(id).update({ rewarded: true });
+    toast('اتمنحت النقاط.'); loadReferralsAdmin();
+  }catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
+}
+
+/* ================= المحفظة + تحدي الأسبوع ================= */
+async function loadWalletAdmin(){
+  const el = document.getElementById('wallet-admin-list'); if(!el) return;
+  try{
+    const snap = await db.collection('walletRedemptions').where('status','==','pending').get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">مفيش طلبات استبدال معلّقة.</div></div>'; return; }
+    el.innerHTML = snap.docs.map(d => { const r = d.data(); return `<div class="item" style="flex-direction:column; align-items:stretch;"><div class="t">${escapeHtml(r.name||'مستخدم')} — ${r.egp} ج.م (${r.points} نقطة)</div><div class="d">${r.purpose==='renew'?'تجديد اشتراك':'ترقية عضوية'}</div><div class="actions" style="margin-top:8px;"><button class="edit-btn" onclick="setRedeem('${d.id}','approved')">${ic('check')} اتطبّق</button><button class="del" onclick="setRedeem('${d.id}','rejected')">${ic('trash')} ارفض وارجّع النقاط</button></div></div>`; }).join('');
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function setRedeem(id, status){
+  try{ await db.collection('walletRedemptions').doc(id).update({ status }); toast('تم.'); loadWalletAdmin(); }
+  catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
+}
+async function loadChallengesAdmin(){
+  const el = document.getElementById('challenges-list'); if(!el) return;
+  try{
+    const rows = (await db.collection('challenges').get()).docs.map(d => ({id:d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+    el.innerHTML = rows.map(c => `<div class="item"><div><div class="t">${escapeHtml(c.title||'')} ${c.active?'🔥':'🏁 الفايز: '+escapeHtml(c.winnerName||'—')}</div><div class="d">${escapeHtml(c.description||'')}</div></div>${c.active?`<div class="actions"><button class="edit-btn" onclick="closeChallenge('${c.id}')">${ic('check')} اقفل وأعلن الفايز</button></div>`:''}</div>`).join('') || '<div class="item"><div class="d">مفيش تحديات لسه.</div></div>';
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function addChallenge(){
+  const title = document.getElementById('chl-title').value.trim(), description = document.getElementById('chl-desc').value.trim();
+  if(!title){ toast('اكتب عنوان التحدي.', {type:'err'}); return; }
+  try{
+    await db.collection('challenges').add({ title, description, active: true, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    document.getElementById('chl-title').value = ''; document.getElementById('chl-desc').value = '';
+    toast('اتطلق التحدي.'); loadChallengesAdmin();
+  }catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
+}
+async function closeChallenge(id){
+  try{
+    const [es, vs] = await Promise.all([db.collection('challengeEntries').where('challengeId','==',id).get(), db.collection('challengeVotes').where('challengeId','==',id).get()]);
+    const tally = {}; vs.forEach(d => { const e = d.data().entryId; tally[e] = (tally[e]||0) + 1; });
+    const top = es.docs.map(d => ({ ...d.data(), id: d.id, v: tally[d.id]||0 })).sort((a,b) => b.v - a.v)[0];
+    await db.collection('challenges').doc(id).update({ active: false, winnerName: top ? top.ownerName : '', winnerEntryId: top ? top.id : '' });
+    toast(top ? 'الفايز: '+top.ownerName : 'اتقفل التحدي (مفيش مشاركات).'); loadChallengesAdmin();
+  }catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
+}
+
+/* ================= الإحصائيات ================= */
+async function loadAnalytics(){
+  const el = document.getElementById('analytics-content'); if(!el) return;
+  el.innerHTML = 'جاري التحميل...';
+  const counters = [
+    { label: 'المستخدمين', collection: 'users' },
+    { label: 'منشورات المجتمع', collection: 'communityPosts' },
+    { label: 'دفاتر التحضير', collection: 'prepNotebooks' },
+    { label: 'الدورات', collection: 'courses' },
+    { label: 'الدروس', collection: 'lessons' },
+    { label: 'أسئلة بنك الأسئلة', collection: 'questions' },
+    { label: 'الاختبارات', collection: 'quizzes' },
+    { label: 'محاولات الاختبارات', collection: 'quizAttempts' },
+    { label: 'أبحاث العمل', collection: 'research' },
+    { label: 'البلاغات المفتوحة', collection: 'reports', where: ['status','==','open'] },
+  ];
+  try{
+    const results = await Promise.all(counters.map(async c => {
+      let q = db.collection(c.collection);
+      if(c.where) q = q.where(c.where[0], c.where[1], c.where[2]);
+      const snap = await q.count().get();
+      return { label: c.label, count: snap.data().count };
+    }));
+    el.innerHTML = `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;">${results.map(r => `<div class="card" style="text-align:center; margin-bottom:0; padding:18px 10px;"><div style="font-size:24px; font-weight:800; color:var(--brick); margin-bottom:4px;">${r.count}</div><div style="font-size:12.5px; color:var(--ink-soft);">${escapeHtml(r.label)}</div></div>`).join('')}</div>`;
+  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر تحميل الإحصائيات: '+escapeHtml(err.message)+'</div></div>'; }
+}
+async function saveUser(uid){
+  const plan = document.getElementById('plan-'+uid).value;
+  const status = document.getElementById('status-'+uid).value;
+  const statusEl = document.getElementById('users-status');
+  try{
+    await db.collection('users').doc(uid).update({ plan, status });
+    audit('save_user', uid, nameOfUid(uid), 'الخطة: ' + plan + ' / الحالة: ' + status);
+    statusEl.className = 'status ok'; statusEl.textContent = '✓ تم تحديث المستخدم.';
+    toast('تم تحديث بيانات المستخدم.');
+    db.collection('notifications').add({
+      recipientUid: uid, type: 'plan', text: 'تم تحديث خطتك/حالة اشتراكك من فريق الإدارة', viewId: null, read: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(()=>{});
+    loadUsers();
+  }catch(err){ statusEl.className = 'status err'; statusEl.textContent = 'حصل خطأ: '+err.message; toast('حصل خطأ: '+err.message, {type:'err'}); }
+}
+
+/* ================= مرفقات الدردشة: صور / ملفات / تسجيلات صوتية / روابط ================= */
+let CHAT_MAX_BYTES = 10 * 1024 * 1024; // الحد الأقصى للمرفق (قابل للتعديل من الأدمن)
+let CHAT_REC_MAX_SEC = 180;            // أقصى مدة تسجيل صوتي (قابلة للتعديل من الأدمن)
+function chatSafeUrl(u){ return /^https:\/\//i.test(u || '') ? u : ''; }
+function chatLinkify(escaped){
+  return escaped.replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline; word-break:break-all;">${u}</a>`);
+}
+function chatFmtSize(b){ if(!b) return ''; return b > 1048576 ? (b/1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b/1024)) + ' KB'; }
+function chatMsgBodyHtml(m){
+  const url = chatSafeUrl(m.fileUrl);
+  const text = m.text ? `<div>${chatLinkify(escapeHtml(m.text))}</div>` : '';
+  if(url && m.type === 'image') return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener"><img class="msg-img" loading="lazy" src="${escapeHtml(url)}" alt=""></a>${text}`;
+  if(url && m.type === 'audio') return `<audio controls preload="none" src="${escapeHtml(url)}"></audio>${m.durationSec ? `<div style="font-size:11px; opacity:.75;">تسجيل صوتي · ${m.durationSec} ث</div>` : ''}`;
+  if(url && m.type === 'video') return `<video controls preload="metadata" class="msg-img" src="${escapeHtml(url)}"></video>${text}`;
+  if(url && m.type === 'file') return `<a class="msg-file" href="${escapeHtml(url)}" target="_blank" rel="noopener" download>📎 <span>${escapeHtml(m.fileName || 'ملف')}</span> <small>${chatFmtSize(m.fileSize)}</small></a>${text}`;
+  return chatLinkify(escapeHtml(m.text || ''));
+}
+function chatPreviewFor(type, text){
+  return ({ image:'📷 صورة', audio:'🎤 تسجيل صوتي', video:'🎬 فيديو', file:'📎 ملف' })[type] || text;
+}
+async function chatPost(ctx, payload){
+  const ts = firebase.firestore.FieldValue.serverTimestamp();
+  await db.collection('conversations').doc(ctx.convId).collection('messages').add(Object.assign({ senderUid: ctx.uid, senderName: ctx.name, createdAt: ts }, payload));
+  await db.collection('conversations').doc(ctx.convId).update({
+    lastMessage: chatPreviewFor(payload.type, payload.text), lastMessageAt: ts, lastSenderUid: ctx.uid,
+    [`unread.${ctx.otherUid}`]: firebase.firestore.FieldValue.increment(1),
+    [`typing.${ctx.uid}`]: null
+  });
+  if(typeof ctx.after === 'function') ctx.after();
+}
+function chatSetStatus(html){
+  const el = document.getElementById('chat-upload-status'); if(!el) return;
+  el.style.display = html ? 'flex' : 'none'; el.innerHTML = html || '';
+}
+function chatKindOf(file){
+  const t = file.type || '';
+  if(t.startsWith('image/')) return 'image';
+  if(t.startsWith('audio/')) return 'audio';
+  if(t.startsWith('video/')) return 'video';
+  return 'file';
+}
+async function chatSendFile(file, extra){
+  const ctx = chatCtx(); if(!ctx) return;
+  if(file.size > CHAT_MAX_BYTES){ toast('الملف أكبر من ' + Math.round(CHAT_MAX_BYTES/1048576) + ' ميجا — صغّره أو ابعت رابطه.', {type:'err'}); return; }
+  const kind = (extra && extra.type) || chatKindOf(file);
+  const safeName = (file.name || (kind + '.bin')).replace(/[^\w.\-؀-ۿ]+/g, '_').slice(-80);
+  const path = `chatFiles/${ctx.convId}/${ctx.uid}_${Date.now()}_${safeName}`;
+  chatSetStatus('⏳ جاري رفع المرفق… <b id="chat-upl-pct">0%</b>');
+  try{
+    const url = await uploadFile(path, file, p => { const el = document.getElementById('chat-upl-pct'); if(el) el.textContent = Math.round(p * 100) + '%'; });
+    await chatPost(ctx, Object.assign({ type: kind, text: '', fileUrl: url, fileName: file.name || safeName, fileSize: file.size }, (extra && extra.meta) || {}));
+    chatSetStatus('');
+  }catch(err){
+    chatSetStatus('');
+    toast('تعذّر رفع المرفق (' + (err.code || err.message) + ')', {type:'err'});
+  }
+}
+function chatPickFile(inputEl){ const f = inputEl.files && inputEl.files[0]; inputEl.value = ''; if(f) chatSendFile(f); }
+let chatRec = null;
+async function chatToggleRecord(btn){
+  if(chatRec){ chatRec.stop(); return; }
+  if(!navigator.mediaDevices || !window.MediaRecorder){ toast('المتصفح ده مش بيدعم التسجيل الصوتي.', {type:'err'}); return; }
+  if(!chatCtx()) return;
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+    const mime = ['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(m => MediaRecorder.isTypeSupported(m)) || '';
+    const mr = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
+    const chunks = []; const startedAt = Date.now(); let cancelled = false;
+    mr.ondataavailable = e => { if(e.data.size) chunks.push(e.data); };
+    const tick = setInterval(() => { const s = Math.round((Date.now() - startedAt)/1000); chatSetStatus(`🔴 جاري التسجيل… ${s} ث <button class="chat-mini-btn" onclick="chatCancelRecord()">إلغاء</button> <button class="chat-mini-btn ok" onclick="chatToggleRecord()">إرسال</button>`); if(s >= CHAT_REC_MAX_SEC) mr.stop(); }, 500);
+    mr.onstop = async () => {
+      clearInterval(tick); stream.getTracks().forEach(t => t.stop());
+      if(btn) btn.classList.remove('rec'); chatRec = null; chatSetStatus('');
+      if(cancelled || !chunks.length) return;
+      const blob = new Blob(chunks, { type: mr.mimeType || 'audio/webm' });
+      const ext = (mr.mimeType || '').includes('mp4') ? 'm4a' : 'webm';
+      const f = new File([blob], 'voice-' + Date.now() + '.' + ext, { type: blob.type });
+      await chatSendFile(f, { type:'audio', meta:{ durationSec: Math.round((Date.now() - startedAt)/1000) } });
+    };
+    chatRec = { stop: () => mr.stop(), cancel: () => { cancelled = true; mr.stop(); } };
+    if(btn) btn.classList.add('rec');
+    mr.start();
+  }catch(err){ toast('مقدرناش نوصل للميكروفون — اسمح بالإذن من المتصفح.', {type:'err'}); }
+}
+function chatCancelRecord(){ if(chatRec) chatRec.cancel(); }
+
+/* ================= رفع الملفات عبر Cloudinary (بديل Firebase Storage — شغّال على الخطة المجانية) =================
+   الإعداد (cloudName + uploadPreset) بيتحفظ من لوحة الأدمن في siteSettings/uploadConfig. */
+let UPLOAD_CFG = { cloudName: '', uploadPreset: '' };
+function uploadReady(){ return !!(UPLOAD_CFG.cloudName && UPLOAD_CFG.uploadPreset); }
+function uploadFile(path, file, onProgress){
+  return new Promise((resolve, reject) => {
+    if(!uploadReady()){ reject(new Error('رفع الملفات لسه غير مفعّل — الأدمن لازم يضبط إعداد Cloudinary من لوحة التحكم.')); return; }
+    const t = file.type || '';
+    const rt = t.startsWith('image/') ? 'image' : (t.startsWith('video/') || t.startsWith('audio/')) ? 'video' : 'raw';
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', UPLOAD_CFG.uploadPreset);
+    if(rt === 'raw') fd.append('public_id', path);                      // بيحافظ على امتداد الملف (pdf/docx...)
+    else fd.append('folder', path.split('/').slice(0, -1).join('/'));
+    const x = new XMLHttpRequest();
+    x.open('POST', 'https://api.cloudinary.com/v1_1/' + encodeURIComponent(UPLOAD_CFG.cloudName) + '/' + rt + '/upload');
+    x.upload.onprogress = e => { if(e.lengthComputable && onProgress) onProgress(e.loaded / e.total); };
+    x.onload = () => {
+      try{
+        const j = JSON.parse(x.responseText);
+        if(x.status >= 200 && x.status < 300 && j.secure_url) resolve(j.secure_url);
+        else reject(new Error((j.error && j.error.message) || ('HTTP ' + x.status)));
+      }catch(e){ reject(e); }
+    };
+    x.onerror = () => reject(new Error('فشل الاتصال بخدمة الرفع'));
+    x.send(fd);
+  });
+}
+
+/* ================= الحسابات والأسعار وصلاحيات الميزات لكل نوع حساب ================= */
+const ACC_TYPES = { student_teacher:'طالب معلم', university_student:'طالب جامعي', non_edu_teacher:'معلم غير تربوي', supervisor:'دكتور مشرف', office:'الإدارة' };
+const PAID_TYPES = ['student_teacher','university_student','non_edu_teacher'];
+function accLabel(u){ return ACC_TYPES[u.accountType] || (u.role === 'teacher' ? 'معلم' : 'طالب معلم'); }
+function isStaffUser(u){ return u.accountType === 'supervisor' || u.accountType === 'office'; }
+
+async function loadAccountsAdmin(){
+  let pricing = {}, access = {};
+  try{ const p = await db.collection('siteSettings').doc('pricing').get(); pricing = p.exists ? p.data() : {}; }catch(e){ console.warn(e); }
+  try{ const a = await db.collection('siteSettings').doc('accessByType').get(); access = a.exists ? a.data() : {}; }catch(e){ console.warn(e); }
+  document.getElementById('acc-pricing').innerHTML = PAID_TYPES.map(t => {
+    const c = pricing[t] || {};
+    return `<div class="card" style="margin:0; padding:14px;">
+      <h3 style="margin-bottom:8px;">${ACC_TYPES[t]}</h3>
+      <div class="field"><label>الرسوم (جنيه) — تُدفع مرة واحدة</label><input type="number" min="0" id="acc-fee-${t}" value="${c.fee != null ? c.fee : 0}"></div>
+      <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700;"><input type="checkbox" id="acc-on-${t}" style="width:auto;" ${c.enabled === false ? '' : 'checked'}> فتح التسجيل لهذا النوع</label>
+    </div>`;
+  }).join('');
+  const head = `<tr><th style="text-align:right; padding:6px 8px;">الميزة</th>${PAID_TYPES.map(t => `<th style="padding:6px 8px;">${ACC_TYPES[t]}<div style="font-size:10.5px; font-weight:600;"><a href="#" onclick="accSetAll('${t}',true);return false;">فتح الكل</a> · <a href="#" onclick="accSetAll('${t}',false);return false;">قفل الكل</a></div></th>`).join('')}</tr>`;
+  const rows = FEATURE_FLAG_ITEMS.map(([key,label]) => `<tr style="border-top:1px solid var(--line);"><td style="padding:6px 8px; font-size:12.5px; font-weight:700;">${label}</td>${PAID_TYPES.map(t => {
+    const hidden = (access[t] && Array.isArray(access[t].hidden)) ? access[t].hidden : [];
+    return `<td style="text-align:center;"><input type="checkbox" class="acc-chk" data-type="${t}" data-key="${key}" style="width:auto;" ${hidden.includes(key) ? '' : 'checked'}></td>`;
+  }).join('')}</tr>`).join('');
+  document.getElementById('acc-matrix').innerHTML = head + rows;
+}
+function accSetAll(type, on){ document.querySelectorAll('.acc-chk[data-type="'+type+'"]').forEach(c => c.checked = on); }
+async function saveAccountPricing(){
+  const st = document.getElementById('acc-pricing-status');
+  const data = { updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+  PAID_TYPES.forEach(t => { data[t] = { fee: Math.max(0, Number(document.getElementById('acc-fee-'+t).value) || 0), enabled: document.getElementById('acc-on-'+t).checked }; });
+  try{ await db.collection('siteSettings').doc('pricing').set(data, { merge: true }); audit('pricing', '', '', PAID_TYPES.map(t => ACC_TYPES[t] + ': ' + data[t].fee + (data[t].enabled ? '' : ' (مغلق)')).join(' | ')); st.className = 'status ok'; st.textContent = '✓ اتحفظت الرسوم.'; toast('اتحفظت الرسوم.'); }
+  catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+async function saveAccessMatrix(){
+  const st = document.getElementById('acc-matrix-status');
+  const data = { updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+  PAID_TYPES.forEach(t => { data[t] = { hidden: Array.from(document.querySelectorAll('.acc-chk[data-type="'+t+'"]')).filter(c => !c.checked).map(c => c.dataset.key) }; });
+  try{ await db.collection('siteSettings').doc('accessByType').set(data, { merge: true }); audit('access', '', '', PAID_TYPES.map(t => ACC_TYPES[t] + ': ' + data[t].hidden.length + ' مقفولة').join(' | ')); st.className = 'status ok'; st.textContent = '✓ اتحفظت صلاحيات الميزات.'; toast('اتحفظت صلاحيات الميزات.'); }
+  catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+
+/* ================= الدكاترة المشرفين والإدارة + ربط الحسابات ================= */
+let ALL_USERS = [];
+let assignSel = new Set();
+async function loadSupervisorsAdmin(){
+  try{
+    const snap = await db.collection('users').orderBy('createdAt','desc').limit(1000).get();
+    ALL_USERS = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+  }catch(err){ document.getElementById('sup-list').innerHTML = '<div class="urow">تعذّر التحميل: ' + escapeHtml(err.message) + '</div>'; return; }
+  renderSupList(); renderAssignPicker();
+}
+function renderSupList(){
+  const el = document.getElementById('sup-list');
+  const staff = ALL_USERS.filter(isStaffUser);
+  const offices = staff.filter(u => u.accountType === 'office');
+  if(!staff.length){ el.innerHTML = '<div class="urow">لسه مفيش حسابات دكاترة أو إدارة. رقّي حساب من الأعلى أو استنى طلبات التسجيل.</div>'; return; }
+  el.innerHTML = staff.map(u => {
+    const approved = u.approved === true;
+    const kids = ALL_USERS.filter(x => x.supervisorId === u.id).length;
+    const officeSel = u.accountType === 'supervisor'
+      ? `<select id="sup-off-${u.id}"><option value="">— بدون إدارة —</option>${offices.map(o => `<option value="${o.id}" ${u.supervisorId === o.id ? 'selected' : ''}>${escapeHtml(o.name || o.email)}</option>`).join('')}</select><button class="save-btn" onclick="saveSupOffice('${u.id}')">${ic('check')} ربط بالإدارة</button>` : '';
+    return `<div class="urow"><div class="u-top"><div>
+      <div class="u-name">${escapeHtml(u.name || '—')} <span class="badge ${approved ? 'active' : 'pending_payment'}">${approved ? 'معتمد' : 'بانتظار الموافقة'}</span> <span class="badge active">${ACC_TYPES[u.accountType]}</span></div>
+      <div class="u-meta">${escapeHtml(u.email || '')} · ${escapeHtml(u.phone || '')} · ${u.accountType === 'office' ? 'عدد المشرفين التابعين: ' : 'عدد الطلاب المرتبطين: '}${kids}</div></div></div>
+      <div class="u-controls">${officeSel}<button class="edit-btn" onclick="setApproved('${u.id}', ${!approved})">${approved ? '✕ إيقاف الحساب' : '✓ اعتماد الحساب'}</button></div></div>`;
+  }).join('');
+}
+async function setApproved(uid, val){
+  try{
+    await db.collection('users').doc(uid).update({ approved: val, status: val ? 'active' : 'pending_approval' });
+    if(val) db.collection('notifications').add({ recipientUid: uid, type: 'plan', text: 'تم اعتماد حسابك — أهلًا بيك.', viewId: 'v-sup', read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
+    audit(val ? 'approve' : 'suspend', uid, nameOfUid(uid));
+    if(val) emailAfter(uid, 'تم اعتماد حسابك في نُدرس معًا', 'أهلًا ' + (nameOfUid(uid) || '') + '، تم اعتماد حسابك. تقدر تسجّل الدخول وتبدأ استخدام لوحتك.');
+    toast(val ? 'اتعتمد الحساب.' : 'اتوقف الحساب.'); loadSupervisorsAdmin();
+  }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
+}
+async function saveSupOffice(uid){
+  const v = document.getElementById('sup-off-' + uid).value;
+  try{
+    await db.collection('users').doc(uid).update({ supervisorId: v || firebase.firestore.FieldValue.delete() });
+    audit('link_office', uid, nameOfUid(uid), v ? 'إدارة: ' + nameOfUid(v) : 'بدون إدارة');
+    toast('اتحفظ ربط الدكتور بالإدارة.'); loadSupervisorsAdmin();
+  }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
+}
+async function promoteAccount(){
+  const st = document.getElementById('promote-status');
+  const email = document.getElementById('promote-email').value.trim().toLowerCase();
+  const type = document.getElementById('promote-type').value;
+  if(!email){ st.className = 'status err'; st.textContent = 'اكتب إيميل الحساب.'; return; }
+  try{
+    const q = await db.collection('users').where('email', '==', email).limit(1).get();
+    if(q.empty){ st.className = 'status err'; st.textContent = 'مفيش حساب بالإيميل ده — اطلب منه يسجّل الأول (أو يختار "دكتور مشرف / إدارة" من شاشة التسجيل).'; return; }
+    await q.docs[0].ref.update({ accountType: type, role: type, approved: true, plan: 'free', status: 'active' });
+    audit('promote', q.docs[0].id, q.docs[0].data().name || email, 'إلى ' + ACC_TYPES[type]);
+    emailAfter(q.docs[0].id, 'تم تفعيل حسابك في نُدرس معًا', 'أهلًا، تم تحويل حسابك إلى ' + ACC_TYPES[type] + ' وتفعيله. سجّل دخولك لتبدأ.');
+    st.className = 'status ok'; st.textContent = '✓ اتحوّل الحساب إلى: ' + ACC_TYPES[type] + ' (مجاني، بدون اشتراك).';
+    document.getElementById('promote-email').value = ''; loadSupervisorsAdmin();
+  }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+function renderAssignPicker(){
+  const pick = document.getElementById('assign-sup');
+  const keep = pick.value;
+  const sups = ALL_USERS.filter(u => u.accountType === 'supervisor');
+  pick.innerHTML = '<option value="">— اختار الدكتور المشرف —</option>' + sups.map(u => `<option value="${u.id}">${escapeHtml(u.name || u.email)}</option>`).join('');
+  if(keep && sups.some(u => u.id === keep)) pick.value = keep;
+  onAssignPick(true);
+}
+function onAssignPick(keepSel){
+  const sup = document.getElementById('assign-sup').value;
+  assignSel = new Set(sup ? ALL_USERS.filter(u => u.supervisorId === sup).map(u => u.id) : []);
+  renderAssignList();
+}
+function renderAssignList(){
+  const el = document.getElementById('assign-list');
+  const sup = document.getElementById('assign-sup').value;
+  if(!sup){ el.innerHTML = '<div class="urow">اختار دكتور مشرف الأول.</div>'; return; }
+  const term = document.getElementById('assign-search').value.trim().toLowerCase();
+  const pool = ALL_USERS.filter(u => !isStaffUser(u) && (!term || (u.name || '').toLowerCase().includes(term) || (u.email || '').toLowerCase().includes(term)));
+  el.innerHTML = pool.slice(0, 300).map(u => {
+    const other = u.supervisorId && u.supervisorId !== sup ? ALL_USERS.find(x => x.id === u.supervisorId) : null;
+    return `<label class="urow" style="display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" style="width:auto;" ${assignSel.has(u.id) ? 'checked' : ''} onchange="toggleAssign('${u.id}', this.checked)">
+      <span><b>${escapeHtml(u.name || '—')}</b> <span class="badge active">${accLabel(u)}</span>${other ? ` <span class="badge pending_payment">تابع لـ ${escapeHtml(other.name || '')}</span>` : ''}<br><span class="u-meta">${escapeHtml(u.email || '')}</span></span></label>`;
+  }).join('') || '<div class="urow">مفيش نتايج.</div>';
+  document.getElementById('assign-count').textContent = assignSel.size + ' طالب محدد';
+}
+function toggleAssign(id, on){ if(on) assignSel.add(id); else assignSel.delete(id); document.getElementById('assign-count').textContent = assignSel.size + ' طالب محدد'; }
+async function saveAssignments(){
+  const sup = document.getElementById('assign-sup').value;
+  const st = document.getElementById('assign-status');
+  if(!sup){ st.className = 'status err'; st.textContent = 'اختار الدكتور الأول.'; return; }
+  const ops = [];
+  ALL_USERS.filter(u => !isStaffUser(u)).forEach(u => {
+    if(assignSel.has(u.id) && u.supervisorId !== sup) ops.push({ id: u.id, set: true });
+    else if(!assignSel.has(u.id) && u.supervisorId === sup) ops.push({ id: u.id, set: false });
+  });
+  if(!ops.length){ st.className = 'status ok'; st.textContent = 'مفيش تغييرات.'; return; }
+  try{
+    for(let i = 0; i < ops.length; i += 400){
+      const batch = db.batch();
+      ops.slice(i, i + 400).forEach(o => batch.update(db.collection('users').doc(o.id), { supervisorId: o.set ? sup : firebase.firestore.FieldValue.delete() }));
+      await batch.commit();
+    }
+    ops.filter(o => o.set).forEach(o => db.collection('notifications').add({ recipientUid: o.id, type: 'plan', text: 'تم ربطك بدكتور مشرف — افتح "مشرفي وتكاليفي".', viewId: 'v-sup', read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{}));
+    audit('assign', sup, nameOfUid(sup), ops.length + ' تغيير (إضافة ' + ops.filter(o => o.set).length + ' / إزالة ' + ops.filter(o => !o.set).length + ')');
+    st.className = 'status ok'; st.textContent = '✓ اتحفظ الربط (' + ops.length + ' تغيير).'; toast('اتحفظ الربط.');
+    loadSupervisorsAdmin();
+  }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+function chatCtx(){
+  if(!adminActiveConvId) return null;
+  return { convId: adminActiveConvId, otherUid: adminActiveConvId.split('_').find(u => u !== SUPPORT_UID), uid: SUPPORT_UID, name: SUPPORT_NAME };
+}
+
+/* ================= تأكيد الدفع + إيميلات الإشعارات + سجل التدقيق ================= */
+const EMAILJS_PUBLIC_KEY = 'oxTulRj_SvhD_-rHR';
+const EMAILJS_SERVICE_ID = 'service_h61jmbn';
+function nameOfUid(uid){ const u = (typeof ALL_USERS !== 'undefined' ? ALL_USERS : []).find(x => x.id === uid); return u ? (u.name || u.email || '') : ''; }
+async function audit(action, targetUid, targetName, details){
+  try{
+    const u = auth.currentUser;
+    await db.collection('auditLog').add({ adminUid: u ? u.uid : '', adminEmail: u ? (u.email || '') : '', action, targetUid: targetUid || '', targetName: targetName || nameOfUid(targetUid) || '', details: details || '', createdMs: Date.now() });
+  }catch(e){ console.warn('audit', e); }
+}
+// بيبعت إيميل إشعار عبر قالب EmailJS اتحدد من الإعدادات (siteSettings/emailConfig.notifyTemplateId)
+async function sendNotifyEmail(toEmail, toName, subject, message){
+  try{
+    if(!toEmail) return false;
+    const cfg = await db.collection('siteSettings').doc('emailConfig').get();
+    const tpl = cfg.exists ? cfg.data().notifyTemplateId : '';
+    if(!tpl) return false;
+    const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', { method:'POST', headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ service_id: EMAILJS_SERVICE_ID, template_id: tpl, user_id: EMAILJS_PUBLIC_KEY, template_params: { to_email: toEmail, to_name: toName || '', subject, message } }) });
+    return res.ok;
+  }catch(e){ console.warn('email', e); return false; }
+}
+async function emailAfter(uid, subject, message){
+  const u = ALL_USERS.find(x => x.id === uid) || {};
+  let email = u.email, name = u.name;
+  if(!email){ try{ const d = (await db.collection('users').doc(uid).get()).data() || {}; email = d.email; name = d.name; }catch(e){} }
+  const ok = await sendNotifyEmail(email, name, subject, message);
+  if(!ok) toast('اتنفّذ الإجراء، لكن الإيميل ماتبعتش — راجع إعداد قالب الإيميل في الإعدادات.', {type:'err', duration:4500});
+}
+async function confirmPayment(uid){
+  try{
+    const d = (await db.collection('users').doc(uid).get()).data() || {};
+    if(!confirm('تأكيد استلام رسوم ' + (d.feeAmount != null ? d.feeAmount + ' جنيه ' : '') + 'من ' + (d.name || d.email) + ' وتفعيل حسابه؟')) return;
+    await db.collection('users').doc(uid).update({ status: 'active', plan: 'onetime', paidMs: Date.now(), confirmedBy: (auth.currentUser && auth.currentUser.email) || '' });
+    if(d.couponCode){ try{ await db.collection('coupons').doc(d.couponCode).update({ used: firebase.firestore.FieldValue.increment(1) }); }catch(e){ console.warn(e); } }
+    db.collection('notifications').add({ recipientUid: uid, type: 'plan', text: '✓ تم تأكيد دفعك وتفعيل حسابك — أهلًا بيك!', viewId: null, read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
+    audit('confirm_payment', uid, d.name || d.email, 'رسوم ' + (d.feeAmount != null ? d.feeAmount : '?') + (d.couponCode ? ' — كوبون ' + d.couponCode : ''));
+    emailAfter(uid, 'تم تفعيل حسابك في نُدرس معًا', 'أهلًا ' + (d.name || '') + '، تم تأكيد دفع رسوم الاشتراك وتفعيل حسابك. تقدر تسجّل الدخول وتستخدم كل الأدوات المتاحة لحسابك.');
+    toast('اتفعّل الحساب.'); loadUsers(); loadSupervisorsAdmin();
+  }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
+}
+const AUDIT_LABELS = { confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط دكتور بالإدارة', assign:'ربط حسابات بدكتور', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل' };
+async function loadAudit(){
+  const el = document.getElementById('audit-list'); if(!el) return;
+  el.innerHTML = 'جاري التحميل...';
+  try{
+    const snap = await db.collection('auditLog').orderBy('createdMs', 'desc').limit(300).get();
+    window.__audit = snap.docs.map(d => d.data()); renderAudit();
+  }catch(err){ el.innerHTML = '<div class="urow">تعذّر تحميل السجل: ' + escapeHtml(err.message) + '</div>'; }
+}
+function renderAudit(){
+  const el = document.getElementById('audit-list'), q = (document.getElementById('audit-q').value || '').trim().toLowerCase();
+  const rows = (window.__audit || []).filter(a => !q || [a.action, AUDIT_LABELS[a.action], a.adminEmail, a.targetName, a.details].join(' ').toLowerCase().includes(q));
+  el.innerHTML = rows.length ? rows.map(a => `<div class="urow"><div class="u-top"><div><div class="u-name">${escapeHtml(AUDIT_LABELS[a.action] || a.action)} ${a.targetName ? '— ' + escapeHtml(a.targetName) : ''}</div>
+    <div class="u-meta">${escapeHtml(a.adminEmail || '')} · ${new Date(a.createdMs).toLocaleString('ar-EG')}${a.details ? ' · ' + escapeHtml(a.details) : ''}</div></div></div></div>`).join('') : '<div class="urow">مفيش سجلات.</div>';
+}
+
+/* ================= كوبونات الخصم ================= */
+async function loadCouponsAdmin(){
+  const el = document.getElementById('coupon-list'); if(!el) return;
+  try{
+    const snap = await db.collection('coupons').get();
+    const list = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+    el.innerHTML = list.length ? list.map(c => `<div class="urow"><div class="u-top"><div><div class="u-name">${escapeHtml(c.id)} <span class="badge ${c.active === false ? 'pending_payment' : 'active'}">${c.active === false ? 'موقوف' : 'فعّال'}</span></div>
+      <div class="u-meta">${c.type === 'percent' ? c.value + '%' : c.value + ' جنيه'} · استُخدم ${c.used || 0}${c.maxUses ? ' / ' + c.maxUses : ''}${c.expiresMs ? ' · ينتهي ' + new Date(c.expiresMs).toLocaleDateString('ar-EG') : ''}${(c.appliesTo || []).length ? ' · ' + c.appliesTo.map(t => ACC_TYPES[t]).join('، ') : ' · كل الأنواع'}</div></div></div>
+      <div class="u-controls"><button class="edit-btn" onclick="toggleCoupon('${escapeHtml(c.id)}', ${c.active === false})">${c.active === false ? 'تفعيل' : 'إيقاف'}</button><button class="edit-btn" onclick="deleteCoupon('${escapeHtml(c.id)}')">حذف</button></div></div>`).join('') : '<div class="urow">لسه مفيش كوبونات.</div>';
+  }catch(err){ el.innerHTML = '<div class="urow">تعذّر تحميل الكوبونات: ' + escapeHtml(err.message) + '</div>'; }
+}
+async function saveCoupon(){
+  const st = document.getElementById('coupon-adm-status');
+  const code = document.getElementById('cp-code').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '');
+  const type = document.getElementById('cp-type').value, value = Number(document.getElementById('cp-value').value) || 0;
+  if(!code || value <= 0 || (type === 'percent' && value > 100)){ st.className = 'status err'; st.textContent = 'اكتب كود وقيمة صحيحة (النسبة من 1 إلى 100).'; return; }
+  const exp = document.getElementById('cp-exp').value;
+  const appliesTo = Array.from(document.querySelectorAll('.cp-type:checked')).map(c => c.value);
+  try{
+    const ref = db.collection('coupons').doc(code), old = await ref.get();
+    await ref.set({ code, type, value, maxUses: Number(document.getElementById('cp-max').value) || 0, expiresMs: exp ? new Date(exp).getTime() + 86399000 : null, appliesTo, active: true, used: old.exists ? (old.data().used || 0) : 0, updatedMs: Date.now() });
+    audit('coupon', '', code, 'إنشاء/تعديل كوبون ' + (type === 'percent' ? value + '%' : value + ' جنيه'));
+    st.className = 'status ok'; st.textContent = '✓ اتحفظ الكوبون.'; loadCouponsAdmin();
+  }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+async function toggleCoupon(code, on){ try{ await db.collection('coupons').doc(code).update({ active: on }); audit('coupon', '', code, on ? 'تفعيل' : 'إيقاف'); loadCouponsAdmin(); }catch(e){ toast('حصل خطأ: ' + e.message, {type:'err'}); } }
+async function deleteCoupon(code){ if(!confirm('حذف الكوبون ' + code + '؟')) return; try{ await db.collection('coupons').doc(code).delete(); audit('coupon', '', code, 'حذف'); loadCouponsAdmin(); }catch(e){ toast('حصل خطأ: ' + e.message, {type:'err'}); } }
+
+/* ================= حدود الملفات + إعداد إيميل الإشعارات ================= */
+async function loadLimitsAdmin(){
+  try{
+    const d = await db.collection('siteSettings').doc('limits').get(), x = d.exists ? d.data() : {};
+    document.getElementById('set-maxfile').value = x.maxFileMB || 10; document.getElementById('set-maxrec').value = x.maxRecordSec || 180;
+    if(x.maxFileMB) CHAT_MAX_BYTES = Number(x.maxFileMB) * 1048576; if(x.maxRecordSec) CHAT_REC_MAX_SEC = Number(x.maxRecordSec);
+  }catch(e){ console.warn(e); }
+}
+async function saveLimits(){
+  const st = document.getElementById('limits-status');
+  const maxFileMB = Math.min(100, Math.max(1, Number(document.getElementById('set-maxfile').value) || 10));
+  const maxRecordSec = Math.min(1800, Math.max(30, Number(document.getElementById('set-maxrec').value) || 180));
+  try{
+    await db.collection('siteSettings').doc('limits').set({ maxFileMB, maxRecordSec, updatedMs: Date.now() }, { merge: true });
+    CHAT_MAX_BYTES = maxFileMB * 1048576; CHAT_REC_MAX_SEC = maxRecordSec;
+    audit('limits', '', '', maxFileMB + ' ميجا / ' + maxRecordSec + ' ثانية');
+    st.className = 'status ok'; st.textContent = '✓ اتحفظت. (حد Cloudinary نفسه بيتظبط من إعدادات الـ preset).';
+  }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+async function loadEmailConfig(){
+  try{ const d = await db.collection('siteSettings').doc('emailConfig').get(); document.getElementById('set-notify-tpl').value = d.exists ? (d.data().notifyTemplateId || '') : ''; }catch(e){}
+}
+async function saveEmailConfig(){
+  const st = document.getElementById('emailcfg-status'), v = document.getElementById('set-notify-tpl').value.trim();
+  try{ await db.collection('siteSettings').doc('emailConfig').set({ notifyTemplateId: v, updatedMs: Date.now() }, { merge: true }); audit('email_config', '', '', v ? 'تفعيل قالب ' + v : 'إيقاف'); st.className = 'status ok'; st.textContent = '✓ اتحفظ.'; }
+  catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+
+async function loadUploadConfigAdmin(){
+  try{
+    const d = await db.collection('siteSettings').doc('uploadConfig').get(), x = d.exists ? d.data() : {};
+    UPLOAD_CFG = { cloudName: x.cloudName || '', uploadPreset: x.uploadPreset || '' };
+    document.getElementById('set-cld-name').value = UPLOAD_CFG.cloudName; document.getElementById('set-cld-preset').value = UPLOAD_CFG.uploadPreset;
+  }catch(e){ console.warn(e); }
+}
+async function saveUploadConfig(){
+  const st = document.getElementById('cld-status');
+  const cloudName = document.getElementById('set-cld-name').value.trim(), uploadPreset = document.getElementById('set-cld-preset').value.trim();
+  if(!cloudName || !uploadPreset){ st.className = 'status err'; st.textContent = 'اكتب Cloud name واسم الـ preset.'; return; }
+  try{
+    await db.collection('siteSettings').doc('uploadConfig').set({ cloudName, uploadPreset, updatedMs: Date.now() }, { merge: true });
+    UPLOAD_CFG = { cloudName, uploadPreset }; audit('limits', '', '', 'إعداد رفع الملفات: ' + cloudName);
+    st.className = 'status ok'; st.textContent = '✓ اتحفظ — جرّب "اختبار الرفع".';
+  }catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
+async function testUploadConfig(){
+  const st = document.getElementById('cld-status'); st.className = 'status'; st.textContent = 'جاري اختبار الرفع...';
+  try{
+    const png = Uint8Array.from(atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='), c => c.charCodeAt(0));
+    const url = await uploadFile('nudrus/test/' + Date.now() + '.png', new Blob([png], { type:'image/png' }));
+    st.className = 'status ok'; st.textContent = '✓ الرفع شغّال: ' + url;
+  }catch(err){ st.className = 'status err'; st.textContent = 'فشل الاختبار: ' + err.message + ' — اتأكد إن الـ preset نوعه Unsigned وإن الـ Cloud name صح.'; }
+}
+</script>
+</body>
+</html>
