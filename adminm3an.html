@@ -257,6 +257,7 @@
     <button class="tab" onclick="switchTab('challenges', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
     <button class="tab" onclick="switchTab('accounts', this)"><svg class="icon"><use href="#i-card"></use></svg> الحسابات والأسعار</button>
     <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
+    <button class="tab" onclick="switchTab('perm', this)"><svg class="icon"><use href="#i-lock"></use></svg> صلاحيات المشتركين</button>
     <button class="tab" onclick="switchTab('nid', this)"><svg class="icon"><use href="#i-user"></use></svg> الأرقام القومية</button>
     <button class="tab" onclick="switchTab('audit', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> سجل التدقيق</button>
     <button class="tab" onclick="switchTab('users', this)"><svg class="icon"><use href="#i-user"></use></svg> المستخدمين</button>
@@ -349,7 +350,7 @@
   <div class="panel" id="panel-accounts">
     <div class="card">
       <h3 style="margin-bottom:6px;">💰 رسوم أنواع الحسابات (دفع مرة واحدة)</h3>
-      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">بتحدد مبلغ الاشتراك مرة واحدة لكل نوع، وبيظهر للمستخدم أثناء التسجيل. حط 0 لو النوع مجاني. حسابات الدكتور المشرف والإدارة مجانية دايمًا وبدون اشتراك.</p>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">بتحدد مبلغ الاشتراك مرة واحدة لكل نوع، وبيظهر للمستخدم أثناء التسجيل. حط 0 لو النوع مجاني. حسابات المشرف والإدارة مجانية دايمًا وبدون اشتراك.</p>
       <div id="acc-pricing" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin-bottom:14px;"></div>
       <button class="btn" onclick="saveAccountPricing()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الرسوم</button>
       <div class="status" id="acc-pricing-status"></div>
@@ -380,25 +381,51 @@
 
   <div class="panel" id="panel-supervisors">
     <div class="card">
-      <h3 style="margin-bottom:6px;">➕ ترقية حساب موجود إلى دكتور مشرف / إدارة</h3>
+      <h3 style="margin-bottom:6px;">➕ ترقية حساب موجود إلى إشراف أكاديمي / إشراف معلم خبير / إدارة</h3>
       <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">الحسابات دي مجانية وبدون اشتراك. الحساب لازم يكون مسجّل بالفعل بالإيميل ده.</p>
       <div class="field"><label>إيميل الحساب</label><input type="text" id="promote-email" placeholder="doctor@example.com"></div>
-      <div class="field"><label>النوع</label><select id="promote-type"><option value="supervisor">دكتور مشرف</option><option value="office">الإدارة</option></select></div>
+      <div class="field"><label>النوع</label><select id="promote-type"><option value="supervisor">إشراف أكاديمي</option><option value="expert_supervisor">إشراف معلم خبير</option><option value="office">الإدارة</option></select></div>
       <button class="btn" onclick="promoteAccount()"><svg class="icon"><use href="#i-check"></use></svg> ترقية</button>
       <div class="status" id="promote-status"></div>
     </div>
     <div class="card" style="margin-top:16px;">
-      <h3 style="margin-bottom:10px;">👨‍🏫 الدكاترة المشرفين والإدارة</h3>
+      <h3 style="margin-bottom:10px;">👨‍🏫 المشرفين والإدارة</h3>
       <div id="sup-list">جاري التحميل...</div>
     </div>
     <div class="card" style="margin-top:16px;">
-      <h3 style="margin-bottom:6px;">🔗 تحديد الحسابات التابعة لكل دكتور</h3>
-      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">اختار الدكتور، علّم على الطلاب اللي تبعه، واحفظ. الدكتور هيقدر يتواصل معاهم وينظم لهم غرف ويرفع تكاليف ويستلمها منهم.</p>
-      <div class="field"><label>الدكتور المشرف</label><select id="assign-sup" onchange="onAssignPick()"></select></div>
+      <h3 style="margin-bottom:6px;">🔗 تحديد الحسابات التابعة لكل مشرف</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">اختار المشرف، علّم على الطلاب اللي تبعه، واحفظ. المشرف هيقدر يتواصل معاهم وينظم لهم غرف ويرفع تكاليف ويستلمها منهم.</p>
+      <div class="field"><label>المشرف</label><select id="assign-sup" onchange="onAssignPick()"></select></div>
       <div class="field"><label>بحث بالاسم أو الإيميل</label><input type="text" id="assign-search" oninput="renderAssignList()" placeholder="ابحث..."></div>
       <div id="assign-list" style="max-height:380px; overflow:auto; margin-bottom:10px;"></div>
       <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;"><button class="btn" onclick="saveAssignments()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الربط</button><span id="assign-count" style="font-size:12.5px; font-weight:700;"></span></div>
       <div class="status" id="assign-status"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-perm">
+    <div class="card">
+      <h3 style="margin-bottom:6px;">🔐 صلاحيات الأدوات لكل مشترك</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.9; margin-bottom:12px;">اختار مشترك أو أكتر (أو الكل)، واختار الأدوات، وبعدين <b>سماح</b> أو <b>منع</b> أو <b>إرجاع للافتراضي</b>. الاستثناء الفردي بيغلب إعدادات نوع الحساب والإخفاء العام. التطبيق على كل المختارين مرة واحدة.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+        <input type="text" id="pm-q" oninput="renderPermUsers()" placeholder="ابحث بالاسم / الإيميل / آخر 4 أرقام" style="flex:1; min-width:180px;">
+        <select id="pm-type" onchange="renderPermUsers()"><option value="">كل الأنواع</option></select>
+        <select id="pm-ov" onchange="renderPermUsers()"><option value="">الكل</option><option value="has">عليهم استثناءات</option></select>
+        <button class="btn" style="background:var(--ink)" onclick="permSelectAll(true)">تحديد المعروضين</button>
+        <button class="btn" style="background:var(--ink)" onclick="permSelectAll(false)">إلغاء التحديد</button>
+      </div>
+      <div id="pm-count" style="font-size:12.5px; font-weight:700; margin-bottom:8px;"></div>
+      <div id="pm-users" style="max-height:340px; overflow:auto; border:1px solid var(--line); border-radius:12px; padding:6px;"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:8px;">🧰 الأدوات المطلوب التحكم فيها</h3>
+      <div id="pm-feats" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:6px 14px; margin-bottom:14px;"></div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="btn" style="background:#1d9a6c" onclick="applyPerm('allow')">✓ سماح</button>
+        <button class="btn" style="background:#b3261e" onclick="applyPerm('deny')">✗ منع</button>
+        <button class="btn" style="background:var(--ink-soft)" onclick="applyPerm('reset')">↺ إرجاع للافتراضي</button>
+      </div>
+      <div class="status" id="pm-status"></div>
     </div>
   </div>
 
@@ -408,7 +435,7 @@
       <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">اكتب رقم قومي واحد أو أكتر وافصل بينهم بفاصلة (,) أو سطر جديد. كل رقم بيتحوّل لحساب مجاني بنوع الحساب اللي تختاره، والمستخدم يفعّل حسابه ويدخل تلقائي. الأرقام بتتخزّن مشفّرة (Hash) مع آخر 4 أرقام بس.</p>
       <div class="field"><label>الأرقام القومية (14 رقم لكل واحد)</label><textarea id="nid-ids" rows="4" placeholder="29801011234567, 29905051234568"></textarea></div>
       <div class="field"><label>نوع الحساب</label><select id="nid-type" onchange="nidTypeChanged()"></select></div>
-      <div class="field" id="nid-sup-wrap"><label>الدكتور المشرف التابع له (اختياري)</label><select id="nid-sup"></select></div>
+      <div class="field" id="nid-sup-wrap"><label>المشرف التابع له (اختياري)</label><select id="nid-sup"></select></div>
       <div class="field"><label>اسم الدفعة / ملاحظة (اختياري)</label><input type="text" id="nid-batch" placeholder="مثال: دفعة 2026 — كلية التربية"></div>
       <div class="field"><label>طريقة التفعيل</label><select id="nid-method"><option value="temp">كلمة مرور مبدئية لكل رقم (الأكثر أمانًا — موصى بها)</option><option value="open">تفعيل مفتوح: أي حد يعرف الرقم يفعّله</option></select>
         <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">مع الكلمة المبدئية: بيتولّد كود عشوائي لكل رقم، وبينزل لك ملف CSV مرة واحدة بالرقم والكود تسلّمه لصاحبه. الرقم القومي لوحده مايكفيش للتفعيل.</div></div>
@@ -417,7 +444,7 @@
         <button class="btn" onclick="addNidGrants()"><svg class="icon"><use href="#i-check"></use></svg> إضافة الأرقام</button>
         <label class="btn" style="background:var(--ink); cursor:pointer;">📥 استيراد من ملف CSV<input type="file" id="nid-file" accept=".csv,.txt" style="display:none" onchange="importNidCsv(this)"></label>
       </div>
-      <div style="font-size:12px; color:var(--ink-soft); margin-top:6px;">ملف CSV: الأعمدة بالترتيب <b>الرقم القومي، نوع الحساب، إيميل الدكتور، الدفعة، تاريخ الانتهاء (YYYY-MM-DD)</b> — كل ما عدا الرقم اختياري، ولو الخانة فاضية بياخد اللي فوق. (من Excel: Save As → CSV UTF-8)</div>
+      <div style="font-size:12px; color:var(--ink-soft); margin-top:6px;">ملف CSV: الأعمدة بالترتيب <b>الرقم القومي، نوع الحساب، إيميل المشرف، الدفعة، تاريخ الانتهاء (YYYY-MM-DD)</b> — كل ما عدا الرقم اختياري، ولو الخانة فاضية بياخد اللي فوق. (من Excel: Save As → CSV UTF-8)</div>
       <div class="status" id="nid-add-status"></div>
     </div>
     <div class="card" style="margin-top:16px;">
@@ -1148,7 +1175,7 @@ async function saveMaintenance(){
 /* ================= التحكم في ظهور أدوات القائمة الجانبية (siteSettings/featureFlags) ================= */
 const FEATURE_FLAG_ITEMS = [
   ['v-learn','تعلم كيف'], ['v-library','مكتبة الموارد'], ['v-courses','الدورات والتعلم'],
-  ['v-notebooks','دفاتر تحضير'], ['v-lesson-planner','مولد تحضير الدروس'], ['v-helpers','أدوات مساعدة (مؤقت، درجات، حضور...)'], ['v-assistant','مساعد المعلم'],
+  ['v-notebooks','دفاتر تحضير'], ['v-lesson-planner','مولد تحضير الدروس'], ['v-helpers','أدوات مساعدة (مؤقت، درجات، حضور...)'], ['v-sup-tools','أدوات الإشراف (للمشرفين والإدارة)'], ['v-prep-tools','أدوات التحضير'], ['v-prac-tools','أدوات التربية العملية (طالب معلم)'], ['v-assistant','مساعد المعلم'],
   ['v-questions','بنك الأسئلة (معلم)'], ['v-quizzes','مصنع الاختبارات (معلم)'], ['exam-easy','امتحانك بسهولة'],
   ['v-certificates','مولد الشهادات (معلم)'], ['v-prep-room','غرفة التحضير الجماعي (معلم)'], ['v-tools-hub','مركز الأدوات (معلم)'],
   ['boardplus','سبورة إلكترونية'], ['v-saved','المحفوظات'], ['t-community','المجتمع'],
@@ -1546,10 +1573,11 @@ function uploadFile(path, file, onProgress){
 }
 
 /* ================= الحسابات والأسعار وصلاحيات الميزات لكل نوع حساب ================= */
-const ACC_TYPES = { student_teacher:'طالب معلم', university_student:'طالب جامعي', non_edu_teacher:'معلم غير تربوي', supervisor:'دكتور مشرف', office:'الإدارة' };
+const ACC_TYPES = { student_teacher:'طالب معلم', university_student:'طالب جامعي', non_edu_teacher:'معلم غير تربوي', supervisor:'إشراف أكاديمي', expert_supervisor:'إشراف معلم خبير', office:'الإدارة' };
 const PAID_TYPES = ['student_teacher','university_student','non_edu_teacher'];
 function accLabel(u){ return ACC_TYPES[u.accountType] || (u.role === 'teacher' ? 'معلم' : 'طالب معلم'); }
-function isStaffUser(u){ return u.accountType === 'supervisor' || u.accountType === 'office'; }
+const SUP_TYPES = ['supervisor','expert_supervisor'];
+function isStaffUser(u){ return SUP_TYPES.includes(u.accountType) || u.accountType === 'office'; }
 
 async function loadAccountsAdmin(){
   let pricing = {}, access = {};
@@ -1586,7 +1614,7 @@ async function saveAccessMatrix(){
   catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
 }
 
-/* ================= الدكاترة المشرفين والإدارة + ربط الحسابات ================= */
+/* ================= المشرفين والإدارة + ربط الحسابات ================= */
 let ALL_USERS = [];
 let assignSel = new Set();
 async function loadSupervisorsAdmin(){
@@ -1594,17 +1622,17 @@ async function loadSupervisorsAdmin(){
     const snap = await db.collection('users').orderBy('createdAt','desc').limit(1000).get();
     ALL_USERS = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
   }catch(err){ document.getElementById('sup-list').innerHTML = '<div class="urow">تعذّر التحميل: ' + escapeHtml(err.message) + '</div>'; return; }
-  renderSupList(); renderAssignPicker(); fillNidSupSelect();
+  renderSupList(); renderAssignPicker(); fillNidSupSelect(); initPerm();
 }
 function renderSupList(){
   const el = document.getElementById('sup-list');
   const staff = ALL_USERS.filter(isStaffUser);
   const offices = staff.filter(u => u.accountType === 'office');
-  if(!staff.length){ el.innerHTML = '<div class="urow">لسه مفيش حسابات دكاترة أو إدارة. رقّي حساب من الأعلى أو استنى طلبات التسجيل.</div>'; return; }
+  if(!staff.length){ el.innerHTML = '<div class="urow">لسه مفيش حسابات مشرفين أو إدارة. رقّي حساب من الأعلى أو استنى طلبات التسجيل.</div>'; return; }
   el.innerHTML = staff.map(u => {
     const approved = u.approved === true;
     const kids = ALL_USERS.filter(x => x.supervisorId === u.id).length;
-    const officeSel = u.accountType === 'supervisor'
+    const officeSel = SUP_TYPES.includes(u.accountType)
       ? `<select id="sup-off-${u.id}"><option value="">— بدون إدارة —</option>${offices.map(o => `<option value="${o.id}" ${u.supervisorId === o.id ? 'selected' : ''}>${escapeHtml(o.name || o.email)}</option>`).join('')}</select><button class="save-btn" onclick="saveSupOffice('${u.id}')">${ic('check')} ربط بالإدارة</button>` : '';
     return `<div class="urow"><div class="u-top"><div>
       <div class="u-name">${escapeHtml(u.name || '—')} <span class="badge ${approved ? 'active' : 'pending_payment'}">${approved ? 'معتمد' : 'بانتظار الموافقة'}</span> <span class="badge active">${ACC_TYPES[u.accountType]}</span></div>
@@ -1626,7 +1654,7 @@ async function saveSupOffice(uid){
   try{
     await db.collection('users').doc(uid).update({ supervisorId: v || firebase.firestore.FieldValue.delete() });
     audit('link_office', uid, nameOfUid(uid), v ? 'إدارة: ' + nameOfUid(v) : 'بدون إدارة');
-    toast('اتحفظ ربط الدكتور بالإدارة.'); loadSupervisorsAdmin();
+    toast('اتحفظ ربط المشرف بالإدارة.'); loadSupervisorsAdmin();
   }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
 }
 async function promoteAccount(){
@@ -1636,8 +1664,8 @@ async function promoteAccount(){
   if(!email){ st.className = 'status err'; st.textContent = 'اكتب إيميل الحساب.'; return; }
   try{
     const q = await db.collection('users').where('email', '==', email).limit(1).get();
-    if(q.empty){ st.className = 'status err'; st.textContent = 'مفيش حساب بالإيميل ده — اطلب منه يسجّل الأول (أو يختار "دكتور مشرف / إدارة" من شاشة التسجيل).'; return; }
-    await q.docs[0].ref.update({ accountType: type, role: type, approved: true, plan: 'free', status: 'active' });
+    if(q.empty){ st.className = 'status err'; st.textContent = 'مفيش حساب بالإيميل ده — اطلب منه يسجّل الأول (أو يختار "إشراف أكاديمي / إدارة" من شاشة التسجيل).'; return; }
+    await q.docs[0].ref.update({ accountType: type, role: (type === 'office' ? 'office' : 'supervisor'), approved: true, plan: 'free', status: 'active' });
     audit('promote', q.docs[0].id, q.docs[0].data().name || email, 'إلى ' + ACC_TYPES[type]);
     emailAfter(q.docs[0].id, 'تم تفعيل حسابك في نُدرس معًا', 'أهلًا، تم تحويل حسابك إلى ' + ACC_TYPES[type] + ' وتفعيله. سجّل دخولك لتبدأ.');
     st.className = 'status ok'; st.textContent = '✓ اتحوّل الحساب إلى: ' + ACC_TYPES[type] + ' (مجاني، بدون اشتراك).';
@@ -1647,8 +1675,8 @@ async function promoteAccount(){
 function renderAssignPicker(){
   const pick = document.getElementById('assign-sup');
   const keep = pick.value;
-  const sups = ALL_USERS.filter(u => u.accountType === 'supervisor');
-  pick.innerHTML = '<option value="">— اختار الدكتور المشرف —</option>' + sups.map(u => `<option value="${u.id}">${escapeHtml(u.name || u.email)}</option>`).join('');
+  const sups = ALL_USERS.filter(u => SUP_TYPES.includes(u.accountType));
+  pick.innerHTML = '<option value="">— اختار المشرف —</option>' + sups.map(u => `<option value="${u.id}">${escapeHtml(u.name || u.email)}</option>`).join('');
   if(keep && sups.some(u => u.id === keep)) pick.value = keep;
   onAssignPick(true);
 }
@@ -1660,7 +1688,7 @@ function onAssignPick(keepSel){
 function renderAssignList(){
   const el = document.getElementById('assign-list');
   const sup = document.getElementById('assign-sup').value;
-  if(!sup){ el.innerHTML = '<div class="urow">اختار دكتور مشرف الأول.</div>'; return; }
+  if(!sup){ el.innerHTML = '<div class="urow">اختار إشراف أكاديمي الأول.</div>'; return; }
   const term = document.getElementById('assign-search').value.trim().toLowerCase();
   const pool = ALL_USERS.filter(u => !isStaffUser(u) && (!term || (u.name || '').toLowerCase().includes(term) || (u.email || '').toLowerCase().includes(term)));
   el.innerHTML = pool.slice(0, 300).map(u => {
@@ -1674,7 +1702,7 @@ function toggleAssign(id, on){ if(on) assignSel.add(id); else assignSel.delete(i
 async function saveAssignments(){
   const sup = document.getElementById('assign-sup').value;
   const st = document.getElementById('assign-status');
-  if(!sup){ st.className = 'status err'; st.textContent = 'اختار الدكتور الأول.'; return; }
+  if(!sup){ st.className = 'status err'; st.textContent = 'اختار المشرف الأول.'; return; }
   const ops = [];
   ALL_USERS.filter(u => !isStaffUser(u)).forEach(u => {
     if(assignSel.has(u.id) && u.supervisorId !== sup) ops.push({ id: u.id, set: true });
@@ -1687,7 +1715,7 @@ async function saveAssignments(){
       ops.slice(i, i + 400).forEach(o => batch.update(db.collection('users').doc(o.id), { supervisorId: o.set ? sup : firebase.firestore.FieldValue.delete() }));
       await batch.commit();
     }
-    ops.filter(o => o.set).forEach(o => db.collection('notifications').add({ recipientUid: o.id, type: 'plan', text: 'تم ربطك بدكتور مشرف — افتح "مشرفي وتكاليفي".', viewId: 'v-sup', read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{}));
+    ops.filter(o => o.set).forEach(o => db.collection('notifications').add({ recipientUid: o.id, type: 'plan', text: 'تم ربطك بإشراف أكاديمي — افتح "مشرفي وتكاليفي".', viewId: 'v-sup', read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{}));
     audit('assign', sup, nameOfUid(sup), ops.length + ' تغيير (إضافة ' + ops.filter(o => o.set).length + ' / إزالة ' + ops.filter(o => !o.set).length + ')');
     st.className = 'status ok'; st.textContent = '✓ اتحفظ الربط (' + ops.length + ' تغيير).'; toast('اتحفظ الربط.');
     loadSupervisorsAdmin();
@@ -1739,7 +1767,7 @@ async function confirmPayment(uid){
     toast('اتفعّل الحساب.'); loadUsers(); loadSupervisorsAdmin();
   }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
 }
-const AUDIT_LABELS = { confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط دكتور بالإدارة', assign:'ربط حسابات بدكتور', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل', nid:'أرقام قومية' };
+const AUDIT_LABELS = { confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط مشرف بالإدارة', assign:'ربط حسابات بمشرف', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل', nid:'أرقام قومية', perm:'صلاحيات مشتركين' };
 async function loadAudit(){
   const el = document.getElementById('audit-list'); if(!el) return;
   el.innerHTML = 'جاري التحميل...';
@@ -1838,7 +1866,7 @@ async function testUploadConfig(){
 }
 
 /* ================= الأرقام القومية (idGrants) ================= */
-const NID_ROLE = { student_teacher:'student', university_student:'student', non_edu_teacher:'teacher', supervisor:'supervisor', office:'office' };
+const NID_ROLE = { student_teacher:'student', university_student:'student', non_edu_teacher:'teacher', supervisor:'supervisor', expert_supervisor:'supervisor', office:'office' };
 let NID_GRANTS = [];
 function nidNorm(s){ return String(s||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)); }
 async function nidHashOf(nid){
@@ -1857,7 +1885,7 @@ function initNidTypeSelect(){
 }
 function nidTypeChanged(){
   const v=document.getElementById('nid-type').value;
-  document.getElementById('nid-sup-wrap').style.display = (v==='supervisor') ? 'none' : 'block';
+  document.getElementById('nid-sup-wrap').style.display = SUP_TYPES.includes(v) ? 'none' : 'block';
 }
 function fillNidSupSelect(){
   initNidTypeSelect();
@@ -1921,14 +1949,14 @@ async function runNidAdd(list){
   const bad=list.filter(p=>p.n.length!==14);
   if(bad.length){ st.textContent='أرقام مش 14 رقم: '+bad.slice(0,5).map(x=>x.n).join('، ')+(bad.length>5?' ...':''); return; }
   const dType=document.getElementById('nid-type').value;
-  const dSup=dType==='supervisor'?'':document.getElementById('nid-sup').value;
+  const dSup=SUP_TYPES.includes(dType)?'':document.getElementById('nid-sup').value;
   const dBatch=document.getElementById('nid-batch').value.trim();
   const dExp=expiryMs(document.getElementById('nid-expiry').value);
   const temp=document.getElementById('nid-method').value==='temp';
   const seen=new Set(), items=[];
   for(const p of list){ if(seen.has(p.n)) continue; seen.add(p.n);
-    const type=p.type||dType; let sup=type==='supervisor'?'':dSup;
-    if(p.supEmail&&type!=='supervisor'){ const u=ALL_USERS.find(x=>(x.email||'').toLowerCase()===p.supEmail&&(x.role==='supervisor'||x.role==='office')); if(!u){ st.textContent='إيميل الدكتور مش موجود: '+p.supEmail; return; } sup=u.id; }
+    const type=p.type||dType; let sup=SUP_TYPES.includes(type)?'':dSup;
+    if(p.supEmail&&!SUP_TYPES.includes(type)){ const u=ALL_USERS.find(x=>(x.email||'').toLowerCase()===p.supEmail&&(x.role==='supervisor'||x.role==='office')); if(!u){ st.textContent='إيميل المشرف مش موجود: '+p.supEmail; return; } sup=u.id; }
     items.push({n:p.n,type,sup,batch:p.batch||dBatch,exp:p.exp||dExp}); }
   st.textContent='جاري المعالجة... (ممكن ياخد وقت لو الأعداد كبيرة)';
   try{
@@ -2008,7 +2036,7 @@ async function renderNidList(){
     <div class="u-meta">${g.claimed?escapeHtml(g.claimedName||'')+' — ':''}${g.batch?escapeHtml(g.batch):''}</div></div></div>
     <div class="u-actions" style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
       <select id="nt-${g.id}">${Object.keys(ACC_TYPES).map(k=>`<option value="${k}" ${k===g.accountType?'selected':''}>${ACC_TYPES[k]}</option>`).join('')}</select>
-      <select id="ns-${g.id}"><option value="">بدون دكتور</option>${sups.map(u=>`<option value="${u.id}" ${u.id===g.supervisorId?'selected':''}>${escapeHtml(u.name||u.email||'')}</option>`).join('')}</select>
+      <select id="ns-${g.id}"><option value="">بدون مشرف</option>${sups.map(u=>`<option value="${u.id}" ${u.id===g.supervisorId?'selected':''}>${escapeHtml(u.name||u.email||'')}</option>`).join('')}</select>
       <input type="date" id="ne-${g.id}" value="${dstr(g.expiresMs)}" title="تاريخ انتهاء المنحة">
       <button class="btn" onclick="saveNidGrant('${g.id}')">حفظ</button>
       ${g.claimed?`<button class="btn" style="background:var(--ink)" onclick="resetNidGrant('${g.id}')">إعادة فتح بكلمة جديدة</button>`:`<button class="btn" style="background:#b3261e" onclick="deleteNidGrant('${g.id}')">حذف</button>`}
@@ -2022,12 +2050,12 @@ function exportNidCsv(){
 }
 async function saveNidGrant(id){
   const g=NID_GRANTS.find(x=>x.id===id); if(!g) return;
-  const type=document.getElementById('nt-'+id).value, sup=type==='supervisor'?'':document.getElementById('ns-'+id).value;
+  const type=document.getElementById('nt-'+id).value, sup=SUP_TYPES.includes(type)?'':document.getElementById('ns-'+id).value;
   const exp=expiryMs(document.getElementById('ne-'+id).value), D=firebase.firestore.FieldValue.delete();
   try{
     await db.collection('idGrants').doc(id).update({accountType:type, supervisorId: sup||D, expiresMs: exp||D});
     if(g.claimed && g.claimedUid){
-      const staff=(type==='supervisor'||type==='office');
+      const staff=(SUP_TYPES.includes(type)||type==='office');
       const uu={accountType:type, role:NID_ROLE[type], supervisorId: sup||D, grantExpiresMs: exp||D};
       if(staff) uu.approved=true;
       await db.collection('users').doc(g.claimedUid).update(uu);
@@ -2058,6 +2086,52 @@ async function resetNidGrant(id){
     prompt('الكود الجديد (اتنزّل برضو في ملف) — سلّمه لصاحب الرقم:',code);
     loadNidGrants();
   }catch(e){ toast('تعذّر: '+(e.message||e.code)); }
+}
+
+/* ================= صلاحيات الأدوات لكل مشترك (users.featureOverrides: true=سماح، false=منع) ================= */
+let PERM_SEL = new Set();
+function initPerm(){
+  const t=document.getElementById('pm-type'); if(t && t.options.length<2) t.innerHTML='<option value="">كل الأنواع</option>'+Object.keys(ACC_TYPES).map(k=>`<option value="${k}">${ACC_TYPES[k]}</option>`).join('');
+  const f=document.getElementById('pm-feats'); if(f && !f.children.length) f.innerHTML=FEATURE_FLAG_ITEMS.map(x=>`<label style="display:flex; gap:6px; align-items:center; font-size:13px;"><input type="checkbox" class="pm-feat" value="${x[0]}" style="width:auto;"> ${x[1]}</label>`).join('');
+  renderPermUsers();
+}
+function permFiltered(){
+  const q=(document.getElementById('pm-q').value||'').trim().toLowerCase(), ty=document.getElementById('pm-type').value, ov=document.getElementById('pm-ov').value;
+  return ALL_USERS.filter(u=>u.role!=='admin' && (!ty||u.accountType===ty) && (!ov||(u.featureOverrides&&Object.keys(u.featureOverrides).length)) && (!q||[u.name,u.email,u.phone,u.nidLast4].join(' ').toLowerCase().includes(q)));
+}
+function renderPermUsers(){
+  const el=document.getElementById('pm-users'); if(!el) return;
+  const list=permFiltered().slice(0,400), lab=Object.fromEntries(FEATURE_FLAG_ITEMS);
+  el.innerHTML=list.length?list.map(u=>{
+    const ov=u.featureOverrides||{}, allow=Object.keys(ov).filter(k=>ov[k]===true).map(k=>lab[k]||k), deny=Object.keys(ov).filter(k=>ov[k]===false).map(k=>lab[k]||k);
+    return `<label style="display:flex; gap:10px; align-items:flex-start; padding:8px; border-bottom:1px dashed var(--line); cursor:pointer;"><input type="checkbox" ${PERM_SEL.has(u.id)?'checked':''} onchange="permTog('${u.id}',this.checked)" style="width:auto; margin-top:4px;"><span style="flex:1; font-size:13px;"><b>${escapeHtml(u.name||u.email||u.id)}</b> <span style="color:var(--ink-soft)">${ACC_TYPES[u.accountType]||u.role||''}${u.nidLast4?' · ••••'+escapeHtml(u.nidLast4):''}</span>${allow.length?`<div style="color:#1d9a6c; font-size:12px;">✓ مسموح: ${allow.map(escapeHtml).join('، ')}</div>`:''}${deny.length?`<div style="color:#b3261e; font-size:12px;">✗ ممنوع: ${deny.map(escapeHtml).join('، ')}</div>`:''}</span></label>`;
+  }).join(''):'<div style="padding:12px; color:var(--ink-soft);">لا يوجد مشتركين.</div>';
+  document.getElementById('pm-count').textContent=`المعروض ${list.length} — المختار ${PERM_SEL.size}`;
+}
+function permTog(id,on){ if(on) PERM_SEL.add(id); else PERM_SEL.delete(id); renderPermUsers(); }
+function permSelectAll(on){ permFiltered().slice(0,400).forEach(u=>{ if(on) PERM_SEL.add(u.id); else PERM_SEL.delete(u.id); }); if(!on) PERM_SEL.clear(); renderPermUsers(); }
+async function applyPerm(mode){
+  const st=document.getElementById('pm-status'); st.className='status';
+  const feats=[...document.querySelectorAll('.pm-feat:checked')].map(x=>x.value);
+  if(!PERM_SEL.size){ st.textContent='اختار مشترك واحد على الأقل.'; return; }
+  if(!feats.length){ st.textContent='اختار أداة واحدة على الأقل.'; return; }
+  const D=firebase.firestore.FieldValue.delete(), ids=[...PERM_SEL];
+  if(!confirm(`${mode==='allow'?'سماح':mode==='deny'?'منع':'إرجاع للافتراضي'} لـ ${feats.length} أداة على ${ids.length} مشترك؟`)) return;
+  st.textContent='جاري التطبيق...';
+  try{
+    for(let i=0;i<ids.length;i+=400){
+      const b=db.batch();
+      ids.slice(i,i+400).forEach(id=>{
+        const o={}; feats.forEach(k=>o[k]=mode==='allow'?true:mode==='deny'?false:D);
+        b.set(db.collection('users').doc(id),{featureOverrides:o},{merge:true});
+      });
+      await b.commit();
+    }
+    ids.forEach(id=>{ const u=ALL_USERS.find(x=>x.id===id); if(!u) return; u.featureOverrides=Object.assign({},u.featureOverrides); feats.forEach(k=>{ if(mode==='reset') delete u.featureOverrides[k]; else u.featureOverrides[k]=(mode==='allow'); }); });
+    audit('perm','','',`${mode==='allow'?'سماح':mode==='deny'?'منع':'إرجاع للافتراضي'}: ${feats.join(', ')} — ${ids.length} مشترك`);
+    st.className='status ok'; st.textContent=`✓ اتطبّق على ${ids.length} مشترك. التغيير بيظهر عند دخولهم أو تحديث الصفحة.`;
+    renderPermUsers();
+  }catch(e){ st.textContent='تعذّر التطبيق: '+(e.message||e.code); }
 }
 </script>
 </body>

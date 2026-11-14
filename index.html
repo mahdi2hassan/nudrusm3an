@@ -999,6 +999,22 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
 .hp-bar i{display:block; height:100%; background:var(--sage);}
 .hp-msg{font-size:13.5px; line-height:1.9; background:var(--paper-dim); border-radius:10px; padding:12px; margin-bottom:6px;}
 @media(max-width:560px){ .hp-big{font-size:48px;} }
+.hp-card details, details.hp-card{cursor:pointer;}
+details.hp-card summary{font-size:14.5px; list-style:none;}
+.hp-tbl{width:100%; border-collapse:collapse; font-size:13px;}
+.hp-tbl td, .hp-tbl th{border:1px solid var(--line); padding:7px 9px; text-align:right;}
+.hp-tbl th{background:var(--paper-dim);}
+.hp-bar{display:flex;}
+/* ===== كروت الملف الشخصي والرئيسية ===== */
+.pf-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; align-items:start; margin-top:18px;}
+.pf-grid > .card-panel{margin:0 !important; max-width:none !important; border-radius:var(--radius,16px); box-shadow:var(--shadow-sm,none);}
+.pf-grid > .card-panel h3{display:flex; align-items:center; gap:8px;}
+.profile-avatar-big{cursor:default;}
+.home-cards-title{margin-top:22px;}
+.quick-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; margin-bottom:8px;}
+.quick-grid .quick-card{display:flex; flex-direction:column; align-items:center; gap:4px; padding:16px 10px; cursor:pointer; border:1px solid var(--line); background:var(--white);}
+.quick-grid .quick-card .qc-icon{color:var(--brick); background:var(--accent-soft, var(--paper-dim));}
+.quick-grid .quick-card small{font-size:11.5px; color:var(--ink-soft); font-weight:600; line-height:1.5;}
 </style>
 </head>
 <body>
@@ -1088,7 +1104,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
           <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">أدوات المعلم<span class="dd-d">تحضير، بنك أسئلة، اختبارات، شهادات</span></span></button>
           <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">مجتمع المعلمين<span class="dd-d">أسئلة، خبراء، مجموعات تخصص</span></span></button>
           <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">التربية العملية<span class="dd-d">سجل زيارات وتقرير جاهز للطباعة</span></span></button>
-          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">الدكتور المشرف والإدارة<span class="dd-d">غرف صوت/فيديو، تكاليف، متابعة وتقارير</span></span></button>
+          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">المشرف والإدارة<span class="dd-d">غرف صوت/فيديو، تكاليف، متابعة وتقارير</span></span></button>
           <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">دردشة بمرفقات<span class="dd-d">صور، ملفات، تسجيلات صوتية، روابط</span></span></button>
           <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">نقاط وتحفيز<span class="dd-d">شارات، تحدي أسبوعي، لوحة متصدرين</span></span></button>
         </div></div>
@@ -1109,7 +1125,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
       <div class="land-role">
         <div class="icon-circle"><svg class="icon"><use href="#i-sparkle"></use></svg></div>
         <h3>إنشاء حساب جديد</h3>
-        <p>اختار نوع حسابك: طالب معلم، طالب جامعي، معلم غير تربوي، أو دكتور مشرف / إدارة.</p>
+        <p>اختار نوع حسابك: طالب معلم، طالب جامعي، معلم غير تربوي، أو إشراف أكاديمي / إدارة.</p>
         <button onclick="showAcctype()">إنشاء حساب</button>
       </div>
       <div class="land-role alt">
@@ -1120,7 +1136,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <button class="land-link" onclick="showNidScreen()">أو ادخل بالرقم القومي</button>
       </div>
     </div>
-    <div class="land-trial">اشتراك <b>مرة واحدة</b> بدون تجديد — والدكتور المشرف والإدارة <b>مجانًا</b></div>
+    <div class="land-trial">اشتراك <b>مرة واحدة</b> بدون تجديد — والمشرف والإدارة <b>مجانًا</b></div>
   </section>
 
   <section class="land-section" id="land-features">
@@ -1371,7 +1387,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <button class="nav-item active" data-views="t-dash" onclick="showView('t-dash', this)"><svg class="icon"><use href="#i-home"></use></svg> الصفحة الرئيسية</button>
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-t" data-views="v-courses v-course-detail v-learn v-quiz v-library v-notebooks v-saved" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-book"></use></svg> التعلم والموارد</button>
-        <button class="nav-item" id="navi-toolshub-t" data-views="v-tools-hub v-helpers v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
+        <button class="nav-item" id="navi-toolshub-t" data-views="v-tools-hub v-helpers v-prep-tools v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-t" data-views="t-community v-qa v-expert v-problems v-groups v-public-profile" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-chats-t" data-views="v-chats" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-t" style="display:none;">0</span></button>
@@ -1389,8 +1405,8 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <button class="nav-item active" data-views="s-home" onclick="showView('s-home', this)"><svg class="icon"><use href="#i-home"></use></svg> الصفحة الرئيسية</button>
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-s" data-views="v-courses v-course-detail v-learn v-quiz v-library v-notebooks v-saved" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-book"></use></svg> التعلم والموارد</button>
-        <button class="nav-item" id="navi-toolshub-s" data-views="v-tools-hub v-helpers v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
-        <button class="nav-item" id="navi-practical-s" data-views="s-practical s-research s-myresearch v-portfolio v-tasks v-calendar" onclick="showView('s-practical', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> التدريب العملي</button>
+        <button class="nav-item" id="navi-toolshub-s" data-views="v-tools-hub v-helpers v-prep-tools v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
+        <button class="nav-item" id="navi-practical-s" data-views="s-practical v-prac-tools s-research s-myresearch v-portfolio v-tasks v-calendar" onclick="showView('s-practical', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> التدريب العملي</button>
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-s" data-views="t-community v-qa v-expert v-problems v-groups v-public-profile" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-chats-s" data-views="v-chats" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-s" style="display:none;">0</span></button>
@@ -1411,6 +1427,8 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
       <div id="nav-sup" style="display:none;">
         <button class="nav-item active" data-views="v-sup" onclick="showView('v-sup', this)"><svg class="icon"><use href="#i-home"></use></svg> لوحتي</button>
         <button class="nav-item" data-views="v-chats" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات</button>
+        <button class="nav-item" data-views="v-sup-tools" onclick="showView('v-sup-tools', this)"><svg class="icon"><use href="#i-star"></use></svg> أدوات الإشراف</button>
+        <button class="nav-item" data-views="v-prep-tools" onclick="showView('v-prep-tools', this)"><svg class="icon"><use href="#i-edit"></use></svg> أدوات التحضير</button>
         <button class="nav-item" data-views="v-helpers" onclick="showView('v-helpers', this)"><svg class="icon"><use href="#i-sparkle"></use></svg> أدوات مساعدة</button>
         <div class="nav-group-label">الحساب</div>
         <button class="nav-item" data-views="v-profile" onclick="showView('v-profile', this)"><svg class="icon"><use href="#i-user"></use></svg> ملفي الشخصي</button>
@@ -1473,6 +1491,9 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
           <div class="stat-tile"><div class="st-ic"><svg class="icon"><use href="#i-notebook"></use></svg></div><div><div class="st-num js-hs-nbs">—</div><div class="st-lbl">دفاترك</div></div></div>
         </div>
 
+        <div class="section-title home-cards-title">اختصاراتك</div>
+        <div class="quick-grid" id="home-cards-t"></div>
+
         <div class="home-grid">
           <div>
             <div class="section-title">آخر منشورات المجتمع<button class="linklike" onclick="showView('t-community', document.getElementById('navi-community-t'))">عرض الكل</button></div>
@@ -1514,6 +1535,9 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
           <div class="step-arrow"><svg class="icon"><use href="#i-chevron"></use></svg></div>
           <div class="step"><div class="step-circle"><span class="step-num">4</span><svg class="icon"><use href="#i-award"></use></svg></div><div class="step-label">معلم محترف</div></div>
         </div></div>
+
+        <div class="section-title home-cards-title">اختصاراتك</div>
+        <div class="quick-grid" id="home-cards-s"></div>
 
         <div class="home-grid">
           <div>
@@ -1643,6 +1667,27 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <div class="topbar"><div><h1>أدوات مساعدة</h1><div class="sub">مؤقت، درجات، حضور، جدول، بطاقات مراجعة ومهام — بياناتك محفوظة وخاصة بيك</div></div></div>
         <div class="hp-chips hp-tabs" id="hp-tabs"></div>
         <div id="hp-body"></div>
+      </div>
+
+      <!-- ========== أدوات التحضير ========== -->
+      <div class="view" id="v-prep-tools">
+        <div class="topbar"><div><h1>أدوات التحضير</h1><div class="sub">أهداف، توزيع زمن، استراتيجيات، أسئلة، جدول مواصفات، خطط علاجية وأكتر</div></div></div>
+        <div class="hp-chips hp-tabs" id="pp-tabs"></div>
+        <div id="pp-body"></div>
+      </div>
+
+      <!-- ========== أدوات التربية العملية ========== -->
+      <div class="view" id="v-prac-tools">
+        <div class="topbar"><div><h1>أدوات التربية العملية</h1><div class="sub">يوميات، ساعات، متطلبات، تقييم ذاتي، ملاحظة زميل، استعداد للمشرف وتقرير جاهز</div></div></div>
+        <div class="hp-chips hp-tabs" id="pr-tabs"></div>
+        <div id="pr-body"></div>
+      </div>
+
+      <!-- ========== أدوات الإشراف ========== -->
+      <div class="view" id="v-sup-tools">
+        <div class="topbar"><div><h1>أدوات الإشراف</h1><div class="sub">زيارات، خطط تطوير، متابعة، تقارير ومستندات بكود</div></div></div>
+        <div class="hp-chips hp-tabs" id="sv-tabs"></div>
+        <div id="sv-body"></div>
       </div>
 
       <!-- ========== لوحة المتصدرين ========== -->
@@ -1812,18 +1857,8 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
 
       <div class="view" id="v-profile">
         <div class="topbar"><div><h1>الملف الشخصي</h1><div class="sub">بياناتك ونشاطك على المنصة</div></div></div>
-<div class="card-panel" id="referral-box" style="max-width:none; margin-bottom:22px;">
-          <div class="section-title" style="margin-top:0;">🎁 ادعُ زميلك واكسب نقاط</div>
-          <p style="font-size:13px; color:var(--ink-soft); margin-bottom:12px;">شارك رابطك، وكل زميل يسجّل حساب بيه هتكسب 30 نقطة (بعد اعتماد الأدمن).</p>
-          <div class="field-row">
-            <div class="field" style="flex:1;"><input type="text" id="referral-link" readonly onclick="this.select()"></div>
-            <button class="btn-secondary" onclick="copyReferralLink()">نسخ</button>
-          </div>
-          <div style="font-size:12px; color:var(--ink-soft); margin-top:8px;" id="referral-stats"></div>
-        </div>
-
-        <div class="profile-head">
-          <div class="profile-avatar-big" id="profile-avatar-big" onclick="setProfilePhotoLink()">
+<div class="profile-head">
+          <div class="profile-avatar-big" id="profile-avatar-big">
             <span>؟</span>
           </div>
           <div>
@@ -1835,6 +1870,16 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
           <div class="profile-stats" id="profile-stats"></div>
         </div>
 
+        <div class="pf-grid">
+<div class="card-panel" id="referral-box" style="max-width:none; margin-bottom:22px;">
+          <div class="section-title" style="margin-top:0;">🎁 ادعُ زميلك واكسب نقاط</div>
+          <p style="font-size:13px; color:var(--ink-soft); margin-bottom:12px;">شارك رابطك، وكل زميل يسجّل حساب بيه هتكسب 30 نقطة (بعد اعتماد الأدمن).</p>
+          <div class="field-row">
+            <div class="field" style="flex:1;"><input type="text" id="referral-link" readonly onclick="this.select()"></div>
+            <button class="btn-secondary" onclick="copyReferralLink()">نسخ</button>
+          </div>
+          <div style="font-size:12px; color:var(--ink-soft); margin-top:8px;" id="referral-stats"></div>
+        </div>
         <div class="card-panel">
           <h3 style="margin-bottom:14px;">تعديل البيانات</h3>
           <div class="field"><label>الاسم</label><input type="text" id="profile-edit-name"></div>
@@ -1879,6 +1924,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
           <button class="btn-secondary" style="margin-bottom:10px;" onclick="downloadMyData()">تنزيل نسخة من بياناتي</button><br>
           <button class="btn-secondary" style="color:var(--brick); border-color:var(--brick);" onclick="requestAccountDeletion()">طلب حذف الحساب</button>
           <div class="auth-status" id="privacy-center-status"></div>
+        </div>
         </div>
       </div>
 
@@ -2570,7 +2616,7 @@ async function loadUserStatus(){
     const doc = await db.collection('users').doc(currentUid).get();
     const d = doc.data();
     pendingType = d.accountType || pendingType; userStatus = { accountType: d.accountType || null, approved: d.approved === true, supervisorId: d.supervisorId || null, feeAmount: d.feeAmount || 0, nidHash: d.nidHash || null, grantExpiresMs: d.grantExpiresMs || 0, plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt, isExpert: !!d.isExpert, verified: !!d.verified };
-    pendingUser.photoURL = d.photoURL || pendingUser.photoURL || '';
+    pendingUser.photoURL = '';
     pendingUser.specialization = d.specialization || '';
     pendingUser.bio = d.bio || '';
     pendingUser.yearsExperience = (d.yearsExperience === 0 || d.yearsExperience) ? d.yearsExperience : '';
@@ -2659,7 +2705,7 @@ function handleSharedProfileLink(){
 function renderGlobalAvatar(){
   const el = document.getElementById('global-avatar');
   if(!el) return;
-  if(pendingUser.photoURL){ el.innerHTML = `<img src="${escapeAttr(pendingUser.photoURL)}" alt="">`; }
+  if(false){ el.innerHTML = `<img src="${escapeAttr(pendingUser.photoURL)}" alt="">`; }
   else{ el.textContent = initials(pendingUser.name); }
 }
 function showView(id, btn){
@@ -2684,6 +2730,10 @@ function showView(id, btn){
   if(id === 'v-prep-room') loadPrepRooms();
   if(id === 'v-tools-hub') renderToolsHub();
   if(id === 'v-helpers') helpersOpen();
+  if(id === 'v-prep-tools') prepToolsOpen();
+  if(id === 'v-sup-tools') supToolsOpen();
+  if(id === 'v-prac-tools') pracToolsOpen();
+  if(id === 't-dash' || id === 's-home') homeCardsRender();
   if(id === 'v-leaderboard') loadLeaderboard();
   if(id === 'v-wallet') loadWallet();
   if(id === 'v-profile') loadReferralBox();
@@ -2795,7 +2845,7 @@ function renderProfileView(){
 
   const bigAvatar = document.getElementById('profile-avatar-big');
   if(bigAvatar){
-    bigAvatar.innerHTML = pendingUser.photoURL
+    bigAvatar.innerHTML = false
       ? `<img src="${escapeAttr(pendingUser.photoURL)}" alt="">`
       : `<span>${escapeHtml(initials(pendingUser.name))}</span>`;
   }
@@ -3313,6 +3363,8 @@ function renderToolsHub(){
     { icon:'sparkle',   title:'مساعد المعلم',             desc:'جهّز برومبت جاهز لأي مساعد ذكاء اصطناعي', view:'v-assistant', key:'v-assistant', roles:['teacher','student'] },
     { icon:'edit',      title:'اختبارات متاحة',           desc:'خد اختبارات نشرها معلمون وشوف نتيجتك فورًا', view:'v-take-quiz-list', key:'v-take-quiz-list', roles:['student'] },
     { icon:'notebook',  title:'امتحانك بلس', tag:'للمشتركين', desc:'أداة إنشاء الامتحانات والكتيبات الاحترافية', action:'exam', key:'exam-easy', roles:['teacher','student'] },
+    { icon:'edit',      title:'أدوات التحضير', desc:'أهداف، توزيع زمن، استراتيجيات، مواصفات، خطط علاجية', view:'v-prep-tools', key:'v-prep-tools', roles:['teacher','student'] },
+    { icon:'cap',       title:'أدوات التربية العملية', desc:'يوميات، ساعات، تقييم ذاتي، ملاحظة زميل، تقرير', view:'v-prac-tools', key:'v-prac-tools', roles:['student'] },
     { icon:'sparkle',   title:'أدوات مساعدة', desc:'مؤقت، درجات، حضور، جدول، بطاقات مراجعة ومهام', view:'v-helpers', key:'v-helpers', roles:['teacher','student'] },
     { icon:'monitor',   title:'سبورة إلكترونية',          desc:'اشرح واعرض لطلابك من أي مكان', action:'board', key:'boardplus', roles:['teacher','student'] },
   ].filter(t => t.roles.includes(isT ? 'teacher' : 'student') && !hidden.includes(t.key));
@@ -3684,7 +3736,7 @@ function renderPortfolio(){
     <div class="content-list" style="margin-bottom:20px;">${items.length ? items.map(renderItem).join('') : '<div class="empty-state">لسه مفيش حاجة هنا.</div>'}</div>`;
   el.innerHTML = `
     <div class="profile-head" style="margin-bottom:10px;">
-      <div class="profile-avatar-big">${pendingUser.photoURL ? `<img src="${escapeAttr(pendingUser.photoURL)}" alt="">` : `<span>${escapeHtml(initials(pendingUser.name))}</span>`}</div>
+      <div class="profile-avatar-big">${false ? `<img src="${escapeAttr(pendingUser.photoURL)}" alt="">` : `<span>${escapeHtml(initials(pendingUser.name))}</span>`}</div>
       <div>
         <div class="profile-name">${escapeHtml(pendingUser.name||'مستخدم')}${userStatus.isExpert ? ' <span class="expert-badge">⭐ معلم خبير</span>' : ''}${userStatus.verified ? ' <span class="verified-badge" title="حساب موثّق">✓</span>' : ''}</div>
         <div class="profile-meta">${pendingUser.specialization ? escapeHtml(pendingUser.specialization) : accLabelOf()}</div>
@@ -4632,6 +4684,7 @@ async function applyFeatureFlags(){
     const doc = await db.collection('siteSettings').doc('featureFlags').get();
     let hid = (doc.exists && Array.isArray(doc.data().hidden)) ? doc.data().hidden : [];
     try{ if(pendingType){ const a = await db.collection('siteSettings').doc('accessByType').get(); const h = a.exists && a.data()[pendingType] && a.data()[pendingType].hidden; if(Array.isArray(h)) hid = hid.concat(h); } }catch(e){ console.warn('accessByType', e); }
+    try{ const ud = await db.collection('users').doc(currentUid).get(); const ov = (ud.exists && ud.data().featureOverrides) || {}; Object.keys(ov).forEach(k => { hid = hid.filter(x => x !== k); if(ov[k] === false) hid.push(k); }); }catch(e){ console.warn('featureOverrides', e); }
     window.__hiddenFeatures = hid;
     const active = document.querySelector('.view.active');
     if(active) renderSubnav(active.id);
@@ -4849,7 +4902,7 @@ async function loadRatingForThread(otherUid){
   try{
     const pDoc = await db.collection('publicProfiles').doc(otherUid).get();
     const u = pDoc.exists ? pDoc.data() : {};
-    if(u.photoURL){ const av = document.getElementById('chat-thread-avatar'); if(av) av.innerHTML = `<img src="${escapeAttr(u.photoURL)}" alt="">`; }
+    if(false){ const av = document.getElementById('chat-thread-avatar'); if(av) av.innerHTML = `<img src="${escapeAttr(u.photoURL)}" alt="">`; }
     const agg = await ratingAggFor(otherUid);
     document.getElementById('chat-rating-avg').innerHTML = agg.count ? `${ic('star')} ${agg.avg.toFixed(1)} (${agg.count})` : 'لسه مفيش تقييمات';
     let myStars = 0;
@@ -4895,7 +4948,7 @@ async function openPublicProfile(uid){
     noteEl.textContent = p.role === 'teacher' ? 'معلم' : 'طالب معلم';
     bodyEl.innerHTML = `
       <div class="profile-head">
-        <div class="profile-avatar-big">${p.photoURL ? `<img src="${escapeAttr(p.photoURL)}" alt="">` : `<span>${escapeHtml(initials(p.name))}</span>`}</div>
+        <div class="profile-avatar-big">${false ? `<img src="${escapeAttr(p.photoURL)}" alt="">` : `<span>${escapeHtml(initials(p.name))}</span>`}</div>
         <div>
           <div class="profile-name">${escapeHtml(p.name||'مستخدم')}${p.isExpert ? ' <span class="expert-badge">⭐ معلم خبير</span>' : ''}${p.verified ? ' <span class="verified-badge" title="حساب موثّق">✓</span>' : ''}</div>
           <div class="profile-meta">${escapeHtml(p.specialization || 'مفيش تخصص مضاف')}</div>
@@ -4915,22 +4968,6 @@ async function openPublicProfile(uid){
 }
 
 /* ================= صورة البروفايل ================= */
-async function setProfilePhotoLink(){
-  if(!currentUid) return;
-  const raw = prompt('الصق رابط صورتك (Google Drive أو أي رابط صورة):\nلازم الصورة تكون متاحة لأي شخص معه الرابط. اترك الخانة فاضية لحذف الصورة.');
-  if(raw === null) return;
-  const link = cleanLink(raw);
-  if(link === null){ toast('الرابط مش صالح.', {type:'err'}); return; }
-  try{
-    const url = link ? imgUrlFrom(link) : '';
-    await db.collection('users').doc(currentUid).set({ photoURL: url }, { merge: true });
-    pendingUser.photoURL = url;
-    await syncPublicProfile();
-    renderGlobalAvatar();
-    renderProfileView();
-    toast(url ? 'تم تحديث صورة البروفايل.' : 'اتحذفت الصورة.');
-  }catch(err){ toast('تعذّر الحفظ: '+err.message, {type:'err'}); }
-}
 
 /* ================= الإشعارات (Notification bell) ================= */
 let notifUnsub = null;
@@ -5581,7 +5618,7 @@ const NAV_FAMILIES = {
     ['v-courses','الدورات','grad'], ['v-learn','دروس تعلم كيف','book'], ['v-library','مكتبة الموارد','layers'],
     ['v-notebooks','دفاتر التحضير','notebook'], ['v-saved','المحفوظات','bookmark'] ] },
   tools: { also:['v-prep-room-editor','v-take-quiz'], tabs:[
-    ['v-tools-hub','كل الأدوات','layers'], ['v-lesson-planner','تحضير الدروس','edit'],
+    ['v-tools-hub','كل الأدوات','layers'], ['v-lesson-planner','تحضير الدروس','edit'], ['v-prep-tools','أدوات التحضير','sparkle'], ['v-helpers','أدوات مساعدة','check'],
     ['v-questions','بنك الأسئلة','help','teacher'], ['v-quizzes','الاختبارات','clipboard','teacher'],
     ['v-certificates','الشهادات','star','teacher'], ['v-prep-room','التحضير الجماعي','users','teacher'],
     ['v-assistant','مساعد المعلم','sparkle'], ['v-take-quiz-list','اختبارات متاحة','edit','student'] ] },
@@ -5592,7 +5629,7 @@ const NAV_FAMILIES = {
     ['v-leaderboard','لوحة المتصدرين','award'], ['v-challenge','تحدي الأسبوع','star'], ['v-wallet','المحفظة','cash'],
     ['v-career','مساري كمعلم','grad'], ['v-sim','محاكاة المواقف','clipboard'] ] },
   training: { also:[], tabs:[
-    ['s-practical','التربية العملية','clipboard','student'], ['s-research','بحوث الفعل','video','student'],
+    ['s-practical','التربية العملية','clipboard','student'], ['v-prac-tools','أدوات التربية العملية','sparkle','student'], ['s-research','بحوث الفعل','video','student'],
     ['s-myresearch','أبحاثي','folder','student'], ['v-portfolio','ملف الإنجاز','grad','student'],
     ['v-tasks','المهام','check','student'], ['v-calendar','التقويم','notebook','student'] ] },
 };
@@ -5606,6 +5643,7 @@ function familyOfView(id){
 function renderSubnav(id){
   const view = document.getElementById(id); if(!view) return;
   let bar = view.querySelector(':scope > .subnav');
+  if(pendingRole === 'supervisor' || pendingRole === 'office'){ if(bar) bar.remove(); return; }
   const fam = familyOfView(id);
   if(!fam){ if(bar) bar.remove(); return; }
   if(!bar){ bar = document.createElement('div'); bar.className = 'subnav'; view.insertBefore(bar, view.firstChild); }
@@ -5718,14 +5756,15 @@ async function chatSendLink(){
 }
 
 /* =====================================================================
-   أنواع الحسابات (طالب معلم / طالب جامعي / معلم غير تربوي / دكتور مشرف / الإدارة)
+   أنواع الحسابات (طالب معلم / طالب جامعي / معلم غير تربوي / إشراف أكاديمي / الإدارة)
    ===================================================================== */
 const ACCOUNT_TYPES = {
   student_teacher:    { label:'طالب معلم',      role:'student',    paid:true,  icon:'cap',   desc:'أتعلم أصول المهنة، أسجّل التربية العملية وأبني ملف إنجازي.' },
   university_student: { label:'طالب جامعي',     role:'student',    paid:true,  icon:'book',  desc:'أدوات مذاكرة وتحضير ومجتمع زملاء لطلاب الجامعة.' },
   non_edu_teacher:    { label:'معلم غير تربوي', role:'teacher',    paid:true,  icon:'user',  desc:'أطوّر مهاراتي التربوية وأدواتي في التدريس.' },
-  supervisor:         { label:'دكتور مشرف',     role:'supervisor', paid:false, icon:'award', desc:'أتابع طلابي، أنظّم غرف صوت/فيديو، أرفع تكاليف وأستلم التسليمات.' },
-  office:             { label:'الإدارة',        role:'office',     paid:false, icon:'users', desc:'أتابع الدكاترة المشرفين وأستلم منهم الوسائط والتسجيلات.' },
+  supervisor:         { label:'إشراف أكاديمي',   role:'supervisor', paid:false, icon:'award', desc:'أتابع طلابي أكاديميًا: أنظّم غرف صوت/فيديو، أرفع تكاليف وأستلم التسليمات وأقيّمها.' },
+  expert_supervisor:  { label:'إشراف معلم خبير', role:'supervisor', paid:false, icon:'star',  desc:'أشرف على المعلمين والطلاب المعلمين بخبرتي: زيارات صفية، خطط تطوير وتغذية راجعة.' },
+  office:             { label:'الإدارة',        role:'office',     paid:false, icon:'users', desc:'أتابع المشرفين وأستلم منهم الوسائط والتسجيلات.' },
 };
 let pendingType = null;
 function accLabelOf(){ return (ACCOUNT_TYPES[pendingType] || {}).label || (pendingRole === 'teacher' ? 'معلم' : 'طالب معلم'); }
@@ -5753,7 +5792,7 @@ async function showAcctype(){
       <div class="at-ic">${ic(t.icon)}</div><div class="at-body"><h4>${t.label}</h4><p>${t.desc}</p></div>${closed ? '<span class="at-price free">التسجيل مغلق مؤقتًا</span>' : price}</button>`;
   };
   grid.innerHTML = `<div class="at-group">حسابات المعلمين والطلاب <small>(رسوم لمرة واحدة بدون تجديد)</small></div>${['student_teacher','university_student','non_edu_teacher'].map(card).join('')}
-    <div class="at-group">حسابات الإشراف والإدارة <small>(مجانية — يعتمدها فريق المنصة)</small></div>${['supervisor','office'].map(card).join('')}`;
+    <div class="at-group">حسابات الإشراف والإدارة <small>(مجانية — يعتمدها فريق المنصة)</small></div>${['supervisor','expert_supervisor','office'].map(card).join('')}`;
 }
 async function proceedAfterSignup(){
   plansMode = 'signup';
@@ -5839,6 +5878,7 @@ function isAccountLocked(){
   return t.paid ? (userStatus.status === 'awaiting_fee' || userStatus.status === 'pending_payment') : userStatus.status === 'pending_approval';
 }
 function onAccountLoaded(){
+  try{ hpBootReminders(); }catch(e){}
   loadLimits(); checkDueReminders(); renderAccDropdown(); setTimeout(maybeOfferBio, 2500);
   const show = !!userStatus.supervisorId && (ACCOUNT_TYPES[userStatus.accountType] || {}).paid !== false;
   ['navi-sup-t','navi-sup-s'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = show ? '' : 'none'; });
@@ -5858,7 +5898,7 @@ async function loadLimits(){ /* الرفع اتشال — الملفات بقت 
 })();
 
 /* =====================================================================
-   لوحة الدكتور المشرف / الإدارة  +  "مشرفي وتكاليفي" للطلاب والمعلمين
+   لوحة المشرف / الإدارة  +  "مشرفي وتكاليفي" للطلاب والمعلمين
    (فرق، إعلانات، غرف + حضور، تكاليف + تسليمات + ردود، وسائط، تقارير)
    ===================================================================== */
 let supTab = null, supMembers = [], supUp = null, supGroups = [], myGroupIds = [];
@@ -5872,7 +5912,7 @@ function supDownloadCsv(name, rows){
   const csv = '﻿' + rows.map(r => r.map(c => '"' + String(c == null ? '' : c).replace(/"/g, '""') + '"').join(',')).join('\r\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' })); a.download = name; document.body.appendChild(a); a.click(); a.remove();
 }
-/* ----- الفرق: تصنيف الأعضاء داخل الدكتور الواحد ----- */
+/* ----- الفرق: تصنيف الأعضاء داخل المشرف الواحد ----- */
 async function supLoadGroups(){
   supGroups = []; myGroupIds = [];
   try{
@@ -5911,8 +5951,8 @@ async function supDelGroup(gid){
 async function initSup(){
   const body = document.getElementById('sup-body'), tabsEl = document.getElementById('sup-tabs');
   const staff = supIsStaff(), type = userStatus.accountType || pendingType;
-  document.getElementById('sup-title').textContent = staff ? (type === 'office' ? 'لوحة الإدارة' : 'لوحة الدكتور المشرف') : 'مشرفي وتكاليفي';
-  document.getElementById('sup-sub').textContent = staff ? 'تواصل، غرف مباشرة، تكاليف، ووسائط — كله في مكان واحد' : 'التكاليف والغرف والوسائط من الدكتور المشرف';
+  document.getElementById('sup-title').textContent = staff ? (type === 'office' ? 'لوحة الإدارة' : (type === 'expert_supervisor' ? 'لوحة الإشراف (معلم خبير)' : 'لوحة الإشراف الأكاديمي')) : 'مشرفي وتكاليفي';
+  document.getElementById('sup-sub').textContent = staff ? 'تواصل، غرف مباشرة، تكاليف، ووسائط — كله في مكان واحد' : 'التكاليف والغرف والوسائط من المشرف';
   if(isAccountLocked()){ tabsEl.innerHTML = ''; body.innerHTML = supEmpty('حسابك بانتظار الاعتماد من فريق المنصة. هتقدر تستخدم اللوحة فور الموافقة.'); return; }
   body.innerHTML = supEmpty('جاري التحميل...');
   supUp = null; supMembers = [];
@@ -5927,7 +5967,7 @@ async function initSup(){
       supMembers = s.docs.map(d => ({ id: d.id, name: d.data().name || '—', type: d.data().accountType, email: d.data().email || '' }));
     }
   }catch(err){ body.innerHTML = supEmpty('تعذّر التحميل (' + escapeHtml(err.code || err.message) + ')'); return; }
-  if(!staff && !supUp){ tabsEl.innerHTML = ''; body.innerHTML = supEmpty('لسه ماتربطتش بدكتور مشرف. لما الإدارة تربط حسابك بدكتور هتلاقي هنا التكاليف والغرف.'); return; }
+  if(!staff && !supUp){ tabsEl.innerHTML = ''; body.innerHTML = supEmpty('لسه ماتربطتش بإشراف أكاديمي. لما الإدارة تربط حسابك بمشرف هتلاقي هنا التكاليف والغرف.'); return; }
   await supLoadGroups();
   const tabs = staff ? [['members','الأعضاء والفرق'],['news','الإعلانات'],['rooms','الغرف'],['tasks','التكاليف'],['media','الوسائط والملفات'],['reports','التقارير']]
                      : [['tasks','التكاليف'],['news','الإعلانات'],['rooms','الغرف'],['media','الوسائط والملفات'],['mine','مشرفي']];
@@ -5953,7 +5993,7 @@ function supRenderMembers(){
   document.getElementById('sup-body').innerHTML = h;
 }
 function supRenderMine(){
-  document.getElementById('sup-body').innerHTML = '<h3 class="sup-h">الدكتور المشرف</h3>' + supPersonCard({ id: supUp.id, name: supUp.name }, 'مشرفي') + '<div class="sup-hint">تقدر تبعتله رسائل وصور وملفات وتسجيلات صوتية من الدردشة، وتسلّم التكاليف من تبويب "التكاليف".</div>';
+  document.getElementById('sup-body').innerHTML = '<h3 class="sup-h">المشرف</h3>' + supPersonCard({ id: supUp.id, name: supUp.name }, 'مشرفي') + '<div class="sup-hint">تقدر تبعتله رسائل وصور وملفات وتسجيلات صوتية من الدردشة، وتسلّم التكاليف من تبويب "التكاليف".</div>';
 }
 
 /* ---------- الإعلانات (رسالة جماعية) ---------- */
@@ -6120,7 +6160,7 @@ async function supRenderTasks(){
           ${s && s.status === 'graded' ? `<div class="sup-grade">الدرجة: <b>${escapeHtml(s.grade || '—')}</b>${s.feedback ? ' — ' + escapeHtml(s.feedback) : ''}</div>` : ''}
           ${s && s.status === 'graded' ? '' : `<textarea id="sub-txt-${a.id}" rows="2" placeholder="إجابتك (اختياري لو هتحط رابط)">${escapeHtml(s ? (s.text || '') : '')}</textarea>
           <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"><input type="text" id="sub-link-${a.id}" placeholder="رابط تسليمك (Drive أو أي رابط)" style="flex:1; min-width:200px;"><button class="sup-btn primary" id="sub-btn-${a.id}" onclick="supSubmit('${a.id}')">${s ? 'تحديث التسليم' : 'تسليم'}</button></div>`}${s && s.fileUrl ? `<div class="sup-meta">آخر ملف سلّمته: ${fileLink(s)}</div>` : ''}
-          ${s ? `<div><button class="sup-btn" onclick="supToggleThread('${s.id}','${escapeAttr(supUp.id)}')">💬 الردود مع الدكتور</button></div><div id="th-${s.id}"></div>` : ''}</div>`;
+          ${s ? `<div><button class="sup-btn" onclick="supToggleThread('${s.id}','${escapeAttr(supUp.id)}')">💬 الردود مع المشرف</button></div><div id="th-${s.id}"></div>` : ''}</div>`;
       }).join('') : supEmpty('مفيش تكاليف حاليًا.'));
     }
     body.innerHTML = h;
@@ -6260,7 +6300,7 @@ async function supDelMedia(id){ if(!confirm('حذف المرفق ده؟')) retur
 function supRenderReports(){
   const now = new Date(), val = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
   const isOffice = (userStatus.accountType || pendingType) === 'office';
-  document.getElementById('sup-body').innerHTML = `<div class="sup-form"><h3 class="sup-h" style="margin-top:0;">تقرير شهري ${isOffice ? 'لكل دكتور مشرف' : 'لنشاطي وطلابي'}</h3>
+  document.getElementById('sup-body').innerHTML = `<div class="sup-form"><h3 class="sup-h" style="margin-top:0;">تقرير شهري ${isOffice ? 'لكل إشراف أكاديمي' : 'لنشاطي وطلابي'}</h3>
     <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:end;"><div class="field" style="margin:0;"><label>الشهر</label><input type="month" id="rp-month" value="${val}"></div><button class="sup-btn primary" onclick="supBuildReport()">عرض التقرير</button></div></div><div id="rp-out"></div>`;
   supBuildReport();
 }
@@ -6291,7 +6331,7 @@ async function supBuildReport(){
         perStudent.push([m.name, ms.length, gr.length ? (gr.reduce((a, b) => a + b, 0) / gr.length).toFixed(1) : '—', att.docs.filter(d => d.data().uid === m.id && inR(d.data().firstJoinMs || 0)).length]);
       });
     }
-    supReportRows = { head: [isOffice ? 'الدكتور' : 'الدكتور','عدد الأعضاء','تكاليف نُشرت','تسليمات','نسبة التسليم','متوسط الدرجات','غرف','حضور غرف','وسائط'], rows, perStudent };
+    supReportRows = { head: [isOffice ? 'المشرف' : 'المشرف','عدد الأعضاء','تكاليف نُشرت','تسليمات','نسبة التسليم','متوسط الدرجات','غرف','حضور غرف','وسائط'], rows, perStudent };
     const tbl = (head, rs) => `<div style="overflow-x:auto;"><table class="sup-table"><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr>${rs.map(r => `<tr>${r.map(c => `<td>${escapeHtml(String(c))}</td>`).join('')}</tr>`).join('') || `<tr><td colspan="${head.length}">لا توجد بيانات.</td></tr>`}</table></div>`;
     out.innerHTML = tbl(supReportRows.head, rows) + (perStudent.length ? '<h3 class="sup-h">تفصيل الطلاب</h3>' + tbl(['الطالب','تسليمات','متوسط الدرجات','حضور غرف'], perStudent) : '') + `<button class="sup-btn" style="margin-top:10px;" onclick="supExportReport()">تصدير التقرير CSV</button>`;
   }catch(err){ out.innerHTML = supEmpty('تعذّر إعداد التقرير (' + escapeHtml(err.code || err.message) + ')'); }
@@ -6451,7 +6491,7 @@ async function renderLandPricing(){
   const pr = await loadPricing();
   const row = key => { const t = ACCOUNT_TYPES[key], c = pr[key] || {}, fee = Number(c.fee) || 0, closed = t.paid && c.enabled === false;
     return `<button class="dd-item" ${closed ? 'disabled' : `onclick="startSignup('${key}')"`}><span class="dd-t">${t.label}</span><span class="dd-p ${(!t.paid || !fee) ? 'free' : ''}">${closed ? 'مغلق مؤقتًا' : (!t.paid ? 'مجاني' : (fee ? fee + ' جنيه · مرة واحدة' : 'مجاني'))}</span></button>`; };
-  el.innerHTML = ['student_teacher','university_student','non_edu_teacher'].map(row).join('') + '<div class="dd-sep">مجاني — بدون اشتراك</div>' + ['supervisor','office'].map(row).join('') + '<div class="dd-foot">الدفع مرة واحدة بدون تجديد، وعندك كوبون خصم؟ هتكتبه في شاشة الدفع.</div>';
+  el.innerHTML = ['student_teacher','university_student','non_edu_teacher'].map(row).join('') + '<div class="dd-sep">مجاني — بدون اشتراك</div>' + ['supervisor','expert_supervisor','office'].map(row).join('') + '<div class="dd-foot">الدفع مرة واحدة بدون تجديد، وعندك كوبون خصم؟ هتكتبه في شاشة الدفع.</div>';
 }
 
 /* =====================================================================
@@ -6622,12 +6662,14 @@ function grantExpired(){ return userStatus.plan === 'granted' && userStatus.gran
    كل البيانات بتتحفظ في userTools/{uid} (خاصة بصاحبها) — من غير رفع ملفات.
    ===================================================================== */
 let HP = { roster: [], attendance: {}, schedule: [], cards: [], todos: [], exam: { name: '', date: '' } };
-let hpLoaded = false, hpTab = 'timer', hpSaveT = null, hpStudy = null;
+let hpSupLoaded = false, hpLoaded = false, hpTab = 'timer', hpSaveT = null, hpStudy = null;
 const HP_TABS = [
   ['timer', '⏱️ المؤقت'], ['random', '🎲 اختيار ومجموعات', 't'], ['grades', '🧮 الدرجات'], ['attend', '📋 الحضور', 't'],
-  ['schedule', '🗓️ الجدول'], ['cards', '🃏 بطاقات المراجعة'], ['todo', '✅ المهام والامتحان'], ['msgs', '💬 رسائل جاهزة', 't']
+  ['report', '📈 تقرير الطلاب', 't'], ['inbox', '📥 من مشرفي', 'i'], ['schedule', '🗓️ الجدول'], ['cards', '🃏 بطاقات المراجعة'], ['todo', '✅ المهام والامتحان'], ['msgs', '💬 رسائل جاهزة', 't']
 ];
 function hpIsTeacher(){ return pendingRole !== 'student'; }
+function hpTabOk(t){ return t[2] === 't' ? hpIsTeacher() : t[2] === 'i' ? !!(userStatus && userStatus.supervisorId) : true; }
+function hpIsStaff(){ return pendingRole === 'supervisor' || pendingRole === 'office'; }
 function hpUid(){ return 'x' + Math.random().toString(36).slice(2, 9); }
 function hpSave(){
   clearTimeout(hpSaveT);
@@ -6641,14 +6683,15 @@ async function helpersOpen(){
     try{ const d = await db.collection('userTools').doc(currentUid).get(); if(d.exists && d.data().data) HP = Object.assign(HP, d.data().data); }catch(e){}
     hpLoaded = true;
   }
-  if(!HP_TABS.some(t => t[0] === hpTab && (!t[2] || hpIsTeacher()))) hpTab = 'timer';
+  if(!hpSupLoaded){ hpSupLoaded = true; await hpLoadSupSchedule(); }
+  if(!HP_TABS.some(t => t[0] === hpTab && hpTabOk(t))) hpTab = 'timer';
   hpShow(hpTab);
 }
 function hpShow(tab){
   hpTab = tab;
   const tabs = document.getElementById('hp-tabs'), body = document.getElementById('hp-body'); if(!tabs || !body) return;
-  tabs.innerHTML = HP_TABS.filter(t => !t[2] || hpIsTeacher()).map(t => `<button class="hp-chip ${t[0] === tab ? 'on' : ''}" onclick="hpShow('${t[0]}')">${t[1]}</button>`).join('');
-  body.innerHTML = ({ timer: hpTimerHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml })[tab]();
+  tabs.innerHTML = HP_TABS.filter(hpTabOk).map(t => `<button class="hp-chip ${t[0] === tab ? 'on' : ''}" onclick="hpShow('${t[0]}')">${t[1]}</button>`).join('');
+  body.innerHTML = ({ timer: hpTimerHtml, inbox: hpInboxHtml, report: hpReportHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml })[tab]();
   if(tab === 'timer') hpTick(true);
   if(tab === 'msgs') hpMsgRender();
 }
@@ -6701,7 +6744,7 @@ function hpTick(force){
 function hpRandomHtml(){
   return `<div class="hp-card"><h3>قائمة الطلاب</h3><div class="hp-note">اكتب كل اسم في سطر (بتتحفظ تلقائيًا وبتتستخدم في الحضور كمان).</div>
     <textarea id="hp-roster" rows="6" placeholder="أحمد محمد&#10;سارة علي&#10;...">${hpE(HP.roster.map(r => r.name).join('\n'))}</textarea>
-    <div class="hp-actions"><button class="btn-primary" onclick="hpSaveRoster()">حفظ القائمة</button><span class="hp-note">${HP.roster.length} طالب</span></div></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="hpSaveRoster()">حفظ القائمة</button>${hpIsStaff() ? '<button class="btn-secondary" onclick="hpImportMyStudents()">استيراد طلابي من الحسابات التابعة</button>' : ''}<span class="hp-note">${HP.roster.length} طالب</span></div></div>
   <div class="hp-card"><h3>اختيار طالب عشوائي</h3><div class="hp-big hp-pick" id="hp-pick">؟</div>
     <div class="hp-actions"><button class="btn-primary" onclick="hpPickRandom()">اختار طالب</button></div></div>
   <div class="hp-card"><h3>تقسيم لمجموعات</h3>
@@ -6807,7 +6850,8 @@ const HP_DAYS = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء
 function hpTodayName(){ return ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'][new Date().getDay()]; }
 function hpScheduleHtml(){
   const today = hpTodayName();
-  return `<div class="hp-card"><h3>إضافة موعد</h3><div class="hp-row hp-row-wrap"><select id="hp-sd">${HP_DAYS.map(d => `<option ${d === today ? 'selected' : ''}>${d}</option>`).join('')}</select><input type="time" id="hp-st"><input type="text" id="hp-sn" placeholder="${hpIsTeacher() ? 'حصة / مجموعة / مادة' : 'محاضرة / مادة / مذاكرة'}"><input type="text" id="hp-sx" placeholder="ملاحظة (اختياري)"><button class="btn-primary" onclick="hpAddSched()">إضافة</button></div></div>
+  const supBlock = (hpSupItems.length ? `<div class="hp-card hp-today"><h3>🗓️ جدول ${hpE(hpSupItems[0].from)}</h3>${HP_DAYS.map(d => { const it = hpSupItems.filter(x => x.day === d).sort((a, b) => (a.time || '').localeCompare(b.time || '')); return it.length ? `<div class="hp-trow"><b>${d}</b><span>${it.map(x => `${hpE(x.time || '')} ${hpE(x.title)}`).join(' · ')}</span></div>` : ''; }).join('')}</div>` : '');
+  return supBlock + `<div class="hp-card"><label class="hp-check" style="margin:0 0 10px; justify-content:flex-start;"><input type="checkbox" ${HP.remind ? 'checked' : ''} onchange="hpToggleRemind(this.checked)"> فعّل التذكيرات (قبل الموعد بـ 30 دقيقة، والامتحان قبلها بيوم) <small class="hp-note">— بتشتغل والموقع مفتوح</small></label>${hpIsStaff() ? '<button class="btn-secondary" onclick="hpPublishSchedule()">📢 انشر جدولي لطلابي</button>' : ''}</div><div class="hp-card"><h3>إضافة موعد</h3><div class="hp-row hp-row-wrap"><select id="hp-sd">${HP_DAYS.map(d => `<option ${d === today ? 'selected' : ''}>${d}</option>`).join('')}</select><input type="time" id="hp-st"><input type="text" id="hp-sn" placeholder="${hpIsTeacher() ? 'حصة / مجموعة / مادة' : 'محاضرة / مادة / مذاكرة'}"><input type="text" id="hp-sx" placeholder="ملاحظة (اختياري)"><button class="btn-primary" onclick="hpAddSched()">إضافة</button></div></div>
     ${HP_DAYS.map(d => { const items = HP.schedule.filter(x => x.day === d).sort((a, b) => (a.time || '').localeCompare(b.time || '')); return items.length || d === today ? `<div class="hp-card ${d === today ? 'hp-today' : ''}"><h3>${d}${d === today ? ' — النهارده' : ''}</h3>${items.length ? items.map(x => `<div class="hp-trow"><span><b>${hpE(x.time || '—')}</b> ${hpE(x.title)}${x.note ? ` <small>${hpE(x.note)}</small>` : ''}</span><button class="hp-chip bad" onclick="hpDelSched('${x.id}')">حذف</button></div>`).join('') : '<div class="hp-note">مفيش مواعيد.</div>'}</div>` : ''; }).join('')}`;
 }
 function hpAddSched(){ const t = hpV('hp-sn').trim(); if(!t){ toast('اكتب اسم الموعد.', { type: 'err' }); return; } HP.schedule.push({ id: hpUid(), day: hpV('hp-sd'), time: hpV('hp-st'), title: t, note: hpV('hp-sx').trim() }); hpSave(); hpShow('schedule'); }
@@ -6821,7 +6865,8 @@ function hpCardsHtml(){
   return `<div class="hp-card"><h3>إضافة بطاقة</h3><div class="hp-row hp-row-wrap"><input type="text" id="hp-cd" list="hp-decklist" placeholder="اسم المجموعة (مثال: قواعد)"><datalist id="hp-decklist">${Object.keys(decks).map(d => `<option value="${hpE(d)}">`).join('')}</datalist></div>
     <div class="field"><label>الوجه الأمامي (سؤال / كلمة)</label><textarea id="hp-cf" rows="2"></textarea></div><div class="field"><label>الوجه الخلفي (الإجابة)</label><textarea id="hp-cb" rows="2"></textarea></div>
     <button class="btn-primary" onclick="hpAddCard()">إضافة</button></div>
-    <div class="hp-card"><h3>مجموعاتي</h3>${Object.keys(decks).length ? Object.keys(decks).map(d => `<div class="hp-trow"><span><b>${hpE(d)}</b> — ${decks[d]} بطاقة</span><span><button class="hp-chip on" onclick="hpStartStudy(decodeURIComponent('${encodeURIComponent(d)}'))">راجع</button><button class="hp-chip bad" onclick="hpDelDeck(decodeURIComponent('${encodeURIComponent(d)}'))">حذف</button></span></div>`).join('') : '<div class="hp-note">لسه مفيش بطاقات.</div>'}</div>`;
+    <div class="hp-card"><h3>استيراد مجموعة بكود</h3><div class="hp-row"><input type="text" id="hp-dcode" placeholder="كود المجموعة من معلمك/زميلك"><button class="btn-primary" onclick="hpImportDeck()">استيراد</button></div></div>
+    <div class="hp-card"><h3>مجموعاتي</h3>${Object.keys(decks).length ? Object.keys(decks).map(d => `<div class="hp-trow"><span><b>${hpE(d)}</b> — ${decks[d]} بطاقة</span><span><button class="hp-chip on" onclick="hpStartStudy(decodeURIComponent('${encodeURIComponent(d)}'))">راجع</button><button class="hp-chip" onclick="hpShareDeck(decodeURIComponent('${encodeURIComponent(d)}'))">مشاركة</button><button class="hp-chip bad" onclick="hpDelDeck(decodeURIComponent('${encodeURIComponent(d)}'))">حذف</button></span></div>`).join('') : '<div class="hp-note">لسه مفيش بطاقات.</div>'}</div>`;
 }
 function hpAddCard(){ const f = hpV('hp-cf').trim(), b = hpV('hp-cb').trim(), d = hpV('hp-cd').trim() || 'عام'; if(!f || !b){ toast('اكتب وجهي البطاقة.', { type: 'err' }); return; } HP.cards.push({ id: hpUid(), deck: d, front: f, back: b }); hpSave(); toast('اتضافت.'); hpShow('cards'); }
 function hpDelDeck(d){ if(!confirm('حذف مجموعة "' + d + '" بكل بطاقاتها؟')) return; HP.cards = HP.cards.filter(c => c.deck !== d); hpSave(); hpShow('cards'); }
@@ -6869,6 +6914,602 @@ function hpMsgRender(){
   const fill = t => t.replace(/\{الاسم\}/g, hpV('hp-mn') || 'الطالب').replace(/\{ولي\}/g, hpV('hp-mp') || 'ولي الأمر').replace(/\{المعلم\}/g, hpV('hp-mt') || 'المعلم');
   window.__hpM = HP_MSGS.map(m => fill(m[1]));
   el.innerHTML = HP_MSGS.map((m, i) => `<div class="hp-card"><h3>${m[0]}</h3><p class="hp-msg">${hpE(window.__hpM[i])}</p><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__hpM[${i}])">نسخ</button><a class="btn-secondary" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(window.__hpM[i])}" style="text-decoration:none;">واتساب</a></div></div>`).join('');
+}
+
+/* ---------- كروت الرئيسية (اختصارات منظّمة) ---------- */
+const HOME_CARDS = {
+  teacher: [['v-lesson-planner','تحضير الدروس','edit','مولد خطة درس جاهز'],['v-prep-tools','أدوات التحضير','sparkle','أهداف، مواصفات، أنشطة'],['v-helpers','أدوات مساعدة','check','مؤقت، حضور، جدول'],['v-quizzes','الاختبارات','clipboard','مصنع اختبارات وأوراق عمل'],['v-questions','بنك الأسئلة','help','أسئلتك مصنّفة'],['v-certificates','الشهادات','award','شهادات جاهزة للطباعة'],['v-prep-room','تحضير جماعي','users','غرفة مشتركة مع زملائك'],['t-community','المجتمع','chat-square','منشورات وزملاء'],['v-chats','الدردشات','chat-circle','رسائلك'],['v-profile','ملفي','user','بياناتك وهويتك']],
+  student: [['s-practical','التربية العملية','cap','سجّل زياراتك'],['v-prac-tools','أدوات التربية العملية','sparkle','يوميات، ساعات، تقييم ذاتي'],['v-prep-tools','أدوات التحضير','edit','أهداف، أنشطة، مواصفات'],['v-lesson-planner','تحضير الدروس','book','مولد خطة درس'],['v-helpers','أدوات مساعدة','check','مؤقت، جدول، بطاقات'],['v-take-quiz-list','اختبارات','clipboard','اختبارات متاحة'],['v-tasks','المهام','check','سجل مهامك'],['v-portfolio','ملف الإنجاز','award','إنجازاتك'],['v-calendar','التقويم','bookmark','مواعيدك'],['t-community','المجتمع','chat-square','منشورات وزملاء'],['v-chats','الدردشات','chat-circle','رسائلك'],['v-profile','ملفي','user','بياناتك وهويتك']]
+};
+function homeCardsRender(){
+  const t = pendingRole === 'teacher', el = document.getElementById(t ? 'home-cards-t' : 'home-cards-s'); if(!el) return;
+  const hidden = window.__hiddenFeatures || [];
+  el.innerHTML = HOME_CARDS[t ? 'teacher' : 'student'].filter(c => !hidden.includes(c[0])).map(c => `<button class="quick-card" onclick="showView('${c[0]}')"><span class="qc-icon">${ic(c[2])}</span><span class="qc-label">${c[1]}</span><small>${c[3]}</small></button>`).join('');
+}
+
+async function hpImportMyStudents(){
+  try{
+    const sn = await db.collection('users').where('supervisorId', '==', currentUid).get();
+    const have = new Set(HP.roster.map(r => r.name)); let n = 0;
+    sn.docs.map(d => d.data().name).filter(Boolean).forEach(nm => { if(!have.has(nm)){ HP.roster.push({ id: hpUid(), name: nm }); have.add(nm); n++; } });
+    hpSave(); toast('اتضاف ' + n + ' طالب.'); hpShow(hpTab);
+  }catch(e){ toast('تعذّر الاستيراد (' + (e.code || e.message) + ')', { type: 'err' }); }
+}
+
+/* ---------- تقرير الطلاب (حضور + تسليمات ودرجات) ---------- */
+let hpMonth = new Date().toISOString().slice(0, 7), hpSubs = null;
+function hpReportRows(){
+  const dates = Object.keys(HP.attendance).filter(d => d.startsWith(hpMonth));
+  return HP.roster.map(r => {
+    const v = dates.map(d => (HP.attendance[d] || {})[r.id]), p = v.filter(x => x === 1).length, a = v.filter(x => x === 0).length;
+    const subs = (hpSubs || []).filter(s => s.studentName === r.name && String(s.submittedMs ? new Date(s.submittedMs).toISOString().slice(0, 7) : '') === hpMonth);
+    const gs = subs.map(s => parseFloat(s.grade)).filter(x => !isNaN(x));
+    return { name: r.name, p, a, pct: p + a ? Math.round(p / (p + a) * 100) : null, subs: subs.length, avg: gs.length ? (gs.reduce((x, y) => x + y, 0) / gs.length).toFixed(1) : '—' };
+  });
+}
+function hpReportHtml(){
+  if(!HP.roster.length) return `<div class="hp-card"><div class="hp-note">أضف قايمة الطلاب الأول من تبويب "اختيار ومجموعات".</div><button class="btn-primary" onclick="hpShow('random')">فتح</button></div>`;
+  if(hpSubs === null){ hpSubs = []; if(hpIsStaff()) db.collection('submissions').where('ownerUid', '==', currentUid).get().then(s => { hpSubs = s.docs.map(d => d.data()); if(hpTab === 'report') hpShow('report'); }).catch(() => {}); }
+  const rows = hpReportRows(); window.__hpRep = [['الاسم', 'حضور', 'غياب', 'نسبة الحضور', 'تسليمات', 'متوسط الدرجات']].concat(rows.map(r => [r.name, r.p, r.a, r.pct === null ? '' : r.pct + '%', r.subs, r.avg]));
+  return `<div class="hp-card"><h3>تقرير الطلاب الشهري</h3><div class="hp-actions"><label>الشهر <input type="month" value="${hpMonth}" onchange="hpMonth = this.value; hpShow('report')"></label><button class="btn-secondary" onclick="supDownloadCsv('تقرير-الطلاب-' + hpMonth + '.csv', window.__hpRep)">⬇️ تصدير CSV</button></div>
+    <div class="hp-note">الحضور من تبويب "الحضور"${hpIsStaff() ? '، والتسليمات والدرجات من تكاليفك (بمطابقة الاسم)' : ''}.</div>
+    <div style="overflow:auto;"><table class="hp-tbl"><tr><th>الطالب</th><th>حضور</th><th>غياب</th><th>%</th>${hpIsStaff() ? '<th>تسليمات</th><th>متوسط الدرجات</th>' : ''}</tr>${rows.map(r => `<tr><td>${hpE(r.name)}</td><td>${r.p}</td><td>${r.a}</td><td>${r.pct === null ? '—' : r.pct + '%'}</td>${hpIsStaff() ? `<td>${r.subs}</td><td>${r.avg}</td>` : ''}</tr>`).join('')}</table></div></div>`;
+}
+
+/* ---------- مشاركة بطاقات المراجعة بكود ---------- */
+async function hpShareDeck(d){
+  const cards = HP.cards.filter(c => c.deck === d).map(c => ({ front: c.front, back: c.back })); if(!cards.length) return;
+  const code = Math.random().toString(36).slice(2, 8) + Math.random().toString(36).slice(2, 6);
+  try{
+    await db.collection('sharedDecks').doc(code).set({ ownerUid: currentUid, ownerName: pendingUser.name || '', title: d, cards, createdMs: Date.now() });
+    hpCopy(code); prompt('كود المشاركة (اتنسخ) — ابعته لطلابك أو زملائك:', code);
+  }catch(e){ toast('تعذّرت المشاركة (' + (e.code || e.message) + ')', { type: 'err' }); }
+}
+async function hpImportDeck(){
+  const code = hpV('hp-dcode').trim(); if(!code){ toast('اكتب كود المجموعة.', { type: 'err' }); return; }
+  try{
+    const d = await db.collection('sharedDecks').doc(code).get();
+    if(!d.exists){ toast('الكود مش صحيح.', { type: 'err' }); return; }
+    const x = d.data(), deck = x.title + ' (من ' + (x.ownerName || 'زميل') + ')';
+    (x.cards || []).forEach(c => HP.cards.push({ id: hpUid(), deck, front: c.front, back: c.back }));
+    hpSave(); toast('اتستورد ' + (x.cards || []).length + ' بطاقة.'); hpShow('cards');
+  }catch(e){ toast('تعذّر الاستيراد (' + (e.code || e.message) + ')', { type: 'err' }); }
+}
+
+/* ---------- جدول مشترك من المشرف + تذكيرات ---------- */
+let hpSupItems = [];
+async function hpPublishSchedule(){
+  if(!HP.schedule.length){ toast('أضف مواعيد الأول.', { type: 'err' }); return; }
+  try{ await db.collection('supSchedules').doc(currentUid).set({ ownerName: pendingUser.name || '', items: HP.schedule.map(x => ({ id: x.id, day: x.day, time: x.time || '', title: x.title, note: x.note || '' })), updatedMs: Date.now() }); toast('اتنشر جدولك لطلابك.'); }
+  catch(e){ toast('تعذّر النشر (' + (e.code || e.message) + ')', { type: 'err' }); }
+}
+async function hpLoadSupSchedule(){
+  const up = userStatus && userStatus.supervisorId; if(!up || hpIsStaff() && false) return;
+  try{ const d = await db.collection('supSchedules').doc(up).get(); hpSupItems = d.exists ? (d.data().items || []).map(x => Object.assign({ from: d.data().ownerName || 'المشرف' }, x)) : []; }catch(e){ hpSupItems = []; }
+}
+let hpRemInt = null, hpRemSeen = {};
+async function hpBootReminders(){
+  await hpEnsureLoaded(); await hpLoadSupSchedule();
+  clearInterval(hpRemInt); hpRemCheck(); hpRemInt = setInterval(hpRemCheck, 60000);
+}
+function hpNotify(msg){ toast(msg, { duration: 9000 }); try{ if(window.Notification && Notification.permission === 'granted') new Notification('نُدرس معًا', { body: msg }); }catch(e){} }
+function hpRemCheck(){
+  if(!HP.remind) return;
+  const now = new Date(), today = hpTodayName(), key = now.toDateString();
+  HP.schedule.concat(hpSupItems).filter(x => x.day === today && x.time).forEach(x => {
+    const p = x.time.split(':').map(Number), t = new Date(); t.setHours(p[0], p[1], 0, 0);
+    const diff = (t - now) / 60000, k = key + (x.id || x.title) + x.time;
+    if(diff > 0 && diff <= 30 && !hpRemSeen[k]){ hpRemSeen[k] = 1; hpNotify('⏰ بعد ' + Math.round(diff) + ' دقيقة: ' + x.title); }
+  });
+  const ex = HP.exam || {};
+  if(ex.date){
+    const days = Math.round((new Date(ex.date + 'T00:00:00') - new Date(now.toDateString())) / 864e5), k = 'exam' + key;
+    if((days === 1 || days === 0) && !hpRemSeen[k]){ hpRemSeen[k] = 1; hpNotify(days === 0 ? '📝 النهارده موعد ' + (ex.name || 'الامتحان') : '📝 بكرة موعد ' + (ex.name || 'الامتحان')); }
+  }
+}
+function hpToggleRemind(on){
+  HP.remind = !!on; hpSave();
+  if(on && window.Notification && Notification.permission === 'default') Notification.requestPermission();
+  hpBootReminders();
+}
+
+/* =====================================================================
+   أدوات التحضير + أدوات التربية العملية (عرض مستقل لكل مجموعة، بنفس محرك الأدوات المساعدة)
+   ===================================================================== */
+async function hpEnsureLoaded(){
+  if(!hpLoaded && currentUid){
+    try{ const d = await db.collection('userTools').doc(currentUid).get(); if(d.exists && d.data().data) HP = Object.assign(HP, d.data().data); }catch(e){}
+    hpLoaded = true;
+  }
+}
+const hpA = k => (HP[k] = Array.isArray(HP[k]) ? HP[k] : []);
+const hpO = k => (HP[k] = (HP[k] && typeof HP[k] === 'object' && !Array.isArray(HP[k])) ? HP[k] : {});
+const hpToday = () => new Date().toISOString().slice(0, 10);
+function ptPrint(title, body){
+  const w = window.open('', '_blank'); if(!w){ toast('المتصفح منع فتح نافذة جديدة — اسمح بالنوافذ المنبثقة.', { type: 'err' }); return; }
+  w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>${hpE(title)}</title><style>body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;max-width:820px;margin:24px auto;padding:0 20px;color:#1b2a41;line-height:1.8}h1{font-size:20px;border-bottom:2px solid #1b2a41;padding-bottom:8px}h2{font-size:15px;margin:16px 0 4px}table{width:100%;border-collapse:collapse;margin:12px 0}td,th{border:1px solid #888;padding:8px;font-size:13px;vertical-align:top;text-align:right}th{background:#eee}.np{margin-top:20px}@media print{.np{display:none}}</style></head><body><h1>${hpE(title)}</h1>${body}<p class="np"><button onclick="window.print()">طباعة / حفظ PDF</button></p></body></html>`);
+  w.document.close();
+}
+function ptTabs(group, tabs, cur){
+  return tabs.filter(t => !t[2] || hpIsTeacher()).map(t => `<button class="hp-chip ${t[0] === cur ? 'on' : ''}" onclick="ptShow('${group}','${t[0]}')">${t[1]}</button>`).join('');
+}
+const PT = {
+  prep: { tab: 'obj', view: 'prep', tabsEl: 'pp-tabs', bodyEl: 'pp-body', tabs: [
+    ['obj', '🎯 أهداف سلوكية'], ['timing', '⏳ توزيع زمن الحصة'], ['strat', '🧩 استراتيجيات وأنشطة'], ['quest', '❓ أسئلة تقويم سريعة'],
+    ['spec', '📐 جدول المواصفات'], ['week', '🗓️ سجل التحضير الأسبوعي'], ['remed', '🩹 خطة علاجية / إثرائية'], ['media', '🖼️ وسائل تعليمية'],
+    ['rubric', '📝 مقياس تقدير (Rubric)'], ['sheet', '🖨️ ورقة عمل سريعة', 't'], ['shared', '📎 مستندات بكود']] },
+  prac: { tab: 'journal', tabsEl: 'pr-tabs', bodyEl: 'pr-body', tabs: [
+    ['journal', '📓 يوميات التدريب'], ['hours', '⏱️ عدّاد الساعات'], ['check', '✅ متطلبات التربية العملية'], ['self', '🪞 تقييم ذاتي بعد الحصة'],
+    ['observe', '👀 ملاحظة حصة زميل'], ['visit', '🧑‍🏫 الاستعداد لزيارة المشرف'], ['sit', '🛟 مواقف صفية وحلول'], ['report', '📄 تقرير التربية العملية'], ['letters', '✉️ رسائل جاهزة']] }
+};
+const PT_FN = {
+  obj: ptObjHtml, timing: ptTimingHtml, strat: ptStratHtml, quest: ptQuestHtml, spec: ptSpecHtml, week: ptWeekHtml, remed: ptRemedHtml, media: ptMediaHtml, rubric: ptRubricHtml, sheet: ptSheetHtml, shared: ptSharedHtml,
+  journal: prJournalHtml, hours: prHoursHtml, check: prCheckHtml, self: prSelfHtml, observe: prObserveHtml, visit: prVisitHtml, sit: prSitHtml, report: prReportHtml, letters: prLettersHtml
+};
+async function prepToolsOpen(){ await hpEnsureLoaded(); ptShow('prep', PT.prep.tab); }
+async function pracToolsOpen(){ await hpEnsureLoaded(); ptShow('prac', PT.prac.tab); }
+function ptShow(group, tab){
+  const g = PT[group]; g.tab = tab;
+  const t = document.getElementById(g.tabsEl), b = document.getElementById(g.bodyEl); if(!t || !b) return;
+  t.innerHTML = ptTabs(group, g.tabs, tab);
+  b.innerHTML = PT_FN[tab]();
+  if(PT_AFTER[tab]) PT_AFTER[tab]();
+}
+const PT_AFTER = { };
+const ptCur = () => PT.prep.tab;
+
+/* ---------------- التحضير ---------------- */
+const BLOOM = {
+  'تذكّر': ['يعرّف', 'يذكر', 'يسمّي', 'يعدّد', 'يسترجع', 'يحدّد'],
+  'فهم': ['يفسّر', 'يشرح', 'يلخّص', 'يقارن بين', 'يصنّف', 'يعطي مثالًا على'],
+  'تطبيق': ['يطبّق', 'يحلّ', 'يستخدم', 'يحسب', 'ينفّذ', 'يرسم'],
+  'تحليل': ['يحلّل', 'يميّز', 'يستنتج', 'يربط', 'يفرّق بين', 'يفحص'],
+  'تقويم': ['يقيّم', 'يحكم على', 'ينتقد', 'يبرّر', 'يفاضل بين', 'يتحقق من'],
+  'ابتكار': ['يصمّم', 'يبتكر', 'يقترح', 'يؤلّف', 'يخطّط لـ', 'ينتج']
+};
+function ptObjHtml(){
+  return `<div class="hp-card"><h3>مولد الأهداف السلوكية (حسب تصنيف بلوم)</h3><div class="hp-note">اكتب موضوع الدرس واختار المستويات — هيطلعلك صياغات جاهزة تعدّل عليها.</div>
+    <div class="hp-row hp-row-wrap"><input type="text" id="po-topic" placeholder="الموضوع (مثال: جمع الكسور المتشابهة)"><input type="text" id="po-who" value="المتعلم" placeholder="المتعلم / التلميذ / الطالب"></div>
+    <div class="hp-chips">${Object.keys(BLOOM).map((k, i) => `<label class="hp-chip"><input type="checkbox" class="po-lvl" value="${k}" ${i < 3 ? 'checked' : ''} style="width:auto"> ${k}</label>`).join('')}</div>
+    <div class="hp-actions"><button class="btn-primary" onclick="ptObjRun()">ولّد الأهداف</button></div><div id="po-out"></div></div>`;
+}
+function ptObjRun(){
+  const topic = hpV('po-topic').trim(), who = hpV('po-who').trim() || 'المتعلم';
+  if(!topic){ toast('اكتب موضوع الدرس.', { type: 'err' }); return; }
+  const lv = [...document.querySelectorAll('.po-lvl:checked')].map(x => x.value); if(!lv.length){ toast('اختار مستوى واحد على الأقل.', { type: 'err' }); return; }
+  const lines = []; lv.forEach(l => { lines.push('— ' + l + ':'); BLOOM[l].slice(0, 3).forEach(v => lines.push('أن ' + v + ' ' + who + ' ' + topic + '.')); });
+  window.__ptTxt = 'بنهاية الدرس يُتوقع أن:\n' + lines.join('\n');
+  document.getElementById('po-out').innerHTML = `<div class="hp-msg" style="white-space:pre-wrap;">${hpE(window.__ptTxt)}</div><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__ptTxt)">نسخ</button></div>`;
+}
+function ptTimingHtml(){
+  const ph = [['تمهيد', 10], ['عرض المفهوم', 35], ['نشاط الطلاب', 30], ['تقويم', 15], ['ختام وواجب', 10]];
+  return `<div class="hp-card"><h3>موزّع زمن الحصة</h3><div class="hp-row hp-row-wrap"><label class="hp-note">مدة الحصة (دقيقة) <input type="number" id="pt-total" value="45" min="10" max="180"></label></div>
+    ${ph.map((p, i) => `<div class="hp-row"><input type="text" id="pt-n${i}" value="${p[0]}"><input type="number" id="pt-p${i}" value="${p[1]}" min="0" max="100" placeholder="%"></div>`).join('')}
+    <div class="hp-actions"><button class="btn-primary" onclick="ptTimingRun()">وزّع</button></div><div id="pt-out"></div></div>`;
+}
+function ptTimingRun(){
+  const total = +hpV('pt-total') || 45; let sumP = 0; const rows = [];
+  for(let i = 0; i < 5; i++){ const p = +hpV('pt-p' + i) || 0; sumP += p; rows.push({ n: hpV('pt-n' + i), p }); }
+  if(sumP !== 100){ document.getElementById('pt-out').innerHTML = `<div class="hp-note">مجموع النسب ${sumP}% — لازم يبقى 100%.</div>`; return; }
+  let used = 0; rows.forEach((r, i) => { r.m = i === rows.length - 1 ? total - used : Math.round(total * r.p / 100); used += r.m; });
+  window.__ptTxt = rows.map(r => r.n + ': ' + r.m + ' دقيقة').join('\n');
+  document.getElementById('pt-out').innerHTML = `<div class="hp-table">${rows.map(r => `<div class="hp-trow"><span>${hpE(r.n)}</span><b>${r.m} د</b></div>`).join('')}</div><div class="hp-bar" style="display:flex;">${rows.map((r, i) => `<i style="width:${r.p}%; background:${['#2c4194', '#1d9a6c', '#e3a82b', '#b8532e', '#6b7a99'][i]}"></i>`).join('')}</div><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__ptTxt)">نسخ</button></div>`;
+}
+const PT_STRAT = [
+  ['التعلم التعاوني', 'قسّم الفصل لمجموعات من 4 وكل واحد له دور.', ['وزّع الأدوار: قائد / مسجّل / متحدث / مراقب وقت', 'اعرض مهمة واضحة وزمنها', 'تتحرك بين المجموعات وتوجّه بالأسئلة', 'كل مجموعة تعرض ناتجها', 'قيّم المجموعة والأفراد'], '15–20 د'],
+  ['العصف الذهني', 'لتوليد أكبر عدد من الأفكار حول مشكلة.', ['اطرح المشكلة بسؤال مفتوح', 'اسمح بكل الأفكار بدون نقد (3–5 د)', 'دوّن الأفكار على السبورة', 'صنّف الأفكار واختاروا الأنسب', 'ناقش سبب الاختيار'], '10–15 د'],
+  ['لعب الأدوار', 'لتمثيل موقف يقرّب المفهوم.', ['حدّد الموقف والأدوار', 'وزّع الأدوار ودقيقتين تحضير', 'مثّلوا الموقف', 'ناقش المشاهد: ماذا حدث ولماذا؟', 'اربط بالمفهوم المستهدف'], '15 د'],
+  ['حل المشكلات', 'تحدّي حقيقي يقود الطلاب للمفهوم.', ['اعرض المشكلة', 'اطلب فهمها بصياغتهم', 'ضعوا خطة حل', 'نفّذوا وتحققوا', 'ناقشوا طرق الحل المختلفة'], '20 د'],
+  ['التعلم بالاكتشاف', 'يكتشف الطلاب القاعدة بأنفسهم من أمثلة.', ['قدّم 3–4 أمثلة منتقاة', 'اسأل: ماذا تلاحظون؟', 'اطلب صياغة القاعدة', 'اختبرها بأمثلة جديدة', 'أكّد القاعدة الصحيحة'], '15–20 د'],
+  ['التعلم باللعب', 'مسابقة/لعبة قصيرة لتثبيت المعلومة.', ['حدّد القواعد والنقاط', 'قسّم لفريقين', 'اطرح أسئلة بمستويات متدرجة', 'سجّل النقاط على السبورة', 'اختم بتلخيص ما تعلّموه'], '10–15 د'],
+  ['القصة', 'مدخل قصصي لتمهيد الدرس أو شرح مفهوم.', ['احكِ قصة قصيرة مرتبطة بالمفهوم', 'توقّف عند نقطة وسأل: ماذا سيحدث؟', 'اربط أحداث القصة بالمفهوم', 'اطلب منهم إعادة حكاية جزء بصياغتهم'], '5–10 د'],
+  ['الصف المقلوب', 'الطلاب يشاهدون المحتوى في البيت والحصة للتطبيق.', ['أرسل رابط فيديو/مادة قبل الحصة', 'ابدأ بسؤال سريع للتأكد من الفهم', 'نشاط تطبيقي جماعي', 'تغذية راجعة فردية', 'واجب إثرائي'], 'الحصة كاملة'],
+  ['المناقشة الموجهة', 'أسئلة متدرجة تقود التفكير.', ['جهّز 5–6 أسئلة متدرجة', 'امنح وقت تفكير (10 ثواني)', 'نوّع من تسأله', 'لخّص الإجابات على السبورة', 'اربط بالهدف'], '10–15 د'],
+  ['خرائط المفاهيم', 'تنظيم المفاهيم وعلاقاتها بصريًا.', ['اكتب المفهوم الرئيسي في المنتصف', 'اطلب المفاهيم الفرعية', 'وصّل بالأسهم واكتب نوع العلاقة', 'قارنوا الخرائط', 'استخدمها للمراجعة'], '15 د']
+];
+function ptStratHtml(){
+  return PT_STRAT.map((s, i) => `<details class="hp-card"><summary><b>${s[0]}</b> <span class="hp-note">— ${s[3] ? '' : ''}${s[1]} (${s[3]})</span></summary><ol style="margin:10px 22px;">${s[2].map(x => `<li>${hpE(x)}</li>`).join('')}</ol><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(PT_STRAT[${i}][0] + ':\\n' + PT_STRAT[${i}][2].map((x,j)=>(j+1)+'. '+x).join('\\n'))">نسخ الخطوات</button></div></details>`).join('');
+}
+const PT_Q = {
+  'تذكّر': ['ما تعريف {م}؟', 'اذكر ثلاثة أمثلة على {م}.', 'عدّد عناصر/خصائص {م}.', 'ما اسم ... المرتبط بـ {م}؟'],
+  'فهم': ['اشرح {م} بأسلوبك.', 'ما الفرق بين {م} وما يشبهه؟', 'أعطِ مثالًا من حياتك على {م}.', 'لخّص الفكرة الأساسية لـ {م}.'],
+  'تطبيق': ['كيف تستخدم {م} في حل هذه المسألة؟', 'طبّق {م} على الموقف التالي: ...', 'احسب/نفّذ باستخدام {م}: ...', 'ما الخطوات التي تتبعها لتنفيذ {م}؟'],
+  'تحليل': ['ما سبب حدوث {م}؟', 'قارن بين حالتين من {م} واستنتج الفرق.', 'ما العلاقة بين {م} و...؟', 'ما الخطأ في هذا الحل المتعلق بـ {م}؟'],
+  'تقويم': ['أيّ طريقتين لـ {م} أفضل ولماذا؟', 'ما رأيك في هذا الحل لـ {م}؟ برّر.', 'هل توافق على العبارة التالية عن {م}؟ اشرح.'],
+  'ابتكار': ['صمّم نشاطًا/مثالًا جديدًا عن {م}.', 'اقترح طريقة مختلفة لـ {م}.', 'كيف تغيّر {م} ليناسب موقفًا جديدًا؟']
+};
+function ptQuestHtml(){
+  return `<div class="hp-card"><h3>أسئلة تقويم شفوية/كتابية سريعة</h3><div class="hp-row hp-row-wrap"><input type="text" id="pq-m" placeholder="المفهوم أو الدرس (مثال: الكسور المتكافئة)"></div>
+    <div class="hp-chips">${Object.keys(PT_Q).map((k, i) => `<label class="hp-chip"><input type="checkbox" class="pq-lvl" value="${k}" ${i < 4 ? 'checked' : ''} style="width:auto"> ${k}</label>`).join('')}</div>
+    <div class="hp-actions"><button class="btn-primary" onclick="ptQuestRun()">ولّد الأسئلة</button></div><div id="pq-out"></div></div>`;
+}
+function ptQuestRun(){
+  const m = hpV('pq-m').trim(); if(!m){ toast('اكتب المفهوم.', { type: 'err' }); return; }
+  const lv = [...document.querySelectorAll('.pq-lvl:checked')].map(x => x.value);
+  const lines = []; lv.forEach(l => { lines.push('— ' + l + ':'); PT_Q[l].forEach((q, i) => lines.push((i + 1) + '. ' + q.replace(/\{م\}/g, m))); });
+  window.__ptTxt = lines.join('\n');
+  document.getElementById('pq-out').innerHTML = `<div class="hp-msg" style="white-space:pre-wrap;">${hpE(window.__ptTxt)}</div><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__ptTxt)">نسخ</button></div>`;
+}
+function ptSpecHtml(){
+  return `<div class="hp-card"><h3>جدول مواصفات الاختبار</h3><div class="hp-note">اكتب كل موضوع في سطر بالشكل: <b>اسم الموضوع، الوزن (عدد الحصص أو نسبة)</b></div>
+    <textarea id="ps-topics" rows="5" placeholder="الكسور، 4&#10;الأعداد العشرية، 3&#10;القياس، 2"></textarea>
+    <div class="hp-row hp-row-wrap"><label class="hp-note">عدد الأسئلة الكلي <input type="number" id="ps-n" value="20"></label><label class="hp-note">تذكر وفهم % <input type="number" id="ps-l1" value="40"></label><label class="hp-note">تطبيق % <input type="number" id="ps-l2" value="40"></label><label class="hp-note">مستويات عليا % <input type="number" id="ps-l3" value="20"></label></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="ptSpecRun()">احسب الجدول</button></div><div id="ps-out"></div></div>`;
+}
+function ptSpecRun(){
+  const rows = hpV('ps-topics').split('\n').map(l => l.split(/[,،;\t]/)).map(a => ({ n: (a[0] || '').trim(), w: parseFloat(a[1]) })).filter(r => r.n && r.w > 0);
+  const N = +hpV('ps-n') || 0, L = [+hpV('ps-l1'), +hpV('ps-l2'), +hpV('ps-l3')];
+  const out = document.getElementById('ps-out');
+  if(!rows.length || N <= 0){ out.innerHTML = '<div class="hp-note">اكتب المواضيع وعدد الأسئلة.</div>'; return; }
+  if(L[0] + L[1] + L[2] !== 100){ out.innerHTML = `<div class="hp-note">مجموع نسب المستويات ${L[0] + L[1] + L[2]}% — لازم 100%.</div>`; return; }
+  const W = rows.reduce((a, r) => a + r.w, 0); let used = 0;
+  rows.forEach((r, i) => { r.q = i === rows.length - 1 ? N - used : Math.round(N * r.w / W); used += r.q; r.c = L.map(p => Math.round(r.q * p / 100)); r.c[2] = r.q - r.c[0] - r.c[1]; });
+  const tot = [0, 1, 2].map(j => rows.reduce((a, r) => a + r.c[j], 0));
+  window.__ptHtml = `<table><tr><th>الموضوع</th><th>الوزن النسبي</th><th>تذكر وفهم</th><th>تطبيق</th><th>مستويات عليا</th><th>المجموع</th></tr>${rows.map(r => `<tr><td>${hpE(r.n)}</td><td>${(r.w / W * 100).toFixed(0)}%</td><td>${r.c[0]}</td><td>${r.c[1]}</td><td>${r.c[2]}</td><td>${r.q}</td></tr>`).join('')}<tr><th>المجموع</th><th>100%</th><th>${tot[0]}</th><th>${tot[1]}</th><th>${tot[2]}</th><th>${N}</th></tr></table>`;
+  window.__ptTable = { rows: [['الموضوع', 'الوزن', 'تذكر وفهم', 'تطبيق', 'مستويات عليا', 'المجموع']].concat(rows.map(r => [r.n, (r.w / W * 100).toFixed(0) + '%', r.c[0], r.c[1], r.c[2], r.q]), [['المجموع', '100%', tot[0], tot[1], tot[2], N]]) };
+  out.innerHTML = `<div style="overflow:auto;">${window.__ptHtml.replace(/<table>/, '<table class="hp-tbl">')}</div><div class="hp-actions"><button class="btn-secondary" onclick="ptPrint('جدول مواصفات الاختبار', window.__ptHtml)">طباعة</button><button class="btn-secondary" onclick="ptPublish('table')">نشر بكود</button></div>`;
+}
+const PT_DAYS = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+function ptWeekHtml(){
+  const w = hpO('week');
+  return `<div class="hp-card"><h3>سجل التحضير الأسبوعي</h3><div class="hp-row hp-row-wrap"><input type="text" id="pw-title" placeholder="الأسبوع / المادة / الصف" value="${hpE(w._title || '')}"></div>
+    ${PT_DAYS.map((d, i) => { const r = w[d] || {}; return `<div class="hp-mini" style="margin-bottom:8px;"><b>${d}</b><div class="hp-row hp-row-wrap"><input type="text" id="pw-l${i}" placeholder="الدرس" value="${hpE(r.l || '')}"><input type="text" id="pw-o${i}" placeholder="الهدف" value="${hpE(r.o || '')}"><input type="text" id="pw-a${i}" placeholder="النشاط / الاستراتيجية" value="${hpE(r.a || '')}"><input type="text" id="pw-m${i}" placeholder="الوسائل" value="${hpE(r.m || '')}"></div></div>`; }).join('')}
+    <div class="hp-actions"><button class="btn-primary" onclick="ptWeekSave()">حفظ</button><button class="btn-secondary" onclick="ptWeekPrint()">طباعة</button><button class="btn-secondary" onclick="if(confirm('مسح التحضير؟')){ HP.week = {}; hpSave(); ptShow('prep','week'); }">مسح</button></div>
+    <div class="hp-actions"><select id="pw-day" style="width:auto;">${PT_DAYS.map((d, i) => `<option value="${i}">${d}</option>`).join('')}</select><button class="btn-secondary" onclick="ptWeekToPlan()">📝 حوّل اليوم لخطة درس كاملة</button></div></div>`;
+}
+function ptWeekSave(){ const w = { _title: hpV('pw-title') }; PT_DAYS.forEach((d, i) => w[d] = { l: hpV('pw-l' + i), o: hpV('pw-o' + i), a: hpV('pw-a' + i), m: hpV('pw-m' + i) }); HP.week = w; hpSave(); toast('اتحفظ.'); }
+function ptWeekToPlan(){
+  ptWeekSave(); const d = PT_DAYS[+hpV('pw-day')], r = HP.week[d] || {};
+  if(!r.l){ toast('اكتب درس اليوم الأول.', { type: 'err' }); return; }
+  showView('v-lesson-planner');
+  setTimeout(() => { const set = (id, v) => { const e = document.getElementById(id); if(e) e.value = v; }; set('lp-title', r.l); set('lp-objectives', r.o || ''); set('lp-intro', r.a ? 'استراتيجية/نشاط: ' + r.a : ''); set('lp-explanation', r.m ? 'الوسائل: ' + r.m : ''); toast('اتنقلت بيانات ' + d + ' لمولد خطة الدرس — كمّل وولّد/احفظ.'); }, 250);
+}
+function ptWeekPrint(){ ptWeekSave(); const w = HP.week; ptPrint('سجل التحضير الأسبوعي' + (w._title ? ' — ' + w._title : ''), `<table><tr><th>اليوم</th><th>الدرس</th><th>الهدف</th><th>النشاط / الاستراتيجية</th><th>الوسائل</th></tr>${PT_DAYS.map(d => `<tr><td>${d}</td><td>${hpE(w[d].l)}</td><td>${hpE(w[d].o)}</td><td>${hpE(w[d].a)}</td><td>${hpE(w[d].m)}</td></tr>`).join('')}</table>`); }
+const PT_REM = {
+  'ضعف في المفاهيم الأساسية': { diag: 'اختبار تشخيصي قصير + ملاحظة أثناء الحل', acts: ['إعادة شرح المفهوم بمثال حسي مختلف', 'تدريبات متدرجة من الأسهل', 'التعلم بالأقران (طالب متفوق يدعمه)', 'بطاقات مراجعة للمفاهيم'], time: '15 دقيقة × 3 أسبوعيًا' },
+  'أخطاء حسابية متكررة': { diag: 'تحليل أخطاء الطالب في 5 مسائل', acts: ['قائمة بالأخطاء الشائعة وتصحيحها', 'حل المسائل بخطوات مكتوبة', 'مراجعة الحل بعد كل مسألة', 'تدريبات سرعة ودقة قصيرة'], time: '10 دقائق يوميًا' },
+  'بطء في الإنجاز': { diag: 'ملاحظة زمن الإنجاز مقارنة بزملائه', acts: ['تقسيم المهام لأجزاء قصيرة بوقت محدد', 'مؤقت مرئي', 'مكافأة على الالتزام بالوقت', 'تدريب على تحديد الأولويات'], time: 'أسبوعيًا مع متابعة' },
+  'صعوبة في القراءة والفهم': { diag: 'اختبار قراءة قصير وأسئلة فهم', acts: ['قراءة مشتركة بصوت مرتفع', 'تحديد الكلمات المفتاحية', 'إعادة صياغة النص بكلماته', 'قصص قصيرة مصورة'], time: '15 دقيقة يوميًا' },
+  'تفوق وإثراء': { diag: 'إنجاز المهام الأساسية بسرعة ودقة', acts: ['مسائل تحدٍّ وألغاز', 'مشروع صغير يربط المفهوم بالحياة', 'دور "المعلم الصغير" لشرح فكرة', 'قراءات/فيديوهات إضافية'], time: 'أنشطة اختيارية أسبوعيًا' }
+};
+function ptRemedHtml(){
+  return `<div class="hp-card"><h3>خطة علاجية / إثرائية</h3><div class="hp-row hp-row-wrap"><input type="text" id="pr-n" placeholder="اسم الطالب"><input type="text" id="pr-s" placeholder="المادة / الدرس"><select id="pr-t">${Object.keys(PT_REM).map(k => `<option>${k}</option>`).join('')}</select></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="ptRemedRun()">ولّد الخطة</button></div><div id="pr-out"></div></div>`;
+}
+function ptRemedRun(){
+  const t = PT_REM[hpV('pr-t')], n = hpV('pr-n').trim() || '........', s = hpV('pr-s').trim() || '........';
+  window.__ptHtml = `<h2>الطالب: ${hpE(n)} — المادة/الدرس: ${hpE(s)}</h2><h2>نوع الخطة</h2><p>${hpE(hpV('pr-t'))}</p><h2>التشخيص</h2><p>${hpE(t.diag)}</p><h2>الأنشطة</h2><ol>${t.acts.map(a => `<li>${hpE(a)}</li>`).join('')}</ol><h2>الزمن</h2><p>${hpE(t.time)}</p><h2>أسلوب القياس</h2><p>اختبار قصير بعد أسبوعين ومقارنة بالتشخيص الأول.</p><h2>ملاحظات المعلم</h2><p>............................................</p>`;
+  window.__ptTxt = ['الطالب: ' + n, 'المادة/الدرس: ' + s, 'النوع: ' + hpV('pr-t'), 'التشخيص: ' + t.diag, 'الأنشطة:', ...t.acts.map((a, i) => (i + 1) + '. ' + a), 'الزمن: ' + t.time].join('\n');
+  document.getElementById('pr-out').innerHTML = `<div class="hp-msg">${window.__ptHtml}</div><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__ptTxt)">نسخ</button><button class="btn-secondary" onclick="ptPrint('خطة علاجية / إثرائية', window.__ptHtml)">طباعة</button></div>`;
+}
+const PT_MEDIA = {
+  'الرياضيات': ['مكعبات وقطع العد', 'قطع الكسور الورقية', 'مسطرة/منقلة/فرجار', 'لعبة نرد للاحتمالات', 'شبكة مربعات لرسم المساحات', 'GeoGebra / Desmos', 'بطاقات المسائل المصورة'],
+  'العلوم': ['تجارب بسيطة من خامات البيئة', 'مجسّمات (خلية/دورة المياه)', 'عدسة مكبّرة', 'ميزان ومخبار مدرج', 'محاكاة PhET', 'فيديوهات قصيرة للظواهر'],
+  'اللغة العربية': ['بطاقات الحروف والكلمات', 'قصص مصورة', 'لعبة تركيب الجمل', 'تسجيلات صوتية للقراءة', 'لوحات القواعد الملونة', 'خرائط ذهنية للنصوص'],
+  'اللغة الإنجليزية': ['Flashcards', 'أغاني وفيديوهات قصيرة', 'لعب أدوار حوارية', 'Picture dictionary', 'ألعاب Bingo للكلمات', 'قصص مصورة'],
+  'الدراسات الاجتماعية': ['خرائط وأطالس', 'خط زمني على الحائط', 'صور ووثائق تاريخية', 'مجسّمات للمعالم', 'Google Earth', 'مناظرة صفية'],
+  'الحاسب': ['محاكاة المكونات بالبطاقات', 'Scratch', 'لعبة تسلسل الخوارزمية', 'منصة Code.org', 'ورق مربعات للبرمجة غير المتصلة']
+};
+function ptMediaHtml(){
+  return `<div class="hp-card"><h3>أفكار وسائل تعليمية</h3><select id="pm-s" onchange="ptMediaRun()">${Object.keys(PT_MEDIA).map(k => `<option>${k}</option>`).join('')}</select><div id="pm-out"></div></div>`;
+}
+PT_AFTER.media = () => ptMediaRun();
+function ptMediaRun(){
+  const l = PT_MEDIA[hpV('pm-s')] || []; window.__ptTxt = l.join('\n');
+  document.getElementById('pm-out').innerHTML = `<ul style="margin:12px 22px;">${l.map(x => `<li>${hpE(x)}</li>`).join('')}</ul><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__ptTxt)">نسخ</button></div>`;
+}
+function ptRubricHtml(){
+  return `<div class="hp-card"><h3>مقياس تقدير (Rubric) قابل للطباعة</h3><div class="hp-row hp-row-wrap"><input type="text" id="pb-t" placeholder="عنوان المهمة (مثال: مشروع عرض تقديمي)"></div>
+    <div class="field"><label>المعايير (كل معيار في سطر)</label><textarea id="pb-c" rows="4" placeholder="وضوح المحتوى&#10;التنظيم&#10;الإبداع&#10;الالتزام بالوقت"></textarea></div>
+    <div class="field"><label>مستويات الأداء (مفصولة بفاصلة)</label><input type="text" id="pb-l" value="ممتاز، جيد، مقبول، يحتاج تحسين"></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="ptRubricRun()">أنشئ المقياس</button></div><div id="pb-out"></div></div>`;
+}
+function ptRubricRun(){
+  const cr = hpV('pb-c').split('\n').map(x => x.trim()).filter(Boolean), lv = hpV('pb-l').split(/[,،]/).map(x => x.trim()).filter(Boolean);
+  if(!cr.length || lv.length < 2){ toast('اكتب المعايير ومستويين على الأقل.', { type: 'err' }); return; }
+  const pts = lv.map((_, i) => lv.length - i);
+  window.__ptHtml = `<table><tr><th>المعيار</th>${lv.map((l, i) => `<th>${hpE(l)} (${pts[i]})</th>`).join('')}</tr>${cr.map(c => `<tr><td>${hpE(c)}</td>${lv.map(() => '<td>&nbsp;</td>').join('')}</tr>`).join('')}<tr><th>المجموع</th><th colspan="${lv.length}">...... / ${cr.length * pts[0]}</th></tr></table><p>اسم الطالب: ................ التاريخ: ........</p>`;
+  window.__ptTable = { rows: [['المعيار'].concat(lv.map((l, i) => l + ' (' + pts[i] + ')'))].concat(cr.map(c => [c].concat(lv.map(() => '')))) };
+  document.getElementById('pb-out').innerHTML = `<div style="overflow:auto;">${window.__ptHtml.replace(/<table>/, '<table class="hp-tbl">')}</div><div class="hp-actions"><button class="btn-secondary" onclick="ptPrint(hpV('pb-t') || 'مقياس تقدير', window.__ptHtml)">طباعة</button><button class="btn-secondary" onclick="ptPublish('table')">نشر بكود</button></div>`;
+}
+let ptQs = null;
+function ptSheetHtml(){
+  if(!ptQs){ db.collection('questions').where('ownerUid', '==', currentUid).get().then(s => { ptQs = s.docs.map(d => Object.assign({ id: d.id }, d.data())); if(PT.prep.tab === 'sheet') ptShow('prep', 'sheet'); }).catch(() => { ptQs = []; ptShow('prep', 'sheet'); }); return '<div class="hp-card"><div class="hp-note">جاري تحميل بنك الأسئلة...</div></div>'; }
+  if(!ptQs.length) return `<div class="hp-card"><div class="hp-note">بنك أسئلتك فاضي — أضف أسئلة من "بنك الأسئلة" الأول.</div><button class="btn-primary" onclick="showView('v-questions')">فتح بنك الأسئلة</button></div>`;
+  const subs = [...new Set(ptQs.map(q => q.subject).filter(Boolean))];
+  return `<div class="hp-card"><h3>ورقة عمل سريعة من بنك أسئلتك (${ptQs.length} سؤال)</h3><div class="hp-row hp-row-wrap"><input type="text" id="pk-t" placeholder="عنوان الورقة"><select id="pk-s"><option value="">كل المواد</option>${subs.map(s => `<option>${hpE(s)}</option>`).join('')}</select></div>
+    <div class="hp-row hp-row-wrap"><label class="hp-note">سهل <input type="number" id="pk-e" value="4" min="0"></label><label class="hp-note">متوسط <input type="number" id="pk-m" value="4" min="0"></label><label class="hp-note">صعب <input type="number" id="pk-h" value="2" min="0"></label></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="ptSheetRun(false)">اطبع الورقة</button><button class="btn-secondary" onclick="ptSheetRun(true)">نموذج الإجابة</button></div></div>`;
+}
+function ptSheetRun(withAns){
+  const sub = hpV('pk-s'), pool = ptQs.filter(q => !sub || q.subject === sub), out = [];
+  [['easy', 'pk-e'], ['medium', 'pk-m'], ['hard', 'pk-h']].forEach(([d, id]) => { const n = +hpV(id) || 0; out.push(...hpShuffle(pool.filter(q => (q.difficulty || 'medium') === d)).slice(0, n)); });
+  if(!out.length){ toast('مفيش أسئلة مطابقة.', { type: 'err' }); return; }
+  const id = 'tmp-sheet';
+  quizzesCache = quizzesCache.filter(x => x.id !== id);
+  quizzesCache.push({ id, data: { title: hpV('pk-t') || 'ورقة عمل', docType: 'worksheet', questions: out.map(q => ({ text: q.text, type: q.type, options: q.options || [], answer: q.answer || '' })) } });
+  printQuizPaper(id, withAns);
+}
+
+/* ---------------- التربية العملية ---------------- */
+function prJournalHtml(){
+  const j = hpA('journal').slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  return `<div class="hp-card"><h3>يوميات التربية العملية</h3><div class="hp-row hp-row-wrap"><input type="date" id="pj-d" value="${hpToday()}"><input type="text" id="pj-sc" placeholder="المدرسة"><input type="text" id="pj-cl" placeholder="الفصل / الصف"><input type="text" id="pj-ls" placeholder="موضوع الحصة"></div>
+    <div class="field"><label>اللي كان كويس</label><textarea id="pj-g" rows="2"></textarea></div><div class="field"><label>اللي محتاج تحسين / خطوتي الجاية</label><textarea id="pj-i" rows="2"></textarea></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="prJournalAdd()">إضافة ليوم</button><button class="btn-secondary" onclick="prJournalCsv()">⬇️ تصدير CSV</button></div></div>
+    ${j.length ? `<div class="hp-card"><h3>السجل (${j.length})</h3>${j.map(e => `<div class="hp-mini" style="margin-bottom:8px;"><b>${hpE(e.date)} — ${hpE(e.lesson || 'حصة')} ${e.school ? '· ' + hpE(e.school) : ''} ${e.cls ? '· ' + hpE(e.cls) : ''}</b>${e.good ? `<div>✅ ${hpE(e.good)}</div>` : ''}${e.imp ? `<div>🔧 ${hpE(e.imp)}</div>` : ''}${userStatus && userStatus.supervisorId ? `<button class="hp-chip on" onclick="prSendToSup('journal','${e.id}')">إرسال للمشرف</button>` : ''}<button class="hp-chip bad" onclick="prJournalDel('${e.id}')">حذف</button></div>`).join('')}</div>` : ''}`;
+}
+function prJournalAdd(){ if(!hpV('pj-ls').trim() && !hpV('pj-g').trim()){ toast('اكتب موضوع الحصة أو ملاحظتك.', { type: 'err' }); return; } hpA('journal').push({ id: hpUid(), date: hpV('pj-d'), school: hpV('pj-sc').trim(), cls: hpV('pj-cl').trim(), lesson: hpV('pj-ls').trim(), good: hpV('pj-g').trim(), imp: hpV('pj-i').trim() }); hpSave(); ptShow('prac', 'journal'); }
+function prJournalDel(id){ HP.journal = hpA('journal').filter(e => e.id !== id); hpSave(); ptShow('prac', 'journal'); }
+function prJournalCsv(){ supDownloadCsv('يوميات-التربية-العملية.csv', [['التاريخ', 'المدرسة', 'الفصل', 'الحصة', 'الإيجابيات', 'التحسين']].concat(hpA('journal').map(e => [e.date, e.school, e.cls, e.lesson, e.good, e.imp]))); }
+function prHoursHtml(){
+  const h = hpO('hours'), log = Array.isArray(h.log) ? h.log : [], target = h.target || 120, done = log.reduce((a, x) => a + (+x.h || 0), 0), pct = Math.min(100, Math.round(done / target * 100));
+  return `<div class="hp-card"><h3>عدّاد ساعات التدريب</h3><div class="hp-result"><b>${done}</b> ساعة من ${target} (${pct}%)</div><div class="hp-bar"><i style="width:${pct}%"></i></div>
+    <div class="hp-row hp-row-wrap"><label class="hp-note">الهدف (ساعة) <input type="number" id="ph-t" value="${target}"></label><button class="btn-secondary" onclick="prHoursTarget()">حفظ الهدف</button></div>
+    <div class="hp-row hp-row-wrap"><input type="date" id="ph-d" value="${hpToday()}"><input type="number" id="ph-h" step="0.5" placeholder="الساعات"><input type="text" id="ph-n" placeholder="ملاحظة (اختياري)"><button class="btn-primary" onclick="prHoursAdd()">إضافة</button></div>
+    ${log.slice().reverse().map(x => `<div class="hp-trow"><span>${hpE(x.d)} — <b>${x.h}</b> ساعة ${x.n ? '· ' + hpE(x.n) : ''}</span><button class="hp-chip bad" onclick="prHoursDel('${x.id}')">حذف</button></div>`).join('')}</div>`;
+}
+function prHoursTarget(){ const h = hpO('hours'); h.target = Math.max(1, +hpV('ph-t') || 120); hpSave(); ptShow('prac', 'hours'); }
+function prHoursAdd(){ const v = +hpV('ph-h'); if(!(v > 0)){ toast('اكتب عدد الساعات.', { type: 'err' }); return; } const h = hpO('hours'); h.log = Array.isArray(h.log) ? h.log : []; h.log.push({ id: hpUid(), d: hpV('ph-d'), h: v, n: hpV('ph-n').trim() }); hpSave(); ptShow('prac', 'hours'); }
+function prHoursDel(id){ const h = hpO('hours'); h.log = (h.log || []).filter(x => x.id !== id); hpSave(); ptShow('prac', 'hours'); }
+const PR_CHECK = ['حضور الطابور والإشراف على الطلاب', 'التعرف على المدرسة وإدارتها ولوائحها', 'التعرف على الفصل ونظام الجلوس والطلاب', 'ملاحظة 3 حصص لمعلم المادة', 'ملاحظة حصة لزميل (نموذج الملاحظة)', 'إعداد خطة درس لحصتك الأولى', 'إعداد الوسائل التعليمية', 'تنفيذ الحصة الأولى بحضور المشرف', 'تسجيل تأملات بعد كل حصة', 'إعداد اختبار قصير وتصحيحه', 'إعداد خطة علاجية لطالب متعثر', 'المشاركة في نشاط مدرسي', 'إعداد ملف الإنجاز (Portfolio)', 'تسليم تقرير التربية العملية'];
+function prCheckHtml(){
+  const c = hpO('check'), done = PR_CHECK.filter((_, i) => c[i]).length;
+  return `<div class="hp-card"><h3>متطلبات التربية العملية <small>(${done}/${PR_CHECK.length})</small></h3><div class="hp-bar"><i style="width:${Math.round(done / PR_CHECK.length * 100)}%"></i></div>
+    ${PR_CHECK.map((t, i) => `<div class="hp-trow"><label class="hp-check ${c[i] ? 'hp-done' : ''}" style="margin:0;"><input type="checkbox" ${c[i] ? 'checked' : ''} onchange="prCheckTog(${i})"> ${hpE(t)}</label></div>`).join('')}</div>`;
+}
+function prCheckTog(i){ const c = hpO('check'); if(c[i]) delete c[i]; else c[i] = 1; hpSave(); ptShow('prac', 'check'); }
+const PR_SELF = ['وضوح الأهداف', 'التمهيد وجذب الانتباه', 'وضوح الشرح وتسلسله', 'إدارة الوقت', 'إدارة الفصل والانضباط', 'استخدام الوسائل', 'إشراك الطلاب والتفاعل', 'التقويم وتصحيح الأخطاء'];
+function prSelfHtml(){
+  const s = hpA('selfs'), avg = s.length ? (s.reduce((a, x) => a + x.avg, 0) / s.length).toFixed(2) : null;
+  return `<div class="hp-card"><h3>تقييم ذاتي بعد الحصة</h3><div class="hp-row hp-row-wrap"><input type="text" id="pf-l" placeholder="موضوع الحصة"><input type="date" id="pf-d" value="${hpToday()}"></div>
+    ${PR_SELF.map((c, i) => `<div class="hp-trow"><span>${c}</span><select id="pf-${i}" style="width:90px;">${[5, 4, 3, 2, 1].map(n => `<option ${n === 3 ? 'selected' : ''}>${n}</option>`).join('')}</select></div>`).join('')}
+    <div class="field"><label>ملاحظات / خطتي للحصة الجاية</label><textarea id="pf-n" rows="2"></textarea></div><div class="hp-actions"><button class="btn-primary" onclick="prSelfAdd()">حفظ التقييم</button></div></div>
+    ${s.length ? `<div class="hp-card"><h3>تطوّري ${avg ? `<small>— المتوسط العام ${avg} / 5</small>` : ''}</h3>${s.slice().reverse().map(x => `<div class="hp-trow"><span>${hpE(x.d)} — ${hpE(x.l || 'حصة')}</span><span><b>${x.avg.toFixed(1)}</b> ${userStatus && userStatus.supervisorId ? `<button class="hp-chip on" onclick="prSendToSup('self','${x.id}')">إرسال للمشرف</button>` : ''}<button class="hp-chip bad" onclick="prSelfDel('${x.id}')">حذف</button></span></div>`).join('')}<div class="hp-note">أضعف محور في المتوسط: <b>${hpE(prWeakest(s))}</b></div></div>` : ''}`;
+}
+function prWeakest(s){ const sums = PR_SELF.map((_, i) => s.reduce((a, x) => a + (x.r[i] || 0), 0) / s.length); return PR_SELF[sums.indexOf(Math.min(...sums))]; }
+function prSelfAdd(){ const r = PR_SELF.map((_, i) => +hpV('pf-' + i)); hpA('selfs').push({ id: hpUid(), l: hpV('pf-l').trim(), d: hpV('pf-d'), r, avg: r.reduce((a, b) => a + b, 0) / r.length, n: hpV('pf-n').trim() }); hpSave(); toast('اتحفظ.'); ptShow('prac', 'self'); }
+function prSelfDel(id){ HP.selfs = hpA('selfs').filter(x => x.id !== id); hpSave(); ptShow('prac', 'self'); }
+const PR_OBS = ['التمهيد وجذب الانتباه', 'وضوح الشرح', 'إدارة الفصل', 'استخدام الوسائل', 'التقويم وتغذية راجعة', 'تفاعل الطلاب'];
+function prObserveHtml(){
+  const o = hpA('obs');
+  return `<div class="hp-card"><h3>نموذج ملاحظة حصة زميل</h3><div class="hp-row hp-row-wrap"><input type="text" id="pob-n" placeholder="اسم الزميل"><input type="text" id="pob-l" placeholder="موضوع الحصة / الفصل"><input type="date" id="pob-d" value="${hpToday()}"></div>
+    ${PR_OBS.map((c, i) => `<div class="hp-trow"><span>${c}</span><select id="pob-${i}" style="width:90px;">${[5, 4, 3, 2, 1].map(n => `<option ${n === 3 ? 'selected' : ''}>${n}</option>`).join('')}</select></div>`).join('')}
+    <div class="field"><label>نقاط القوة</label><textarea id="pob-s" rows="2"></textarea></div><div class="field"><label>اقتراحات للتحسين (بأسلوب داعم)</label><textarea id="pob-i" rows="2"></textarea></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="prObsAdd()">حفظ الملاحظة</button></div></div>
+    ${o.length ? `<div class="hp-card"><h3>ملاحظاتي (${o.length})</h3>${o.slice().reverse().map(x => `<div class="hp-trow"><span>${hpE(x.d)} — ${hpE(x.n || 'زميل')} · ${hpE(x.l || '')}</span><span><b>${x.avg.toFixed(1)}</b> <button class="hp-chip on" onclick="prObsPrint('${x.id}')">طباعة</button><button class="hp-chip bad" onclick="prObsDel('${x.id}')">حذف</button></span></div>`).join('')}</div>` : ''}`;
+}
+function prObsAdd(){ const r = PR_OBS.map((_, i) => +hpV('pob-' + i)); hpA('obs').push({ id: hpUid(), n: hpV('pob-n').trim(), l: hpV('pob-l').trim(), d: hpV('pob-d'), r, avg: r.reduce((a, b) => a + b, 0) / r.length, s: hpV('pob-s').trim(), i: hpV('pob-i').trim() }); hpSave(); toast('اتحفظت.'); ptShow('prac', 'observe'); }
+function prObsDel(id){ HP.obs = hpA('obs').filter(x => x.id !== id); hpSave(); ptShow('prac', 'observe'); }
+function prObsPrint(id){ const x = hpA('obs').find(o => o.id === id); if(!x) return; ptPrint('نموذج ملاحظة حصة', `<p>الزميل: <b>${hpE(x.n)}</b> — الحصة: ${hpE(x.l)} — التاريخ: ${hpE(x.d)} — الملاحِظ: ${hpE((pendingUser && pendingUser.name) || '')}</p><table><tr><th>المحور</th><th>التقدير (من 5)</th></tr>${PR_OBS.map((c, i) => `<tr><td>${c}</td><td>${x.r[i]}</td></tr>`).join('')}<tr><th>المتوسط</th><th>${x.avg.toFixed(1)}</th></tr></table><h2>نقاط القوة</h2><p>${hpE(x.s)}</p><h2>اقتراحات التحسين</h2><p>${hpE(x.i)}</p>`); }
+const PR_VISIT = ['خطة الدرس مكتوبة ومطبوعة', 'الأهداف السلوكية واضحة وقابلة للقياس', 'الوسائل جاهزة ومجرّبة', 'السبورة منظمة ومقسّمة', 'أنشطة الطلاب محددة بزمن', 'أسئلة تقويم جاهزة', 'ملف الإنجاز ويوميات التدريب معي', 'مظهر لائق وصوت واضح', 'خطة بديلة لو تعطّل جهاز/وسيلة'];
+const PR_VQ = ['ما الهدف الأساسي من هذه الحصة؟', 'لماذا اخترت هذه الاستراتيجية؟', 'كيف تعرف أن الطلاب تعلّموا؟', 'ماذا ستفعل مع طالب لم يفهم؟', 'ما الذي كنت ستغيّره لو أعدت الحصة؟', 'كيف تعاملت مع الوقت؟'];
+function prVisitHtml(){
+  const c = hpO('visit');
+  return `<div class="hp-card"><h3>قائمة الجاهزية لزيارة المشرف</h3>${PR_VISIT.map((t, i) => `<div class="hp-trow"><label class="hp-check ${c[i] ? 'hp-done' : ''}" style="margin:0;"><input type="checkbox" ${c[i] ? 'checked' : ''} onchange="prVisitTog(${i})"> ${hpE(t)}</label></div>`).join('')}</div>
+    <div class="hp-card"><h3>أسئلة متوقعة بعد الحصة</h3><ul style="margin:8px 22px;">${PR_VQ.map(q => `<li>${hpE(q)}</li>`).join('')}</ul></div>`;
+}
+function prVisitTog(i){ const c = hpO('visit'); if(c[i]) delete c[i]; else c[i] = 1; hpSave(); ptShow('prac', 'visit'); }
+const PR_SIT = [
+  ['طالب كثير الكلام أثناء الشرح', ['قف بجانبه أثناء الشرح بدون لفت الانتباه', 'اسأله سؤالًا مباشرًا بسيطًا', 'امنحه دورًا (يوزّع الأوراق/يكتب على السبورة)', 'تحدّث معه على انفراد بعد الحصة']],
+  ['ضوضاء عامة في الفصل', ['توقف عن الكلام وانتظر بهدوء', 'استخدم إشارة متفق عليها (رفع اليد/عدّ تنازلي)', 'غيّر نشاط الحصة لنشاط حركي منظّم', 'ثبّت قواعد الفصل من أول الحصة']],
+  ['طالب خجول لا يشارك', ['ابدأ بأسئلة سهلة له', 'اجعله يعمل في مجموعة صغيرة قبل المشاركة الجماعية', 'امدح أي محاولة', 'اتيح مشاركة كتابية بدل الشفهية']],
+  ['طالب يرفض حل الواجب', ['اعرف السبب بهدوء (صعوبة؟ ظروف؟)', 'قسّم الواجب لأجزاء صغيرة', 'ضع هدفًا بسيطًا قابل للتحقيق', 'تواصل مع ولي الأمر عند التكرار']],
+  ['أسئلة لا أعرف إجابتها', ['اعترف بصدق: «سؤال جميل، سأتأكد وأرد عليكم»', 'اطلب من الطلاب البحث عن الإجابة', 'ارجع للمصدر وأجب في الحصة التالية']],
+  ['انتهى الوقت ولم يكتمل الدرس', ['ركّز على الهدف الأساسي واختصر الأمثلة', 'حوّل الجزء المتبقي إلى واجب منزلي موجّه', 'أضف دقائق التقويم أولًا', 'راجع توزيع الزمن في خطتك القادمة']],
+  ['تعطّل الوسيلة أو الجهاز', ['استخدم الخطة البديلة (السبورة/ورقة)', 'لا تعتذر كثيرًا — انتقل لنشاط مناسب', 'جهّز نسخة مطبوعة دائمًا']],
+  ['خلاف بين طالبين', ['افصل بينهما فورًا بهدوء', 'استمع لكل طرف على حدة', 'ذكّرهم بقواعد الاحترام', 'بلّغ الأخصائي الاجتماعي عند التكرار']]
+];
+function prSitHtml(){ return PR_SIT.map((s, i) => `<details class="hp-card"><summary><b>${s[0]}</b></summary><ol style="margin:10px 22px;">${s[1].map(x => `<li>${hpE(x)}</li>`).join('')}</ol></details>`).join(''); }
+function prReportHtml(){
+  const j = hpA('journal'), s = hpA('selfs'), o = hpA('obs'), h = hpO('hours'), hrs = (h.log || []).reduce((a, x) => a + (+x.h || 0), 0), c = hpO('check'), done = PR_CHECK.filter((_, i) => c[i]).length;
+  const avg = s.length ? (s.reduce((a, x) => a + x.avg, 0) / s.length).toFixed(2) : '—';
+  const good = j.map(x => x.good).filter(Boolean).slice(-5), imp = j.map(x => x.imp).filter(Boolean).slice(-5);
+  const txt = [`تقرير التربية العملية — ${(pendingUser && pendingUser.name) || ''}`, '', `عدد الحصص المسجّلة: ${j.length}`, `ساعات التدريب: ${hrs}${h.target ? ' من ' + h.target : ''}`, `متطلبات منجزة: ${done} من ${PR_CHECK.length}`, `عدد التقييمات الذاتية: ${s.length} — المتوسط العام: ${avg} / 5`, s.length ? `أضعف محور: ${prWeakest(s)}` : '', `ملاحظات حصص الزملاء: ${o.length}`, '', 'أبرز الإيجابيات:', ...good.map(x => '- ' + x), '', 'أبرز نقاط التحسين:', ...imp.map(x => '- ' + x)].filter(x => x !== null).join('\n');
+  window.__ptTxt = txt;
+  return `<div class="hp-card"><h3>تقرير التربية العملية (يتجمّع تلقائيًا من بياناتك)</h3><div class="hp-msg" style="white-space:pre-wrap;">${hpE(txt)}</div><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__ptTxt)">نسخ</button><button class="btn-secondary" onclick="ptPrint('تقرير التربية العملية', '<pre style=&quot;white-space:pre-wrap;font-family:inherit&quot;>' + hpE(window.__ptTxt) + '</pre>')">طباعة</button></div></div>`;
+}
+const PR_LET = [
+  ['طلب موعد زيارة من المشرف', 'السلام عليكم ورحمة الله، أ.د/ {المشرف}، أرجو من سيادتكم تحديد موعد مناسب لزيارة حصتي في مدرسة {المدرسة}. وأكون شاكرًا لحسن تعاونكم. — {الاسم}'],
+  ['شكر المشرف بعد الزيارة', 'السلام عليكم، أ.د/ {المشرف}، أشكر سيادتكم على زيارة الحصة وتوجيهاتكم القيّمة، وسأعمل على تطبيق الملاحظات في حصصي القادمة بإذن الله. — {الاسم}'],
+  ['اعتذار عن غياب', 'السلام عليكم، أ.د/ {المشرف}، أعتذر عن غيابي اليوم لظرف طارئ، وسأعوّض ما فاتني وأسلّم ما هو مطلوب في أقرب وقت. — {الاسم}'],
+  ['طلب إذن من مدير المدرسة', 'السلام عليكم، أ/ {المدير}، أرجو التكرم بالموافقة على تنفيذ نشاط تعليمي لطلاب الفصل في مدرسة {المدرسة} ضمن برنامج التربية العملية. شاكرًا حسن تعاونكم. — {الاسم}'],
+  ['طلب من معلم المادة', 'السلام عليكم، أ/ {المعلم}، أرجو التكرم بتحديد موعد مناسب لحضور إحدى حصصكم للاستفادة من خبرتكم ضمن التربية العملية. شاكرًا لكم. — {الاسم}']
+];
+function prLettersHtml(){
+  return `<div class="hp-card"><div class="hp-row hp-row-wrap"><input type="text" id="pl-n" placeholder="اسمك" value="${hpE((pendingUser && pendingUser.name) || '')}" oninput="prLetRender()"><input type="text" id="pl-m" placeholder="اسم المشرف" oninput="prLetRender()"><input type="text" id="pl-s" placeholder="المدرسة" oninput="prLetRender()"><input type="text" id="pl-d" placeholder="اسم المدير" oninput="prLetRender()"><input type="text" id="pl-t" placeholder="اسم معلم المادة" oninput="prLetRender()"></div></div><div id="pl-list"></div>`;
+}
+PT_AFTER.letters = () => prLetRender();
+function prLetRender(){
+  const el = document.getElementById('pl-list'); if(!el) return;
+  const f = t => t.replace(/\{الاسم\}/g, hpV('pl-n') || '........').replace(/\{المشرف\}/g, hpV('pl-m') || '........').replace(/\{المدرسة\}/g, hpV('pl-s') || '........').replace(/\{المدير\}/g, hpV('pl-d') || '........').replace(/\{المعلم\}/g, hpV('pl-t') || '........');
+  window.__prL = PR_LET.map(l => f(l[1]));
+  el.innerHTML = PR_LET.map((l, i) => `<div class="hp-card"><h3>${l[0]}</h3><p class="hp-msg">${hpE(window.__prL[i])}</p><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__prL[${i}])">نسخ</button></div></div>`).join('');
+}
+
+/* =====================================================================
+   أدوات الإشراف: إشراف معلم خبير / إشراف أكاديمي / الإدارة + مستندات بكود + مشاركات التربية العملية
+   ===================================================================== */
+const SV_CRIT = ['التخطيط والتحضير', 'التمهيد', 'وضوح الشرح', 'إدارة الصف', 'استخدام الوسائل', 'التقويم', 'تفاعل الطلاب', 'اللغة وأسلوب التواصل'];
+const SUPT = {
+  expert: [['visit', '🏫 زيارة صفية'], ['plan', '📈 خطة تطوير معلم'], ['fb', '💬 جلسة تغذية راجعة'], ['log', '📒 سجل المتابعة'], ['compare', '⚖️ مقارنة التقييمات'], ['docs', '📎 مستندات بكود']],
+  academic: [['monitor', '📊 متابعة الطلاب'], ['comments', '💬 بنك تعليقات'], ['sem', '📅 خطة فصل دراسي'], ['tpl', '📝 قوالب تكاليف'], ['compare', '⚖️ مقارنة التقييمات'], ['docs', '📎 مستندات بكود']],
+  office: [['rep', '📄 نماذج تقارير'], ['minutes', '🗒️ محضر اجتماع'], ['visits', '🗓️ خطة زيارات'], ['monitor', '📊 متابعة المشرفين'], ['docs', '📎 مستندات بكود']]
+};
+let svTab = null, svMembers = null;
+function svKind(){ const t = userStatus && userStatus.accountType; return t === 'expert_supervisor' ? 'expert' : t === 'office' ? 'office' : 'academic'; }
+async function supToolsOpen(){
+  await hpEnsureLoaded();
+  const k = svKind(); if(!svTab || !SUPT[k].some(t => t[0] === svTab)) svTab = SUPT[k][0][0];
+  if(svMembers === null){ try{ const s = await db.collection('users').where('supervisorId', '==', currentUid).get(); svMembers = s.docs.map(d => Object.assign({ id: d.id }, d.data())); }catch(e){ svMembers = []; } }
+  svShow(svTab);
+}
+function svShow(tab){
+  svTab = tab; const k = svKind();
+  document.getElementById('sv-tabs').innerHTML = SUPT[k].map(t => `<button class="hp-chip ${t[0] === tab ? 'on' : ''}" onclick="svShow('${t[0]}')">${t[1]}</button>`).join('');
+  const f = SV_FN[tab]; const b = document.getElementById('sv-body'); b.innerHTML = f();
+  if(SV_AFTER[tab]) SV_AFTER[tab]();
+}
+const SV_AFTER = {};
+const svTeacherSel = id => `<select id="${id}"><option value="">— اختر من حساباتك —</option>${(svMembers || []).map(m => `<option value="${hpE(m.name || m.email)}">${hpE(m.name || m.email)}</option>`).join('')}</select><input type="text" id="${id}-x" placeholder="أو اكتب الاسم">`;
+const svTeacherVal = id => (hpV(id + '-x').trim() || hpV(id)).trim();
+function svSend(toName, kind, title, data){
+  const m = (svMembers || []).find(x => (x.name || x.email) === toName); if(!m){ toast('الإرسال متاح لحساباتك التابعة فقط — اختر الاسم من القايمة.', { type: 'err' }); return Promise.resolve(false); }
+  return db.collection('practicumShares').add({ fromUid: currentUid, fromName: pendingUser.name || '', toUid: m.id, kind, title, data, createdMs: Date.now() }).then(() => { toast('اتبعت لـ ' + toName + '.'); return true; }).catch(e => { toast('تعذّر الإرسال (' + (e.code || e.message) + ')', { type: 'err' }); return false; });
+}
+/* ----- إشراف خبير ----- */
+function svVisitHtml(){
+  const v = hpA('visits');
+  return `<div class="hp-card"><h3>زيارة صفية</h3><div class="hp-row hp-row-wrap">${svTeacherSel('sv-t')}</div><div class="hp-row hp-row-wrap"><input type="date" id="sv-d" value="${hpToday()}"><input type="text" id="sv-l" placeholder="الفصل / الدرس"></div>
+    ${SV_CRIT.map((c, i) => `<div class="hp-trow"><span>${c}</span><select id="sv-c${i}" style="width:90px;">${[5, 4, 3, 2, 1].map(n => `<option ${n === 3 ? 'selected' : ''}>${n}</option>`).join('')}</select></div>`).join('')}
+    <div class="field"><label>نقاط القوة</label><textarea id="sv-s" rows="2"></textarea></div><div class="field"><label>توصيات التحسين</label><textarea id="sv-i" rows="2"></textarea></div>
+    <div class="hp-row hp-row-wrap"><label class="hp-note">موعد المتابعة <input type="date" id="sv-f"></label></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="svVisitSave(false)">حفظ</button><button class="btn-secondary" onclick="svVisitSave(true)">حفظ وإرسال للمعلم</button></div></div>
+    ${v.length ? `<div class="hp-card"><h3>زياراتي (${v.length})</h3>${v.slice().reverse().map(x => `<div class="hp-trow"><span>${hpE(x.d)} — ${hpE(x.t)} · ${hpE(x.l || '')} <small>متابعة: ${hpE(x.f || '—')}</small></span><span><b>${x.avg.toFixed(1)}</b> <button class="hp-chip on" onclick="svVisitPrint('${x.id}')">طباعة</button><button class="hp-chip bad" onclick="svVisitDel('${x.id}')">حذف</button></span></div>`).join('')}</div>` : ''}`;
+}
+async function svVisitSave(send){
+  const t = svTeacherVal('sv-t'); if(!t){ toast('اكتب أو اختر اسم المعلم.', { type: 'err' }); return; }
+  const r = SV_CRIT.map((_, i) => +hpV('sv-c' + i)), x = { id: hpUid(), t, d: hpV('sv-d'), l: hpV('sv-l').trim(), r, avg: r.reduce((a, b) => a + b, 0) / r.length, s: hpV('sv-s').trim(), i: hpV('sv-i').trim(), f: hpV('sv-f') };
+  if(send){ const ok = await svSend(t, 'visit', 'زيارة صفية ' + x.d, { d: x.d, l: x.l, r: x.r, avg: x.avg, s: x.s, i: x.i, f: x.f }); if(!ok) return; }
+  hpA('visits').push(x); hpSave(); svShow('visit');
+}
+function svVisitDel(id){ HP.visits = hpA('visits').filter(x => x.id !== id); hpSave(); svShow('visit'); }
+function svVisitPrint(id){ const x = hpA('visits').find(o => o.id === id); if(!x) return; ptPrint('تقرير زيارة صفية', `<p>المعلم: <b>${hpE(x.t)}</b> — التاريخ: ${hpE(x.d)} — الدرس: ${hpE(x.l)} — المشرف: ${hpE((pendingUser && pendingUser.name) || '')}</p><table><tr><th>المحور</th><th>التقدير (5)</th></tr>${SV_CRIT.map((c, i) => `<tr><td>${c}</td><td>${x.r[i]}</td></tr>`).join('')}<tr><th>المتوسط</th><th>${x.avg.toFixed(1)}</th></tr></table><h2>نقاط القوة</h2><p>${hpE(x.s)}</p><h2>التوصيات</h2><p>${hpE(x.i)}</p><h2>موعد المتابعة</h2><p>${hpE(x.f || '—')}</p>`); }
+function svPlanHtml(){
+  const p = hpA('plans');
+  return `<div class="hp-card"><h3>خطة تطوير مهني لمعلم</h3><div class="hp-row hp-row-wrap">${svTeacherSel('sp-t')}</div><div class="field"><label>الأهداف / الإجراءات (سطر لكل إجراء)</label><textarea id="sp-a" rows="4" placeholder="حضور ورشة إدارة الصف&#10;تطبيق نشاط تعاوني في حصتين&#10;زيارة زميل متميز"></textarea></div>
+    <div class="hp-row hp-row-wrap"><label class="hp-note">المدة حتى <input type="date" id="sp-e"></label></div><div class="hp-actions"><button class="btn-primary" onclick="svPlanAdd()">إنشاء الخطة</button></div></div>
+    ${p.map(x => { const done = x.items.filter(i => i.done).length; return `<div class="hp-card"><h3>${hpE(x.t)} <small>${done}/${x.items.length} — حتى ${hpE(x.e || '—')}</small></h3><div class="hp-bar"><i style="width:${Math.round(done / x.items.length * 100)}%"></i></div>${x.items.map((i, j) => `<div class="hp-trow"><label class="hp-check ${i.done ? 'hp-done' : ''}" style="margin:0;"><input type="checkbox" ${i.done ? 'checked' : ''} onchange="svPlanTog('${x.id}',${j})"> ${hpE(i.t)}</label></div>`).join('')}<div class="hp-actions"><button class="btn-secondary" onclick="svPlanSend('${x.id}')">إرسال للمعلم</button><button class="hp-chip bad" onclick="svPlanDel('${x.id}')">حذف</button></div></div>`; }).join('')}`;
+}
+function svPlanAdd(){ const t = svTeacherVal('sp-t'), items = hpV('sp-a').split('\n').map(x => x.trim()).filter(Boolean).map(x => ({ t: x, done: false })); if(!t || !items.length){ toast('اكتب المعلم والإجراءات.', { type: 'err' }); return; } hpA('plans').push({ id: hpUid(), t, e: hpV('sp-e'), items }); hpSave(); svShow('plan'); }
+function svPlanTog(id, j){ const p = hpA('plans').find(x => x.id === id); if(p){ p.items[j].done = !p.items[j].done; hpSave(); svShow('plan'); } }
+function svPlanDel(id){ HP.plans = hpA('plans').filter(x => x.id !== id); hpSave(); svShow('plan'); }
+function svPlanSend(id){ const p = hpA('plans').find(x => x.id === id); if(p) svSend(p.t, 'plan', 'خطة تطوير مهني', { e: p.e, items: p.items }); }
+const SV_FB = ['ابدأ بنقطة قوة محددة شاهدتها فعلًا', 'اسأل المعلم: كيف رأيت الحصة؟ ماذا ستغير؟', 'ناقش نقطتين للتحسين فقط (لا أكثر)', 'اقترح بدائل عملية وأمثلة', 'اتفقوا على إجراء واحد أو اثنين ومتى المتابعة', 'اختم بكلمة تشجيع وثقة'];
+function svFbHtml(){
+  return `<div class="hp-card"><h3>جلسة التغذية الراجعة — خطوات مقترحة</h3><ol style="margin:10px 22px;">${SV_FB.map(x => `<li>${hpE(x)}</li>`).join('')}</ol><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(SV_FB.map((x,i)=>(i+1)+'. '+x).join('\\n'))">نسخ</button></div></div>
+    <div class="hp-card"><h3>صيغ مساعدة</h3><div class="hp-msg">• "لاحظت أن ... وده أثّر إيجابيًا على ..."<br>• "ما رأيك لو جرّبنا ... في الحصة القادمة؟"<br>• "اللي هنتفق عليه: ... وهنراجعه يوم ..."</div></div>`;
+}
+function svLogHtml(){
+  const l = hpA('flog');
+  return `<div class="hp-card"><h3>سجل المتابعة</h3><div class="hp-row hp-row-wrap">${svTeacherSel('sl-t')}</div><div class="hp-row hp-row-wrap"><input type="date" id="sl-d" value="${hpToday()}"><select id="sl-k"><option>زيارة</option><option>اجتماع</option><option>مكالمة</option><option>رسالة</option></select></div><div class="field"><label>الملاحظة / ما تم</label><textarea id="sl-n" rows="2"></textarea></div><div class="field"><label>الخطوة التالية</label><input type="text" id="sl-x"></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="svLogAdd()">إضافة</button><button class="btn-secondary" onclick="svLogCsv()">⬇️ CSV</button></div></div>
+    ${l.length ? `<div class="hp-card">${l.slice().reverse().map(x => `<div class="hp-trow"><span><b>${hpE(x.d)}</b> — ${hpE(x.t)} (${hpE(x.k)}) ${hpE(x.n)} ${x.x ? `<small>التالي: ${hpE(x.x)}</small>` : ''}</span><button class="hp-chip bad" onclick="svLogDel('${x.id}')">حذف</button></div>`).join('')}</div>` : ''}`;
+}
+function svLogAdd(){ const t = svTeacherVal('sl-t'); if(!t){ toast('اكتب المعلم.', { type: 'err' }); return; } hpA('flog').push({ id: hpUid(), t, d: hpV('sl-d'), k: hpV('sl-k'), n: hpV('sl-n').trim(), x: hpV('sl-x').trim() }); hpSave(); svShow('log'); }
+function svLogDel(id){ HP.flog = hpA('flog').filter(x => x.id !== id); hpSave(); svShow('log'); }
+function svLogCsv(){ supDownloadCsv('سجل-المتابعة.csv', [['التاريخ', 'المعلم', 'النوع', 'الملاحظة', 'الخطوة التالية']].concat(hpA('flog').map(x => [x.d, x.t, x.k, x.n, x.x]))); }
+/* ----- مقارنة تقييم المشرف بالتقييم الذاتي ----- */
+let svSelfs = null;
+function svCompareHtml(){
+  if(svSelfs === null){ svSelfs = []; db.collection('practicumShares').where('toUid', '==', currentUid).get().then(s => { svSelfs = s.docs.map(d => d.data()).filter(x => x.kind === 'self'); if(svTab === 'compare') svShow('compare'); }).catch(() => {}); }
+  const names = [...new Set(svSelfs.map(x => x.fromName))];
+  if(!names.length) return `<div class="hp-card"><div class="hp-note">لسه مفيش تقييمات ذاتية وصلتك. الطالب/المعلم بيبعتها من أدوات التربية العملية ← "تقييم ذاتي" ← "إرسال للمشرف".</div></div>`;
+  return `<div class="hp-card"><h3>تقييمي أنا مقابل تقييمهم الذاتي (من 5)</h3><div style="overflow:auto;"><table class="hp-tbl"><tr><th>الاسم</th><th>تقييم ذاتي (متوسط)</th><th>تقييمي (آخر زيارة)</th><th>الفرق</th></tr>${names.map(n => { const mine = svSelfs.filter(x => x.fromName === n), avg = mine.reduce((a, x) => a + (x.data.avg || 0), 0) / mine.length, v = hpA('visits').filter(x => x.t === n).slice(-1)[0], gap = v ? (avg - v.avg) : null; return `<tr><td>${hpE(n)}</td><td>${avg.toFixed(1)} (${mine.length})</td><td>${v ? v.avg.toFixed(1) : '—'}</td><td>${gap === null ? '—' : `<b style="color:${Math.abs(gap) >= 1 ? '#b3261e' : '#1d9a6c'}">${gap > 0 ? '+' : ''}${gap.toFixed(1)}</b>`}</td></tr>`; }).join('')}</table></div><div class="hp-note">فرق أكبر من 1 درجة معناه إن نظرة المعلم لأدائه مختلفة عن نظرتك — مناسب يتناقش في جلسة تغذية راجعة.</div></div>`;
+}
+/* ----- إشراف أكاديمي ----- */
+let svMon = null;
+function svMonitorHtml(){
+  if(svMon === null){
+    svMon = { loading: true };
+    const isOff = svKind() === 'office';
+    Promise.all([db.collection('assignments').where('ownerUid', '==', currentUid).get(), db.collection('submissions').where('ownerUid', '==', currentUid).get()]).then(([a, s]) => { svMon = { as: a.docs.map(d => d.data()), subs: s.docs.map(d => d.data()) }; if(isOff){ return Promise.all((svMembers || []).map(m => db.collection('users').where('supervisorId', '==', m.id).get().then(x => [m.id, x.size]))).then(c => { svMon.counts = Object.fromEntries(c); }); } }).then(() => { if(svTab === 'monitor') svShow('monitor'); }).catch(() => { svMon = { as: [], subs: [] }; if(svTab === 'monitor') svShow('monitor'); });
+    return '<div class="hp-card"><div class="hp-note">جاري التحميل...</div></div>';
+  }
+  if(svMon.loading) return '<div class="hp-card"><div class="hp-note">جاري التحميل...</div></div>';
+  const total = svMon.as.length, now = Date.now();
+  const rows = (svMembers || []).map(m => { const ss = svMon.subs.filter(s => s.studentUid === m.id), gs = ss.map(s => parseFloat(s.grade)).filter(x => !isNaN(x)), last = ss.reduce((a, s) => Math.max(a, s.submittedMs || 0), 0); return { n: m.name || m.email, sub: ss.length, avg: gs.length ? (gs.reduce((a, b) => a + b, 0) / gs.length).toFixed(1) : '—', last, late: last && (now - last) > 14 * 864e5, kids: svMon.counts ? (svMon.counts[m.id] ?? 0) : null }; });
+  window.__svMon = [['الاسم', 'تسليمات', 'من أصل', 'متوسط الدرجات', 'آخر تسليم']].concat(rows.map(r => [r.n, r.sub, total, r.avg, r.last ? new Date(r.last).toISOString().slice(0, 10) : '']));
+  return `<div class="hp-card"><h3>${svKind() === 'office' ? 'متابعة المشرفين التابعين' : 'متابعة الطلاب'}</h3><div class="hp-note">عدد التكاليف المنشورة: ${total}</div>${rows.length ? `<div style="overflow:auto;"><table class="hp-tbl"><tr><th>الاسم</th>${svKind() === 'office' ? '<th>عدد طلابه</th>' : ''}<th>التسليمات</th><th>متوسط الدرجات</th><th>آخر تسليم</th></tr>${rows.map(r => `<tr><td>${hpE(r.n)} ${r.late ? '⚠️' : ''}</td>${svKind() === 'office' ? `<td>${r.kids}</td>` : ''}<td>${r.sub}/${total}</td><td>${r.avg}</td><td>${r.last ? new Date(r.last).toLocaleDateString('ar-EG') : '—'}</td></tr>`).join('')}</table></div><div class="hp-note">⚠️ = مفيش تسليم من أكتر من 14 يوم.</div><div class="hp-actions"><button class="btn-secondary" onclick="supDownloadCsv('متابعة.csv', window.__svMon)">⬇️ CSV</button></div>` : '<div class="hp-note">مفيش حسابات تابعة ليك لسه.</div>'}</div>`;
+}
+const SV_COM = {
+  'تفوق': ['أداء ممتاز، استمر على هذا المستوى.', 'عمل متقن ومنظّم، أحسنت.', 'فكرة مبتكرة وحل واضح، بارك الله فيك.'],
+  'جيد مع ملاحظات': ['عمل جيد، يحتاج مزيدًا من التفصيل في ...', 'الفكرة سليمة؛ راجع الخطوات في ... وأعد المحاولة.', 'تنظيم جيد، وأنتظر مصادر أكثر في المرة القادمة.'],
+  'يحتاج إعادة': ['برجاء إعادة التسليم بعد مراجعة المطلوب في التكليف.', 'العمل ناقص في ...، استكمله وأعد الإرسال.', 'لم يتحقق الهدف المطلوب؛ تواصل معي لتوضيح النقاط.'],
+  'تأخر': ['تم التسليم بعد الموعد؛ التزم بالمواعيد القادمة.', 'أرجو الالتزام بالموعد المحدد لتفادي خصم الدرجة.']
+};
+function svCommentsHtml(){ return Object.keys(SV_COM).map(k => `<div class="hp-card"><h3>${k}</h3>${SV_COM[k].map((c, i) => `<div class="hp-trow"><span>${hpE(c)}</span><button class="hp-chip" onclick="hpCopy(SV_COM['${k}'][${i}])">نسخ</button></div>`).join('')}</div>`).join(''); }
+function svSemHtml(){
+  const s = hpO('sem');
+  return `<div class="hp-card"><h3>خطة الفصل الدراسي (16 أسبوع)</h3><div class="hp-row hp-row-wrap"><input type="text" id="ss-title" placeholder="المقرر / الفرقة" value="${hpE(s._t || '')}"></div>${Array.from({ length: 16 }, (_, i) => { const r = s[i + 1] || {}; return `<div class="hp-row"><b style="flex:0 0 70px; align-self:center;">أسبوع ${i + 1}</b><input type="text" id="ss-t${i}" placeholder="الموضوع" value="${hpE(r.t || '')}"><input type="text" id="ss-a${i}" placeholder="التقييم / التكليف" value="${hpE(r.a || '')}"></div>`; }).join('')}
+    <div class="hp-actions"><button class="btn-primary" onclick="svSemSave()">حفظ</button><button class="btn-secondary" onclick="svSemPrint()">طباعة</button></div></div>`;
+}
+function svSemSave(){ const s = { _t: hpV('ss-title') }; for(let i = 0; i < 16; i++) s[i + 1] = { t: hpV('ss-t' + i), a: hpV('ss-a' + i) }; HP.sem = s; hpSave(); toast('اتحفظت الخطة.'); }
+function svSemPrint(){ svSemSave(); const s = HP.sem; ptPrint('خطة الفصل الدراسي' + (s._t ? ' — ' + s._t : ''), `<table><tr><th>الأسبوع</th><th>الموضوع</th><th>التقييم / التكليف</th></tr>${Array.from({ length: 16 }, (_, i) => `<tr><td>${i + 1}</td><td>${hpE(s[i + 1].t)}</td><td>${hpE(s[i + 1].a)}</td></tr>`).join('')}</table>`); }
+const SV_TPL = [['تلخيص مقال تربوي', 'اقرأ المقال المرفق ولخّصه في صفحة واحدة مع رأيك الشخصي. الدرجة من 10.'], ['إعداد خطة درس', 'أعدّ خطة درس كاملة (أهداف، تمهيد، عرض، تقويم) لموضوع تختاره. أرفق الرابط.'], ['تحليل موقف صفي', 'صف موقفًا صفيًا واجهته وحلّله: السبب، تصرفك، البديل الأفضل.'], ['عرض تقديمي', 'جهّز عرضًا من 8 شرائح عن مفهوم تربوي وأرسل الرابط قبل الموعد.'], ['تقرير ملاحظة حصة', 'لاحظ حصة لمعلم وسجّل ملاحظاتك باستخدام نموذج الملاحظة وأرفق الصورة برابط.'], ['اختبار قصير', 'حلّ الاختبار القصير وأرسل إجاباتك كنص أو رابط ملف.']];
+function svTplHtml(){ return SV_TPL.map((t, i) => `<div class="hp-card"><h3>${t[0]}</h3><p class="hp-msg">${hpE(t[1])}</p><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(SV_TPL[${i}][0] + '\\n' + SV_TPL[${i}][1])">نسخ</button></div></div>`).join(''); }
+/* ----- الإدارة ----- */
+const SV_REP = [['تقرير شهري عن نشاط الإشراف', 'تقرير شهر {الشهر}\n- عدد المشرفين التابعين: {ع1}\n- عدد الطلاب/المعلمين المتابَعين: {ع2}\n- عدد الزيارات الصفية: {ع3}\n- عدد التكاليف المنشورة: {ع4}\n- أبرز الإنجازات: ........\n- أبرز التحديات: ........\n- التوصيات: ........'], ['تقرير أداء مشرف', 'اسم المشرف: ........\nالفترة: {الشهر}\n- الالتزام بالزيارات: ........\n- التفاعل مع الطلاب: ........\n- جودة التغذية الراجعة: ........\n- نقاط القوة: ........\n- نقاط التحسين: ........'], ['تقرير ربع سنوي', 'الربع: {الشهر}\n- ملخص الأداء العام: ........\n- مؤشرات النجاح: ........\n- الخطة للربع القادم: ........']];
+function svRepHtml(){
+  return `<div class="hp-card"><div class="hp-row hp-row-wrap"><input type="text" id="sr-m" placeholder="الشهر / الفترة" oninput="svRepRender()"><input type="number" id="sr-1" placeholder="مشرفين" oninput="svRepRender()"><input type="number" id="sr-2" placeholder="طلاب/معلمين" oninput="svRepRender()"><input type="number" id="sr-3" placeholder="زيارات" oninput="svRepRender()"><input type="number" id="sr-4" placeholder="تكاليف" oninput="svRepRender()"></div></div><div id="sr-list"></div>`;
+}
+SV_AFTER.rep = () => svRepRender();
+function svRepRender(){
+  const el = document.getElementById('sr-list'); if(!el) return;
+  const f = t => t.replace(/\{الشهر\}/g, hpV('sr-m') || '........').replace(/\{ع1\}/g, hpV('sr-1') || '..').replace(/\{ع2\}/g, hpV('sr-2') || '..').replace(/\{ع3\}/g, hpV('sr-3') || '..').replace(/\{ع4\}/g, hpV('sr-4') || '..');
+  window.__svR = SV_REP.map(r => f(r[1]));
+  el.innerHTML = SV_REP.map((r, i) => `<div class="hp-card"><h3>${r[0]}</h3><div class="hp-msg" style="white-space:pre-wrap;">${hpE(window.__svR[i])}</div><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__svR[${i}])">نسخ</button><button class="btn-secondary" onclick="ptPrint(SV_REP[${i}][0], '<pre style=&quot;white-space:pre-wrap;font-family:inherit&quot;>' + hpE(window.__svR[${i}]) + '</pre>')">طباعة</button></div></div>`).join('');
+}
+function svMinutesHtml(){
+  const m = hpA('minutes');
+  return `<div class="hp-card"><h3>محضر اجتماع</h3><div class="hp-row hp-row-wrap"><input type="date" id="sm-d" value="${hpToday()}"><input type="text" id="sm-t" placeholder="عنوان الاجتماع"></div><div class="field"><label>الحضور (سطر لكل اسم)</label><textarea id="sm-a" rows="3"></textarea></div><div class="field"><label>جدول الأعمال</label><textarea id="sm-g" rows="3"></textarea></div><div class="field"><label>القرارات</label><textarea id="sm-r" rows="3"></textarea></div><div class="field"><label>المهام (من / ماذا / متى)</label><textarea id="sm-k" rows="3"></textarea></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="svMinAdd()">حفظ المحضر</button></div></div>
+    ${m.length ? `<div class="hp-card"><h3>المحاضر (${m.length})</h3>${m.slice().reverse().map(x => `<div class="hp-trow"><span>${hpE(x.d)} — ${hpE(x.t)}</span><span><button class="hp-chip on" onclick="svMinPrint('${x.id}')">طباعة</button><button class="hp-chip bad" onclick="svMinDel('${x.id}')">حذف</button></span></div>`).join('')}</div>` : ''}`;
+}
+function svMinAdd(){ if(!hpV('sm-t').trim()){ toast('اكتب عنوان الاجتماع.', { type: 'err' }); return; } hpA('minutes').push({ id: hpUid(), d: hpV('sm-d'), t: hpV('sm-t').trim(), a: hpV('sm-a'), g: hpV('sm-g'), r: hpV('sm-r'), k: hpV('sm-k') }); hpSave(); svShow('minutes'); }
+function svMinDel(id){ HP.minutes = hpA('minutes').filter(x => x.id !== id); hpSave(); svShow('minutes'); }
+function svMinPrint(id){ const x = hpA('minutes').find(o => o.id === id); if(!x) return; const nl = t => hpE(t).replace(/\n/g, '<br>'); ptPrint('محضر اجتماع — ' + x.t, `<p>التاريخ: ${hpE(x.d)}</p><h2>الحضور</h2><p>${nl(x.a)}</p><h2>جدول الأعمال</h2><p>${nl(x.g)}</p><h2>القرارات</h2><p>${nl(x.r)}</p><h2>المهام</h2><p>${nl(x.k)}</p>`); }
+function svVisitsPlanHtml(){
+  const p = hpA('vplan');
+  return `<div class="hp-card"><h3>خطة زيارات</h3><div class="hp-row hp-row-wrap"><input type="date" id="sv-pd" value="${hpToday()}"><input type="text" id="sv-pn" placeholder="المشرف / المدرسة / الجهة"><input type="text" id="sv-pg" placeholder="الهدف من الزيارة"><button class="btn-primary" onclick="svVPAdd()">إضافة</button></div>
+    ${p.slice().sort((a, b) => a.d.localeCompare(b.d)).map(x => `<div class="hp-trow"><span><b>${hpE(x.d)}</b> — ${hpE(x.n)} ${x.g ? `<small>${hpE(x.g)}</small>` : ''}</span><button class="hp-chip bad" onclick="svVPDel('${x.id}')">حذف</button></div>`).join('')}
+    ${p.length ? `<div class="hp-actions"><button class="btn-secondary" onclick="ptPrint('خطة الزيارات', '<table><tr><th>التاريخ</th><th>الجهة</th><th>الهدف</th></tr>' + hpA('vplan').slice().sort((a,b)=>a.d.localeCompare(b.d)).map(x=>'<tr><td>'+hpE(x.d)+'</td><td>'+hpE(x.n)+'</td><td>'+hpE(x.g)+'</td></tr>').join('') + '</table>')">طباعة</button></div>` : ''}</div>`;
+}
+function svVPAdd(){ if(!hpV('sv-pn').trim()) return; hpA('vplan').push({ id: hpUid(), d: hpV('sv-pd'), n: hpV('sv-pn').trim(), g: hpV('sv-pg').trim() }); hpSave(); svShow('visits'); }
+function svVPDel(id){ HP.vplan = hpA('vplan').filter(x => x.id !== id); hpSave(); svShow('visits'); }
+const SV_FN = { visit: svVisitHtml, plan: svPlanHtml, fb: svFbHtml, log: svLogHtml, compare: svCompareHtml, monitor: svMonitorHtml, comments: svCommentsHtml, sem: svSemHtml, tpl: svTplHtml, rep: svRepHtml, minutes: svMinutesHtml, visits: svVisitsPlanHtml, docs: () => ptSharedHtml() };
+
+/* ---------- مستندات بكود (جداول/نصوص مشتركة بأمان) ---------- */
+async function ptPublish(kind){
+  const title = (hpV('psd-title') || '').trim() || (kind === 'table' ? (prompt('عنوان المستند:') || '').trim() : '') || 'مستند';
+  let payload;
+  if(kind === 'text'){ const t = hpV('psd-text').trim(); if(!t){ toast('اكتب النص.', { type: 'err' }); return; } payload = { kind: 'text', text: t.slice(0, 20000) }; }
+  else{ const t = window.__ptTable; if(!t){ toast('ولّد جدول أو مقياس تقدير الأول (من أدوات التحضير).', { type: 'err' }); return; } payload = { kind: 'table', rows: t.rows.slice(0, 200).map(r => r.slice(0, 12).map(c => String(c).slice(0, 300))) }; }
+  const code = Math.random().toString(36).slice(2, 8) + Math.random().toString(36).slice(2, 6);
+  try{ await db.collection('sharedDocs').doc(code).set(Object.assign({ ownerUid: currentUid, ownerName: pendingUser.name || '', title, createdMs: Date.now() }, payload)); hpCopy(code); prompt('كود المشاركة (اتنسخ) — ابعته لطلابك:', code); }
+  catch(e){ toast('تعذّر النشر (' + (e.code || e.message) + ')', { type: 'err' }); }
+}
+async function ptOpenShared(){
+  const code = hpV('psd-code').trim(); if(!code) return;
+  try{
+    const d = await db.collection('sharedDocs').doc(code).get(); const out = document.getElementById('psd-out');
+    if(!d.exists){ out.innerHTML = '<div class="hp-note">الكود مش صحيح.</div>'; return; }
+    const x = d.data();
+    const body = x.kind === 'table' ? `<table class="hp-tbl">${(x.rows || []).map((r, i) => `<tr>${r.map(c => i === 0 ? `<th>${hpE(c)}</th>` : `<td>${hpE(c)}</td>`).join('')}</tr>`).join('')}</table>` : `<div class="hp-msg" style="white-space:pre-wrap;">${hpE(x.text || '')}</div>`;
+    window.__psd = x;
+    out.innerHTML = `<div class="hp-card"><h3>${hpE(x.title)} <small>— ${hpE(x.ownerName || '')}</small></h3><div style="overflow:auto;">${body}</div><div class="hp-actions"><button class="btn-secondary" onclick="ptPrintShared()">طباعة</button></div></div>`;
+  }catch(e){ toast('تعذّر الفتح (' + (e.code || e.message) + ')', { type: 'err' }); }
+}
+function ptPrintShared(){ const x = window.__psd; if(!x) return; ptPrint(x.title, x.kind === 'table' ? `<table>${(x.rows || []).map((r, i) => `<tr>${r.map(c => i === 0 ? `<th>${hpE(c)}</th>` : `<td>${hpE(c)}</td>`).join('')}</tr>`).join('')}</table>` : `<div style="white-space:pre-wrap;">${hpE(x.text || '')}</div>`); }
+function ptSharedHtml(){
+  return `<div class="hp-card"><h3>فتح مستند بكود</h3><div class="hp-row"><input type="text" id="psd-code" placeholder="الكود من معلمك/مشرفك"><button class="btn-primary" onclick="ptOpenShared()">فتح</button></div><div id="psd-out"></div></div>
+    <div class="hp-card"><h3>نشر مستند بكود</h3><div class="hp-row"><input type="text" id="psd-title" placeholder="عنوان المستند"></div><div class="field"><label>نص حر (اختياري)</label><textarea id="psd-text" rows="4" placeholder="تعليمات، ورقة عمل نصية، ملاحظات..."></textarea></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="ptPublish('text')">نشر النص</button><button class="btn-secondary" onclick="ptPublish('table')">نشر آخر جدول/مقياس ولّدته</button></div><div class="hp-note">آخر جدول مواصفات أو مقياس تقدير ولّدته في أدوات التحضير هو اللي بيتنشر.</div></div>`;
+}
+/* ---------- إرسال التقييم الذاتي/اليوميات للمشرف + صندوق "من مشرفي" ---------- */
+async function prSendToSup(kind, id){
+  const up = userStatus && userStatus.supervisorId; if(!up){ toast('مفيش مشرف مرتبط بحسابك.', { type: 'err' }); return; }
+  const src = kind === 'self' ? hpA('selfs').find(x => x.id === id) : hpA('journal').find(x => x.id === id); if(!src) return;
+  const data = kind === 'self' ? { d: src.d, l: src.l, r: src.r, avg: src.avg, n: src.n } : { d: src.date, school: src.school, cls: src.cls, lesson: src.lesson, good: src.good, imp: src.imp };
+  try{ await db.collection('practicumShares').add({ fromUid: currentUid, fromName: pendingUser.name || '', toUid: up, kind, title: kind === 'self' ? 'تقييم ذاتي' : 'يومية تدريب', data, createdMs: Date.now() }); toast('اتبعت لمشرفك.'); }
+  catch(e){ toast('تعذّر الإرسال (' + (e.code || e.message) + ')', { type: 'err' }); }
+}
+let hpInbox = null;
+function hpInboxHtml(){
+  if(hpInbox === null){ hpInbox = []; db.collection('practicumShares').where('toUid', '==', currentUid).get().then(s => { hpInbox = s.docs.map(d => d.data()).sort((a, b) => b.createdMs - a.createdMs); if(hpTab === 'inbox') hpShow('inbox'); }).catch(() => {}); }
+  const mine = hpInbox.filter(x => x.kind === 'visit' || x.kind === 'plan');
+  if(!mine.length) return '<div class="hp-card"><div class="hp-note">لسه مفيش تقارير زيارات أو خطط من مشرفك.</div></div>';
+  return mine.map(x => x.kind === 'visit' ? `<div class="hp-card"><h3>🏫 ${hpE(x.title)} <small>— من ${hpE(x.fromName)}</small></h3><div class="hp-result">المتوسط <b>${(x.data.avg || 0).toFixed(1)}</b> / 5</div><div class="hp-trow"><span>نقاط القوة</span></div><p class="hp-msg">${hpE(x.data.s || '—')}</p><div class="hp-trow"><span>التوصيات</span></div><p class="hp-msg">${hpE(x.data.i || '—')}</p>${x.data.f ? `<div class="hp-note">موعد المتابعة: ${hpE(x.data.f)}</div>` : ''}</div>` : `<div class="hp-card"><h3>📈 ${hpE(x.title)} <small>— من ${hpE(x.fromName)}</small></h3>${(x.data.items || []).map(i => `<div class="hp-trow"><span>• ${hpE(i.t)}</span></div>`).join('')}<div class="hp-note">حتى ${hpE(x.data.e || '—')}</div></div>`).join('');
 }
 </script>
 </body>
