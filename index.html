@@ -68,7 +68,7 @@
   .intro-legal{margin-top:18px; font-size:10.5px; color:var(--ink-soft); line-height:1.8;}
   .intro-legal a{color:var(--brick); font-weight:800;}
 
-  #screen-bio, #screen-acctype, #screen-signup, #screen-plans, #screen-verify, #screen-payment, #screen-login, #screen-google-complete{
+  #screen-nid, #screen-bio, #screen-acctype, #screen-signup, #screen-plans, #screen-verify, #screen-payment, #screen-login, #screen-google-complete{
     min-height:100vh; display:none; align-items:center; justify-content:center; padding:32px 20px;
     background: radial-gradient(circle at 15% 20%, rgba(184,83,46,0.07), transparent 40%), radial-gradient(circle at 85% 80%, rgba(92,131,104,0.09), transparent 45%), var(--paper);}
   .auth-panel{background:var(--white); border:1px solid var(--line); border-radius:10px; padding:34px 30px; width:100%; max-width:400px; box-shadow:0 20px 45px rgba(27,42,65,0.08);}
@@ -775,7 +775,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
 .tour-dots span.active{background:var(--gold);}
 
 /* ---------- auth + plans screens ---------- */
-#screen-bio,#screen-acctype,#screen-signup,#screen-plans,#screen-verify,#screen-payment,#screen-login,#screen-google-complete{
+#screen-nid,#screen-bio,#screen-acctype,#screen-signup,#screen-plans,#screen-verify,#screen-payment,#screen-login,#screen-google-complete{
   background:
     radial-gradient(700px 380px at 90% 0%, rgba(227,168,43,.14), transparent 60%),
     radial-gradient(700px 380px at 0% 100%, rgba(44,65,148,.12), transparent 60%), var(--paper);
@@ -955,6 +955,50 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
 .land-menu .dd-sep{font-size:11px; font-weight:800; color:var(--ink-soft); padding:8px 12px 2px;}
 .land-menu .dd-foot{font-size:11.5px; color:var(--ink-soft); padding:8px 12px 4px; border-top:1px dashed var(--line); margin-top:6px;}
 @media (max-width:640px){ .land-menu{order:3; width:100%; justify-content:center;} .land-nav{flex-wrap:wrap;} .land-menu .dd{position:static;} .land-menu .dd-panel{inset-inline:12px; width:auto; top:60px; position:fixed;} }
+.land-link{display:block; width:100%; margin-top:8px; background:none; border:0; font-family:inherit; font-size:12.5px; font-weight:700; color:var(--brick); cursor:pointer; text-decoration:underline;}
+/* ===== أدوات مساعدة ===== */
+.hp-chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; align-items:center;}
+.hp-tabs{position:sticky; top:0; z-index:5; background:var(--paper); padding:6px 0;}
+.hp-chip{background:var(--white); border:1px solid var(--line); color:var(--ink); padding:8px 14px; border-radius:999px; font-size:13px; font-weight:800; font-family:inherit; cursor:pointer;}
+.hp-chip.on{background:var(--brick); color:#fff; border-color:var(--brick);}
+.hp-chip.bad{background:#fbe9e7; color:#b3261e; border-color:#f3c9c4;}
+.hp-card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius, 14px); padding:18px; margin-bottom:14px; max-width:760px;}
+.hp-card h3{font-size:16px; margin-bottom:10px;}
+.hp-card h3 small{font-weight:600; color:var(--ink-soft);}
+.hp-card textarea, .hp-card input[type=text], .hp-card input[type=number], .hp-card input[type=date], .hp-card input[type=time], .hp-card select{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; font-family:inherit; font-size:14px; background:var(--paper);}
+.hp-center{text-align:center;}
+.hp-big{font-family:'Cairo',sans-serif; font-weight:900; font-size:64px; letter-spacing:2px; color:var(--ink); line-height:1.1; margin:8px 0;}
+.hp-pick{font-size:34px; min-height:56px; transition:transform .2s;}
+.hp-pick.done{transform:scale(1.12); color:var(--brick);}
+.hp-note{font-size:12.5px; color:var(--ink-soft); margin:6px 0;}
+.hp-actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px;}
+.hp-actions label{font-size:13px; font-weight:700; display:flex; gap:6px; align-items:center;}
+.hp-actions input{width:auto;}
+.hp-check{display:flex; gap:8px; align-items:center; font-size:13.5px; margin-top:12px; justify-content:center;}
+.hp-check input{width:auto;}
+.hp-done{text-decoration:line-through; opacity:.6;}
+.hp-row{display:flex; gap:8px; margin-bottom:8px;}
+.hp-row-wrap{flex-wrap:wrap;}
+.hp-row > *{flex:1; min-width:110px;}
+.hp-row > button{flex:0 0 auto;}
+.hp-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:10px; margin-top:12px;}
+.hp-mini{background:var(--paper-dim); border-radius:12px; padding:12px; font-size:13.5px;}
+.hp-mini b{display:block; margin-bottom:6px; color:var(--brick);}
+.hp-stats .hp-mini{text-align:center;}
+.hp-bands{display:flex; gap:6px; flex-wrap:wrap; margin:12px 0;}
+.hp-table{margin-top:10px;}
+.hp-trow{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:9px 0; border-bottom:1px dashed var(--line); font-size:14px;}
+.hp-trow:last-child{border-bottom:0;}
+.hp-trow small{color:var(--ink-soft); margin-inline-start:6px;}
+.hp-result{margin-top:14px; padding:14px; border-radius:12px; background:var(--accent-soft, rgba(44,65,148,.09)); font-size:16px;}
+.hp-result b{font-size:28px; font-family:'Cairo',sans-serif; color:var(--brick);}
+.hp-today{border-color:var(--brick); box-shadow:0 0 0 2px rgba(44,65,148,.08);}
+.hp-flash{margin:14px auto; max-width:480px; min-height:150px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; background:var(--paper-dim); border:2px dashed var(--line); border-radius:16px; padding:20px; font-size:20px; font-weight:800; cursor:pointer; white-space:pre-wrap;}
+.hp-flash small{font-size:11.5px; color:var(--ink-soft); font-weight:600;}
+.hp-bar{height:8px; border-radius:8px; background:var(--paper-dim); overflow:hidden; margin:10px 0;}
+.hp-bar i{display:block; height:100%; background:var(--sage);}
+.hp-msg{font-size:13.5px; line-height:1.9; background:var(--paper-dim); border-radius:10px; padding:12px; margin-bottom:6px;}
+@media(max-width:560px){ .hp-big{font-size:48px;} }
 </style>
 </head>
 <body>
@@ -1073,6 +1117,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <h3>عندي حساب بالفعل</h3>
         <p>سجّل دخولك وكمّل من حيث وقفت — لكل الأنواع.</p>
         <button onclick="showLogin()">تسجيل الدخول</button>
+        <button class="land-link" onclick="showNidScreen()">أو ادخل بالرقم القومي</button>
       </div>
     </div>
     <div class="land-trial">اشتراك <b>مرة واحدة</b> بدون تجديد — والدكتور المشرف والإدارة <b>مجانًا</b></div>
@@ -1148,6 +1193,28 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
     </div>
   </div>
 </div>
+<div id="screen-nid">
+  <div class="auth-panel">
+    <div class="auth-logo"><svg class="icon"><use href="#i-user"></use></svg></div>
+    <div class="brand-mark" style="text-align:center;">نُدرس <span>معًا</span></div>
+    <div class="step-tag" id="nid-tag" style="text-align:center;">الدخول بالرقم القومي</div>
+    <div class="field"><label>الرقم القومي (14 رقم)</label><input type="tel" inputmode="numeric" maxlength="14" id="nid-num" placeholder="14 رقم" autocomplete="off"></div>
+    <div id="nid-extra" style="display:none;">
+      <div class="field"><label>الاسم الكامل</label><input type="text" id="nid-name" placeholder="مثال: مهدي حسن"></div>
+      <div class="field"><label>رقم الموبايل</label><input type="tel" id="nid-phone" placeholder="01xxxxxxxxx"></div>
+    </div>
+    <div class="field"><label id="nid-pass-label">كلمة المرور</label>
+      <div class="pw-wrap"><input type="password" id="nid-pass" placeholder="كلمة المرور"><button type="button" class="pw-toggle" onclick="togglePw('nid-pass', this)">إظهار</button></div>
+    </div>
+    <div class="field" id="nid-pass2-wrap" style="display:none;"><label id="nid-pass2-label">تأكيد كلمة المرور</label><input type="password" id="nid-pass2" placeholder="أعد كتابتها"></div>
+    <button class="btn-primary btn-block" id="nid-btn" onclick="nidSubmit()">دخول</button>
+    <div class="auth-status" id="nid-status"></div>
+    <button class="back-link" id="nid-forgot" onclick="nidForgot()">نسيت كلمة المرور؟</button>
+    <button class="back-link" id="nid-toggle" onclick="nidToggleMode()">أول مرة؟ فعّل حسابك</button>
+    <button class="back-link" onclick="backToRole('screen-nid')">رجوع</button>
+  </div>
+</div>
+
 <div id="screen-bio">
   <div class="auth-panel" style="text-align:center;">
     <div class="auth-logo"><svg class="icon"><use href="#i-user"></use></svg></div>
@@ -1208,6 +1275,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
     <button class="btn-primary btn-block" onclick="loginUser()" id="li-submit-btn">دخول</button>
     <div class="auth-status" id="login-status"></div>
     <button class="back-link" onclick="forgotPassword()" style="margin-top:6px;">نسيت كلمة المرور؟</button>
+    <button class="back-link" onclick="showNidScreen()">الدخول بالرقم القومي</button>
     <button class="back-link" onclick="backToRole('screen-login')">رجوع</button>
   </div>
 </div>
@@ -1303,7 +1371,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <button class="nav-item active" data-views="t-dash" onclick="showView('t-dash', this)"><svg class="icon"><use href="#i-home"></use></svg> الصفحة الرئيسية</button>
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-t" data-views="v-courses v-course-detail v-learn v-quiz v-library v-notebooks v-saved" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-book"></use></svg> التعلم والموارد</button>
-        <button class="nav-item" id="navi-toolshub-t" data-views="v-tools-hub v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
+        <button class="nav-item" id="navi-toolshub-t" data-views="v-tools-hub v-helpers v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-t" data-views="t-community v-qa v-expert v-problems v-groups v-public-profile" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-chats-t" data-views="v-chats" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-t" style="display:none;">0</span></button>
@@ -1321,7 +1389,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <button class="nav-item active" data-views="s-home" onclick="showView('s-home', this)"><svg class="icon"><use href="#i-home"></use></svg> الصفحة الرئيسية</button>
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-s" data-views="v-courses v-course-detail v-learn v-quiz v-library v-notebooks v-saved" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-book"></use></svg> التعلم والموارد</button>
-        <button class="nav-item" id="navi-toolshub-s" data-views="v-tools-hub v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
+        <button class="nav-item" id="navi-toolshub-s" data-views="v-tools-hub v-helpers v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
         <button class="nav-item" id="navi-practical-s" data-views="s-practical s-research s-myresearch v-portfolio v-tasks v-calendar" onclick="showView('s-practical', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> التدريب العملي</button>
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-s" data-views="t-community v-qa v-expert v-problems v-groups v-public-profile" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
@@ -1343,6 +1411,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
       <div id="nav-sup" style="display:none;">
         <button class="nav-item active" data-views="v-sup" onclick="showView('v-sup', this)"><svg class="icon"><use href="#i-home"></use></svg> لوحتي</button>
         <button class="nav-item" data-views="v-chats" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات</button>
+        <button class="nav-item" data-views="v-helpers" onclick="showView('v-helpers', this)"><svg class="icon"><use href="#i-sparkle"></use></svg> أدوات مساعدة</button>
         <div class="nav-group-label">الحساب</div>
         <button class="nav-item" data-views="v-profile" onclick="showView('v-profile', this)"><svg class="icon"><use href="#i-user"></use></svg> ملفي الشخصي</button>
         <button class="nav-item" data-views="s-contact" onclick="showView('s-contact', this)"><svg class="icon"><use href="#i-chat-square"></use></svg> تواصل معنا</button>
@@ -1378,7 +1447,6 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <div class="avatar-wrap" onclick="showView('v-profile')">
           <div class="avatar" id="global-avatar">؟</div>
         </div>
-        <input type="file" id="profile-photo-input" accept="image/*" style="display:none" onchange="onProfilePhotoSelected(event)">
         </div>
       </div>
 
@@ -1570,6 +1638,13 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         <div id="tools-hub-grid" class="tools-hub-grid"></div>
       </div>
 
+      <!-- ========== أدوات مساعدة (مؤقت، درجات، حضور، جدول، بطاقات...) ========== -->
+      <div class="view" id="v-helpers">
+        <div class="topbar"><div><h1>أدوات مساعدة</h1><div class="sub">مؤقت، درجات، حضور، جدول، بطاقات مراجعة ومهام — بياناتك محفوظة وخاصة بيك</div></div></div>
+        <div class="hp-chips hp-tabs" id="hp-tabs"></div>
+        <div id="hp-body"></div>
+      </div>
+
       <!-- ========== لوحة المتصدرين ========== -->
       <div class="view" id="v-leaderboard">
         <div class="topbar"><div><h1>لوحة المتصدرين</h1><div class="sub">أكتر المعلمين نشاطًا وعطاءً للمجتمع (نقاط الأنشطة)</div></div></div>
@@ -1748,7 +1823,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
         </div>
 
         <div class="profile-head">
-          <div class="profile-avatar-big" id="profile-avatar-big" onclick="document.getElementById('profile-photo-input').click()">
+          <div class="profile-avatar-big" id="profile-avatar-big" onclick="setProfilePhotoLink()">
             <span>؟</span>
           </div>
           <div>
@@ -1902,11 +1977,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
               <div class="typing-indicator" id="chat-typing-indicator" style="display:none;"></div>
               <div id="chat-upload-status"></div>
               <div class="chat-input-row">
-                <input type="file" id="chat-file-input" style="display:none;" onchange="chatPickFile(this)">
-                <input type="file" id="chat-img-input" accept="image/*" style="display:none;" onchange="chatPickFile(this)">
-                <button class="att-btn" title="إرفاق ملف" onclick="document.getElementById('chat-file-input').click()"><svg class="icon"><use href="#i-paperclip"></use></svg></button>
-                <button class="att-btn" title="إرسال صورة" onclick="document.getElementById('chat-img-input').click()"><svg class="icon"><use href="#i-image"></use></svg></button>
-                <button class="att-btn" title="تسجيل صوتي" onclick="chatToggleRecord(this)"><svg class="icon"><use href="#i-mic"></use></svg></button>
+                <button class="att-btn" title="إرسال رابط (Drive أو أي رابط)" onclick="chatSendLink()"><svg class="icon"><use href="#i-paperclip"></use></svg></button>
                 <input type="text" id="chat-input" placeholder="اكتب رسالة..." oninput="onChatInputTyping()" onkeydown="if(event.key==='Enter'){event.preventDefault(); sendChatMessage();}">
                 <button onclick="sendChatMessage()"><svg class="icon"><use href="#i-send"></use></svg></button>
               </div>
@@ -2032,8 +2103,7 @@ a.ci-link,button.ci-link{background:var(--accent-soft); color:var(--brick); font
           </div>
           <div class="field"><label>رابط ملف (اختياري — من Google Drive)</label><input type="text" id="post-drive-link" placeholder="الصق رابط المشاركة من درايف هنا"></div>
           <div class="attach-row">
-            <input type="file" id="post-image-input" accept="image/*" style="display:none" onchange="onComposerImageSelected(event)">
-            <button type="button" class="attach-btn" onclick="document.getElementById('post-image-input').click()"><svg class="icon"><use href="#i-image"></use></svg> إضافة صورة</button>
+            <div class="field" style="width:100%; margin:0;"><label>رابط صورة (اختياري — Google Drive أو أي رابط صورة)</label><input type="text" id="post-image-link" placeholder="الصق رابط الصورة هنا"></div>
             <span class="upload-progress" id="post-upload-progress"></span>
           </div>
           <button class="btn-primary" id="post-submit-btn" onclick="createPost()">نشر</button>
@@ -2499,7 +2569,7 @@ async function loadUserStatus(){
   try{
     const doc = await db.collection('users').doc(currentUid).get();
     const d = doc.data();
-    pendingType = d.accountType || pendingType; userStatus = { accountType: d.accountType || null, approved: d.approved === true, supervisorId: d.supervisorId || null, feeAmount: d.feeAmount || 0, plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt, isExpert: !!d.isExpert, verified: !!d.verified };
+    pendingType = d.accountType || pendingType; userStatus = { accountType: d.accountType || null, approved: d.approved === true, supervisorId: d.supervisorId || null, feeAmount: d.feeAmount || 0, nidHash: d.nidHash || null, grantExpiresMs: d.grantExpiresMs || 0, plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt, isExpert: !!d.isExpert, verified: !!d.verified };
     pendingUser.photoURL = d.photoURL || pendingUser.photoURL || '';
     pendingUser.specialization = d.specialization || '';
     pendingUser.bio = d.bio || '';
@@ -2546,6 +2616,7 @@ function openExamform(btn){
 function enterApp(role){
   document.getElementById('screen-acctype').style.display = 'none';
   document.getElementById('screen-bio').style.display = 'none';
+  document.getElementById('screen-nid').style.display = 'none';
   document.getElementById('screen-role').style.display = 'none';
   document.getElementById('screen-signup').style.display = 'none';
   document.getElementById('screen-verify').style.display = 'none';
@@ -2612,6 +2683,7 @@ function showView(id, btn){
   if(id === 'v-certificates'){ const iEl = document.getElementById('cert-issuer'); if(iEl && !iEl.value) iEl.value = pendingUser.name || ''; }
   if(id === 'v-prep-room') loadPrepRooms();
   if(id === 'v-tools-hub') renderToolsHub();
+  if(id === 'v-helpers') helpersOpen();
   if(id === 'v-leaderboard') loadLeaderboard();
   if(id === 'v-wallet') loadWallet();
   if(id === 'v-profile') loadReferralBox();
@@ -3241,6 +3313,7 @@ function renderToolsHub(){
     { icon:'sparkle',   title:'مساعد المعلم',             desc:'جهّز برومبت جاهز لأي مساعد ذكاء اصطناعي', view:'v-assistant', key:'v-assistant', roles:['teacher','student'] },
     { icon:'edit',      title:'اختبارات متاحة',           desc:'خد اختبارات نشرها معلمون وشوف نتيجتك فورًا', view:'v-take-quiz-list', key:'v-take-quiz-list', roles:['student'] },
     { icon:'notebook',  title:'امتحانك بلس', tag:'للمشتركين', desc:'أداة إنشاء الامتحانات والكتيبات الاحترافية', action:'exam', key:'exam-easy', roles:['teacher','student'] },
+    { icon:'sparkle',   title:'أدوات مساعدة', desc:'مؤقت، درجات، حضور، جدول، بطاقات مراجعة ومهام', view:'v-helpers', key:'v-helpers', roles:['teacher','student'] },
     { icon:'monitor',   title:'سبورة إلكترونية',          desc:'اشرح واعرض لطلابك من أي مكان', action:'board', key:'boardplus', roles:['teacher','student'] },
   ].filter(t => t.roles.includes(isT ? 'teacher' : 'student') && !hidden.includes(t.key));
   el.innerHTML = all.map((t,i) => `
@@ -4842,22 +4915,21 @@ async function openPublicProfile(uid){
 }
 
 /* ================= صورة البروفايل ================= */
-async function onProfilePhotoSelected(evt){
-  const file = evt.target.files && evt.target.files[0];
-  if(!file || !currentUid) return;
-  if(file.size > 10 * 1024 * 1024){ toast('حجم الصورة كبير — الحد الأقصى 10 ميجا.', {type:'err'}); evt.target.value=''; return; }
-  toast('جاري رفع الصورة...');
+async function setProfilePhotoLink(){
+  if(!currentUid) return;
+  const raw = prompt('الصق رابط صورتك (Google Drive أو أي رابط صورة):\nلازم الصورة تكون متاحة لأي شخص معه الرابط. اترك الخانة فاضية لحذف الصورة.');
+  if(raw === null) return;
+  const link = cleanLink(raw);
+  if(link === null){ toast('الرابط مش صالح.', {type:'err'}); return; }
   try{
-    const compressed = await compressImageFile(file, 400, 0.85);
-    const url = await uploadFile(`profiles/${currentUid}.jpg`, compressed);
+    const url = link ? imgUrlFrom(link) : '';
     await db.collection('users').doc(currentUid).set({ photoURL: url }, { merge: true });
     pendingUser.photoURL = url;
     await syncPublicProfile();
     renderGlobalAvatar();
     renderProfileView();
-    toast('تم تحديث صورة البروفايل.');
-  }catch(err){ toast('تعذّر رفع الصورة: '+err.message, {type:'err'}); }
-  finally{ evt.target.value = ''; }
+    toast(url ? 'تم تحديث صورة البروفايل.' : 'اتحذفت الصورة.');
+  }catch(err){ toast('تعذّر الحفظ: '+err.message, {type:'err'}); }
 }
 
 /* ================= الإشعارات (Notification bell) ================= */
@@ -5014,23 +5086,8 @@ async function checkAndBumpDailyUploadLimit(){
   return true;
 }
 
-function onComposerImageSelected(evt){
-  const file = evt.target.files && evt.target.files[0];
-  if(!file) return;
-  if(file.size > 10 * 1024 * 1024){ toast('حجم الصورة كبير — الحد الأقصى 10 ميجا.', {type:'err'}); evt.target.value=''; return; }
-  composerImageFile = file;
-  const reader = new FileReader();
-  reader.onload = () => {
-    document.getElementById('composer-image-img').src = reader.result;
-    document.getElementById('composer-image-preview').style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-}
 function removeComposerImage(){
-  composerImageFile = null;
-  document.getElementById('post-image-input').value = '';
-  document.getElementById('composer-image-preview').style.display = 'none';
-  document.getElementById('composer-image-img').src = '';
+  const el = document.getElementById('post-image-link'); if(el) el.value = '';
 }
 
 async function createPost(){
@@ -5042,23 +5099,13 @@ async function createPost(){
   const status = document.getElementById('post-status');
   const submitBtn = document.getElementById('post-submit-btn');
   const progress = document.getElementById('post-upload-progress');
-  if(!content && !composerImageFile){ status.className='auth-status err'; status.textContent='اكتب محتوى المنشور أو أضف صورة.'; return; }
+  const imgLink = cleanLink(document.getElementById('post-image-link').value);
+  if(imgLink === null){ status.className='auth-status err'; status.textContent='رابط الصورة مش صالح.'; return; }
+  if(!content && !imgLink){ status.className='auth-status err'; status.textContent='اكتب محتوى المنشور أو حط رابط صورة.'; return; }
   submitBtn.disabled = true;
   status.className='auth-status pending'; status.textContent='جاري النشر...';
   try{
-    let imageUrl = null;
-    if(composerImageFile){
-      const okToUpload = await checkAndBumpDailyUploadLimit();
-      if(!okToUpload){
-        status.className='auth-status err'; status.textContent = `وصلت للحد الأقصى (${DAILY_IMAGE_UPLOAD_LIMIT} صورة) لليوم — جرب تاني بكرة.`;
-        submitBtn.disabled = false; return;
-      }
-      progress.textContent = 'جاري ضغط ورفع الصورة...';
-      const compressed = await compressImageFile(composerImageFile, 1280, 0.8);
-      const path = `communityPosts/${currentUid}/${Date.now()}.jpg`;
-      imageUrl = await uploadFile(path, compressed);
-      progress.textContent = '';
-    }
+    const imageUrl = imgLink ? imgUrlFrom(imgLink) : null;
     await db.collection('communityPosts').add({
       authorUid: currentUid, authorName: pendingUser.name || 'مستخدم', authorIsExpert: !!userStatus.isExpert, authorVerified: !!userStatus.verified, tag, content,
       driveLink: driveLink || null, imageUrl: imageUrl || null,
@@ -5605,7 +5652,7 @@ async function renderHomeStats(){
   }catch(e){}
 }
 
-/* ================= مرفقات الدردشة: صور / ملفات / تسجيلات صوتية / روابط ================= */
+/* ================= الدردشة: نص وروابط فقط (صور/ملفات عبر روابط Drive أو أي رابط) — من غير رفع ولا تسجيل صوتي ================= */
 let CHAT_MAX_BYTES = 10 * 1024 * 1024; // الحد الأقصى للمرفق (قابل للتعديل من الأدمن)
 let CHAT_REC_MAX_SEC = 180;            // أقصى مدة تسجيل صوتي (قابلة للتعديل من الأدمن)
 function chatSafeUrl(u){ return /^https:\/\//i.test(u || '') ? u : ''; }
@@ -5619,11 +5666,12 @@ function chatMsgBodyHtml(m){
   if(url && m.type === 'image') return `<a href="${escapeHtml(url)}" target="_blank" rel="noopener"><img class="msg-img" loading="lazy" src="${escapeHtml(url)}" alt=""></a>${text}`;
   if(url && m.type === 'audio') return `<audio controls preload="none" src="${escapeHtml(url)}"></audio>${m.durationSec ? `<div style="font-size:11px; opacity:.75;">تسجيل صوتي · ${m.durationSec} ث</div>` : ''}`;
   if(url && m.type === 'video') return `<video controls preload="metadata" class="msg-img" src="${escapeHtml(url)}"></video>${text}`;
+  if(url && m.type === 'link') return `<a class="msg-file" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">🔗 <span>${escapeHtml(m.fileName || 'رابط')}</span></a>${text}`;
   if(url && m.type === 'file') return `<a class="msg-file" href="${escapeHtml(url)}" target="_blank" rel="noopener" download>📎 <span>${escapeHtml(m.fileName || 'ملف')}</span> <small>${chatFmtSize(m.fileSize)}</small></a>${text}`;
   return chatLinkify(escapeHtml(m.text || ''));
 }
 function chatPreviewFor(type, text){
-  return ({ image:'📷 صورة', audio:'🎤 تسجيل صوتي', video:'🎬 فيديو', file:'📎 ملف' })[type] || text;
+  return ({ image:'📷 صورة', audio:'🎤 تسجيل صوتي', video:'🎬 فيديو', file:'📎 ملف', link:'🔗 رابط' })[type] || text;
 }
 async function chatPost(ctx, payload){
   const ts = firebase.firestore.FieldValue.serverTimestamp();
@@ -5646,78 +5694,27 @@ function chatKindOf(file){
   if(t.startsWith('video/')) return 'video';
   return 'file';
 }
-async function chatSendFile(file, extra){
+/* بتنضّف رابط: '' لو فاضي، null لو مش صالح، وإلا رابط https */
+function cleanLink(u){
+  u = String(u || '').trim(); if(!u) return '';
+  if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  try{ const x = new URL(u); if(!x.hostname.includes('.')) return null; x.protocol = 'https:'; return x.href; }catch(e){ return null; }
+}
+/* بيحوّل رابط صورة من Google Drive لرابط عرض مباشر (الملف لازم يكون "أي شخص معه الرابط") */
+function imgUrlFrom(u){
+  const m = String(u).match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/);
+  return m ? 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w1280' : u;
+}
+function linkHost(u){ try{ return new URL(u).hostname.replace(/^www\./, ''); }catch(e){ return 'رابط'; } }
+async function chatSendLink(){
   const ctx = chatCtx(); if(!ctx) return;
-  if(file.size > CHAT_MAX_BYTES){ toast('الملف أكبر من ' + Math.round(CHAT_MAX_BYTES/1048576) + ' ميجا — صغّره أو ابعت رابطه.', {type:'err'}); return; }
-  const kind = (extra && extra.type) || chatKindOf(file);
-  const safeName = (file.name || (kind + '.bin')).replace(/[^\w.\-؀-ۿ]+/g, '_').slice(-80);
-  const path = `chatFiles/${ctx.convId}/${ctx.uid}_${Date.now()}_${safeName}`;
-  chatSetStatus('⏳ جاري رفع المرفق… <b id="chat-upl-pct">0%</b>');
-  try{
-    const url = await uploadFile(path, file, p => { const el = document.getElementById('chat-upl-pct'); if(el) el.textContent = Math.round(p * 100) + '%'; });
-    await chatPost(ctx, Object.assign({ type: kind, text: '', fileUrl: url, fileName: file.name || safeName, fileSize: file.size }, (extra && extra.meta) || {}));
-    chatSetStatus('');
-  }catch(err){
-    chatSetStatus('');
-    toast('تعذّر رفع المرفق (' + (err.code || err.message) + ')', {type:'err'});
-  }
-}
-function chatPickFile(inputEl){ const f = inputEl.files && inputEl.files[0]; inputEl.value = ''; if(f) chatSendFile(f); }
-let chatRec = null;
-async function chatToggleRecord(btn){
-  if(chatRec){ chatRec.stop(); return; }
-  if(!navigator.mediaDevices || !window.MediaRecorder){ toast('المتصفح ده مش بيدعم التسجيل الصوتي.', {type:'err'}); return; }
-  if(!chatCtx()) return;
-  try{
-    const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
-    const mime = ['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(m => MediaRecorder.isTypeSupported(m)) || '';
-    const mr = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
-    const chunks = []; const startedAt = Date.now(); let cancelled = false;
-    mr.ondataavailable = e => { if(e.data.size) chunks.push(e.data); };
-    const tick = setInterval(() => { const s = Math.round((Date.now() - startedAt)/1000); chatSetStatus(`🔴 جاري التسجيل… ${s} ث <button class="chat-mini-btn" onclick="chatCancelRecord()">إلغاء</button> <button class="chat-mini-btn ok" onclick="chatToggleRecord()">إرسال</button>`); if(s >= CHAT_REC_MAX_SEC) mr.stop(); }, 500);
-    mr.onstop = async () => {
-      clearInterval(tick); stream.getTracks().forEach(t => t.stop());
-      if(btn) btn.classList.remove('rec'); chatRec = null; chatSetStatus('');
-      if(cancelled || !chunks.length) return;
-      const blob = new Blob(chunks, { type: mr.mimeType || 'audio/webm' });
-      const ext = (mr.mimeType || '').includes('mp4') ? 'm4a' : 'webm';
-      const f = new File([blob], 'voice-' + Date.now() + '.' + ext, { type: blob.type });
-      await chatSendFile(f, { type:'audio', meta:{ durationSec: Math.round((Date.now() - startedAt)/1000) } });
-    };
-    chatRec = { stop: () => mr.stop(), cancel: () => { cancelled = true; mr.stop(); } };
-    if(btn) btn.classList.add('rec');
-    mr.start();
-  }catch(err){ toast('مقدرناش نوصل للميكروفون — اسمح بالإذن من المتصفح.', {type:'err'}); }
-}
-function chatCancelRecord(){ if(chatRec) chatRec.cancel(); }
-
-/* ================= رفع الملفات عبر Cloudinary (بديل Firebase Storage — شغّال على الخطة المجانية) =================
-   الإعداد (cloudName + uploadPreset) بيتحفظ من لوحة الأدمن في siteSettings/uploadConfig. */
-let UPLOAD_CFG = { cloudName: '', uploadPreset: '' };
-function uploadReady(){ return !!(UPLOAD_CFG.cloudName && UPLOAD_CFG.uploadPreset); }
-function uploadFile(path, file, onProgress){
-  return new Promise((resolve, reject) => {
-    if(!uploadReady()){ reject(new Error('رفع الملفات لسه غير مفعّل — الأدمن لازم يضبط إعداد Cloudinary من لوحة التحكم.')); return; }
-    const t = file.type || '';
-    const rt = t.startsWith('image/') ? 'image' : (t.startsWith('video/') || t.startsWith('audio/')) ? 'video' : 'raw';
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('upload_preset', UPLOAD_CFG.uploadPreset);
-    if(rt === 'raw') fd.append('public_id', path);                      // بيحافظ على امتداد الملف (pdf/docx...)
-    else fd.append('folder', path.split('/').slice(0, -1).join('/'));
-    const x = new XMLHttpRequest();
-    x.open('POST', 'https://api.cloudinary.com/v1_1/' + encodeURIComponent(UPLOAD_CFG.cloudName) + '/' + rt + '/upload');
-    x.upload.onprogress = e => { if(e.lengthComputable && onProgress) onProgress(e.loaded / e.total); };
-    x.onload = () => {
-      try{
-        const j = JSON.parse(x.responseText);
-        if(x.status >= 200 && x.status < 300 && j.secure_url) resolve(j.secure_url);
-        else reject(new Error((j.error && j.error.message) || ('HTTP ' + x.status)));
-      }catch(e){ reject(e); }
-    };
-    x.onerror = () => reject(new Error('فشل الاتصال بخدمة الرفع'));
-    x.send(fd);
-  });
+  const raw = prompt('الصق الرابط (Google Drive أو أي رابط — صورة، ملف، فيديو...):\nلازم يكون الرابط متاح لأي شخص معه الرابط.');
+  if(raw === null) return;
+  const url = cleanLink(raw);
+  if(!url){ toast(url === '' ? 'اكتب الرابط.' : 'الرابط مش صالح.', {type:'err'}); return; }
+  const note = (prompt('وصف قصير للرابط (اختياري):') || '').trim();
+  try{ await chatPost(ctx, { type:'link', text: note, fileUrl: url, fileName: linkHost(url) }); }
+  catch(err){ toast('تعذّر الإرسال (' + (err.code || err.message) + ')', {type:'err'}); }
 }
 
 /* =====================================================================
@@ -5816,9 +5813,12 @@ function renderTypedStatusUI(){
   const sidebarEl = document.getElementById('sidebar-status'), banner = document.getElementById('top-banner');
   const planName = document.getElementById('upgrade-current-plan'), planNote = document.getElementById('upgrade-current-note');
   if(planName) planName.textContent = t.label;
-  if(planNote) planNote.textContent = t.paid ? ('رسوم لمرة واحدة' + (userStatus.feeAmount ? ' — ' + userStatus.feeAmount + ' جنيه' : '')) : 'حساب مجاني بدون اشتراك';
+  if(planNote) planNote.textContent = userStatus.plan === 'granted' ? 'منحة مجانية من الإدارة' : (t.paid ? ('رسوم لمرة واحدة' + (userStatus.feeAmount ? ' — ' + userStatus.feeAmount + ' جنيه' : '')) : 'حساب مجاني بدون اشتراك');
   const show = (cls, html, click) => { banner.className = 'top-banner ' + cls; banner.style.display = 'block'; banner.innerHTML = html; banner.style.cursor = click ? 'pointer' : ''; banner.onclick = click || null; };
-  if(t.paid && userStatus.status === 'awaiting_fee'){
+  if(grantExpired()){
+    sidebarEl.innerHTML = t.label + '<span class="status-badge pending">انتهت المنحة</span>';
+    show('pending', '⏳ المنحة المجانية لحسابك انتهت — تواصل مع الإدارة لتجديدها.');
+  }else if(t.paid && userStatus.status === 'awaiting_fee'){
     sidebarEl.innerHTML = t.label + '<span class="status-badge pending">بانتظار الدفع</span>';
     show('pending', '⚠️ لسه ماتمش دفع رسوم الاشتراك — اضغط هنا لإتمام الدفع وفتح حسابك.', async () => { const pr = await loadPricing(); openFeePayment(Number((pr[key] || {}).fee) || userStatus.feeAmount || 0); });
   }else if(t.paid && userStatus.status === 'pending_payment'){
@@ -5835,6 +5835,7 @@ function renderTypedStatusUI(){
 }
 function isAccountLocked(){
   const t = ACCOUNT_TYPES[userStatus.accountType]; if(!t) return false;
+  if(grantExpired()) return true;
   return t.paid ? (userStatus.status === 'awaiting_fee' || userStatus.status === 'pending_payment') : userStatus.status === 'pending_approval';
 }
 function onAccountLoaded(){
@@ -5842,16 +5843,7 @@ function onAccountLoaded(){
   const show = !!userStatus.supervisorId && (ACCOUNT_TYPES[userStatus.accountType] || {}).paid !== false;
   ['navi-sup-t','navi-sup-s'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = show ? '' : 'none'; });
 }
-async function loadLimits(){
-  try{
-    try{ const u = await db.collection('siteSettings').doc('uploadConfig').get(); if(u.exists) UPLOAD_CFG = { cloudName: u.data().cloudName || '', uploadPreset: u.data().uploadPreset || '' }; }catch(e){}
-    const d = await db.collection('siteSettings').doc('limits').get();
-    if(d.exists){ const x = d.data();
-      if(x.maxFileMB) CHAT_MAX_BYTES = Math.min(100, Math.max(1, Number(x.maxFileMB) || 10)) * 1048576;
-      if(x.maxRecordSec) CHAT_REC_MAX_SEC = Math.min(1800, Math.max(30, Number(x.maxRecordSec) || 180));
-    }
-  }catch(e){}
-}
+async function loadLimits(){ /* الرفع اتشال — الملفات بقت روابط فقط */ }
 (function(){
   const prev = showView;
   const FREE_VIEWS = ['t-dash','s-home','v-sup','v-profile','s-contact','v-about-legal','v-upgrade','v-chats','v-public-profile'];
@@ -5874,11 +5866,6 @@ let supRoomsCache = {}, supTaskCache = {};
 function supIsStaff(){ return (ACCOUNT_TYPES[userStatus.accountType || pendingType] || {}).paid === false; }
 function supFmt(ms){ return ms ? new Date(ms).toLocaleString('ar-EG', { dateStyle:'medium', timeStyle:'short' }) : ''; }
 function supSafeName(n){ return String(n || 'file').replace(/[^\w.\-؀-ۿ]+/g, '_').slice(-80); }
-function supMB(){ return Math.round(CHAT_MAX_BYTES / 1048576); }
-async function supUpload(path, file){
-  if(file.size > CHAT_MAX_BYTES) throw new Error('الملف أكبر من ' + supMB() + ' ميجا');
-  return uploadFile(path, file);
-}
 function supSortDesc(docs, key){ return docs.map(d => Object.assign({ id: d.id }, d.data())).sort((a, b) => (b[key] || 0) - (a[key] || 0)); }
 function supEmpty(msg){ return `<div class="empty-state">${msg}</div>`; }
 function supDownloadCsv(name, rows){
@@ -6102,7 +6089,7 @@ async function supRenderTasks(){
         <div class="field"><label>عنوان التكليف</label><input type="text" id="as-title"></div>
         <div class="field"><label>التفاصيل</label><textarea id="as-desc" rows="3" placeholder="المطلوب بالتفصيل..."></textarea></div>
         <div style="display:flex; gap:10px; flex-wrap:wrap;"><div class="field" style="flex:1; min-width:170px;"><label>آخر موعد للتسليم</label><input type="datetime-local" id="as-due"></div>
-        <div class="field" style="flex:1; min-width:170px;"><label>ملف مرفق (اختياري)</label><input type="file" id="as-file"></div></div>
+        <div class="field" style="flex:1; min-width:170px;"><label>رابط ملف مرفق (Drive أو أي رابط — اختياري)</label><input type="text" id="as-link" placeholder="https://drive.google.com/..."></div></div>
         ${supGroupSelect('as-group')}
         <button class="btn-primary" id="as-btn" onclick="supCreateAssignment()">نشر التكليف</button></div>`;
       const subs = postedSubs.docs.map(d => Object.assign({ id: d.id }, d.data()));
@@ -6131,8 +6118,8 @@ async function supRenderTasks(){
           <div class="sup-meta">${a.dueMs ? 'آخر موعد: ' + supFmt(a.dueMs) : 'بدون موعد'}</div></div>
           ${a.description ? `<p>${chatLinkify(escapeHtml(a.description))}</p>` : ''}${fileLink(a)}
           ${s && s.status === 'graded' ? `<div class="sup-grade">الدرجة: <b>${escapeHtml(s.grade || '—')}</b>${s.feedback ? ' — ' + escapeHtml(s.feedback) : ''}</div>` : ''}
-          ${s && s.status === 'graded' ? '' : `<textarea id="sub-txt-${a.id}" rows="2" placeholder="إجابتك أو رابط تسليمك (اختياري لو هترفع ملف)">${escapeHtml(s ? (s.text || '') : '')}</textarea>
-          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"><input type="file" id="sub-file-${a.id}"><button class="sup-btn primary" id="sub-btn-${a.id}" onclick="supSubmit('${a.id}')">${s ? 'تحديث التسليم' : 'تسليم'}</button></div>`}${s && s.fileUrl ? `<div class="sup-meta">آخر ملف سلّمته: ${fileLink(s)}</div>` : ''}
+          ${s && s.status === 'graded' ? '' : `<textarea id="sub-txt-${a.id}" rows="2" placeholder="إجابتك (اختياري لو هتحط رابط)">${escapeHtml(s ? (s.text || '') : '')}</textarea>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"><input type="text" id="sub-link-${a.id}" placeholder="رابط تسليمك (Drive أو أي رابط)" style="flex:1; min-width:200px;"><button class="sup-btn primary" id="sub-btn-${a.id}" onclick="supSubmit('${a.id}')">${s ? 'تحديث التسليم' : 'تسليم'}</button></div>`}${s && s.fileUrl ? `<div class="sup-meta">آخر ملف سلّمته: ${fileLink(s)}</div>` : ''}
           ${s ? `<div><button class="sup-btn" onclick="supToggleThread('${s.id}','${escapeAttr(supUp.id)}')">💬 الردود مع الدكتور</button></div><div id="th-${s.id}"></div>` : ''}</div>`;
       }).join('') : supEmpty('مفيش تكاليف حاليًا.'));
     }
@@ -6144,9 +6131,9 @@ async function supCreateAssignment(){
   if(!title){ toast('اكتب عنوان التكليف.', {type:'err'}); return; }
   const btn = document.getElementById('as-btn'); btn.disabled = true; btn.textContent = 'جاري النشر...';
   try{
-    const f = document.getElementById('as-file').files[0], groupId = document.getElementById('as-group').value || null;
-    let fileUrl = '', fileName = '';
-    if(f){ fileUrl = await supUpload(`assignments/${currentUid}/${Date.now()}_${supSafeName(f.name)}`, f); fileName = f.name; }
+    const groupId = document.getElementById('as-group').value || null, fileUrl = cleanLink(document.getElementById('as-link').value);
+    if(fileUrl === null){ toast('رابط الملف مش صالح.', {type:'err'}); btn.disabled = false; btn.textContent = 'نشر التكليف'; return; }
+    const fileName = fileUrl ? linkHost(fileUrl) : '';
     const due = document.getElementById('as-due').value;
     await db.collection('assignments').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title, description: document.getElementById('as-desc').value.trim(), groupId, dueMs: due ? new Date(due).getTime() : null, fileUrl, fileName, createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
     supNotifyMembers('تكليف جديد من ' + (pendingUser.name || 'المشرف') + ': ' + title, groupId);
@@ -6173,10 +6160,11 @@ async function supSubmit(aid){
   const btn = document.getElementById('sub-btn-' + aid); btn.disabled = true;
   try{
     const text = document.getElementById('sub-txt-' + aid).value.trim();
-    const f = document.getElementById('sub-file-' + aid).files[0];
-    if(!text && !f){ toast('اكتب إجابتك أو ارفع ملف.', {type:'err'}); btn.disabled = false; return; }
+    const link = cleanLink(document.getElementById('sub-link-' + aid).value);
+    if(link === null){ toast('الرابط مش صالح.', {type:'err'}); btn.disabled = false; return; }
+    if(!text && !link){ toast('اكتب إجابتك أو حط رابط التسليم.', {type:'err'}); btn.disabled = false; return; }
     const data = { assignmentId: aid, ownerUid: supUp.id, studentUid: currentUid, studentName: pendingUser.name || '', text, status:'submitted', submittedMs: Date.now(), submittedAt: firebase.firestore.FieldValue.serverTimestamp() };
-    if(f){ data.fileUrl = await supUpload(`submissions/${currentUid}/${aid}/${Date.now()}_${supSafeName(f.name)}`, f); data.fileName = f.name; }
+    if(link){ data.fileUrl = link; data.fileName = linkHost(link); }
     await db.collection('submissions').doc(aid + '_' + currentUid).set(data, { merge: true });
     createNotification(supUp.id, 'message', (pendingUser.name || 'طالب') + ' سلّم تكليف', 'v-sup');
     toast('اتسلّم التكليف.'); supRenderTasks();
@@ -6244,28 +6232,27 @@ async function supRenderMedia(){
     const sentL = supSortDesc(sent.docs, 'createdMs');
     const recvL = supSortDesc(direct.docs, 'createdMs').concat(bcast ? supSortDesc(bcast.docs, 'createdMs').filter(supVisible) : []).sort((a, b) => (b.createdMs || 0) - (a.createdMs || 0));
     const targets = (supUp ? `<option value="up">إلى ${escapeHtml(supUp.name)}</option>` : '') + (staff && supMembers.length ? '<option value="down">إلى الأعضاء التابعين لي</option>' : '');
-    body.innerHTML = `<div class="sup-form"><h3 class="sup-h" style="margin-top:0;">رفع وسائط أو ملف</h3>
-      <div class="field"><label>الملف (صورة / فيديو / تسجيل صوتي / مستند — حتى ${supMB()} ميجا)</label><input type="file" id="md-file"></div>
+    body.innerHTML = `<div class="sup-form"><h3 class="sup-h" style="margin-top:0;">مشاركة رابط (صورة / فيديو / تسجيل / مستند)</h3>
+      <div class="field"><label>الرابط (Google Drive أو أي رابط — لازم يكون متاح لأي شخص معه الرابط)</label><input type="text" id="md-link" placeholder="https://drive.google.com/..."></div>
       <div class="field"><label>ملاحظة (اختياري)</label><input type="text" id="md-note"></div>
       <div class="field"><label>إرسال إلى</label><select id="md-target">${targets}</select></div>
       ${staff ? supGroupSelect('md-group') : '<input type="hidden" id="md-group" value="">'}
-      <button class="btn-primary" id="md-btn" onclick="supUploadMedia()">رفع وإرسال</button></div>
+      <button class="btn-primary" id="md-btn" onclick="supUploadMedia()">إرسال الرابط</button></div>
       <h3 class="sup-h">وصلني (${recvL.length})</h3>${recvL.length ? recvL.map(m => item(m, false)).join('') : supEmpty('مفيش وسائط واصلة.')}
       <h3 class="sup-h">اللي أرسلته (${sentL.length})</h3>${sentL.length ? sentL.map(m => item(m, true)).join('') : supEmpty('لسه ماأرسلتش حاجة.')}`;
   }catch(err){ body.innerHTML = supEmpty('تعذّر تحميل الوسائط (' + escapeHtml(err.code || err.message) + ')'); }
 }
 async function supUploadMedia(){
-  const f = document.getElementById('md-file').files[0];
-  if(!f){ toast('اختار ملف الأول.', {type:'err'}); return; }
+  const url = cleanLink(document.getElementById('md-link').value);
+  if(!url){ toast(url === '' ? 'الصق الرابط الأول.' : 'الرابط مش صالح.', {type:'err'}); return; }
   const target = document.getElementById('md-target').value; if(!target){ toast('مفيش جهة للإرسال.', {type:'err'}); return; }
-  const btn = document.getElementById('md-btn'); btn.disabled = true; btn.textContent = 'جاري الرفع...';
+  const btn = document.getElementById('md-btn'); btn.disabled = true; btn.textContent = 'جاري الإرسال...';
   try{
-    const url = await supUpload(`supMedia/${currentUid}/${Date.now()}_${supSafeName(f.name)}`, f);
     const toUid = target === 'up' ? supUp.id : null, groupId = toUid ? null : (document.getElementById('md-group').value || null);
-    await db.collection('mediaShares').add({ fromUid: currentUid, fromName: pendingUser.name || '', toUid, groupId, type: chatKindOf(f), fileUrl: url, fileName: f.name, fileSize: f.size, text: document.getElementById('md-note').value.trim(), createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    if(toUid) createNotification(toUid, 'message', (pendingUser.name || 'مستخدم') + ' أرسل لك ملف/وسائط', 'v-sup'); else supNotifyMembers((pendingUser.name || 'المشرف') + ' شارك ملف/وسائط جديدة', groupId);
+    await db.collection('mediaShares').add({ fromUid: currentUid, fromName: pendingUser.name || '', toUid, groupId, type: 'link', fileUrl: url, fileName: linkHost(url), fileSize: 0, text: document.getElementById('md-note').value.trim(), createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    if(toUid) createNotification(toUid, 'message', (pendingUser.name || 'مستخدم') + ' شارك معك رابط', 'v-sup'); else supNotifyMembers((pendingUser.name || 'المشرف') + ' شارك رابط جديد', groupId);
     toast('اتبعت.'); supRenderMedia();
-  }catch(err){ toast('تعذّر الرفع (' + (err.code || err.message) + ')', {type:'err'}); btn.disabled = false; btn.textContent = 'رفع وإرسال'; }
+  }catch(err){ toast('تعذّر الإرسال (' + (err.code || err.message) + ')', {type:'err'}); btn.disabled = false; btn.textContent = 'إرسال الرابط'; }
 }
 async function supDelMedia(id){ if(!confirm('حذف المرفق ده؟')) return; try{ await db.collection('mediaShares').doc(id).delete(); supRenderMedia(); }catch(err){ toast('تعذّر الحذف.', {type:'err'}); } }
 
@@ -6359,7 +6346,7 @@ async function bioVerifyCred(credId){
   }});
 }
 function showBioScreen(user, b){
-  ['screen-role','screen-login','screen-signup','screen-acctype','screen-verify','screen-plans','screen-payment','screen-google-complete'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
+  ['screen-role','screen-login','screen-nid','screen-signup','screen-acctype','screen-verify','screen-plans','screen-payment','screen-google-complete'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
   document.getElementById('bio-name').textContent = b.name || user.email || '';
   document.getElementById('bio-avatar').textContent = ((b.name || user.email || '؟').trim().charAt(0)).toUpperCase();
   document.getElementById('screen-bio').style.display = 'flex';
@@ -6439,6 +6426,8 @@ function renderAccDropdown(){
   const title = document.getElementById('acc-dd-title'); if(title) title.textContent = t ? t.label : accLabelOf();
   let state = '';
   if(!t) state = 'حساب قديم — ' + ((PLANS[userStatus.plan] || {}).name || '');
+  else if(grantExpired()) state = 'المنحة انتهت — تواصل مع الإدارة';
+  else if(userStatus.plan === 'granted') state = 'منحة مجانية من الإدارة' + (userStatus.grantExpiresMs ? ' (لحد ' + new Date(userStatus.grantExpiresMs).toLocaleDateString('ar-EG') + ')' : '');
   else if(t.paid) state = ({ awaiting_fee:'بانتظار دفع الرسوم', pending_payment:'قيد مراجعة الدفع', active:'مفعّل — دفعت مرة واحدة' })[userStatus.status] || userStatus.status;
   else state = userStatus.status === 'pending_approval' ? 'بانتظار الاعتماد' : 'حساب مجاني بدون اشتراك';
   p.innerHTML = `<div class="acc-line"><b>${t ? t.label : accLabelOf()}</b><span>${state}</span></div>
@@ -6446,6 +6435,7 @@ function renderAccDropdown(){
     ${t && t.paid && userStatus.status === 'awaiting_fee' ? '<button class="acc-act primary" onclick="payFeeNow()">إتمام الدفع</button>' : ''}
     ${!(t && !t.paid) ? '<button class="acc-act" onclick="showView(\'v-upgrade\')">تفاصيل الاشتراك</button>' : ''}
     <button class="acc-act" onclick="toggleBio()">${bioOn ? '🔓 إيقاف الدخول بالبصمة' : '☝️ تفعيل الدخول بالبصمة'}</button>
+    ${userStatus.nidHash ? '<button class="acc-act" onclick="nidLinkEmail()">✉️ ربط إيميل لاستعادة كلمة المرور</button>' : ''}
     ${bioOn ? '<button class="acc-act" onclick="location.reload()">🔒 قفل التطبيق الآن</button>' : ''}`;
 }
 /* قوائم الصفحة الرئيسية (المميزات / الاشتراك) */
@@ -6462,6 +6452,423 @@ async function renderLandPricing(){
   const row = key => { const t = ACCOUNT_TYPES[key], c = pr[key] || {}, fee = Number(c.fee) || 0, closed = t.paid && c.enabled === false;
     return `<button class="dd-item" ${closed ? 'disabled' : `onclick="startSignup('${key}')"`}><span class="dd-t">${t.label}</span><span class="dd-p ${(!t.paid || !fee) ? 'free' : ''}">${closed ? 'مغلق مؤقتًا' : (!t.paid ? 'مجاني' : (fee ? fee + ' جنيه · مرة واحدة' : 'مجاني'))}</span></button>`; };
   el.innerHTML = ['student_teacher','university_student','non_edu_teacher'].map(row).join('') + '<div class="dd-sep">مجاني — بدون اشتراك</div>' + ['supervisor','office'].map(row).join('') + '<div class="dd-foot">الدفع مرة واحدة بدون تجديد، وعندك كوبون خصم؟ هتكتبه في شاشة الدفع.</div>';
+}
+
+/* =====================================================================
+   الدخول بالرقم القومي — الأدمن بيسجّل الأرقام + نوع الحساب (idGrants)، والمستخدم بيفعّل حسابه مجانًا ويدخل
+   الرقم القومي ما بيتخزّنش: بنخزّن SHA-256 منه فقط + آخر 4 أرقام، وبيتحوّل لإيميل داخلي لـ Firebase Auth.
+   لو المنحة فيها hasTemp: الأدمن أنشأ الحساب بكلمة مرور مبدئية، والتفعيل بيتطلب الرقم + الكلمة المبدئية.
+   ===================================================================== */
+function normNid(s){
+  return String(s || '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/\D/g, '');
+}
+async function nidHash(nid){
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('nudrus-nid-v1:' + nid));
+  return Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, '0')).join('').slice(0, 40);
+}
+function nidEmail(hash, ver){ return hash + ((ver || 1) > 1 ? '-' + ver : '') + '@nid.nudrus.app'; }
+let nidMode = 'login', nidTempGrant = false;
+/* قفل مؤقت بعد 5 محاولات غلط (على الجهاز) */
+function nidLockLeft(){ try{ const o = JSON.parse(localStorage.getItem('ndm_nidlock') || '{}'); return (o.until && o.until > Date.now()) ? Math.ceil((o.until - Date.now()) / 60000) : 0; }catch(e){ return 0; } }
+function nidFailLocal(){
+  try{
+    const o = JSON.parse(localStorage.getItem('ndm_nidlock') || '{}'), now = Date.now();
+    const n = (o.t && now - o.t < 600000 ? (o.n || 0) : 0) + 1;
+    localStorage.setItem('ndm_nidlock', JSON.stringify(n >= 5 ? { until: now + 300000, n: 0, t: now } : { n, t: now }));
+  }catch(e){}
+}
+function nidFailClear(){ try{ localStorage.removeItem('ndm_nidlock'); }catch(e){} }
+async function nidFailRemote(hash){
+  try{
+    const ref = db.collection('nidFails').doc(hash), d = await ref.get();
+    if(d.exists) await ref.update({ count: (d.data().count || 0) + 1, lastMs: Date.now() });
+    else await ref.set({ count: 1, lastMs: Date.now() });
+  }catch(e){}
+}
+function showNidScreen(){
+  ['screen-role','screen-login'].forEach(id => document.getElementById(id).style.display = 'none');
+  nidMode = 'login'; nidTempGrant = false; nidApplyMode();
+  document.getElementById('screen-nid').style.display = 'flex';
+}
+function nidApplyMode(){
+  const act = nidMode === 'activate';
+  document.getElementById('nid-extra').style.display = act ? 'block' : 'none';
+  document.getElementById('nid-pass2-wrap').style.display = act ? 'block' : 'none';
+  document.getElementById('nid-pass-label').textContent = act && nidTempGrant ? 'كلمة المرور المبدئية (من الإدارة)' : 'كلمة المرور';
+  document.getElementById('nid-pass2-label').textContent = nidTempGrant ? 'كلمة المرور الجديدة (6 أحرف على الأقل)' : 'تأكيد كلمة المرور';
+  document.getElementById('nid-tag').textContent = act ? 'تفعيل حسابك بالرقم القومي (أول مرة)' : 'الدخول بالرقم القومي';
+  document.getElementById('nid-btn').textContent = act ? 'تفعيل الحساب والدخول' : 'دخول';
+  document.getElementById('nid-toggle').textContent = act ? 'عندي حساب مفعّل — دخول' : 'أول مرة؟ فعّل حسابك';
+  document.getElementById('nid-forgot').style.display = act ? 'none' : 'block';
+  document.getElementById('nid-status').textContent = '';
+}
+function nidToggleMode(){ nidMode = nidMode === 'login' ? 'activate' : 'login'; nidApplyMode(); }
+async function nidForgot(){
+  const st = document.getElementById('nid-status'), nid = normNid(document.getElementById('nid-num').value);
+  if(nid.length !== 14){ st.className = 'auth-status err'; st.textContent = 'اكتب الرقم القومي الأول.'; return; }
+  try{
+    const g = await db.collection('idGrants').doc(await nidHash(nid)).get();
+    if(!g.exists || !g.data().altEmail){ st.className = 'auth-status err'; st.textContent = 'الحساب ده مفيهوش إيميل استعادة متربط. اطلب من الإدارة "إعادة فتح" الحساب بكلمة مرور جديدة.'; return; }
+    await auth.sendPasswordResetEmail(g.data().altEmail);
+    st.className = 'auth-status ok'; st.textContent = 'اتبعت رابط تغيير كلمة المرور على الإيميل المتربط بالحساب.';
+  }catch(e){ st.className = 'auth-status err'; st.textContent = friendlyAuthError(e); }
+}
+async function nidFinishLogin(uid, hash){
+  currentUid = uid;
+  const doc = await db.collection('users').doc(uid).get();
+  if(!doc.exists) throw new Error('الحساب ده مش موجود في قاعدة بياناتنا.');
+  const d = doc.data();
+  if(d.status === 'revoked'){ await auth.signOut(); throw new Error('الحساب ده اتوقف — تواصل مع الإدارة.'); }
+  pendingUser = { name: d.name, email: d.email || '', phone: d.phone || '' };
+  pendingRole = d.role; pendingType = d.accountType || null;
+  nidFailClear();
+  document.getElementById('screen-nid').style.display = 'none';
+  enterApp(pendingRole);
+  // تنبيه محاولات الدخول الفاشلة
+  try{
+    if(hash){
+      const f = await db.collection('nidFails').doc(hash).get();
+      if(f.exists && f.data().count > 0){
+        setTimeout(() => toast('⚠️ كان فيه ' + f.data().count + ' محاولة دخول فاشلة على حسابك. لو مش إنت، غيّر كلمة المرور وبلّغ الإدارة.', { duration: 9000 }), 2500);
+        await db.collection('nidFails').doc(hash).delete();
+      }
+    }
+  }catch(e){}
+}
+async function nidSubmit(){
+  const st = document.getElementById('nid-status'), btn = document.getElementById('nid-btn');
+  const err = m => { st.className = 'auth-status err'; st.textContent = m; };
+  const left = nidLockLeft(); if(left){ err('محاولات غلط كتير — جرّب بعد ' + left + ' دقيقة.'); return; }
+  const nid = normNid(document.getElementById('nid-num').value), pass = document.getElementById('nid-pass').value;
+  if(nid.length !== 14){ err('الرقم القومي لازم يكون 14 رقم.'); return; }
+  if(!pass){ err('اكتب كلمة المرور.'); return; }
+  btn.disabled = true; st.className = 'auth-status pending'; st.textContent = 'جاري التحقق...';
+  let hash = '';
+  try{
+    hash = await nidHash(nid);
+    const g = await db.collection('idGrants').doc(hash).get();
+    if(!g.exists){ err('الرقم ده مش مسجّل عندنا — تواصل مع الإدارة.'); return; }
+    const grant = g.data(), synth = nidEmail(hash, grant.ver || 1);
+    nidTempGrant = !!grant.hasTemp;
+    if(nidMode === 'login'){
+      if(!grant.claimed){ nidMode = 'activate'; nidApplyMode(); st.className = 'auth-status ok'; st.textContent = nidTempGrant ? 'الرقم ده لسه ماتفعّلش — اكتب كلمة المرور المبدئية اللي أخدتها من الإدارة + اسمك وموبايلك وكلمة مرور جديدة.' : 'الرقم ده لسه ماتفعّلش — اكتب اسمك وموبايلك وكلمة مرور جديدة وكمّل.'; return; }
+      const cands = [grant.altEmail, synth].filter(Boolean);
+      let cred = null, lastErr = null;
+      for(const em of cands){ try{ cred = await auth.signInWithEmailAndPassword(em, pass); break; }catch(e){ lastErr = e; } }
+      if(!cred) throw lastErr;
+      await nidFinishLogin(cred.user.uid, hash);
+      return;
+    }
+    // ---- تفعيل أول مرة ----
+    if(grant.claimed){ nidMode = 'login'; nidApplyMode(); st.className = 'auth-status ok'; st.textContent = 'الرقم ده مفعّل بالفعل — ادخل بكلمة المرور.'; return; }
+    const name = document.getElementById('nid-name').value.trim(), phone = document.getElementById('nid-phone').value.trim();
+    const p2 = document.getElementById('nid-pass2').value;
+    if(!name || !phone){ err('اكتب الاسم ورقم الموبايل.'); return; }
+    if(nidTempGrant){ if(p2.length < 6){ err('كلمة المرور الجديدة لازم تكون 6 أحرف على الأقل.'); return; } }
+    else{
+      if(pass.length < 6){ err('كلمة المرور لازم تكون 6 أحرف على الأقل.'); return; }
+      if(pass !== p2){ err('كلمتا المرور مش متطابقتين.'); return; }
+    }
+    let cred;
+    if(nidTempGrant){
+      cred = await auth.signInWithEmailAndPassword(synth, pass);   // كلمة الأدمن المبدئية
+      await cred.user.updatePassword(p2);
+    }else{
+      try{ cred = await auth.createUserWithEmailAndPassword(synth, pass); }
+      catch(e){
+        if(e.code === 'auth/email-already-in-use'){
+          try{ cred = await auth.signInWithEmailAndPassword(synth, pass); }
+          catch(e2){ err('الرقم ده اتبدأ تفعيله قبل كده بكلمة مرور مختلفة — تواصل مع الإدارة لإعادة فتحه.'); return; }
+        }else throw e;
+      }
+    }
+    const uid = cred.user.uid, t = ACCOUNT_TYPES[grant.accountType] || ACCOUNT_TYPES.student_teacher;
+    const udoc = { name, email: '', phone, role: t.role, accountType: grant.accountType, plan: 'granted', status: 'active', feeAmount: 0, nidHash: hash, nidLast4: nid.slice(-4), emailVerified: true, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+    if(!t.paid) udoc.approved = true;
+    if(grant.supervisorId) udoc.supervisorId = grant.supervisorId;
+    if(grant.expiresMs) udoc.grantExpiresMs = grant.expiresMs;
+    await db.collection('users').doc(uid).set(udoc);
+    await db.collection('idGrants').doc(hash).update({ claimed: true, claimedUid: uid, claimedName: name, claimedMs: Date.now() });
+    nidFailClear();
+    currentUid = uid; justSignedUp = true;
+    pendingUser = { name, email: '', phone }; pendingRole = t.role; pendingType = grant.accountType;
+    document.getElementById('screen-nid').style.display = 'none';
+    enterApp(pendingRole);
+  }catch(e){
+    const bad = (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found');
+    if(bad){ nidFailLocal(); if(hash) nidFailRemote(hash); }
+    err(bad ? 'الرقم القومي أو كلمة المرور غلط.' : friendlyAuthError(e));
+  }finally{ btn.disabled = false; }
+}
+/* ربط إيميل للاستعادة (اختياري) بعد الدخول بالرقم القومي */
+async function nidLinkEmail(){
+  const u = auth.currentUser; if(!u || !userStatus.nidHash){ return; }
+  const em = (prompt('اكتب إيميلك الحقيقي لاستعادة كلمة المرور (هيوصلك رابط تأكيد):') || '').trim().toLowerCase();
+  if(!em) return;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ toast('الإيميل مش صحيح.'); return; }
+  try{
+    await db.collection('idGrants').doc(userStatus.nidHash).update({ altEmail: em });
+    await u.verifyBeforeUpdateEmail(em);
+    toast('اتبعت رابط تأكيد على ' + em + ' — بعد ما تضغط عليه، هتقدر تستعيد كلمة المرور بنفسك.', { duration: 9000 });
+  }catch(e){
+    try{ await db.collection('idGrants').doc(userStatus.nidHash).update({ altEmail: firebase.firestore.FieldValue.delete() }); }catch(_){}
+    toast(e.code === 'auth/requires-recent-login' ? 'سجّل خروج وادخل تاني وبعدين جرّب.' : 'تعذّر الربط: ' + friendlyAuthError(e));
+  }
+}
+function grantExpired(){ return userStatus.plan === 'granted' && userStatus.grantExpiresMs && userStatus.grantExpiresMs < Date.now(); }
+
+/* =====================================================================
+   أدوات مساعدة للمعلم والطالب (مؤقت، اختيار عشوائي ومجموعات، درجات، حضور، جدول، بطاقات مراجعة، مهام وامتحان، رسائل جاهزة)
+   كل البيانات بتتحفظ في userTools/{uid} (خاصة بصاحبها) — من غير رفع ملفات.
+   ===================================================================== */
+let HP = { roster: [], attendance: {}, schedule: [], cards: [], todos: [], exam: { name: '', date: '' } };
+let hpLoaded = false, hpTab = 'timer', hpSaveT = null, hpStudy = null;
+const HP_TABS = [
+  ['timer', '⏱️ المؤقت'], ['random', '🎲 اختيار ومجموعات', 't'], ['grades', '🧮 الدرجات'], ['attend', '📋 الحضور', 't'],
+  ['schedule', '🗓️ الجدول'], ['cards', '🃏 بطاقات المراجعة'], ['todo', '✅ المهام والامتحان'], ['msgs', '💬 رسائل جاهزة', 't']
+];
+function hpIsTeacher(){ return pendingRole !== 'student'; }
+function hpUid(){ return 'x' + Math.random().toString(36).slice(2, 9); }
+function hpSave(){
+  clearTimeout(hpSaveT);
+  hpSaveT = setTimeout(async () => {
+    try{ await db.collection('userTools').doc(currentUid).set({ data: JSON.parse(JSON.stringify(HP)), updatedMs: Date.now() }); }
+    catch(e){ toast('تعذّر حفظ البيانات (' + (e.code || e.message) + ')', { type: 'err' }); }
+  }, 700);
+}
+async function helpersOpen(){
+  if(!hpLoaded && currentUid){
+    try{ const d = await db.collection('userTools').doc(currentUid).get(); if(d.exists && d.data().data) HP = Object.assign(HP, d.data().data); }catch(e){}
+    hpLoaded = true;
+  }
+  if(!HP_TABS.some(t => t[0] === hpTab && (!t[2] || hpIsTeacher()))) hpTab = 'timer';
+  hpShow(hpTab);
+}
+function hpShow(tab){
+  hpTab = tab;
+  const tabs = document.getElementById('hp-tabs'), body = document.getElementById('hp-body'); if(!tabs || !body) return;
+  tabs.innerHTML = HP_TABS.filter(t => !t[2] || hpIsTeacher()).map(t => `<button class="hp-chip ${t[0] === tab ? 'on' : ''}" onclick="hpShow('${t[0]}')">${t[1]}</button>`).join('');
+  body.innerHTML = ({ timer: hpTimerHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml })[tab]();
+  if(tab === 'timer') hpTick(true);
+  if(tab === 'msgs') hpMsgRender();
+}
+const hpE = escapeHtml;
+const hpV = id => (document.getElementById(id) || {}).value || '';
+function hpCopy(text){ (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(() => toast('اتنسخ.')).catch(() => toast('انسخ النص يدويًا.', { type: 'err' })); }
+
+/* ---------- المؤقت ---------- */
+let hpT = { total: 25 * 60, left: 25 * 60, run: false, endAt: 0, iv: null, pomo: false, phase: 'work' };
+const hpFmt = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+function hpTimerHtml(){
+  return `<div class="hp-card hp-center"><div class="hp-big" id="hp-clock">${hpFmt(hpT.left)}</div><div class="hp-note" id="hp-phase"></div>
+    <div class="hp-chips">${[5, 10, 15, 25, 45, 60].map(m => `<button class="hp-chip" onclick="hpSetTimer(${m})">${m} د</button>`).join('')}
+      <input type="number" id="hp-custom" min="1" max="300" placeholder="دقائق" style="width:90px;"><button class="hp-chip" onclick="hpSetTimer(+hpV('hp-custom'))">ضبط</button></div>
+    <div class="hp-actions"><button class="btn-primary" id="hp-startbtn" onclick="hpToggleTimer()">${hpT.run ? 'إيقاف مؤقت' : 'ابدأ'}</button><button class="btn-secondary" onclick="hpResetTimer()">إعادة</button></div>
+    <label class="hp-check"><input type="checkbox" ${hpT.pomo ? 'checked' : ''} onchange="hpT.pomo = this.checked; hpTick(true);"> وضع بومودورو: 25 دقيقة مذاكرة ثم 5 راحة تلقائيًا</label></div>`;
+}
+function hpSetTimer(m){ m = Math.round(m); if(!(m >= 1 && m <= 300)){ toast('اكتب عدد دقائق من 1 لـ 300.', { type: 'err' }); return; } hpStopTimer(); hpT.total = hpT.left = m * 60; hpT.phase = 'work'; hpTick(true); }
+function hpStopTimer(){ clearInterval(hpT.iv); hpT.iv = null; hpT.run = false; }
+function hpToggleTimer(){
+  if(hpT.run){ hpT.left = Math.max(0, Math.ceil((hpT.endAt - Date.now()) / 1000)); hpStopTimer(); }
+  else{ if(hpT.left <= 0) hpT.left = hpT.total; hpT.run = true; hpT.endAt = Date.now() + hpT.left * 1000; hpT.iv = setInterval(hpTick, 500); }
+  hpTick(true);
+}
+function hpResetTimer(){ hpStopTimer(); hpT.left = hpT.total; hpTick(true); }
+function hpBeep(){
+  try{ const a = new (window.AudioContext || window.webkitAudioContext)(); [0, .35, .7].forEach(t => { const o = a.createOscillator(), g = a.createGain(); o.connect(g); g.connect(a.destination); o.frequency.value = 880; g.gain.value = .15; o.start(a.currentTime + t); o.stop(a.currentTime + t + .2); }); }catch(e){}
+}
+function hpTick(force){
+  if(hpT.run){
+    hpT.left = Math.max(0, Math.ceil((hpT.endAt - Date.now()) / 1000));
+    if(hpT.left <= 0){
+      hpStopTimer(); hpBeep();
+      if(hpT.pomo){
+        const toBreak = hpT.phase === 'work';
+        toast(toBreak ? '☕ خلصت فترة المذاكرة — خد راحة 5 دقايق.' : '📚 خلصت الراحة — يلا نكمل.', { duration: 6000 });
+        hpT.phase = toBreak ? 'break' : 'work'; hpT.total = hpT.left = (toBreak ? 5 : 25) * 60; hpToggleTimer(); return;
+      }
+      toast('⏰ الوقت خلص!', { duration: 6000 });
+    }
+  }
+  const c = document.getElementById('hp-clock'); if(!c){ return; }
+  c.textContent = hpFmt(hpT.left);
+  const p = document.getElementById('hp-phase'); if(p) p.textContent = hpT.pomo ? (hpT.phase === 'work' ? '📚 فترة مذاكرة' : '☕ فترة راحة') : '';
+  const b = document.getElementById('hp-startbtn'); if(b) b.textContent = hpT.run ? 'إيقاف مؤقت' : 'ابدأ';
+  if(force) document.title = document.title.replace(/^⏱ \d\d:\d\d · /, '');
+}
+
+/* ---------- اختيار عشوائي وتقسيم مجموعات ---------- */
+function hpRandomHtml(){
+  return `<div class="hp-card"><h3>قائمة الطلاب</h3><div class="hp-note">اكتب كل اسم في سطر (بتتحفظ تلقائيًا وبتتستخدم في الحضور كمان).</div>
+    <textarea id="hp-roster" rows="6" placeholder="أحمد محمد&#10;سارة علي&#10;...">${hpE(HP.roster.map(r => r.name).join('\n'))}</textarea>
+    <div class="hp-actions"><button class="btn-primary" onclick="hpSaveRoster()">حفظ القائمة</button><span class="hp-note">${HP.roster.length} طالب</span></div></div>
+  <div class="hp-card"><h3>اختيار طالب عشوائي</h3><div class="hp-big hp-pick" id="hp-pick">؟</div>
+    <div class="hp-actions"><button class="btn-primary" onclick="hpPickRandom()">اختار طالب</button></div></div>
+  <div class="hp-card"><h3>تقسيم لمجموعات</h3>
+    <div class="hp-actions"><label>عدد المجموعات <input type="number" id="hp-gcount" value="4" min="2" max="30" style="width:80px;"></label><button class="btn-primary" onclick="hpMakeGroups()">قسّم</button></div>
+    <div id="hp-groups"></div></div>`;
+}
+function hpSaveRoster(){
+  const names = hpV('hp-roster').split('\n').map(x => x.trim()).filter(Boolean);
+  const old = new Map(HP.roster.map(r => [r.name, r.id]));
+  HP.roster = [...new Set(names)].map(n => ({ id: old.get(n) || hpUid(), name: n }));
+  hpSave(); toast('اتحفظت القائمة (' + HP.roster.length + ').'); hpShow('random');
+}
+function hpPickRandom(){
+  if(!HP.roster.length){ toast('احفظ قائمة الطلاب الأول.', { type: 'err' }); return; }
+  const el = document.getElementById('hp-pick'); let n = 0;
+  const iv = setInterval(() => { el.textContent = HP.roster[Math.floor(Math.random() * HP.roster.length)].name; if(++n >= 14){ clearInterval(iv); el.classList.add('done'); setTimeout(() => el.classList.remove('done'), 600); } }, 90);
+}
+function hpShuffle(a){ a = a.slice(); for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function hpMakeGroups(){
+  const n = Math.max(2, Math.min(30, +hpV('hp-gcount') || 2));
+  if(HP.roster.length < n){ toast('عدد الطلاب أقل من عدد المجموعات.', { type: 'err' }); return; }
+  const gs = Array.from({ length: n }, () => []); hpShuffle(HP.roster.map(r => r.name)).forEach((nm, i) => gs[i % n].push(nm));
+  window.__hpGroupsText = gs.map((g, i) => 'المجموعة ' + (i + 1) + ': ' + g.join('، ')).join('\n');
+  document.getElementById('hp-groups').innerHTML = `<div class="hp-grid">${gs.map((g, i) => `<div class="hp-mini"><b>المجموعة ${i + 1}</b>${g.map(x => `<div>${hpE(x)}</div>`).join('')}</div>`).join('')}</div><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__hpGroupsText)">نسخ</button></div>`;
+}
+
+/* ---------- الدرجات ---------- */
+let hpGMode = 'calc';
+function hpGradesHtml(){
+  const modes = [['calc', 'حاسبة النسبة'], ['gpa', 'المعدل التراكمي'], ['class', 'تحليل نتيجة فصل', 't']].filter(m => !m[2] || hpIsTeacher());
+  return `<div class="hp-chips">${modes.map(m => `<button class="hp-chip ${m[0] === hpGMode ? 'on' : ''}" onclick="hpGMode='${m[0]}'; hpShow('grades')">${m[1]}</button>`).join('')}</div>` + ({ calc: hpCalcHtml, gpa: hpGpaHtml, class: hpClassHtml })[hpGMode]();
+}
+function hpRows(prefix, n, cols){ return Array.from({ length: n }, (_, i) => `<div class="hp-row">${cols.map(c => `<input type="${c[1]}" id="${prefix}${i}-${c[0]}" placeholder="${c[2]}" ${c[1] === 'number' ? 'step="any"' : ''}>`).join('')}</div>`).join(''); }
+function hpCalcHtml(){
+  return `<div class="hp-card"><h3>حاسبة النسبة المئوية</h3><div class="hp-note">اكتب درجتك والدرجة النهائية. لو في أوزان (%) اكتبها، ولو سبتها فاضية الحساب بيبقى مجموع الدرجات على مجموع النهايات.</div>
+    ${hpRows('gc', 8, [['n', 'text', 'الاختبار / المادة'], ['s', 'number', 'درجتك'], ['m', 'number', 'من'], ['w', 'number', 'الوزن %']])}
+    <div class="hp-actions"><button class="btn-primary" onclick="hpCalc()">احسب</button></div><div id="hp-calc-out"></div></div>`;
+}
+function hpGradeLabel(p){ return p >= 85 ? 'ممتاز' : p >= 75 ? 'جيد جدًا' : p >= 65 ? 'جيد' : p >= 50 ? 'مقبول' : 'راسب'; }
+function hpCalc(){
+  let ss = 0, mm = 0, wsum = 0, wacc = 0, used = 0;
+  for(let i = 0; i < 8; i++){
+    const s = parseFloat(hpV(`gc${i}-s`)), m = parseFloat(hpV(`gc${i}-m`)), w = parseFloat(hpV(`gc${i}-w`));
+    if(isNaN(s) || isNaN(m) || m <= 0) continue; used++; ss += s; mm += m;
+    if(!isNaN(w) && w > 0){ wsum += w; wacc += (s / m) * w; }
+  }
+  const out = document.getElementById('hp-calc-out'); if(!used){ out.innerHTML = '<div class="hp-note">اكتب صف واحد على الأقل.</div>'; return; }
+  const p = wsum > 0 ? (wacc / wsum) * 100 : (ss / mm) * 100;
+  out.innerHTML = `<div class="hp-result"><b>${p.toFixed(1)}%</b> — ${hpGradeLabel(p)}${wsum > 0 ? `<div class="hp-note">محسوبة بالأوزان (مجموع الأوزان ${wsum}%).</div>` : `<div class="hp-note">المجموع ${ss} من ${mm}.</div>`}</div>`;
+}
+function hpGpaHtml(){
+  return `<div class="hp-card"><h3>المعدل التراكمي (GPA)</h3><div class="hp-note">اكتب لكل مادة عدد الساعات والنقاط (مثلًا من 4).</div>
+    ${hpRows('gp', 8, [['n', 'text', 'المادة'], ['h', 'number', 'الساعات'], ['p', 'number', 'النقاط']])}
+    <div class="hp-actions"><button class="btn-primary" onclick="hpGpa()">احسب</button></div><div id="hp-gpa-out"></div></div>`;
+}
+function hpGpa(){
+  let h = 0, q = 0;
+  for(let i = 0; i < 8; i++){ const hh = parseFloat(hpV(`gp${i}-h`)), pp = parseFloat(hpV(`gp${i}-p`)); if(isNaN(hh) || isNaN(pp) || hh <= 0) continue; h += hh; q += hh * pp; }
+  document.getElementById('hp-gpa-out').innerHTML = h ? `<div class="hp-result"><b>${(q / h).toFixed(2)}</b> <span class="hp-note">من ${h} ساعة</span></div>` : '<div class="hp-note">اكتب مادة واحدة على الأقل.</div>';
+}
+function hpClassHtml(){
+  return `<div class="hp-card"><h3>تحليل نتيجة فصل</h3><div class="hp-note">اكتب في كل سطر: الاسم، الدرجة (بفاصلة). أو الصق من Excel.</div>
+    <textarea id="hp-cls" rows="7" placeholder="أحمد محمد, 18&#10;سارة علي, 14"></textarea>
+    <div class="hp-actions"><label>الدرجة النهائية <input type="number" id="hp-cmax" value="20" style="width:80px;"></label><label>النجاح من (%) <input type="number" id="hp-cpass" value="50" style="width:80px;"></label><button class="btn-primary" onclick="hpClassRun()">حلّل</button></div><div id="hp-cls-out"></div></div>`;
+}
+function hpClassRun(){
+  const max = parseFloat(hpV('hp-cmax')) || 0, pass = parseFloat(hpV('hp-cpass')) || 50;
+  const rows = hpV('hp-cls').split('\n').map(l => l.split(/[,،;\t]/)).map(a => ({ name: (a[0] || '').trim(), s: parseFloat(String(a[1] || '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)))})).filter(r => r.name && !isNaN(r.s));
+  const out = document.getElementById('hp-cls-out');
+  if(!rows.length || max <= 0){ out.innerHTML = '<div class="hp-note">اكتب الأسماء والدرجات والدرجة النهائية.</div>'; return; }
+  const scores = rows.map(r => r.s), avg = scores.reduce((a, b) => a + b, 0) / rows.length, passed = rows.filter(r => r.s / max * 100 >= pass).length;
+  const sorted = rows.slice().sort((a, b) => b.s - a.s);
+  const bands = [['ممتاز', 85], ['جيد جدًا', 75], ['جيد', 65], ['مقبول', 50], ['راسب', 0]].map((b, i, arr) => [b[0], rows.filter(r => { const p = r.s / max * 100; return p >= b[1] && (i === 0 || p < arr[i - 1][1]); }).length]);
+  window.__hpCls = [['الترتيب', 'الاسم', 'الدرجة', 'النسبة', 'التقدير']].concat(sorted.map((r, i) => [i + 1, r.name, r.s, (r.s / max * 100).toFixed(1) + '%', hpGradeLabel(r.s / max * 100)]));
+  out.innerHTML = `<div class="hp-grid hp-stats"><div class="hp-mini"><b>المتوسط</b>${avg.toFixed(2)} (${(avg / max * 100).toFixed(1)}%)</div><div class="hp-mini"><b>الأعلى</b>${Math.max(...scores)}</div><div class="hp-mini"><b>الأقل</b>${Math.min(...scores)}</div><div class="hp-mini"><b>نسبة النجاح</b>${(passed / rows.length * 100).toFixed(0)}% (${passed}/${rows.length})</div></div>
+    <div class="hp-bands">${bands.map(b => `<span class="hp-chip">${b[0]}: ${b[1]}</span>`).join('')}</div>
+    <div class="hp-table">${sorted.map((r, i) => `<div class="hp-trow"><span>${i + 1}. ${hpE(r.name)}</span><b>${r.s}</b></div>`).join('')}</div>
+    <div class="hp-actions"><button class="btn-secondary" onclick="supDownloadCsv('تحليل-النتيجة.csv', window.__hpCls)">⬇️ تصدير CSV</button></div>`;
+}
+
+/* ---------- الحضور ---------- */
+let hpDate = new Date().toISOString().slice(0, 10);
+function hpAttendHtml(){
+  if(!HP.roster.length) return `<div class="hp-card"><div class="hp-note">مفيش طلاب لسه — أضف القائمة من تبويب "اختيار ومجموعات" الأول.</div><button class="btn-primary" onclick="hpShow('random')">فتح</button></div>`;
+  const day = HP.attendance[hpDate] || {}, pres = HP.roster.filter(r => day[r.id] === 1).length, abs = HP.roster.filter(r => day[r.id] === 0).length;
+  return `<div class="hp-card"><div class="hp-actions"><label>التاريخ <input type="date" id="hp-adate" value="${hpDate}" onchange="hpDate = this.value; hpShow('attend')"></label>
+    <button class="btn-secondary" onclick="hpAttendAll(1)">الكل حاضر</button><button class="btn-secondary" onclick="hpAttendAll(null)">مسح</button></div>
+    <div class="hp-note">حاضر ${pres} — غائب ${abs} — لم يُسجّل ${HP.roster.length - pres - abs}</div>
+    <div class="hp-table">${HP.roster.map(r => `<div class="hp-trow"><span>${hpE(r.name)}</span><span><button class="hp-chip ${day[r.id] === 1 ? 'on' : ''}" onclick="hpMark('${r.id}', 1)">حاضر</button><button class="hp-chip ${day[r.id] === 0 ? 'bad' : ''}" onclick="hpMark('${r.id}', 0)">غائب</button></span></div>`).join('')}</div>
+    <div class="hp-actions"><button class="btn-secondary" onclick="hpAttendCsv()">⬇️ تصدير كل الأيام CSV</button></div></div>`;
+}
+function hpMark(id, v){ const d = HP.attendance[hpDate] = HP.attendance[hpDate] || {}; if(d[id] === v) delete d[id]; else d[id] = v; hpSave(); hpShow('attend'); }
+function hpAttendAll(v){ if(v === null) delete HP.attendance[hpDate]; else { const d = HP.attendance[hpDate] = {}; HP.roster.forEach(r => d[r.id] = v); } hpSave(); hpShow('attend'); }
+function hpAttendCsv(){
+  const dates = Object.keys(HP.attendance).sort();
+  const rows = [['الاسم'].concat(dates, ['أيام الحضور', 'أيام الغياب'])];
+  HP.roster.forEach(r => { const v = dates.map(d => (HP.attendance[d] || {})[r.id]); rows.push([r.name].concat(v.map(x => x === 1 ? 'ح' : x === 0 ? 'غ' : ''), [v.filter(x => x === 1).length, v.filter(x => x === 0).length])); });
+  supDownloadCsv('الحضور.csv', rows);
+}
+
+/* ---------- الجدول الأسبوعي ---------- */
+const HP_DAYS = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+function hpTodayName(){ return ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'][new Date().getDay()]; }
+function hpScheduleHtml(){
+  const today = hpTodayName();
+  return `<div class="hp-card"><h3>إضافة موعد</h3><div class="hp-row hp-row-wrap"><select id="hp-sd">${HP_DAYS.map(d => `<option ${d === today ? 'selected' : ''}>${d}</option>`).join('')}</select><input type="time" id="hp-st"><input type="text" id="hp-sn" placeholder="${hpIsTeacher() ? 'حصة / مجموعة / مادة' : 'محاضرة / مادة / مذاكرة'}"><input type="text" id="hp-sx" placeholder="ملاحظة (اختياري)"><button class="btn-primary" onclick="hpAddSched()">إضافة</button></div></div>
+    ${HP_DAYS.map(d => { const items = HP.schedule.filter(x => x.day === d).sort((a, b) => (a.time || '').localeCompare(b.time || '')); return items.length || d === today ? `<div class="hp-card ${d === today ? 'hp-today' : ''}"><h3>${d}${d === today ? ' — النهارده' : ''}</h3>${items.length ? items.map(x => `<div class="hp-trow"><span><b>${hpE(x.time || '—')}</b> ${hpE(x.title)}${x.note ? ` <small>${hpE(x.note)}</small>` : ''}</span><button class="hp-chip bad" onclick="hpDelSched('${x.id}')">حذف</button></div>`).join('') : '<div class="hp-note">مفيش مواعيد.</div>'}</div>` : ''; }).join('')}`;
+}
+function hpAddSched(){ const t = hpV('hp-sn').trim(); if(!t){ toast('اكتب اسم الموعد.', { type: 'err' }); return; } HP.schedule.push({ id: hpUid(), day: hpV('hp-sd'), time: hpV('hp-st'), title: t, note: hpV('hp-sx').trim() }); hpSave(); hpShow('schedule'); }
+function hpDelSched(id){ HP.schedule = HP.schedule.filter(x => x.id !== id); hpSave(); hpShow('schedule'); }
+
+/* ---------- بطاقات المراجعة ---------- */
+function hpDecks(){ const m = {}; HP.cards.forEach(c => m[c.deck] = (m[c.deck] || 0) + 1); return m; }
+function hpCardsHtml(){
+  if(hpStudy) return hpStudyHtml();
+  const decks = hpDecks();
+  return `<div class="hp-card"><h3>إضافة بطاقة</h3><div class="hp-row hp-row-wrap"><input type="text" id="hp-cd" list="hp-decklist" placeholder="اسم المجموعة (مثال: قواعد)"><datalist id="hp-decklist">${Object.keys(decks).map(d => `<option value="${hpE(d)}">`).join('')}</datalist></div>
+    <div class="field"><label>الوجه الأمامي (سؤال / كلمة)</label><textarea id="hp-cf" rows="2"></textarea></div><div class="field"><label>الوجه الخلفي (الإجابة)</label><textarea id="hp-cb" rows="2"></textarea></div>
+    <button class="btn-primary" onclick="hpAddCard()">إضافة</button></div>
+    <div class="hp-card"><h3>مجموعاتي</h3>${Object.keys(decks).length ? Object.keys(decks).map(d => `<div class="hp-trow"><span><b>${hpE(d)}</b> — ${decks[d]} بطاقة</span><span><button class="hp-chip on" onclick="hpStartStudy(decodeURIComponent('${encodeURIComponent(d)}'))">راجع</button><button class="hp-chip bad" onclick="hpDelDeck(decodeURIComponent('${encodeURIComponent(d)}'))">حذف</button></span></div>`).join('') : '<div class="hp-note">لسه مفيش بطاقات.</div>'}</div>`;
+}
+function hpAddCard(){ const f = hpV('hp-cf').trim(), b = hpV('hp-cb').trim(), d = hpV('hp-cd').trim() || 'عام'; if(!f || !b){ toast('اكتب وجهي البطاقة.', { type: 'err' }); return; } HP.cards.push({ id: hpUid(), deck: d, front: f, back: b }); hpSave(); toast('اتضافت.'); hpShow('cards'); }
+function hpDelDeck(d){ if(!confirm('حذف مجموعة "' + d + '" بكل بطاقاتها؟')) return; HP.cards = HP.cards.filter(c => c.deck !== d); hpSave(); hpShow('cards'); }
+function hpStartStudy(d, subset){ const q = hpShuffle(subset || HP.cards.filter(c => c.deck === d)); hpStudy = { deck: d, q, i: 0, flip: false, known: 0, again: [] }; hpShow('cards'); }
+function hpStudyHtml(){
+  const s = hpStudy;
+  if(s.i >= s.q.length) return `<div class="hp-card hp-center"><h3>خلصت المراجعة 🎉</h3><div class="hp-result"><b>${s.known}</b> من ${s.q.length} عرفتهم</div><div class="hp-actions">${s.again.length ? `<button class="btn-primary" onclick="hpStartStudy(hpStudy.deck, hpStudy.again)">راجع اللي لسه (${s.again.length})</button>` : ''}<button class="btn-secondary" onclick="hpStudy = null; hpShow('cards')">رجوع</button></div></div>`;
+  const c = s.q[s.i];
+  return `<div class="hp-card hp-center"><div class="hp-note">${hpE(s.deck)} — ${s.i + 1} / ${s.q.length}</div><div class="hp-flash" onclick="hpStudy.flip = !hpStudy.flip; hpShow('cards')">${hpE(s.flip ? c.back : c.front)}<small>${s.flip ? 'الإجابة' : 'اضغط لقلب البطاقة'}</small></div>
+    <div class="hp-actions">${s.flip ? `<button class="btn-primary" onclick="hpAnswer(true)">عرفتها ✓</button><button class="btn-secondary" onclick="hpAnswer(false)">لسه ✗</button>` : `<button class="btn-primary" onclick="hpStudy.flip = true; hpShow('cards')">اعرض الإجابة</button>`}<button class="btn-secondary" onclick="hpStudy = null; hpShow('cards')">إنهاء</button></div></div>`;
+}
+function hpAnswer(ok){ const s = hpStudy; if(ok) s.known++; else s.again.push(s.q[s.i]); s.i++; s.flip = false; hpShow('cards'); }
+
+/* ---------- المهام والامتحان ---------- */
+function hpTodoHtml(){
+  const ex = HP.exam || {}, left = ex.date ? Math.ceil((new Date(ex.date + 'T00:00:00') - new Date(new Date().toDateString())) / 864e5) : null;
+  const done = HP.todos.filter(t => t.done).length;
+  return `<div class="hp-card"><h3>عدّاد تنازلي للامتحان</h3><div class="hp-row hp-row-wrap"><input type="text" id="hp-en" placeholder="اسم الامتحان" value="${hpE(ex.name || '')}"><input type="date" id="hp-ed" value="${hpE(ex.date || '')}"><button class="btn-primary" onclick="hpSaveExam()">حفظ</button></div>
+    ${left !== null ? `<div class="hp-result"><b>${left > 0 ? left : left === 0 ? 'النهارده!' : 'عدّى'}</b> ${left > 0 ? 'يوم على ' : ''}${hpE(ex.name || 'الامتحان')}</div>` : ''}</div>
+    <div class="hp-card"><h3>قائمة المهام ${HP.todos.length ? `<small>(${done}/${HP.todos.length})</small>` : ''}</h3><div class="hp-row"><input type="text" id="hp-tn" placeholder="مهمة جديدة" onkeydown="if(event.key==='Enter') hpAddTodo()"><button class="btn-primary" onclick="hpAddTodo()">إضافة</button></div>
+    ${HP.todos.length ? `<div class="hp-bar"><i style="width:${Math.round(done / HP.todos.length * 100)}%"></i></div>` : ''}
+    ${HP.todos.map(t => `<div class="hp-trow"><label class="hp-check ${t.done ? 'hp-done' : ''}"><input type="checkbox" ${t.done ? 'checked' : ''} onchange="hpToggleTodo('${t.id}')"> ${hpE(t.text)}</label><button class="hp-chip bad" onclick="hpDelTodo('${t.id}')">حذف</button></div>`).join('')}
+    ${done ? `<div class="hp-actions"><button class="btn-secondary" onclick="HP.todos = HP.todos.filter(t => !t.done); hpSave(); hpShow('todo')">مسح المنجز</button></div>` : ''}</div>`;
+}
+function hpSaveExam(){ HP.exam = { name: hpV('hp-en').trim(), date: hpV('hp-ed') }; hpSave(); hpShow('todo'); }
+function hpAddTodo(){ const t = hpV('hp-tn').trim(); if(!t) return; HP.todos.push({ id: hpUid(), text: t, done: false }); hpSave(); hpShow('todo'); }
+function hpToggleTodo(id){ const t = HP.todos.find(x => x.id === id); if(t){ t.done = !t.done; hpSave(); hpShow('todo'); } }
+function hpDelTodo(id){ HP.todos = HP.todos.filter(x => x.id !== id); hpSave(); hpShow('todo'); }
+
+/* ---------- رسائل جاهزة لأولياء الأمور ---------- */
+const HP_MSGS = [
+  ['تهنئة بتفوق', 'السلام عليكم ورحمة الله، أ/ {ولي}، يسعدني أبلّغ حضرتك إن {الاسم} أظهر تفوقًا وتحسنًا ملحوظًا الفترة الأخيرة، ونتمنى له دوام التقدم. شكرًا لتعاون حضرتك. — {المعلم}'],
+  ['تنبيه غياب', 'السلام عليكم، أ/ {ولي}، لاحظنا غياب {الاسم} عن الحصص الفترة الأخيرة. نرجو الاطمئنان عليه وإفادتنا بالسبب حتى نساعده في تعويض ما فاته. — {المعلم}'],
+  ['تأخر في الواجبات', 'السلام عليكم، أ/ {ولي}، نحب نبلّغ حضرتك إن {الاسم} متأخر في تسليم الواجبات. محتاجين متابعة حضرتك معنا عشان يلحق المستوى. — {المعلم}'],
+  ['ملاحظة سلوكية', 'السلام عليكم، أ/ {ولي}، لدينا ملاحظة بخصوص سلوك {الاسم} داخل الفصل ونود التحدث مع حضرتك بشأنها بشكل ودي. برجاء تحديد وقت مناسب. — {المعلم}'],
+  ['تنبيه امتحان', 'السلام عليكم، أ/ {ولي}، نذكّر حضرتك بموعد الامتحان القادم لـ {الاسم}. يُرجى متابعة المذاكرة والتأكد من حضوره في الموعد. — {المعلم}'],
+  ['دعوة اجتماع أولياء أمور', 'السلام عليكم، أ/ {ولي}، يسعدنا دعوة حضرتك لاجتماع أولياء الأمور لمناقشة مستوى {الاسم}. برجاء تأكيد الحضور. — {المعلم}'],
+  ['طلب ملف / مستند', 'السلام عليكم، أ/ {ولي}، برجاء إرسال المستند المطلوب الخاص بـ {الاسم} في أقرب وقت. شكرًا لتعاونكم. — {المعلم}']
+];
+function hpMsgsHtml(){
+  return `<div class="hp-card"><div class="hp-row hp-row-wrap"><input type="text" id="hp-mn" placeholder="اسم الطالب" oninput="hpMsgRender()"><input type="text" id="hp-mp" placeholder="اسم ولي الأمر" oninput="hpMsgRender()"><input type="text" id="hp-mt" placeholder="اسمك" value="${hpE((pendingUser && pendingUser.name) || '')}" oninput="hpMsgRender()"></div></div><div id="hp-msglist"></div>`;
+}
+function hpMsgRender(){
+  const el = document.getElementById('hp-msglist'); if(!el) return;
+  const fill = t => t.replace(/\{الاسم\}/g, hpV('hp-mn') || 'الطالب').replace(/\{ولي\}/g, hpV('hp-mp') || 'ولي الأمر').replace(/\{المعلم\}/g, hpV('hp-mt') || 'المعلم');
+  window.__hpM = HP_MSGS.map(m => fill(m[1]));
+  el.innerHTML = HP_MSGS.map((m, i) => `<div class="hp-card"><h3>${m[0]}</h3><p class="hp-msg">${hpE(window.__hpM[i])}</p><div class="hp-actions"><button class="btn-secondary" onclick="hpCopy(window.__hpM[${i}])">نسخ</button><a class="btn-secondary" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(window.__hpM[i])}" style="text-decoration:none;">واتساب</a></div></div>`).join('');
 }
 </script>
 </body>
