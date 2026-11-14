@@ -257,6 +257,7 @@
     <button class="tab" onclick="switchTab('challenges', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
     <button class="tab" onclick="switchTab('accounts', this)"><svg class="icon"><use href="#i-card"></use></svg> الحسابات والأسعار</button>
     <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
+    <button class="tab" onclick="switchTab('nid', this)"><svg class="icon"><use href="#i-user"></use></svg> الأرقام القومية</button>
     <button class="tab" onclick="switchTab('audit', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> سجل التدقيق</button>
     <button class="tab" onclick="switchTab('users', this)"><svg class="icon"><use href="#i-user"></use></svg> المستخدمين</button>
     <button class="tab" onclick="switchTab('reports', this)"><svg class="icon"><use href="#i-flag"></use></svg> البلاغات</button>
@@ -401,6 +402,32 @@
     </div>
   </div>
 
+  <div class="panel" id="panel-nid">
+    <div class="card">
+      <h3 style="margin-bottom:6px;">🪪 إضافة حسابات بالرقم القومي (مجانية)</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">اكتب رقم قومي واحد أو أكتر وافصل بينهم بفاصلة (,) أو سطر جديد. كل رقم بيتحوّل لحساب مجاني بنوع الحساب اللي تختاره، والمستخدم يفعّل حسابه ويدخل تلقائي. الأرقام بتتخزّن مشفّرة (Hash) مع آخر 4 أرقام بس.</p>
+      <div class="field"><label>الأرقام القومية (14 رقم لكل واحد)</label><textarea id="nid-ids" rows="4" placeholder="29801011234567, 29905051234568"></textarea></div>
+      <div class="field"><label>نوع الحساب</label><select id="nid-type" onchange="nidTypeChanged()"></select></div>
+      <div class="field" id="nid-sup-wrap"><label>الدكتور المشرف التابع له (اختياري)</label><select id="nid-sup"></select></div>
+      <div class="field"><label>اسم الدفعة / ملاحظة (اختياري)</label><input type="text" id="nid-batch" placeholder="مثال: دفعة 2026 — كلية التربية"></div>
+      <div class="field"><label>طريقة التفعيل</label><select id="nid-method"><option value="temp">كلمة مرور مبدئية لكل رقم (الأكثر أمانًا — موصى بها)</option><option value="open">تفعيل مفتوح: أي حد يعرف الرقم يفعّله</option></select>
+        <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">مع الكلمة المبدئية: بيتولّد كود عشوائي لكل رقم، وبينزل لك ملف CSV مرة واحدة بالرقم والكود تسلّمه لصاحبه. الرقم القومي لوحده مايكفيش للتفعيل.</div></div>
+      <div class="field"><label>تاريخ انتهاء المنحة (اختياري)</label><input type="date" id="nid-expiry"></div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <button class="btn" onclick="addNidGrants()"><svg class="icon"><use href="#i-check"></use></svg> إضافة الأرقام</button>
+        <label class="btn" style="background:var(--ink); cursor:pointer;">📥 استيراد من ملف CSV<input type="file" id="nid-file" accept=".csv,.txt" style="display:none" onchange="importNidCsv(this)"></label>
+      </div>
+      <div style="font-size:12px; color:var(--ink-soft); margin-top:6px;">ملف CSV: الأعمدة بالترتيب <b>الرقم القومي، نوع الحساب، إيميل الدكتور، الدفعة، تاريخ الانتهاء (YYYY-MM-DD)</b> — كل ما عدا الرقم اختياري، ولو الخانة فاضية بياخد اللي فوق. (من Excel: Save As → CSV UTF-8)</div>
+      <div class="status" id="nid-add-status"></div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">📋 الأرقام المسجّلة</h3>
+      <div id="nid-counts" style="font-size:12.5px; font-weight:700; margin-bottom:8px;"></div>
+      <div style="display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap;"><input type="text" id="nid-q" oninput="renderNidList()" placeholder="ابحث: آخر 4 أرقام / الاسم / الدفعة / الرقم كامل" style="flex:1; min-width:180px;"><select id="nid-filter" onchange="renderNidList()"><option value="all">الكل</option><option value="open">لسه ماتفعّلش</option><option value="stale">لسه +7 أيام (محتاج تذكير)</option><option value="claimed">مفعّل</option><option value="expired">منتهي</option><option value="fails">عليه محاولات فاشلة</option></select><button class="btn" onclick="loadNidGrants()">تحديث</button><button class="btn" style="background:var(--ink)" onclick="exportNidCsv()">⬇️ تصدير CSV</button></div>
+      <div id="nid-list">جاري التحميل...</div>
+    </div>
+  </div>
+
   <div class="panel" id="panel-audit">
     <div class="card">
       <h3 style="margin-bottom:6px;">🧾 سجل التدقيق</h3>
@@ -488,27 +515,6 @@
       <div class="status" id="ff-status"></div>
     </div>
 
-    <div class="card" style="margin-top:16px;">
-      <h3 style="margin-bottom:6px;">☁️ رفع الملفات (Cloudinary — مجاني)</h3>
-      <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.9; margin-bottom:12px;">Firebase Storage مش متاح على الخطة المجانية، فالرفع (صور، ملفات، تسجيلات، فيديو، تكاليف) بيتم عبر Cloudinary:<br>
-      ١) اعمل حساب مجاني على cloudinary.com — وانسخ <b>Cloud name</b> من لوحة Dashboard.<br>
-      ٢) من Settings ← Upload ← Add upload preset: خلّي <b>Signing mode = Unsigned</b> واحفظ، وانسخ اسم الـ preset.<br>
-      ٣) (مهم) في نفس الـ preset حدّد حجم أقصى للملف وأنواع مسموحة عشان محدش يستغل الرفع.<br>
-      ٤) حط القيمتين تحت واحفظ. بعدها الرفع بيشتغل لكل المستخدمين فورًا.</p>
-      <div style="display:flex; gap:12px; flex-wrap:wrap;"><div class="field" style="flex:1; min-width:200px;"><label>Cloud name</label><input type="text" id="set-cld-name" placeholder="مثال: dxyz123abc"></div>
-      <div class="field" style="flex:1; min-width:200px;"><label>Upload preset (Unsigned)</label><input type="text" id="set-cld-preset" placeholder="مثال: nudrus_unsigned"></div></div>
-      <button class="btn" onclick="saveUploadConfig()"><svg class="icon"><use href="#i-check"></use></svg> حفظ إعداد الرفع</button>
-      <button class="btn" style="background:var(--ink-soft);" onclick="testUploadConfig()">اختبار الرفع</button>
-      <div class="status" id="cld-status"></div>
-    </div>
-    <div class="card" style="margin-top:16px;">
-      <h3 style="margin-bottom:6px;">📎 حدود المرفقات</h3>
-      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">أقصى حجم للملف الواحد (دردشة، تكاليف، وسائط) وأقصى مدة للتسجيل الصوتي. حدود Cloudinary المجانية: 10 ميجا للصور والملفات و100 ميجا للفيديو والصوت — فخلّي الحد هنا مناسب (الافتراضي 10).</p>
-      <div style="display:flex; gap:12px; flex-wrap:wrap;"><div class="field" style="flex:1; min-width:170px;"><label>أقصى حجم ملف (ميجا، حتى 100)</label><input type="number" id="set-maxfile" min="1" max="100"></div>
-      <div class="field" style="flex:1; min-width:170px;"><label>أقصى مدة تسجيل (ثانية، حتى 1800)</label><input type="number" id="set-maxrec" min="30" max="1800"></div></div>
-      <button class="btn" onclick="saveLimits()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الحدود</button>
-      <div class="status" id="limits-status"></div>
-    </div>
     <div class="card" style="margin-top:16px;">
       <h3 style="margin-bottom:6px;">✉️ إيميل إشعارات الحسابات</h3>
       <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;">عشان يوصل إيميل للمستخدم عند اعتماد حسابه أو تأكيد دفعه: أنشئ قالب جديد في EmailJS (نفس الخدمة الحالية) بالمتغيرات <b>{{to_email}}</b> للمستلم، و<b>{{to_name}}</b> و<b>{{subject}}</b> و<b>{{message}}</b>، وحط معرّف القالب هنا. سيبه فاضي لو مش عايز إيميلات.</p>
@@ -694,7 +700,7 @@ async function checkGate(){
     loadFeatureFlags();
     loadAccountsAdmin();
     loadSupervisorsAdmin();
-    loadCouponsAdmin(); loadAudit(); loadLimitsAdmin(); loadEmailConfig(); loadUploadConfigAdmin();
+    loadNidGrants(); loadCouponsAdmin(); loadAudit(); loadEmailConfig();
   }catch(e){
     err.textContent = 'دخول فشل: ' + (e.message || e.code);
   }
@@ -1142,7 +1148,7 @@ async function saveMaintenance(){
 /* ================= التحكم في ظهور أدوات القائمة الجانبية (siteSettings/featureFlags) ================= */
 const FEATURE_FLAG_ITEMS = [
   ['v-learn','تعلم كيف'], ['v-library','مكتبة الموارد'], ['v-courses','الدورات والتعلم'],
-  ['v-notebooks','دفاتر تحضير'], ['v-lesson-planner','مولد تحضير الدروس'], ['v-assistant','مساعد المعلم'],
+  ['v-notebooks','دفاتر تحضير'], ['v-lesson-planner','مولد تحضير الدروس'], ['v-helpers','أدوات مساعدة (مؤقت، درجات، حضور...)'], ['v-assistant','مساعد المعلم'],
   ['v-questions','بنك الأسئلة (معلم)'], ['v-quizzes','مصنع الاختبارات (معلم)'], ['exam-easy','امتحانك بسهولة'],
   ['v-certificates','مولد الشهادات (معلم)'], ['v-prep-room','غرفة التحضير الجماعي (معلم)'], ['v-tools-hub','مركز الأدوات (معلم)'],
   ['boardplus','سبورة إلكترونية'], ['v-saved','المحفوظات'], ['t-community','المجتمع'],
@@ -1231,7 +1237,7 @@ function pickerCallback(data){
 }
 
 const PLAN_LABELS = { onetime:'رسوم مرة واحدة', free:'تجربة مجانية', sub1:'الاشتراك الأول', sub2:'الاشتراك الثاني', sub3:'الاشتراك الثالث', pro:'البرو (مدى الحياة)' };
-const STATUS_LABELS = { awaiting_fee:'لم يدفع بعد', pending_approval:'بانتظار الموافقة', active:'نشط', pending_payment:'قيد المراجعة', expired:'منتهي', rejected:'مرفوض' };
+const STATUS_LABELS = { awaiting_fee:'لم يدفع بعد', pending_approval:'بانتظار الموافقة', active:'نشط', pending_payment:'قيد المراجعة', expired:'منتهي', rejected:'مرفوض', revoked:'موقوف' };
 
 async function loadUsers(){
   const el = document.getElementById('users-list');
@@ -1588,7 +1594,7 @@ async function loadSupervisorsAdmin(){
     const snap = await db.collection('users').orderBy('createdAt','desc').limit(1000).get();
     ALL_USERS = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
   }catch(err){ document.getElementById('sup-list').innerHTML = '<div class="urow">تعذّر التحميل: ' + escapeHtml(err.message) + '</div>'; return; }
-  renderSupList(); renderAssignPicker();
+  renderSupList(); renderAssignPicker(); fillNidSupSelect();
 }
 function renderSupList(){
   const el = document.getElementById('sup-list');
@@ -1733,7 +1739,7 @@ async function confirmPayment(uid){
     toast('اتفعّل الحساب.'); loadUsers(); loadSupervisorsAdmin();
   }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
 }
-const AUDIT_LABELS = { confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط دكتور بالإدارة', assign:'ربط حسابات بدكتور', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل' };
+const AUDIT_LABELS = { confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط دكتور بالإدارة', assign:'ربط حسابات بدكتور', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل', nid:'أرقام قومية' };
 async function loadAudit(){
   const el = document.getElementById('audit-list'); if(!el) return;
   el.innerHTML = 'جاري التحميل...';
@@ -1829,6 +1835,229 @@ async function testUploadConfig(){
     const url = await uploadFile('nudrus/test/' + Date.now() + '.png', new Blob([png], { type:'image/png' }));
     st.className = 'status ok'; st.textContent = '✓ الرفع شغّال: ' + url;
   }catch(err){ st.className = 'status err'; st.textContent = 'فشل الاختبار: ' + err.message + ' — اتأكد إن الـ preset نوعه Unsigned وإن الـ Cloud name صح.'; }
+}
+
+/* ================= الأرقام القومية (idGrants) ================= */
+const NID_ROLE = { student_teacher:'student', university_student:'student', non_edu_teacher:'teacher', supervisor:'supervisor', office:'office' };
+let NID_GRANTS = [];
+function nidNorm(s){ return String(s||'').replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)); }
+async function nidHashOf(nid){
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('nudrus-nid-v1:' + nid));
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,40);
+}
+function nidLooksValid(n){
+  if(!/^[23]\d{13}$/.test(n)) return false;
+  const yy=+n.slice(1,3), mm=+n.slice(3,5), dd=+n.slice(5,7), gov=+n.slice(7,9);
+  return mm>=1&&mm<=12&&dd>=1&&dd<=31&&((gov>=1&&gov<=35)||gov===88);
+}
+function initNidTypeSelect(){
+  const t=document.getElementById('nid-type'); if(!t||t.options.length) return;
+  t.innerHTML=Object.keys(ACC_TYPES).map(k=>`<option value="${k}">${ACC_TYPES[k]}</option>`).join('');
+  nidTypeChanged();
+}
+function nidTypeChanged(){
+  const v=document.getElementById('nid-type').value;
+  document.getElementById('nid-sup-wrap').style.display = (v==='supervisor') ? 'none' : 'block';
+}
+function fillNidSupSelect(){
+  initNidTypeSelect();
+  const el=document.getElementById('nid-sup'); if(!el) return;
+  const cur=el.value;
+  const sups=ALL_USERS.filter(u=>u.role==='supervisor'||u.role==='office');
+  el.innerHTML='<option value="">— بدون —</option>'+sups.map(u=>`<option value="${u.id}">${escapeHtml(u.name||u.email||u.id)} (${ACC_TYPES[u.accountType]||u.role})</option>`).join('');
+  el.value=cur;
+}
+let NID_FAILS = {}, SEC_AUTH = null;
+function secAuth(){ if(!SEC_AUTH){ const app = firebase.apps.find(x=>x.name==='sec') || firebase.initializeApp(firebaseConfig,'sec'); SEC_AUTH = app.auth(); } return SEC_AUTH; }
+function genTemp(){ const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789', r=new Uint32Array(8); crypto.getRandomValues(r); return Array.from(r).map(x=>A[x%A.length]).join(''); }
+function nidSynth(hash,ver){ return hash+((ver||1)>1?'-'+ver:'')+'@nid.nudrus.app'; }
+// بينشئ حساب Auth بكلمة مبدئية عبر تطبيق ثانوي (جلسة الأدمن ما بتتأثرش)
+async function createTempAccount(hash,ver,code){
+  const a=secAuth();
+  try{ await a.createUserWithEmailAndPassword(nidSynth(hash,ver),code); await a.signOut(); return true; }
+  catch(e){ try{ await a.signOut(); }catch(_){} if(e.code==='auth/email-already-in-use') return false; throw e; }
+}
+function downloadCsv(name,rows){
+  const csv='﻿'+rows.map(r=>r.map(c=>'"'+String(c==null?'':c).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download=name; document.body.appendChild(a); a.click(); a.remove();
+}
+function parseCsv(text){
+  const rows=[]; let row=[],cur='',q=false; text=text.replace(/^﻿/,'');
+  for(let i=0;i<text.length;i++){ const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=c; }
+    else if(c==='"') q=true;
+    else if(c===','||c==='،'||c===';'||c==='\t'){ row.push(cur); cur=''; }
+    else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(cur); cur=''; if(row.some(x=>x.trim())) rows.push(row); row=[]; }
+    else cur+=c; }
+  row.push(cur); if(row.some(x=>x.trim())) rows.push(row); return rows;
+}
+function typeFromText(t){ t=(t||'').trim(); if(!t) return ''; if(ACC_TYPES[t]) return t; return Object.keys(ACC_TYPES).find(k=>ACC_TYPES[k]===t)||''; }
+function expiryMs(v){ if(!v) return 0; const d=new Date(String(v).trim()+'T23:59:59'); return isNaN(d)?0:d.getTime(); }
+function importNidCsv(inp){
+  const f=inp.files[0]; if(!f) return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    const rows=parseCsv(String(rd.result)).map(r=>r.map(c=>nidNorm(c).trim()===c.trim()?c.trim():c.trim()));
+    const items=[];
+    rows.forEach(r=>{
+      const n=nidNorm(r[0]).replace(/\D/g,''); if(!n) return;
+      items.push({n,type:typeFromText(r[1]),supEmail:(r[2]||'').trim().toLowerCase(),batch:(r[3]||'').trim(),exp:expiryMs(nidNorm(r[4]||''))});
+    });
+    inp.value='';
+    if(!items.length){ document.getElementById('nid-add-status').textContent='الملف مفيهوش أرقام قومية.'; return; }
+    runNidAdd(items);
+  };
+  rd.readAsText(f,'utf-8');
+}
+async function addNidGrants(){
+  const st=document.getElementById('nid-add-status'); st.className='status';
+  const raw=nidNorm(document.getElementById('nid-ids').value);
+  const parts=[...new Set(raw.split(/[,،;\s]+/).map(x=>x.replace(/\D/g,'')).filter(Boolean))];
+  if(!parts.length){ st.textContent='اكتب رقم قومي واحد على الأقل.'; return; }
+  runNidAdd(parts.map(n=>({n,type:'',supEmail:'',batch:'',exp:0})));
+}
+async function runNidAdd(list){
+  const st=document.getElementById('nid-add-status'); st.className='status';
+  const bad=list.filter(p=>p.n.length!==14);
+  if(bad.length){ st.textContent='أرقام مش 14 رقم: '+bad.slice(0,5).map(x=>x.n).join('، ')+(bad.length>5?' ...':''); return; }
+  const dType=document.getElementById('nid-type').value;
+  const dSup=dType==='supervisor'?'':document.getElementById('nid-sup').value;
+  const dBatch=document.getElementById('nid-batch').value.trim();
+  const dExp=expiryMs(document.getElementById('nid-expiry').value);
+  const temp=document.getElementById('nid-method').value==='temp';
+  const seen=new Set(), items=[];
+  for(const p of list){ if(seen.has(p.n)) continue; seen.add(p.n);
+    const type=p.type||dType; let sup=type==='supervisor'?'':dSup;
+    if(p.supEmail&&type!=='supervisor'){ const u=ALL_USERS.find(x=>(x.email||'').toLowerCase()===p.supEmail&&(x.role==='supervisor'||x.role==='office')); if(!u){ st.textContent='إيميل الدكتور مش موجود: '+p.supEmail; return; } sup=u.id; }
+    items.push({n:p.n,type,sup,batch:p.batch||dBatch,exp:p.exp||dExp}); }
+  st.textContent='جاري المعالجة... (ممكن ياخد وقت لو الأعداد كبيرة)';
+  try{
+    for(const it of items) it.hash=await nidHashOf(it.n);
+    const existing=new Set();
+    for(let i=0;i<items.length;i+=10){
+      const snaps=await Promise.all(items.slice(i,i+10).map(it=>db.collection('idGrants').doc(it.hash).get()));
+      snaps.forEach((sn,j)=>{ if(sn.exists) existing.add(items[i+j].hash); });
+    }
+    const fresh=items.filter(it=>!existing.has(it.hash));
+    const u=auth.currentUser, codes=[], failed=[];
+    const ready=[];
+    for(let k=0;k<fresh.length;k++){
+      const it=fresh[k];
+      if(temp){
+        st.textContent=`جاري إنشاء الحسابات ${k+1}/${fresh.length}...`;
+        const code=genTemp();
+        try{ const ok=await createTempAccount(it.hash,1,code); if(!ok){ failed.push(it.n); continue; } it.code=code; }
+        catch(e){ failed.push(it.n); console.warn(e); continue; }
+      }
+      ready.push(it);
+    }
+    for(let i=0;i<ready.length;i+=400){
+      const b=db.batch();
+      ready.slice(i,i+400).forEach(it=>{
+        const g={hash:it.hash,last4:it.n.slice(-4),accountType:it.type,batch:it.batch,note:it.batch,claimed:false,ver:1,hasTemp:temp,createdMs:Date.now(),createdBy:u?u.uid:''};
+        if(it.sup) g.supervisorId=it.sup; if(it.exp) g.expiresMs=it.exp;
+        b.set(db.collection('idGrants').doc(it.hash),g);
+      });
+      await b.commit();
+    }
+    const odd=ready.filter(it=>!nidLooksValid(it.n)).length;
+    st.className='status ok';
+    st.textContent=`اتضاف ${ready.length} رقم`+(existing.size?` — اتخطّى ${existing.size} مسجّل قبل كده`:'')+(failed.length?` — فشل ${failed.length} (حساب Auth متسجّل قبل كده؟): ${failed.slice(0,3).join('، ')}`:'')+(odd?` — تنبيه: ${odd} رقم شكله مش مطابق لهيكل الرقم القومي (اتسجّل برضو)`:'');
+    if(ready.length){ audit('nid',null,'',`إضافة ${ready.length} رقم`+(temp?' بكلمة مبدئية':' تفعيل مفتوح')); }
+    if(temp&&ready.length){
+      downloadCsv('nid-codes-'+new Date().toISOString().slice(0,10)+'.csv',[['الرقم القومي','كلمة المرور المبدئية','نوع الحساب','الدفعة']].concat(ready.map(it=>[it.n,it.code,ACC_TYPES[it.type],it.batch])));
+      toast('اتنزّل ملف الأكواد — احفظه دلوقتي، الأكواد مش هتظهر تاني.',{duration:8000});
+    }
+    document.getElementById('nid-ids').value='';
+    loadNidGrants();
+  }catch(e){ st.textContent='تعذّر الحفظ: '+(e.message||e.code); }
+}
+async function loadNidGrants(){
+  try{
+    const snap=await db.collection('idGrants').orderBy('createdMs','desc').limit(500).get();
+    NID_GRANTS=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
+    NID_FAILS={}; try{ (await db.collection('nidFails').get()).forEach(d=>NID_FAILS[d.id]=d.data()); }catch(e){}
+    renderNidList();
+  }catch(e){ document.getElementById('nid-list').innerHTML='<div class="urow">تعذّر التحميل: '+escapeHtml(e.message||e.code)+'</div>'; }
+}
+function nidStatusOf(g){
+  if(g.expiresMs&&g.expiresMs<Date.now()) return 'expired';
+  return g.claimed?'claimed':'open';
+}
+function nidFiltered(){ return NID_GRANTS; }
+async function renderNidList(){
+  const el=document.getElementById('nid-list'); if(!el) return;
+  initNidTypeSelect();
+  const all=NID_GRANTS, claimed=all.filter(g=>g.claimed).length, stale=all.filter(g=>!g.claimed&&Date.now()-(g.createdMs||0)>7*864e5).length;
+  document.getElementById('nid-counts').textContent=`الإجمالي ${all.length} — مفعّل ${claimed} — لسه ${all.length-claimed}${stale?` (منهم ${stale} من أكتر من أسبوع)`:''}`;
+  let q=nidNorm(document.getElementById('nid-q').value).trim().toLowerCase(), qh='';
+  if(/^\d{14}$/.test(q)) qh=await nidHashOf(q);
+  const flt=document.getElementById('nid-filter').value;
+  const rows=all.filter(g=>{
+    if(flt==='open'&&g.claimed) return false;
+    if(flt==='claimed'&&!g.claimed) return false;
+    if(flt==='stale'&&(g.claimed||Date.now()-(g.createdMs||0)<=7*864e5)) return false;
+    if(flt==='expired'&&!(g.expiresMs&&g.expiresMs<Date.now())) return false;
+    if(flt==='fails'&&!(NID_FAILS[g.id]&&NID_FAILS[g.id].count>0)) return false;
+    return !q||g.id===qh||[g.last4,g.claimedName,g.batch,ACC_TYPES[g.accountType]].join(' ').toLowerCase().includes(q);
+  }).slice(0,200);
+  const sups=ALL_USERS.filter(u=>u.role==='supervisor'||u.role==='office');
+  const dstr=ms=>ms?new Date(ms-1).toISOString().slice(0,10):'';
+  el.innerHTML=rows.length?rows.map(g=>{ const f=NID_FAILS[g.id]; return `<div class="urow"><div class="u-top"><div>
+    <div class="u-name">••••••••••${escapeHtml(g.last4||'')} <span class="badge ${g.claimed?'active':'pending_payment'}">${g.claimed?'مفعّل':'لسه'}</span>${g.hasTemp?' <span class="badge">🔑 كلمة مبدئية</span>':''}${g.expiresMs&&g.expiresMs<Date.now()?' <span class="badge rejected">منتهية</span>':''}${(g.ver||1)>1?' <span class="badge">إعادة فتح #'+(g.ver-1)+'</span>':''}${g.altEmail?' <span class="badge active">✉️ إيميل استعادة</span>':''}${f&&f.count?' <span class="badge rejected">⚠️ '+f.count+' محاولة فاشلة</span>':''}</div>
+    <div class="u-meta">${g.claimed?escapeHtml(g.claimedName||'')+' — ':''}${g.batch?escapeHtml(g.batch):''}</div></div></div>
+    <div class="u-actions" style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
+      <select id="nt-${g.id}">${Object.keys(ACC_TYPES).map(k=>`<option value="${k}" ${k===g.accountType?'selected':''}>${ACC_TYPES[k]}</option>`).join('')}</select>
+      <select id="ns-${g.id}"><option value="">بدون دكتور</option>${sups.map(u=>`<option value="${u.id}" ${u.id===g.supervisorId?'selected':''}>${escapeHtml(u.name||u.email||'')}</option>`).join('')}</select>
+      <input type="date" id="ne-${g.id}" value="${dstr(g.expiresMs)}" title="تاريخ انتهاء المنحة">
+      <button class="btn" onclick="saveNidGrant('${g.id}')">حفظ</button>
+      ${g.claimed?`<button class="btn" style="background:var(--ink)" onclick="resetNidGrant('${g.id}')">إعادة فتح بكلمة جديدة</button>`:`<button class="btn" style="background:#b3261e" onclick="deleteNidGrant('${g.id}')">حذف</button>`}
+      ${f&&f.count?`<button class="btn" style="background:var(--ink)" onclick="clearNidFails('${g.id}')">تصفير المحاولات</button>`:''}
+    </div></div>`;}).join(''):'<div class="urow">لا توجد نتائج.</div>';
+}
+function exportNidCsv(){
+  const rows=[['آخر 4 أرقام','الحالة','الاسم','نوع الحساب','الدفعة','تاريخ الإضافة','تاريخ الانتهاء','محاولات فاشلة']];
+  NID_GRANTS.forEach(g=>rows.push([g.last4,g.claimed?'مفعّل':'لسه',g.claimedName||'',ACC_TYPES[g.accountType]||'',g.batch||'',g.createdMs?new Date(g.createdMs).toISOString().slice(0,10):'',g.expiresMs?new Date(g.expiresMs-1).toISOString().slice(0,10):'',(NID_FAILS[g.id]||{}).count||0]));
+  downloadCsv('nid-accounts.csv',rows);
+}
+async function saveNidGrant(id){
+  const g=NID_GRANTS.find(x=>x.id===id); if(!g) return;
+  const type=document.getElementById('nt-'+id).value, sup=type==='supervisor'?'':document.getElementById('ns-'+id).value;
+  const exp=expiryMs(document.getElementById('ne-'+id).value), D=firebase.firestore.FieldValue.delete();
+  try{
+    await db.collection('idGrants').doc(id).update({accountType:type, supervisorId: sup||D, expiresMs: exp||D});
+    if(g.claimed && g.claimedUid){
+      const staff=(type==='supervisor'||type==='office');
+      const uu={accountType:type, role:NID_ROLE[type], supervisorId: sup||D, grantExpiresMs: exp||D};
+      if(staff) uu.approved=true;
+      await db.collection('users').doc(g.claimedUid).update(uu);
+    }
+    audit('nid',g.claimedUid||'',g.claimedName||'',`تعديل ••••${g.last4} → ${ACC_TYPES[type]}${exp?' — ينتهي '+document.getElementById('ne-'+id).value:''}`);
+    toast('اتحفظ.'); loadNidGrants();
+  }catch(e){ toast('تعذّر الحفظ: '+(e.message||e.code)); }
+}
+async function deleteNidGrant(id){
+  const g=NID_GRANTS.find(x=>x.id===id); if(!g||!confirm('حذف الرقم ده؟'+(g.hasTemp?'\n(حساب الدخول المبدئي هيفضل موجود في Firebase Auth لكن مش هيقدر يدخل)':''))) return;
+  try{ await db.collection('idGrants').doc(id).delete(); audit('nid','','',`حذف ••••${g.last4}`); toast('اتحذف.'); loadNidGrants(); }
+  catch(e){ toast('تعذّر الحذف: '+(e.message||e.code)); }
+}
+async function clearNidFails(id){ try{ await db.collection('nidFails').doc(id).delete(); toast('اتصفّرت.'); loadNidGrants(); }catch(e){ toast('تعذّر: '+(e.message||e.code)); } }
+// إعادة فتح: بيوقف الحساب القديم وينشئ حساب دخول جديد بكلمة مبدئية جديدة (ver+1). بيانات الحساب القديم مش بتنتقل.
+async function resetNidGrant(id){
+  const g=NID_GRANTS.find(x=>x.id===id); if(!g) return;
+  if(!confirm('إعادة فتح الرقم؟ الحساب الحالي هيتوقف، وهيتولّد كود جديد لصاحب الرقم يفعّل بيه حسابه من جديد (بيانات الحساب القديم مش هتتنقل).')) return;
+  try{
+    const ver=(g.ver||1)+1, code=genTemp();
+    const ok=await createTempAccount(id,ver,code);
+    if(!ok){ toast('تعذّر: حساب الدخول الجديد موجود بالفعل.'); return; }
+    if(g.claimedUid) await db.collection('users').doc(g.claimedUid).update({status:'revoked'});
+    const D=firebase.firestore.FieldValue.delete();
+    await db.collection('idGrants').doc(id).update({claimed:false,claimedUid:null,claimedName:null,claimedMs:null,ver,hasTemp:true,altEmail:D});
+    audit('nid',g.claimedUid||'',g.claimedName||'',`إعادة فتح ••••${g.last4}`);
+    downloadCsv('nid-reset-'+g.last4+'.csv',[['آخر 4 أرقام','كلمة المرور المبدئية الجديدة'],[g.last4,code]]);
+    prompt('الكود الجديد (اتنزّل برضو في ملف) — سلّمه لصاحب الرقم:',code);
+    loadNidGrants();
+  }catch(e){ toast('تعذّر: '+(e.message||e.code)); }
 }
 </script>
 </body>
