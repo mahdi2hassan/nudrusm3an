@@ -611,6 +611,7 @@ table{border-collapse:separate; border-spacing:0;}
   </div>
 
   <div class="panel" id="panel-users">
+    <button class="save-btn" style="margin-bottom:10px" onclick="exportUsersCsv()">📥 تصدير المستخدمين CSV</button>
     <div class="status" id="users-status" style="margin-bottom:10px;"></div>
     <div id="users-list"></div>
   </div>
@@ -1442,7 +1443,7 @@ async function loadUsers(){
       const isVerified = !!u.verified;
       return `<div class="urow" id="urow-${d.id}">
         <div class="u-top">
-          <div><div class="u-name">${escapeHtml(u.name||'—')} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span>${isExpert?' <span class="badge active">⭐ معلم خبير</span>':''}${isVerified?' <span class="badge active">✓ موثّق</span>':''}</div>
+          <div><div class="u-name">${escapeHtml(u.name||'—')}${ndPayInfo(u)} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span>${isExpert?' <span class="badge active">⭐ معلم خبير</span>':''}${isVerified?' <span class="badge active">✓ موثّق</span>':''}</div>
           <div class="u-meta">${escapeHtml(u.email||'')} · ${escapeHtml(u.phone||'')} · ${accLabel(u)}${u.supervisorId?' · تابع لمشرف':''}${PAID_TYPES.includes(u.accountType) && u.feeAmount!=null ? ' · رسوم: '+u.feeAmount+' ج'+(u.couponCode?' (كوبون '+escapeHtml(u.couponCode)+')':'') : ''}</div></div>
         </div>
         <div class="u-controls">
@@ -2477,6 +2478,16 @@ function ambBuild(){
 }
 const _swTab=switchTab; switchTab=function(n,b){ const r=_swTab(n,b); try{ ambMark(); }catch(e){} return r; };
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') ambClose(); });
+
+/* ═══ من أوائل: عرض المرجع/الإيصال + تصدير المستخدمين CSV ═══ */
+function ndPayInfo(u){ return u.payRef ? `<br><span style="font-size:11.5px;font-weight:600">🧾 ${escapeHtml(u.payRef)}${u.payReceipt?` · <a href="${u.payReceipt}" target="_blank">عرض الإيصال</a>`:''}</span>` : ''; }
+async function exportUsersCsv(){
+  try{
+    const snap=await db.collection('users').orderBy('createdAt','desc').limit(2000).get();
+    const rows=[['الاسم','الإيميل','الموبايل','نوع الحساب','الحالة','الخطة','المبلغ','المرجع','كوبون']].concat(snap.docs.map(d=>{const u=d.data();return [u.name,u.email,u.phone,(typeof ACC_TYPES!=='undefined'&&ACC_TYPES[u.accountType])||u.accountType||'',STATUS_LABELS[u.status]||u.status||'',u.plan||'',u.feeAmount!=null?u.feeAmount:'',u.payRef||'',u.couponCode||''];}));
+    downloadCsv('users-'+new Date().toISOString().slice(0,10)+'.csv',rows);
+  }catch(e){ toast('تعذّر التصدير: '+(e.message||e.code),{type:'err'}); }
+}
 </script>
 </body>
 </html>

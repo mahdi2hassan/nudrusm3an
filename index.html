@@ -1516,6 +1516,8 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
         <div style="display:flex; gap:8px;"><input type="text" id="coupon-code" placeholder="كود الخصم (إن وُجد)" style="flex:1; text-transform:uppercase; padding:10px 12px; border:1px solid var(--line); border-radius:10px; font-family:inherit;"><button type="button" class="btn-primary" style="width:auto; padding:10px 18px;" onclick="applyCoupon()">تطبيق</button></div>
         <div class="auth-status" id="coupon-status"></div>
       </div>
+      <div class="gate-hint" id="nd-ref-line" style="font-weight:800;margin-top:10px"></div>
+      <div style="margin:8px 0"><label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:4px">صورة إيصال التحويل (اختياري — بتسرّع المراجعة)</label><input type="file" id="nd-receipt" accept="image/*" onchange="ndPickReceipt(this)"></div>
       <a class="wa-btn" id="wa-confirm-link" href="#" target="_blank">تأكيد الدفع عبر واتساب</a>
 
       <button class="btn-primary btn-block pay-confirm-btn" onclick="finalizePaidPlan()">لقد حوّلت المبلغ — فعّل حسابي</button>
@@ -2746,7 +2748,7 @@ async function finalizePaidPlan(){
   try{
     if(currentUid){
       await db.collection('users').doc(currentUid).update({
-        plan: selectedPlanKey, status:'pending_payment', feeAmount: plan.price, ...(selectedPlanKey === 'onetime' && feeCoupon ? { couponCode: feeCoupon.code, feeBase } : {}),
+        plan: selectedPlanKey, status:'pending_payment', feeAmount: plan.price, ...(selectedPlanKey === 'onetime' && feeCoupon ? { couponCode: feeCoupon.code, feeBase } : {}), ...ndPayExtra(),
         planRequestedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
     }
@@ -5987,7 +5989,8 @@ function renderFeePayment(){
   PLANS.onetime.price = net; PLANS.onetime.name = 'رسوم الاشتراك — ' + accLabelOf();
   document.getElementById('pay-plan-title').textContent = 'تأكيد اشتراك: ' + PLANS.onetime.name;
   document.getElementById('pay-plan-sub').textContent = 'رسوم لمرة واحدة — المبلغ: ' + net + ' جنيه' + (feeCoupon ? ' (بعد كوبون ' + feeCoupon.code + ' — بدل ' + feeBase + ')' : '');
-  const msg = encodeURIComponent(`مرحبًا، أنا ${pendingUser.name || ''} حوّلت مبلغ ${net} جنيه لرسوم حساب "${accLabelOf()}" على نُدرس معًا${feeCoupon ? ' (كوبون ' + feeCoupon.code + ')' : ''}، برجاء تفعيل الحساب.`);
+  const msg = encodeURIComponent(`مرحبًا، أنا ${pendingUser.name || ''} حوّلت مبلغ ${net} جنيه لرسوم حساب "${accLabelOf()}" على نُدرس معًا${feeCoupon ? ' (كوبون ' + feeCoupon.code + ')' : ''}، برجاء تفعيل الحساب. الكود المرجعي: ${ndRef()}`);
+  document.getElementById('nd-ref-line').textContent = 'الكود المرجعي لطلبك: ' + ndRef() + ' — اكتبه في رسالة التحويل.';
   document.getElementById('wa-confirm-link').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
   document.getElementById('pay-coupon-wrap').style.display = 'block';
   document.getElementById('coupon-code').value = feeCoupon ? feeCoupon.code : '';
@@ -8098,6 +8101,18 @@ const _ctlNid = showNidScreen; showNidScreen = function(){ if(ctlBlocked('nidLog
 const _ctlBioGet = bioGet; bioGet = function(){ return ctlOn('biometric') ? _ctlBioGet() : null; };
 const _ctlBioEn = bioEnable; bioEnable = function(){ if(ctlBlocked('biometric', 'الدخول بالبصمة')) return Promise.resolve(false); return _ctlBioEn.apply(this, arguments); };
 try{ loadControl(); }catch(e){}
+
+/* ═══ من أوائل: كود مرجعي للدفع + رفع إيصال التحويل ═══ */
+let _ndRef='', _ndReceipt='';
+function ndRef(){ if(!_ndRef) _ndRef='ND-'+Math.random().toString(36).slice(2,8).toUpperCase(); return _ndRef; }
+function ndPickReceipt(inp){
+  const f=inp.files[0]; if(!f){ _ndReceipt=''; return; }
+  const img=new Image(), r=new FileReader();
+  r.onload=()=>{ img.onload=()=>{ const k=Math.min(1,900/Math.max(img.width,img.height)), c=document.createElement('canvas'); c.width=img.width*k; c.height=img.height*k;
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height); _ndReceipt=c.toDataURL('image/jpeg',.6); }; img.src=r.result; };
+  r.readAsDataURL(f);
+}
+function ndPayExtra(){ const o={ payRef: ndRef() }; if(_ndReceipt) o.payReceipt=_ndReceipt; return o; }
 </script>
 </body>
 </html>
