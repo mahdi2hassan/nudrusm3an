@@ -220,6 +220,32 @@ input:focus,select:focus,textarea:focus{outline:none; border-color:var(--brick);
 .badge.active{background:#e3f4ec; color:#157a55;}
 table{border-collapse:separate; border-spacing:0;}
 </style>
+<style id="admin-mobile-nav">
+#amb,#amb-sheet,#amb-ov,#amb-top{display:none;}
+@media (max-width:1023px){
+  .tabs{display:none !important;}
+  #dash{padding-bottom:100px !important;}
+  #amb{display:flex; position:fixed; z-index:90; inset-inline:10px; bottom:calc(10px + env(safe-area-inset-bottom)); gap:2px; padding:6px; background:rgba(11,21,48,.94); backdrop-filter:blur(14px); border-radius:22px; box-shadow:0 14px 34px rgba(11,21,48,.4);}
+  #amb button{flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; min-height:52px; padding:8px 2px; background:none; border:0; color:#aeb9d6; font:inherit; font-size:11px; font-weight:800; border-radius:16px; cursor:pointer; box-shadow:none; position:relative;}
+  #amb button .icon{width:21px; height:21px;}
+  #amb button.on{background:var(--grad-gold); color:var(--navy-1);}
+  #amb button.sel{background:rgba(255,255,255,.14); color:#fff;}
+  #amb-ov{display:block; position:fixed; inset:0; z-index:85; background:rgba(11,21,48,.38); opacity:0; pointer-events:none; transition:opacity .2s;}
+  #amb-ov.open{opacity:1; pointer-events:auto;}
+  #amb-sheet,#amb-top{display:block; position:fixed; z-index:89; inset-inline:10px; max-height:66vh; overflow:auto; padding:10px; background:rgba(255,255,255,.97); backdrop-filter:blur(14px); border-radius:22px; box-shadow:0 18px 44px rgba(11,21,48,.32); opacity:0; pointer-events:none; transition:all .22s cubic-bezier(.2,.9,.3,1);}
+  #amb-sheet{bottom:calc(84px + env(safe-area-inset-bottom)); transform:translateY(16px) scale(.98);}
+  #amb-top{top:12px; transform:translateY(-14px) scale(.98);}
+  #amb-sheet.open,#amb-top.open{opacity:1; pointer-events:auto; transform:none;}
+  .amb-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px;}
+  .amb-it{display:flex; align-items:center; gap:10px; padding:12px; min-height:50px; border:1px solid var(--line); border-radius:14px; background:#fff; font:inherit; font-size:13px; font-weight:800; color:var(--ink); text-align:start; cursor:pointer; box-shadow:none;}
+  .amb-it .icon{width:19px; height:19px; flex:none; color:var(--brick);}
+  .amb-it.act{background:var(--grad); color:#fff; border-color:transparent;}
+  .amb-it.act .icon{color:var(--gold);}
+  #amb-cur{display:inline-flex !important; align-items:center; gap:6px;}
+  .head{position:relative;}
+}
+@media (min-width:1024px){ #amb-cur{display:none !important;} }
+</style>
 </head>
 
 <body>
@@ -284,6 +310,7 @@ table{border-collapse:separate; border-spacing:0;}
       <button type="button" class="pw-toggle" onclick="toggleLgPw()"><svg class="icon" id="lg-pw-icon"><use href="#i-eye"></use></svg></button>
     </div>
     <input type="password" id="lg-pass-confirm" placeholder="تأكيد الباسورد" autocomplete="off" style="display:none">
+    <button type="button" id="lg-bio-btn" onclick="adminBioUnlock(false)" style="display:none; margin-bottom:10px; background:var(--grad-gold) !important; color:var(--navy-1) !important;">👆 فتح بالبصمة</button>
     <button onclick="submitLocalGate()" id="lg-submit-btn">حفظ وتأمين الجهاز</button>
     <div class="gate-err" id="lg-err"></div>
     <button class="lg-switch" id="lg-reset-btn" onclick="resetLocalGate()" style="display:none">نسيت الباسورد؟ إعادة ضبط قفل الجهاز</button>
@@ -306,6 +333,7 @@ table{border-collapse:separate; border-spacing:0;}
     <div><h1>لوحة تحكم نُدرس معًا</h1>
     <p>تحكم كامل في المنصة — محتوى، مستخدمين، مجتمع، ودفاتر تحضير</p></div>
     <div class="head-actions">
+      <button class="icon-btn" id="abio-btn" onclick="adminBioToggle()">👆 تفعيل البصمة</button>
       <button class="icon-btn" onclick="lockDeviceNow()"><svg class="icon"><use href="#i-lock"></use></svg> قفل الجهاز</button>
       <button class="icon-btn" onclick="adminLogout()"><svg class="icon"><use href="#i-logout"></use></svg> خروج</button>
     </div>
@@ -328,6 +356,8 @@ table{border-collapse:separate; border-spacing:0;}
     <button class="tab" onclick="switchTab('accounts', this)"><svg class="icon"><use href="#i-card"></use></svg> الحسابات والأسعار</button>
     <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
     <button class="tab" onclick="switchTab('perm', this)"><svg class="icon"><use href="#i-lock"></use></svg> صلاحيات المشتركين</button>
+    <button class="tab" onclick="switchTab('control', this)"><svg class="icon"><use href="#i-star"></use></svg> التحكم الشامل</button>
+    <button class="tab" onclick="switchTab('activity', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> لوحة النشاط</button>
     <button class="tab" onclick="switchTab('nid', this)"><svg class="icon"><use href="#i-user"></use></svg> الأرقام القومية</button>
     <button class="tab" onclick="switchTab('audit', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> سجل التدقيق</button>
     <button class="tab" onclick="switchTab('users', this)"><svg class="icon"><use href="#i-user"></use></svg> المستخدمين</button>
@@ -510,6 +540,40 @@ table{border-collapse:separate; border-spacing:0;}
     </div>
   </div>
 
+  <div class="panel" id="panel-control">
+    <div class="card">
+      <h3 style="margin-bottom:6px;">🎛️ التحكم الشامل في المنصة</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.9; margin-bottom:12px;">مفاتيح تشغيل/إيقاف فورية لكل ميزة رئيسية — التغيير بيسري عند تحديث صفحة المستخدمين. (الإيقاف بيتطبق من الواجهة).</p>
+      <div id="ctl-switches" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:10px;"></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:6px;">📋 معايير الزيارة الصفية الافتراضية</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;">معيار في كل سطر (حتى 12). كل مشرف يقدر يعمل قالبه الخاص فوقها. اتركها فاضية للمعايير الافتراضية للمنصة.</p>
+      <textarea id="ctl-crit" rows="8" style="width:100%; padding:10px;"></textarea>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:6px;">💡 إضافات بنك الأنشطة</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;">سطر لكل فكرة بالشكل: <b>المادة | المرحلة | الفكرة</b> — مثال: <span dir="ltr">رياضيات | إعدادي | مسابقة الفرق السريعة</span></p>
+      <textarea id="ctl-ideas" rows="8" style="width:100%; padding:10px;"></textarea>
+      <div style="margin-top:12px;"><button class="btn" onclick="saveControl()">💾 حفظ كل إعدادات التحكم</button></div>
+      <div class="status" id="ctl-status"></div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:8px;">🧭 اختصارات لباقي أدوات التحكم</h3>
+      <div id="ctl-shortcuts" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-activity">
+    <div class="card">
+      <h3 style="margin-bottom:6px;">📈 لوحة النشاط</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;">إحصائيات حية من البيانات: الحسابات، استخدام الأدوات، والمشاركات. بتقرا حتى 500 مستند من كل مجموعة.</p>
+      <button class="btn" onclick="loadActivity()">↻ تحديث الإحصائيات</button>
+      <div class="status" id="act-status"></div>
+    </div>
+    <div id="act-body"></div>
+  </div>
+
   <div class="panel" id="panel-nid">
     <div class="card">
       <h3 style="margin-bottom:6px;">🪪 إضافة حسابات بالرقم القومي (مجانية)</h3>
@@ -540,7 +604,8 @@ table{border-collapse:separate; border-spacing:0;}
     <div class="card">
       <h3 style="margin-bottom:6px;">🧾 سجل التدقيق</h3>
       <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;">آخر 300 إجراء إداري: من اعتمد، ومن ربط، ومن أكّد دفع، ومتى.</p>
-      <div style="display:flex; gap:8px; margin-bottom:12px;"><input type="text" id="audit-q" oninput="renderAudit()" placeholder="ابحث في السجل..." style="flex:1;"><button class="btn" onclick="loadAudit()">تحديث</button></div>
+      <div style="display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap;"><input type="text" id="audit-q" oninput="renderAudit()" placeholder="ابحث في السجل..." style="flex:1; min-width:160px;"><button class="btn" onclick="loadAudit()">تحديث</button><button class="btn" style="background:var(--ink)" onclick="auditCsv()">⬇️ CSV</button></div>
+      <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; align-items:center;"><select id="audit-act" onchange="renderAudit()"><option value="">كل الإجراءات</option></select><select id="audit-adm" onchange="renderAudit()"><option value="">كل المسؤولين</option></select><label style="font-size:12px;">من <input type="date" id="audit-from" onchange="renderAudit()"></label><label style="font-size:12px;">إلى <input type="date" id="audit-to" onchange="renderAudit()"></label><span id="audit-count" style="font-size:12px; font-weight:700;"></span></div>
       <div id="audit-list"></div>
     </div>
   </div>
@@ -757,7 +822,7 @@ function lockDeviceNow(){
   document.getElementById('dash').style.display = 'none';
   document.getElementById('gate').style.display = 'none';
   document.getElementById('lg-user').value = ''; document.getElementById('lg-pass').value = '';
-  initLocalGate();
+  initLocalGate(); adminBioUi();
   document.getElementById('localgate').style.display = 'flex';
 }
 function resetLocalGate(){
@@ -768,6 +833,7 @@ function resetLocalGate(){
   toast('اتمسح قفل الجهاز — اعمل إعداد جديد.');
 }
 initLocalGate();
+setTimeout(()=>{ try{ adminBioUi(); if(adminBioGet()) adminBioUnlock(true); }catch(e){} },500);
 
 /* ================= Firebase ================= */
 const firebaseConfig = {
@@ -783,6 +849,31 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+function enterDash(){
+document.getElementById('gate').style.display = 'none';
+  document.getElementById('dash').style.display = 'block';
+  loadList('lessons','lessons-list',['title','description']);
+  loadList('practicalTips','tips-list',['title','content']);
+  loadList('actionResearchVideos','videos-list',['title','videoUrl']);
+  loadCoursesAdmin();
+  loadUsers();
+  loadReports();
+  loadAnalytics();
+  loadCommunityMod();
+  loadNotebooksMod();
+  loadWalletAdmin();
+  loadReferralsAdmin();
+  loadChallengesAdmin();
+  subscribeAdminConvList();
+  loadContactSettings();
+  loadAnnouncement();
+  loadMaintenance();
+  loadFeatureFlags();
+  loadAccountsAdmin();
+  loadSupervisorsAdmin();
+  loadNidGrants(); loadCouponsAdmin(); loadAudit(); loadEmailConfig();
+  loadControlAdmin(); document.getElementById('localgate').style.display='none'; try{ ambBuild(); }catch(e){}
+}
 async function checkGate(){
   const email = document.getElementById('gate-email').value.trim();
   const pass = document.getElementById('gate-pass').value;
@@ -797,28 +888,8 @@ async function checkGate(){
       await auth.signOut();
       return;
     }
-    document.getElementById('gate').style.display = 'none';
-    document.getElementById('dash').style.display = 'block';
-    loadList('lessons','lessons-list',['title','description']);
-    loadList('practicalTips','tips-list',['title','content']);
-    loadList('actionResearchVideos','videos-list',['title','videoUrl']);
-    loadCoursesAdmin();
-    loadUsers();
-    loadReports();
-    loadAnalytics();
-    loadCommunityMod();
-    loadNotebooksMod();
-    loadWalletAdmin();
-    loadReferralsAdmin();
-    loadChallengesAdmin();
-    subscribeAdminConvList();
-    loadContactSettings();
-    loadAnnouncement();
-    loadMaintenance();
-    loadFeatureFlags();
-    loadAccountsAdmin();
-    loadSupervisorsAdmin();
-    loadNidGrants(); loadCouponsAdmin(); loadAudit(); loadEmailConfig();
+    enterDash();
+    adminBioOffer();
   }catch(e){
     err.textContent = 'دخول فشل: ' + (e.message || e.code);
   }
@@ -1858,20 +1929,36 @@ async function confirmPayment(uid){
     toast('اتفعّل الحساب.'); loadUsers(); loadSupervisorsAdmin();
   }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
 }
-const AUDIT_LABELS = { confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط مشرف بالإدارة', assign:'ربط حسابات بمشرف', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل', nid:'أرقام قومية', perm:'صلاحيات مشتركين' };
+const AUDIT_LABELS = { control:'تعديل التحكم الشامل', backup:'نسخة احتياطية', perm:'صلاحيات أدوات', confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط مشرف بالإدارة', assign:'ربط حسابات بمشرف', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل', nid:'أرقام قومية', perm:'صلاحيات مشتركين' };
 async function loadAudit(){
   const el = document.getElementById('audit-list'); if(!el) return;
   el.innerHTML = 'جاري التحميل...';
   try{
     const snap = await db.collection('auditLog').orderBy('createdMs', 'desc').limit(300).get();
-    window.__audit = snap.docs.map(d => d.data()); renderAudit();
+    window.__audit = snap.docs.map(d => d.data()); renderAudit._f=0; renderAudit();
   }catch(err){ el.innerHTML = '<div class="urow">تعذّر تحميل السجل: ' + escapeHtml(err.message) + '</div>'; }
 }
+function auditFiltered(){
+  const q=(document.getElementById('audit-q').value||'').trim().toLowerCase(), act=document.getElementById('audit-act').value, adm=document.getElementById('audit-adm').value,
+    f=document.getElementById('audit-from').value, t=document.getElementById('audit-to').value, fm=f?new Date(f).getTime():0, tm=t?new Date(t).getTime()+86400000:Infinity;
+  return (window.__audit||[]).filter(a=>(!act||a.action===act)&&(!adm||a.adminEmail===adm)&&(a.createdMs||0)>=fm&&(a.createdMs||0)<tm&&(!q||[a.action,AUDIT_LABELS[a.action],a.adminEmail,a.targetName,a.details].join(' ').toLowerCase().includes(q)));
+}
+function auditFillFilters(){
+  const A=window.__audit||[], sa=document.getElementById('audit-act'), sm=document.getElementById('audit-adm'); if(!sa||!sm) return;
+  const ca=sa.value, cm=sm.value, acts=[...new Set(A.map(a=>a.action))], adms=[...new Set(A.map(a=>a.adminEmail).filter(Boolean))];
+  sa.innerHTML='<option value="">كل الإجراءات</option>'+acts.map(a=>`<option value="${escapeHtml(a)}">${escapeHtml(AUDIT_LABELS[a]||a)}</option>`).join(''); sa.value=ca;
+  sm.innerHTML='<option value="">كل المسؤولين</option>'+adms.map(a=>`<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join(''); sm.value=cm;
+}
 function renderAudit(){
-  const el = document.getElementById('audit-list'), q = (document.getElementById('audit-q').value || '').trim().toLowerCase();
-  const rows = (window.__audit || []).filter(a => !q || [a.action, AUDIT_LABELS[a.action], a.adminEmail, a.targetName, a.details].join(' ').toLowerCase().includes(q));
-  el.innerHTML = rows.length ? rows.map(a => `<div class="urow"><div class="u-top"><div><div class="u-name">${escapeHtml(AUDIT_LABELS[a.action] || a.action)} ${a.targetName ? '— ' + escapeHtml(a.targetName) : ''}</div>
-    <div class="u-meta">${escapeHtml(a.adminEmail || '')} · ${new Date(a.createdMs).toLocaleString('ar-EG')}${a.details ? ' · ' + escapeHtml(a.details) : ''}</div></div></div></div>`).join('') : '<div class="urow">مفيش سجلات.</div>';
+  const el=document.getElementById('audit-list'); if(!el) return;
+  if(!renderAudit._f){ renderAudit._f=1; auditFillFilters(); }
+  const rows=auditFiltered(); document.getElementById('audit-count').textContent=rows.length+' سجل';
+  el.innerHTML=rows.length?rows.map(a=>`<div class="urow"><div class="u-top"><div><div class="u-name">${escapeHtml(AUDIT_LABELS[a.action]||a.action)} ${a.targetName?'— '+escapeHtml(a.targetName):''}</div>
+    <div class="u-meta">${escapeHtml(a.adminEmail||'')} · ${new Date(a.createdMs).toLocaleString('ar-EG')}${a.details?' · '+escapeHtml(a.details):''}</div></div></div></div>`).join(''):'<div class="urow">مفيش سجلات مطابقة.</div>';
+}
+function auditCsv(){
+  const rows=auditFiltered(); if(!rows.length){ toast('مفيش سجلات للتصدير.'); return; }
+  downloadCsv('audit-log.csv',[['التاريخ','المسؤول','الإجراء','المستهدف','التفاصيل']].concat(rows.map(a=>[new Date(a.createdMs).toISOString(),a.adminEmail||'',AUDIT_LABELS[a.action]||a.action,a.targetName||'',a.details||''])));
 }
 
 /* ================= كوبونات الخصم ================= */
@@ -2277,6 +2364,119 @@ async function importBackup(){
     audit('backup','','','استيراد نسخة احتياطية'); st.className='status ok'; st.textContent='✓ تم الاستيراد. حدّث الصفحة لرؤية التغييرات.';
   }catch(e){ st.textContent='تعذّر الاستيراد: '+(e.message||e.code); }
 }
+
+/* ================= التحكم الشامل ================= */
+const CTL_SWITCHES=[['signup','التسجيل الجديد في المنصة'],['nidLogin','الدخول بالرقم القومي'],['biometric','الدخول بالبصمة للمستخدمين'],['shares','إرسال التقارير بين المشرف والمتدرب'],['sharedDocs','نشر المستندات بكود'],['notifications','الإشعارات الداخلية (الشارات)'],['pdfExport','تصدير PDF'],['bottomNav','شريط التنقل السفلي بالموبايل']];
+let CTL={};
+async function loadControlAdmin(){
+  try{ const d=await db.collection('siteSettings').doc('control').get(); CTL=d.exists?d.data():{}; }catch(e){ CTL={}; }
+  const sw=document.getElementById('ctl-switches'); if(!sw) return;
+  sw.innerHTML=CTL_SWITCHES.map(x=>`<label style="display:flex; gap:10px; align-items:center; padding:12px 14px; border:1px solid var(--line); border-radius:14px; background:#fff; cursor:pointer; font-weight:700; font-size:13.5px;"><input type="checkbox" class="ctl-sw" value="${x[0]}" ${CTL[x[0]]===false?'':'checked'} style="width:auto; min-height:0;"> ${escapeHtml(x[1])}</label>`).join('');
+  document.getElementById('ctl-crit').value=(CTL.visitCriteria||[]).join('\n'); document.getElementById('ctl-ideas').value=(CTL.ideasBank||[]).join('\n');
+  const sc=document.getElementById('ctl-shortcuts');
+  sc.innerHTML=[['accounts','الحسابات والأسعار'],['perm','صلاحيات المشتركين'],['nid','الأرقام القومية'],['audit','سجل التدقيق'],['settings','الإعدادات والنسخ الاحتياطي'],['users','المستخدمين'],['reports','البلاغات']].map(x=>`<button class="btn" style="background:var(--ink)" onclick="goTab('${x[0]}')">${x[1]}</button>`).join('');
+}
+function goTab(name){ const b=[...document.querySelectorAll('.tab')].find(t=>(t.getAttribute('onclick')||'').includes("'"+name+"'")); if(b) switchTab(name,b); }
+async function saveControl(){
+  const st=document.getElementById('ctl-status'); st.className='status';
+  const o={}; document.querySelectorAll('.ctl-sw').forEach(c=>o[c.value]=c.checked);
+  o.visitCriteria=document.getElementById('ctl-crit').value.split('\n').map(x=>x.trim().slice(0,60)).filter(Boolean).slice(0,12);
+  o.ideasBank=document.getElementById('ctl-ideas').value.split('\n').map(x=>x.trim()).filter(x=>x.split('|').length===3&&x.split('|')[2].trim()).slice(0,300);
+  try{ await db.collection('siteSettings').doc('control').set(o,{merge:true}); CTL=Object.assign(CTL,o); audit('control','','','تعديل إعدادات التحكم الشامل'); st.className='status ok'; st.textContent='✓ اتحفظت. بتسري عند تحديث صفحة المستخدمين.'; }
+  catch(e){ st.textContent='تعذّر الحفظ: '+(e.message||e.code); }
+}
+/* ================= لوحة النشاط ================= */
+function actBars(title,map,total){
+  const ks=Object.keys(map).sort((a,b)=>map[b]-map[a]), mx=Math.max(1,...ks.map(k=>map[k]));
+  return `<div class="card"><h3 style="margin-bottom:10px;">${title}</h3>${ks.length?ks.map(k=>`<div style="display:flex; align-items:center; gap:10px; margin:6px 0; font-size:13px;"><span style="flex:0 0 150px;">${escapeHtml(k)}</span><div style="flex:1; height:12px; background:var(--paper-dim); border-radius:99px; overflow:hidden;"><i style="display:block; height:100%; width:${Math.round(map[k]/mx*100)}%; background:var(--grad); border-radius:99px;"></i></div><b style="min-width:42px; text-align:left;">${map[k]}${total?` <small style="color:var(--ink-soft)">${Math.round(map[k]/total*100)}%</small>`:''}</b></div>`).join(''):'<div style="color:var(--ink-soft)">لا بيانات.</div>'}</div>`;
+}
+async function loadActivity(){
+  const st=document.getElementById('act-status'), body=document.getElementById('act-body'); st.className='status'; st.textContent='جاري التحميل...'; body.innerHTML='';
+  const U=ALL_USERS.filter(u=>u.role!=='admin'), now=Date.now(), ms=u=>u.createdMs||(u.createdAt&&u.createdAt.toMillis?u.createdAt.toMillis():0);
+  const byType={}, byStatus={}; U.forEach(u=>{ const t=ACC_TYPES[u.accountType]||u.accountType||'غير محدد'; byType[t]=(byType[t]||0)+1; const s=u.status||'—'; byStatus[s]=(byStatus[s]||0)+1; });
+  const n7=U.filter(u=>now-ms(u)<7*864e5).length, n30=U.filter(u=>now-ms(u)<30*864e5).length;
+  let html=`<div class="card"><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px;">${[['إجمالي الحسابات',U.length],['جدد 7 أيام',n7],['جدد 30 يوم',n30],['مقفولة/موقوفة',U.filter(u=>['revoked','suspended','rejected','expired'].includes(u.status)).length]].map(x=>`<div style="background:var(--accent-soft); border-radius:14px; padding:14px; text-align:center;"><div style="font-size:24px; font-weight:900;">${x[1]}</div><div style="font-size:12px; color:var(--ink-soft);">${x[0]}</div></div>`).join('')}</div></div>`;
+  html+=actBars('الحسابات حسب النوع',byType,U.length)+actBars('الحسابات حسب الحالة',byStatus,U.length);
+  const T=[['roster','قائمة طلاب'],['attendance','حضور'],['cards','بطاقات'],['todos','مهام'],['week','تحضير أسبوعي'],['journal','يوميات'],['selfs','تقييم ذاتي'],['visits','زيارات'],['plans','خطط تطوير'],['flog','سجل متابعة'],['minutes','محاضر'],['vplan','خطة زيارات'],['ideas','أفكار أنشطة']];
+  try{
+    const ut=await db.collection('userTools').limit(500).get(), use={}; ut.forEach(d=>{ const o=d.data(); T.forEach(([k,l])=>{ const v=o[k]; if(v&&(Array.isArray(v)?v.length:Object.keys(v).length)) use[l]=(use[l]||0)+1; }); });
+    html+=actBars(`استخدام الأدوات (من ${ut.size} مستخدم)`,use,ut.size);
+  }catch(e){ html+='<div class="card">تعذّر قراءة استخدام الأدوات — تأكد من نشر قواعد userTools المحدّثة (قراءة الأدمن).</div>'; }
+  try{
+    const sh=await db.collection('practicumShares').limit(500).get(), kinds={}, lab={visit:'تقارير زيارات',plan:'خطط تطوير',self:'تقييمات ذاتية',journal:'يوميات',activity:'ملخصات نشاط'}; sh.forEach(d=>{ const k=lab[d.data().kind]||d.data().kind; kinds[k]=(kinds[k]||0)+1; });
+    html+=actBars('المشاركات بين المشرفين والمتدربين',kinds,sh.size);
+  }catch(e){}
+  try{
+    const g=await db.collection('idGrants').limit(500).get(); let cl=0; g.forEach(d=>{ const o=d.data(); if(o.claimedUid||o.claimedMs||o.claimed) cl++; });
+    html+=actBars('منح الأرقام القومية',{'مفعّلة':cl,'لم تُفعّل بعد':g.size-cl},g.size);
+  }catch(e){}
+  body.innerHTML=html; st.className='status ok'; st.textContent='✓ تم التحديث '+new Date().toLocaleTimeString('ar-EG');
+}
+/* ================= بصمة الدخول للأدمن ================= */
+const ABIO_KEY='ndm_admin_bio';
+const b64uE=buf=>btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const b64uD=str=>Uint8Array.from(atob(str.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0));
+function adminBioGet(){ try{ return JSON.parse(localStorage.getItem(ABIO_KEY)||'null'); }catch(e){ return null; } }
+async function adminBioAvailable(){ try{ return !!(window.PublicKeyCredential&&PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()); }catch(e){ return false; } }
+async function adminBioEnable(){
+  const u=auth.currentUser; if(!u){ toast('سجّل دخول الأول.'); return false; }
+  if(!(await adminBioAvailable())){ toast('الجهاز/المتصفح مش بيدعم البصمة (محتاج https وقفل شاشة/بصمة مفعّل).'); return false; }
+  try{
+    const cred=await navigator.credentials.create({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),rp:{name:'نُدرس معًا — الأدمن'},user:{id:new TextEncoder().encode(u.uid).slice(0,64),name:u.email||u.uid,displayName:'أدمن'},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},timeout:60000,attestation:'none'}});
+    localStorage.setItem(ABIO_KEY,JSON.stringify({uid:u.uid,credId:b64uE(cred.rawId),email:u.email||''})); toast('اتفعّلت البصمة للأدمن على الجهاز ده.'); adminBioUi(); return true;
+  }catch(e){ toast('ماتفعّلتش البصمة ('+(e.name||e.message)+')'); return false; }
+}
+function adminBioDisable(){ try{ localStorage.removeItem(ABIO_KEY); }catch(e){} toast('اتلغت البصمة.'); adminBioUi(); }
+async function adminBioToggle(){ if(adminBioGet()) adminBioDisable(); else await adminBioEnable(); }
+async function adminBioOffer(){ try{ if(adminBioGet()||sessionStorage.getItem('abio-asked')) return; sessionStorage.setItem('abio-asked','1'); if(await adminBioAvailable() && confirm('تفعّل الدخول بالبصمة للأدمن على الجهاز ده؟ (هتفتح اللوحة بالبصمة بدل كتابة الإيميل والباسورد)')) adminBioEnable(); }catch(e){} }
+function adminBioUi(){
+  const on=!!adminBioGet(), b=document.getElementById('abio-btn'); if(b) b.innerHTML=(on?'🔓 إلغاء البصمة':'👆 تفعيل البصمة');
+  const lb=document.getElementById('lg-bio-btn'); if(lb) lb.style.display=on?'block':'none';
+}
+let abioBusy=false;
+async function adminBioUnlock(auto){
+  const b=adminBioGet(), err=document.getElementById('lg-err'); if(!b||abioBusy) return; abioBusy=true; err.textContent='';
+  try{ await navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),allowCredentials:[{type:'public-key',id:b64uD(b.credId),transports:['internal']}],userVerification:'required',timeout:60000}}); }
+  catch(e){ abioBusy=false; if(!auto) err.textContent='ماتمش التحقق بالبصمة — جرّب تاني أو استخدم اليوزر والباسورد.'; return; }
+  try{
+    const u=await new Promise(res=>{ const off=auth.onAuthStateChanged(x=>{ off(); res(x); }); });
+    if(u&&u.uid===b.uid){ const ad=await db.collection('admins').doc(u.uid).get(); if(ad.exists){ document.getElementById('localgate').style.display='none'; enterDash(); abioBusy=false; return; } }
+    unlockToGate(); document.getElementById('gate-err').textContent='انتهت الجلسة — سجّل دخول بالإيميل مرة واحدة وبعدها البصمة هتشتغل.'; if(b.email) document.getElementById('gate-email').value=b.email;
+  }catch(e){ err.textContent='حصل خطأ: '+(e.message||e); }
+  abioBusy=false;
+}
+
+/* ================= موبايل: شريط سفلي + قايمة منسدلة علوية للتابات ================= */
+const AMB_PIN=['users','accounts','perm','control'];
+function ambTabs(){ return [...document.querySelectorAll('.tabs .tab')].map(b=>({b,name:((b.getAttribute('onclick')||'').match(/switchTab\('([^']+)'/)||[])[1],label:b.textContent.replace(/\s+/g,' ').trim(),icon:(b.querySelector('use')||{getAttribute:()=>'#i-star'}).getAttribute('href')})); }
+function ambClose(){ ['amb-sheet','amb-top','amb-ov'].forEach(i=>{ const e=document.getElementById(i); if(e) e.classList.remove('open'); }); document.querySelectorAll('#amb button.sel').forEach(b=>b.classList.remove('sel')); }
+function ambItems(list){ return `<div class="amb-grid">${list.map((t,i)=>`<button type="button" class="amb-it ${t.b.classList.contains('active')?'act':''}" onclick="ambPick('${t.name}')"><svg class="icon"><use href="${t.icon}"></use></svg><span>${escapeHtml(t.label)}</span></button>`).join('')}</div>`; }
+function ambPick(name){ ambClose(); const t=ambTabs().find(x=>x.name===name); if(t){ t.b.click(); ambMark(); window.scrollTo(0,0); } }
+function ambOpen(kind){
+  const sh=document.getElementById(kind==='top'?'amb-top':'amb-sheet'); if(!sh) return; const was=sh.classList.contains('open'); ambClose(); if(was) return;
+  const all=ambTabs(), list=kind==='top'?all:all.filter(t=>!AMB_PIN.includes(t.name));
+  sh.innerHTML=ambItems(list); sh.classList.add('open'); document.getElementById('amb-ov').classList.add('open');
+  if(kind!=='top'){ const m=document.querySelector('#amb button[data-more]'); if(m) m.classList.add('sel'); }
+}
+function ambMark(){
+  const cur=(document.querySelector('.tabs .tab.active')||{}).getAttribute?(document.querySelector('.tabs .tab.active').getAttribute('onclick')||'').match(/switchTab\('([^']+)'/):null, name=cur&&cur[1];
+  document.querySelectorAll('#amb button[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===name));
+  const mb=document.querySelector('#amb button[data-more]'); if(mb) mb.classList.toggle('on',!!name&&!AMB_PIN.includes(name));
+  const lab=document.getElementById('amb-cur'); const t=ambTabs().find(x=>x.name===name); if(lab&&t) lab.firstElementChild.textContent=t.label;
+}
+function ambBuild(){
+  if(document.getElementById('amb')) return;
+  const tabs=ambTabs(); if(!tabs.length) return;
+  ['amb-ov','amb-sheet','amb-top'].forEach(id=>{ const d=document.createElement('div'); d.id=id; document.body.appendChild(d); });
+  document.getElementById('amb-ov').onclick=ambClose;
+  const bar=document.createElement('nav'); bar.id='amb';
+  bar.innerHTML=AMB_PIN.map(n=>tabs.find(t=>t.name===n)).filter(Boolean).map(t=>`<button type="button" data-t="${t.name}" onclick="ambPick('${t.name}')"><svg class="icon"><use href="${t.icon}"></use></svg><span>${escapeHtml(t.label.length>11?t.label.slice(0,10)+'…':t.label)}</span></button>`).join('')+`<button type="button" data-more="1" onclick="ambOpen('more')"><svg class="icon"><use href="#i-menu"></use></svg><span>المزيد ▴</span></button>`;
+  document.body.appendChild(bar);
+  const head=document.querySelector('.head-actions')||document.querySelector('.head'); if(head){ const c=document.createElement('button'); c.id='amb-cur'; c.className='icon-btn'; c.type='button'; c.onclick=()=>ambOpen('top'); c.innerHTML='<span>القائمة</span><b style="font-size:10px">▾</b>'; head.insertBefore(c,head.firstChild); }
+  ambMark();
+}
+const _swTab=switchTab; switchTab=function(n,b){ const r=_swTab(n,b); try{ ambMark(); }catch(e){} return r; };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') ambClose(); });
 </script>
 </body>
 </html>
