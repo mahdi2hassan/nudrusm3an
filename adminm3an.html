@@ -357,6 +357,9 @@ table{border-collapse:separate; border-spacing:0;}
     <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
     <button class="tab" onclick="switchTab('perm', this)"><svg class="icon"><use href="#i-lock"></use></svg> صلاحيات المشتركين</button>
     <button class="tab" onclick="switchTab('control', this)"><svg class="icon"><use href="#i-star"></use></svg> التحكم الشامل</button>
+    <button class="tab" onclick="switchTab('tickets', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> تذاكر الدعم</button>
+    <button class="tab" onclick="switchTab('bcast', this)"><svg class="icon"><use href="#i-star"></use></svg> إشعارات مستهدفة</button>
+    <button class="tab" onclick="switchTab('health', this)"><svg class="icon"><use href="#i-check"></use></svg> صحة النظام</button>
     <button class="tab" onclick="switchTab('activity', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> لوحة النشاط</button>
     <button class="tab" onclick="switchTab('nid', this)"><svg class="icon"><use href="#i-user"></use></svg> الأرقام القومية</button>
     <button class="tab" onclick="switchTab('audit', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> سجل التدقيق</button>
@@ -547,6 +550,12 @@ table{border-collapse:separate; border-spacing:0;}
       <div id="ctl-switches" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:10px;"></div>
     </div>
     <div class="card">
+      <h3 style="margin-bottom:6px;">📏 حدود الاستخدام</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;">اتركها 0 أو فاضية لعدم التحديد. الحدود بتتطبق من الواجهة.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px;"><div class="field"><label>أقصى مستندات منشورة بكود لكل مستخدم</label><input type="number" min="0" id="ctl-q-docs"></div><div class="field"><label>أقصى زيارات صفية في الشهر لكل مشرف</label><input type="number" min="0" id="ctl-q-visits"></div></div>
+      <label style="display:flex; gap:10px; align-items:center; margin-top:12px; padding:12px 14px; border:1px solid #e6b3ae; background:#fff5f4; border-radius:14px; font-weight:800; font-size:13.5px; cursor:pointer;"><input type="checkbox" id="ctl-ro" style="width:auto; min-height:0;"> 🔒 وضع الصيانة (قراءة فقط): إيقاف أي حفظ أو نشر من المستخدمين مؤقتًا</label>
+    </div>
+    <div class="card">
       <h3 style="margin-bottom:6px;">📋 معايير الزيارة الصفية الافتراضية</h3>
       <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;">معيار في كل سطر (حتى 12). كل مشرف يقدر يعمل قالبه الخاص فوقها. اتركها فاضية للمعايير الافتراضية للمنصة.</p>
       <textarea id="ctl-crit" rows="8" style="width:100%; padding:10px;"></textarea>
@@ -564,11 +573,34 @@ table{border-collapse:separate; border-spacing:0;}
     </div>
   </div>
 
+  <div class="panel" id="panel-tickets">
+    <div class="card"><h3 style="margin-bottom:6px;">🎫 تذاكر الدعم</h3>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"><select id="tk-f" onchange="renderTickets()" style="width:auto;"><option value="">كل الحالات</option><option value="new">جديدة</option><option value="progress">قيد الحل</option><option value="done">تم الحل</option></select><button class="btn" onclick="loadTickets()">↻ تحديث</button></div><div class="status" id="tk-status"></div></div>
+    <div id="tk-list"></div>
+  </div>
+
+  <div class="panel" id="panel-bcast">
+    <div class="card"><h3 style="margin-bottom:6px;">📣 إشعار مستهدف</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;">بيظهر للجمهور المحدد كتنبيه داخل التطبيق وفي تبويب "إشعارات المنصة". تقدر تجدول وقت البداية والنهاية.</p>
+      <div class="field"><label>الجمهور</label><select id="bc-aud"></select></div>
+      <div class="field"><label>نص الإشعار</label><textarea id="bc-text" rows="3" maxlength="400"></textarea></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><div class="field"><label>وقت الإرسال (فاضي = الآن)</label><input type="datetime-local" id="bc-at"></div><div class="field"><label>ينتهي (اختياري)</label><input type="datetime-local" id="bc-end"></div></div>
+      <button class="btn" onclick="sendBroadcast()">📣 نشر</button><div class="status" id="bc-status"></div></div>
+    <div class="card"><h3 style="margin-bottom:8px;">الإشعارات المنشورة</h3><div id="bc-list"></div></div>
+  </div>
+
+  <div class="panel" id="panel-health">
+    <div class="card"><h3 style="margin-bottom:6px;">🩺 صحة النظام</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;">فحص سريع للاتصال والأعداد والحالات اللي محتاجة تدخل.</p>
+      <button class="btn" onclick="loadHealth()">↻ فحص الآن</button><div class="status" id="health-status"></div></div>
+    <div id="health-body"></div>
+  </div>
+
   <div class="panel" id="panel-activity">
     <div class="card">
       <h3 style="margin-bottom:6px;">📈 لوحة النشاط</h3>
       <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:10px;">إحصائيات حية من البيانات: الحسابات، استخدام الأدوات، والمشاركات. بتقرا حتى 500 مستند من كل مجموعة.</p>
-      <button class="btn" onclick="loadActivity()">↻ تحديث الإحصائيات</button>
+      <button class="btn" onclick="loadActivity()">↻ تحديث الإحصائيات</button> <button class="btn" style="background:var(--ink)" onclick="printMonthly()">🖨️ تقرير شهري للإدارة</button>
       <div class="status" id="act-status"></div>
     </div>
     <div id="act-body"></div>
@@ -584,7 +616,7 @@ table{border-collapse:separate; border-spacing:0;}
       <div class="field"><label>اسم الدفعة / ملاحظة (اختياري)</label><input type="text" id="nid-batch" placeholder="مثال: دفعة 2026 — كلية التربية"></div>
       <div class="field"><label>طريقة التفعيل</label><select id="nid-method"><option value="temp">كلمة مرور مبدئية لكل رقم (الأكثر أمانًا — موصى بها)</option><option value="open">تفعيل مفتوح: أي حد يعرف الرقم يفعّله</option></select>
         <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">مع الكلمة المبدئية: بيتولّد كود عشوائي لكل رقم، وبينزل لك ملف CSV مرة واحدة بالرقم والكود تسلّمه لصاحبه. الرقم القومي لوحده مايكفيش للتفعيل.</div></div>
-      <div class="field"><label>تاريخ انتهاء المنحة (اختياري)</label><input type="date" id="nid-expiry"></div>
+      <div class="field"><label>تاريخ انتهاء المنحة (اختياري)</label><input type="date" id="nid-expiry"><div style="display:flex; gap:6px; margin-top:6px;"><button type="button" class="btn" style="background:var(--ink); padding:6px 12px;" onclick="nidTrial(7)">تجربة 7 أيام</button><button type="button" class="btn" style="background:var(--ink); padding:6px 12px;" onclick="nidTrial(30)">تجربة 30 يوم</button></div></div>
       <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
         <button class="btn" onclick="addNidGrants()"><svg class="icon"><use href="#i-check"></use></svg> إضافة الأرقام</button>
         <label class="btn" style="background:var(--ink); cursor:pointer;">📥 استيراد من ملف CSV<input type="file" id="nid-file" accept=".csv,.txt" style="display:none" onchange="importNidCsv(this)"></label>
@@ -611,7 +643,6 @@ table{border-collapse:separate; border-spacing:0;}
   </div>
 
   <div class="panel" id="panel-users">
-    <button class="save-btn" style="margin-bottom:10px" onclick="exportUsersCsv()">📥 تصدير المستخدمين CSV</button>
     <div class="status" id="users-status" style="margin-bottom:10px;"></div>
     <div id="users-list"></div>
   </div>
@@ -679,6 +710,7 @@ table{border-collapse:separate; border-spacing:0;}
     <div class="card" style="margin-top:16px;">
       <h3 style="margin-bottom:10px;">📣 إعلان عام لكل المستخدمين</h3>
       <div class="field"><label>نص الإعلان (هيظهر فورًا فوق الصفحة لكل المعلمين وطلاب المعلم)</label><textarea id="set-announce-text" rows="2" placeholder="مثال: صيانة مجدولة غدًا من 2 إلى 4 عصرًا"></textarea></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;"><div class="field"><label>يبدأ ظهوره (اختياري)</label><input type="datetime-local" id="set-announce-start"></div><div class="field"><label>ينتهي ظهوره (اختياري)</label><input type="datetime-local" id="set-announce-end"></div></div>
       <label style="display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; margin-bottom:12px;"><input type="checkbox" id="set-announce-active" style="width:auto;"> تفعيل عرض الإعلان الآن</label>
       <button class="btn" onclick="saveAnnouncement()"><svg class="icon"><use href="#i-check"></use></svg> نشر الإعلان</button>
       <div class="status" id="announce-status"></div>
@@ -905,6 +937,9 @@ function switchTab(name, btn){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
+  if(name==='health'){ try{ loadHealth(); }catch(e){} }
+  if(name==='tickets'){ try{ loadTickets(); }catch(e){} }
+  if(name==='bcast'){ try{ loadBroadcasts(); }catch(e){} }
 }
 
 /* ================= لسه كيف / التربية العملية / بحوث الفعل ================= */
@@ -1302,6 +1337,8 @@ async function loadAnnouncement(){
     const d = doc.exists ? doc.data() : {};
     document.getElementById('set-announce-text').value = d.text || '';
     document.getElementById('set-announce-active').checked = !!d.active;
+    const lt=ms=>ms?new Date(ms-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,16):'';
+    document.getElementById('set-announce-start').value = lt(d.startMs); document.getElementById('set-announce-end').value = lt(d.endMs);
   }catch(err){ console.warn(err); }
 }
 async function saveAnnouncement(){
@@ -1309,7 +1346,7 @@ async function saveAnnouncement(){
   const text = document.getElementById('set-announce-text').value.trim();
   const active = document.getElementById('set-announce-active').checked;
   try{
-    await db.collection('siteSettings').doc('announcement').set({ text, active, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    await db.collection('siteSettings').doc('announcement').set({ text, active, startMs: (document.getElementById('set-announce-start').value ? new Date(document.getElementById('set-announce-start').value).getTime() : 0), endMs: (document.getElementById('set-announce-end').value ? new Date(document.getElementById('set-announce-end').value).getTime() : 0), updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
     status.className = 'status ok'; status.textContent = active ? '✓ الإعلان ظاهر الآن لكل المستخدمين.' : '✓ تم الحفظ (الإعلان متوقف حاليًا).';
     toast('اتحفظ الإعلان.');
   }catch(err){ status.className = 'status err'; status.textContent = 'حصل خطأ: '+err.message; }
@@ -1443,7 +1480,7 @@ async function loadUsers(){
       const isVerified = !!u.verified;
       return `<div class="urow" id="urow-${d.id}">
         <div class="u-top">
-          <div><div class="u-name">${escapeHtml(u.name||'—')}${ndPayInfo(u)} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span>${isExpert?' <span class="badge active">⭐ معلم خبير</span>':''}${isVerified?' <span class="badge active">✓ موثّق</span>':''}</div>
+          <div><div class="u-name">${escapeHtml(u.name||'—')} <span class="badge ${status}">${STATUS_LABELS[status]||status}</span>${isExpert?' <span class="badge active">⭐ معلم خبير</span>':''}${isVerified?' <span class="badge active">✓ موثّق</span>':''}</div>
           <div class="u-meta">${escapeHtml(u.email||'')} · ${escapeHtml(u.phone||'')} · ${accLabel(u)}${u.supervisorId?' · تابع لمشرف':''}${PAID_TYPES.includes(u.accountType) && u.feeAmount!=null ? ' · رسوم: '+u.feeAmount+' ج'+(u.couponCode?' (كوبون '+escapeHtml(u.couponCode)+')':'') : ''}</div></div>
         </div>
         <div class="u-controls">
@@ -2373,6 +2410,7 @@ async function loadControlAdmin(){
   try{ const d=await db.collection('siteSettings').doc('control').get(); CTL=d.exists?d.data():{}; }catch(e){ CTL={}; }
   const sw=document.getElementById('ctl-switches'); if(!sw) return;
   sw.innerHTML=CTL_SWITCHES.map(x=>`<label style="display:flex; gap:10px; align-items:center; padding:12px 14px; border:1px solid var(--line); border-radius:14px; background:#fff; cursor:pointer; font-weight:700; font-size:13.5px;"><input type="checkbox" class="ctl-sw" value="${x[0]}" ${CTL[x[0]]===false?'':'checked'} style="width:auto; min-height:0;"> ${escapeHtml(x[1])}</label>`).join('');
+  const Q=CTL.quotas||{}; document.getElementById('ctl-q-docs').value=Q.docs||''; document.getElementById('ctl-q-visits').value=Q.visits||''; document.getElementById('ctl-ro').checked=CTL.readOnly===true;
   document.getElementById('ctl-crit').value=(CTL.visitCriteria||[]).join('\n'); document.getElementById('ctl-ideas').value=(CTL.ideasBank||[]).join('\n');
   const sc=document.getElementById('ctl-shortcuts');
   sc.innerHTML=[['accounts','الحسابات والأسعار'],['perm','صلاحيات المشتركين'],['nid','الأرقام القومية'],['audit','سجل التدقيق'],['settings','الإعدادات والنسخ الاحتياطي'],['users','المستخدمين'],['reports','البلاغات']].map(x=>`<button class="btn" style="background:var(--ink)" onclick="goTab('${x[0]}')">${x[1]}</button>`).join('');
@@ -2381,10 +2419,76 @@ function goTab(name){ const b=[...document.querySelectorAll('.tab')].find(t=>(t.
 async function saveControl(){
   const st=document.getElementById('ctl-status'); st.className='status';
   const o={}; document.querySelectorAll('.ctl-sw').forEach(c=>o[c.value]=c.checked);
+  o.quotas={docs:Math.max(0,+document.getElementById('ctl-q-docs').value||0),visits:Math.max(0,+document.getElementById('ctl-q-visits').value||0)}; o.readOnly=document.getElementById('ctl-ro').checked;
   o.visitCriteria=document.getElementById('ctl-crit').value.split('\n').map(x=>x.trim().slice(0,60)).filter(Boolean).slice(0,12);
   o.ideasBank=document.getElementById('ctl-ideas').value.split('\n').map(x=>x.trim()).filter(x=>x.split('|').length===3&&x.split('|')[2].trim()).slice(0,300);
   try{ await db.collection('siteSettings').doc('control').set(o,{merge:true}); CTL=Object.assign(CTL,o); audit('control','','','تعديل إعدادات التحكم الشامل'); st.className='status ok'; st.textContent='✓ اتحفظت. بتسري عند تحديث صفحة المستخدمين.'; }
   catch(e){ st.textContent='تعذّر الحفظ: '+(e.message||e.code); }
+}
+function growthSvg(pts){
+  const W=640,H=200,P=30,mx=Math.max(...pts.map(p=>p.total),1),mn=Math.min(...pts.map(p=>p.total)),rg=Math.max(1,mx-mn);
+  const X=i=>P+i*(W-2*P)/(pts.length-1), Y=v=>H-P-(v-mn)/rg*(H-2*P), d=pts.map((p,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(p.total).toFixed(1)).join(' ');
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto;" direction="ltr"><path d="${d}" fill="none" stroke="#1f3a6e" stroke-width="2.5" stroke-linejoin="round"/>${pts.map((p,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(p.total).toFixed(1)}" r="3" fill="#e3a82b"><title>${p.day}: ${p.total}</title></circle>`).join('')}<text x="${P}" y="14" font-size="11" fill="#667">${mx}</text><text x="${P}" y="${H-8}" font-size="11" fill="#667">${pts[0].day}</text><text x="${W-P}" y="${H-8}" font-size="11" fill="#667" text-anchor="end">${pts[pts.length-1].day}</text></svg>`;
+}
+/* ===== تذاكر الدعم ===== */
+let TICKETS=[]; const TK_ST={new:'🆕 جديدة',progress:'🛠️ قيد الحل',done:'✅ تم الحل'};
+const TK_CANNED=['تم استلام مشكلتك وجاري العمل عليها.','من فضلك جرّب تحديث الصفحة وتسجيل الدخول من جديد، وبلّغنا لو المشكلة استمرت.','تم تفعيل اشتراكك — حدّث الصفحة.','محتاجين صورة/رابط يوضح المشكلة أكتر.','تم حل المشكلة، شكرًا لتواصلك.'];
+async function loadTickets(){ const st=document.getElementById('tk-status'); st.textContent='جاري التحميل...'; try{ const s=await db.collection('tickets').orderBy('updatedMs','desc').limit(200).get(); TICKETS=s.docs.map(d=>({id:d.id,...d.data()})); st.className='status ok'; st.textContent='✓ '+TICKETS.length+' تذكرة'; renderTickets(); }catch(e){ st.className='status err'; st.textContent='تعذّر التحميل: '+(e.code||e.message)+' — انشر قواعد tickets.'; } }
+function renderTickets(){
+  const f=document.getElementById('tk-f').value, L=TICKETS.filter(t=>!f||t.status===f);
+  document.getElementById('tk-list').innerHTML=L.map(t=>`<div class="card"><h3 style="margin-bottom:4px;">${escapeHtml(t.subject)} <small style="color:var(--ink-soft)">${TK_ST[t.status]||t.status} · ${escapeHtml(t.category||'')}</small></h3><div style="font-size:12px; color:var(--ink-soft); margin-bottom:6px;">${escapeHtml(t.ownerName||'')} · ${escapeHtml(t.ownerEmail||'')} · ${escapeHtml(ACC_TYPES[t.accountType]||t.accountType||'')} · ${new Date(t.createdMs).toLocaleString('ar-EG')}</div><p style="line-height:1.9;">${escapeHtml(t.body)}</p>${(t.replies||[]).map(r=>`<div style="margin:6px 0; padding:8px 12px; border-radius:12px; background:${r.admin?'var(--accent-soft)':'var(--paper-dim)'}; font-size:13px;"><b>${r.admin?'الدعم':'المستخدم'}:</b> ${escapeHtml(r.text)}</div>`).join('')}
+    <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;"><select id="tkc-${t.id}" onchange="document.getElementById('tkr-${t.id}').value=this.value" style="width:auto; max-width:100%;"><option value="">رد جاهز…</option>${TK_CANNED.map(c=>`<option>${escapeHtml(c)}</option>`).join('')}</select><input type="text" id="tkr-${t.id}" placeholder="اكتب الرد" style="flex:1; min-width:180px;"><button class="btn" onclick="tkReply('${t.id}','progress')">رد</button><button class="btn" style="background:#2e8b57" onclick="tkReply('${t.id}','done')">رد وحل ✓</button><button class="btn" style="background:var(--ink)" onclick="tkSet('${t.id}','progress')">قيد الحل</button></div></div>`).join('')||'<div class="card" style="color:var(--ink-soft)">مفيش تذاكر.</div>';
+}
+async function tkReply(id,st){ const v=document.getElementById('tkr-'+id).value.trim(); if(!v) return toast('اكتب الرد.'); try{ await db.collection('tickets').doc(id).update({replies:firebase.firestore.FieldValue.arrayUnion({text:v.slice(0,1000),admin:true,ms:Date.now()}),status:st,updatedMs:Date.now()}); audit('ticket',id,'','رد على تذكرة'); toast('اتبعت الرد.'); loadTickets(); }catch(e){ toast('تعذّر: '+(e.code||e.message)); } }
+async function tkSet(id,st){ try{ await db.collection('tickets').doc(id).update({status:st,updatedMs:Date.now()}); loadTickets(); }catch(e){ toast('تعذّر التحديث.'); } }
+/* ===== إشعارات مستهدفة ===== */
+function bcAudOptions(){
+  const sup=ALL_USERS.filter(u=>u.role==='supervisor'||u.role==='office');
+  return '<option value="all">كل المستخدمين</option>'+Object.keys(ACC_TYPES).map(k=>`<option value="${k}">نوع الحساب: ${escapeHtml(ACC_TYPES[k])}</option>`).join('')+sup.map(u=>`<option value="sup:${u.id}">مجموعة: ${escapeHtml(u.name||u.email)}</option>`).join('');
+}
+let BCS=[];
+async function loadBroadcasts(){
+  const a=document.getElementById('bc-aud'); if(a&&!a.options.length) a.innerHTML=bcAudOptions();
+  try{ const s=await db.collection('broadcasts').orderBy('sendAtMs','desc').limit(60).get(); BCS=s.docs.map(d=>({id:d.id,...d.data()})); }catch(e){ BCS=[]; }
+  document.getElementById('bc-list').innerHTML=BCS.map(b=>`<div style="display:flex; gap:10px; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--line);"><div><div>${escapeHtml(b.text)}</div><small style="color:var(--ink-soft)">${escapeHtml(b.audLabel||b.audience)} · ${new Date(b.sendAtMs).toLocaleString('ar-EG')}${b.sendAtMs>Date.now()?' (مجدول)':''}${b.endMs?' → '+new Date(b.endMs).toLocaleString('ar-EG'):''}</small></div><button class="btn" style="background:#b3261e; padding:6px 12px;" onclick="delBroadcast('${b.id}')">حذف</button></div>`).join('')||'<div style="color:var(--ink-soft)">لا يوجد.</div>';
+}
+async function sendBroadcast(){
+  const st=document.getElementById('bc-status'), text=document.getElementById('bc-text').value.trim(), sel=document.getElementById('bc-aud'); if(!text){ st.className='status err'; st.textContent='اكتب النص.'; return; }
+  const at=document.getElementById('bc-at').value, en=document.getElementById('bc-end').value;
+  try{ await db.collection('broadcasts').add({text,audience:sel.value,audLabel:sel.options[sel.selectedIndex].text,sendAtMs:at?new Date(at).getTime():Date.now(),endMs:en?new Date(en).getTime():0,from:'الإدارة',createdMs:Date.now()}); audit('broadcast','','',text.slice(0,60)); st.className='status ok'; st.textContent='✓ اتنشر.'; document.getElementById('bc-text').value=''; loadBroadcasts(); }
+  catch(e){ st.className='status err'; st.textContent='تعذّر: '+(e.code||e.message)+' — انشر قواعد broadcasts.'; }
+}
+async function delBroadcast(id){ if(!confirm('حذف الإشعار؟')) return; await db.collection('broadcasts').doc(id).delete(); loadBroadcasts(); }
+/* ===== تقرير شهري للإدارة ===== */
+async function printMonthly(){
+  const U=ALL_USERS.filter(u=>u.role!=='admin'), now=Date.now(), ms=u=>u.createdMs||(u.createdAt&&u.createdAt.toMillis?u.createdAt.toMillis():0), mk=new Date().toISOString().slice(0,7);
+  const byType={}; U.forEach(u=>{ const t=ACC_TYPES[u.accountType]||u.accountType||'غير محدد'; byType[t]=(byType[t]||0)+1; });
+  const nm=U.filter(u=>new Date(ms(u)).toISOString().slice(0,7)===mk).length, n30=U.filter(u=>now-ms(u)<30*864e5).length;
+  let delta='—'; try{ const s=await db.collection('statsDaily').orderBy('day').limitToLast(31).get(), a=s.docs.map(d=>d.data()); if(a.length>1) delta=(a[a.length-1].total-a[0].total>=0?'+':'')+(a[a.length-1].total-a[0].total)+' (من '+a[0].day+')'; }catch(e){}
+  let tk='—'; try{ const s=await db.collection('tickets').limit(500).get(), c={new:0,progress:0,done:0}; s.forEach(d=>{ c[d.data().status]=(c[d.data().status]||0)+1; }); tk='جديدة '+c.new+' · قيد الحل '+c.progress+' · محلولة '+c.done; }catch(e){}
+  let rk=''; try{ const s=await db.collection('userTools').limit(500).get(), sup=ALL_USERS.filter(u=>u.role==='supervisor'), cnt=u=>{ const d=s.docs.find(x=>x.id===u.id); const o=d&&d.data().data||{}; return ['visits','plans','flog','minutes','vplan'].reduce((a,k)=>a+(Array.isArray(o[k])?o[k].length:0),0); }; rk=sup.map(u=>[u.name||u.email,cnt(u),ALL_USERS.filter(x=>x.supervisorId===u.id).length]).sort((a,b)=>b[1]-a[1]).slice(0,10).map(r=>`<tr><td>${escapeHtml(r[0])}</td><td>${r[2]}</td><td>${r[1]}</td></tr>`).join(''); }catch(e){}
+  const w=window.open('','_blank'); if(!w) return toast('اسمح بالنوافذ المنبثقة.');
+  w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>تقرير شهري</title><style>@page{size:A4;margin:14mm} body{font-family:Cairo,Tahoma,sans-serif;padding:16px;color:#111} h1{text-align:center;color:#1f3a6e;margin:0} .c{text-align:center;color:#666;margin-bottom:16px} table{width:100%;border-collapse:collapse;margin:8px 0 18px} th,td{border:1px solid #444;padding:6px 8px;text-align:center} th{background:#eef1f8} h2{border-right:5px solid #e3a82b;padding-right:8px;font-size:16px}</style></head><body><h1>نُدرس معًا — التقرير الشهري للإدارة</h1><div class="c">${mk} · أُنشئ ${new Date().toLocaleDateString('ar-EG')}</div>
+  <h2>ملخص</h2><table><tr><th>إجمالي الحسابات</th><th>جدد هذا الشهر</th><th>جدد آخر 30 يوم</th><th>صافي النمو (لقطات)</th></tr><tr><td>${U.length}</td><td>${nm}</td><td>${n30}</td><td>${delta}</td></tr></table>
+  <h2>الحسابات حسب النوع</h2><table><tr><th>النوع</th><th>العدد</th></tr>${Object.keys(byType).map(k=>`<tr><td>${escapeHtml(k)}</td><td>${byType[k]}</td></tr>`).join('')}</table>
+  <h2>الدعم الفني</h2><p>${tk}</p>${rk?`<h2>أنشط المشرفين (سجلات الأدوات)</h2><table><tr><th>المشرف</th><th>عدد الحسابات</th><th>السجلات</th></tr>${rk}</table>`:''}<script>setTimeout(()=>print(),500)<\/script></body></html>`); w.document.close();
+}
+function nidTrial(n){ const d=new Date(Date.now()+n*864e5); document.getElementById('nid-expiry').value=d.toISOString().slice(0,10); toast('هتنتهي المنحة بعد '+n+' يوم وتتقفل تلقائيًا.'); }
+async function loadHealth(){
+  const st=document.getElementById('health-status'), body=document.getElementById('health-body'); st.className='status'; st.textContent='جاري الفحص...'; body.innerHTML='';
+  const rows=[]; const t0=performance.now();
+  try{ await db.collection('siteSettings').doc('control').get(); rows.push(['الاتصال بـ Firestore','✅ سليم ('+Math.round(performance.now()-t0)+' ms)']); }catch(e){ rows.push(['الاتصال بـ Firestore','❌ '+(e.code||e.message)]); }
+  const U=ALL_USERS.filter(u=>u.role!=='admin'), now=Date.now();
+  const cnt={}; 
+  for(const c of ['conversations','sharedDocs','qbank','surveys','reports','pointsLedger']){ try{ const q=await db.collection(c).limit(500).get(); cnt[c]=q.size+(q.size===500?'+':''); }catch(e){ cnt[c]='⚠️ لا صلاحية'; } }
+  try{ const q=await db.collection('qbank').where('status','==','pending').get(); cnt['qbankPending']=q.size; }catch(e){}
+  const warn=[['حسابات بانتظار الموافقة',U.filter(u=>u.status==='pending'||u.approved===false).length],['حسابات منتهية/مقفولة',U.filter(u=>['expired','revoked','suspended'].includes(u.status)).length],['حسابات من غير نوع',U.filter(u=>!u.accountType).length],['أسئلة بانتظار مراجعة الخبراء',cnt.qbankPending||0]];
+  const ctl=CTL||{}, off=CTL_SWITCHES.filter(x=>ctl[x[0]]===false).map(x=>x[1]);
+  body.innerHTML=`<div class="card"><h3 style="margin-bottom:8px;">الفحص</h3>${rows.map(r=>`<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line);"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}<div style="display:flex; justify-content:space-between; padding:8px 0;"><span>وضع القراءة فقط</span><b>${ctl.readOnly===true?'🔒 مفعّل':'مقفول (طبيعي)'}</b></div></div>
+  <div class="card"><h3 style="margin-bottom:8px;">محتاج متابعة</h3>${warn.map(r=>`<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line);"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div>
+  <div class="card"><h3 style="margin-bottom:8px;">أحجام المجموعات (حتى 500)</h3>${['conversations','sharedDocs','qbank','surveys','reports','pointsLedger'].map(c=>`<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line);"><span>${c}</span><b>${cnt[c]}</b></div>`).join('')}</div>
+  <div class="card"><h3 style="margin-bottom:8px;">ميزات موقوفة من التحكم الشامل</h3>${off.length?off.map(x=>`<span class="chip" style="display:inline-block; margin:3px; padding:5px 12px; background:#fff1d6; border-radius:99px; font-size:13px;">${escapeHtml(x)}</span>`).join(''):'<div style="color:var(--ink-soft)">كل الميزات شغالة.</div>'}</div>`;
+  st.className='status ok'; st.textContent='✓ تم الفحص '+new Date().toLocaleTimeString('ar-EG');
 }
 /* ================= لوحة النشاط ================= */
 function actBars(title,map,total){
@@ -2411,6 +2515,12 @@ async function loadActivity(){
     const g=await db.collection('idGrants').limit(500).get(); let cl=0; g.forEach(d=>{ const o=d.data(); if(o.claimedUid||o.claimedMs||o.claimed) cl++; });
     html+=actBars('منح الأرقام القومية',{'مفعّلة':cl,'لم تُفعّل بعد':g.size-cl},g.size);
   }catch(e){}
+  try{
+    const day=new Date().toISOString().slice(0,10);
+    await db.collection('statsDaily').doc(day).set({day,total:U.length,n7,n30,byType,ms:Date.now()},{merge:true});
+    const sn=await db.collection('statsDaily').orderBy('day').limitToLast(60).get(), pts=sn.docs.map(d=>d.data());
+    html+=`<div class="card"><h3 style="margin-bottom:6px;">📊 نمو المنصة (لقطة يومية)</h3>${pts.length<2?'<div style="color:var(--ink-soft); font-size:13px;">اللقطة بتتسجل كل يوم تفتح فيه لوحة النشاط — الرسم هيظهر بعد يومين.</div>':growthSvg(pts)}</div>`;
+  }catch(e){ html+='<div class="card">تعذّر حفظ/قراءة اللقطة اليومية — انشر قواعد statsDaily.</div>'; }
   body.innerHTML=html; st.className='status ok'; st.textContent='✓ تم التحديث '+new Date().toLocaleTimeString('ar-EG');
 }
 /* ================= بصمة الدخول للأدمن ================= */
@@ -2478,16 +2588,6 @@ function ambBuild(){
 }
 const _swTab=switchTab; switchTab=function(n,b){ const r=_swTab(n,b); try{ ambMark(); }catch(e){} return r; };
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') ambClose(); });
-
-/* ═══ من أوائل: عرض المرجع/الإيصال + تصدير المستخدمين CSV ═══ */
-function ndPayInfo(u){ return u.payRef ? `<br><span style="font-size:11.5px;font-weight:600">🧾 ${escapeHtml(u.payRef)}${u.payReceipt?` · <a href="${u.payReceipt}" target="_blank">عرض الإيصال</a>`:''}</span>` : ''; }
-async function exportUsersCsv(){
-  try{
-    const snap=await db.collection('users').orderBy('createdAt','desc').limit(2000).get();
-    const rows=[['الاسم','الإيميل','الموبايل','نوع الحساب','الحالة','الخطة','المبلغ','المرجع','كوبون']].concat(snap.docs.map(d=>{const u=d.data();return [u.name,u.email,u.phone,(typeof ACC_TYPES!=='undefined'&&ACC_TYPES[u.accountType])||u.accountType||'',STATUS_LABELS[u.status]||u.status||'',u.plan||'',u.feeAmount!=null?u.feeAmount:'',u.payRef||'',u.couponCode||''];}));
-    downloadCsv('users-'+new Date().toISOString().slice(0,10)+'.csv',rows);
-  }catch(e){ toast('تعذّر التصدير: '+(e.message||e.code),{type:'err'}); }
-}
 </script>
 </body>
 </html>

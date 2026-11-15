@@ -1076,6 +1076,20 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
 .sv-none{color:var(--ink-soft); text-align:center;}
 @media (max-width:1100px){ .sv-cal{grid-template-columns:repeat(2,1fr);} }
 @media (max-width:560px){ .sv-cal{grid-template-columns:1fr;} .sv-day{min-height:0;} }
+
+.sv-cur{border-color:var(--gold) !important; box-shadow:0 0 0 3px rgba(227,168,43,.2);}
+.chat-pin{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 14px; background:#fff8e8; border-bottom:1px solid rgba(227,168,43,.4); font-size:13px; font-weight:700; color:#7a5a0c;}
+.chat-pin button{background:none; border:0; cursor:pointer; font-size:14px; color:#7a5a0c; min-width:32px; min-height:32px;}
+#chat-qr-btn,#chat-pin-btn{flex:0 0 auto; padding:8px 12px;}
+.chat-qr{display:none; position:fixed; z-index:120; width:260px; max-height:300px; overflow:auto; background:#fff; border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow-md); padding:8px;}
+.chat-qr.open{display:block;}
+.qr-row{display:flex; gap:4px; margin-bottom:4px;}
+.qr-it{flex:1; text-align:start; padding:9px 12px; border:1px solid var(--line); border-radius:12px; background:var(--paper); font:inherit; font-size:13px; cursor:pointer;}
+.qr-x{border:0; background:none; color:#b3261e; cursor:pointer; min-width:30px;}
+.qr-add{display:flex; gap:6px; margin-top:6px;}
+#ro-banner{position:sticky; top:0; z-index:200; background:#7a1f1a; color:#fff; text-align:center; padding:9px 14px; font-weight:800; font-size:13px;}
+
+#off-banner{position:sticky; top:0; z-index:200; background:#4a4f5c; color:#fff; text-align:center; padding:8px 14px; font-weight:700; font-size:13px;}
 /* ===== Mobile pass ===== */
 #mbnav{display:none !important;}
 @media (max-width:1023px){
@@ -1516,8 +1530,6 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
         <div style="display:flex; gap:8px;"><input type="text" id="coupon-code" placeholder="كود الخصم (إن وُجد)" style="flex:1; text-transform:uppercase; padding:10px 12px; border:1px solid var(--line); border-radius:10px; font-family:inherit;"><button type="button" class="btn-primary" style="width:auto; padding:10px 18px;" onclick="applyCoupon()">تطبيق</button></div>
         <div class="auth-status" id="coupon-status"></div>
       </div>
-      <div class="gate-hint" id="nd-ref-line" style="font-weight:800;margin-top:10px"></div>
-      <div style="margin:8px 0"><label style="font-size:12.5px;font-weight:700;display:block;margin-bottom:4px">صورة إيصال التحويل (اختياري — بتسرّع المراجعة)</label><input type="file" id="nd-receipt" accept="image/*" onchange="ndPickReceipt(this)"></div>
       <a class="wa-btn" id="wa-confirm-link" href="#" target="_blank">تأكيد الدفع عبر واتساب</a>
 
       <button class="btn-primary btn-block pay-confirm-btn" onclick="finalizePaidPlan()">لقد حوّلت المبلغ — فعّل حسابي</button>
@@ -2424,6 +2436,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+try{ db.enablePersistence({ synchronizeTabs: true }).catch(() => {}); }catch(e){}
 
 /* ================= وضع الصيانة (siteSettings/maintenance) ================= */
 (function(){
@@ -2748,7 +2761,7 @@ async function finalizePaidPlan(){
   try{
     if(currentUid){
       await db.collection('users').doc(currentUid).update({
-        plan: selectedPlanKey, status:'pending_payment', feeAmount: plan.price, ...(selectedPlanKey === 'onetime' && feeCoupon ? { couponCode: feeCoupon.code, feeBase } : {}), ...ndPayExtra(),
+        plan: selectedPlanKey, status:'pending_payment', feeAmount: plan.price, ...(selectedPlanKey === 'onetime' && feeCoupon ? { couponCode: feeCoupon.code, feeBase } : {}),
         planRequestedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
     }
@@ -4812,7 +4825,7 @@ function subscribeAnnouncement(){
   if(announceUnsub) announceUnsub();
   announceUnsub = db.collection('siteSettings').doc('announcement').onSnapshot(doc => {
     const d = doc.exists ? doc.data() : {};
-    if(d && d.active && d.text){ el.textContent = '📣 ' + d.text; el.style.display = 'block'; }
+    if(d && d.active && d.text && (!d.startMs || Date.now() >= d.startMs) && (!d.endMs || Date.now() <= d.endMs)){ el.textContent = '📣 ' + d.text; el.style.display = 'block'; }
     else{ el.style.display = 'none'; }
   }, () => { el.style.display = 'none'; });
 }
@@ -5989,8 +6002,7 @@ function renderFeePayment(){
   PLANS.onetime.price = net; PLANS.onetime.name = 'رسوم الاشتراك — ' + accLabelOf();
   document.getElementById('pay-plan-title').textContent = 'تأكيد اشتراك: ' + PLANS.onetime.name;
   document.getElementById('pay-plan-sub').textContent = 'رسوم لمرة واحدة — المبلغ: ' + net + ' جنيه' + (feeCoupon ? ' (بعد كوبون ' + feeCoupon.code + ' — بدل ' + feeBase + ')' : '');
-  const msg = encodeURIComponent(`مرحبًا، أنا ${pendingUser.name || ''} حوّلت مبلغ ${net} جنيه لرسوم حساب "${accLabelOf()}" على نُدرس معًا${feeCoupon ? ' (كوبون ' + feeCoupon.code + ')' : ''}، برجاء تفعيل الحساب. الكود المرجعي: ${ndRef()}`);
-  document.getElementById('nd-ref-line').textContent = 'الكود المرجعي لطلبك: ' + ndRef() + ' — اكتبه في رسالة التحويل.';
+  const msg = encodeURIComponent(`مرحبًا، أنا ${pendingUser.name || ''} حوّلت مبلغ ${net} جنيه لرسوم حساب "${accLabelOf()}" على نُدرس معًا${feeCoupon ? ' (كوبون ' + feeCoupon.code + ')' : ''}، برجاء تفعيل الحساب.`);
   document.getElementById('wa-confirm-link').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
   document.getElementById('pay-coupon-wrap').style.display = 'block';
   document.getElementById('coupon-code').value = feeCoupon ? feeCoupon.code : '';
@@ -6858,7 +6870,7 @@ function hpShow(tab){
   hpTab = tab;
   const tabs = document.getElementById('hp-tabs'), body = document.getElementById('hp-body'); if(!tabs || !body) return;
   tabs.innerHTML = HP_TABS.filter(hpTabOk).map(t => `<button class="hp-chip ${t[0] === tab ? 'on' : ''}" onclick="hpShow('${t[0]}')">${t[1]}</button>`).join('');
-  body.innerHTML = ({ timer: hpTimerHtml, inbox: hpInboxHtml, report: hpReportHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml, ideas: hpIdeasHtml })[tab]();
+  body.innerHTML = ({ timer: hpTimerHtml, inbox: hpInboxHtml, report: hpReportHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml, ideas: hpIdeasHtml, today: hpTodayHtml, folio: hpFolioHtml, bc: hpBcHtml, ticket: hpTicketHtml })[tab]();
   if(tab === 'timer') hpTick(true);
   if(tab === 'msgs') hpMsgRender();
 }
@@ -8101,18 +8113,372 @@ const _ctlNid = showNidScreen; showNidScreen = function(){ if(ctlBlocked('nidLog
 const _ctlBioGet = bioGet; bioGet = function(){ return ctlOn('biometric') ? _ctlBioGet() : null; };
 const _ctlBioEn = bioEnable; bioEnable = function(){ if(ctlBlocked('biometric', 'الدخول بالبصمة')) return Promise.resolve(false); return _ctlBioEn.apply(this, arguments); };
 try{ loadControl(); }catch(e){}
+/* =====================================================================
+   دفعة 4: بنك أسئلة معتمد، مسار التربية العملية، تحدي المشرفين، ردود سريعة وتثبيت في الدردشة،
+   استبيان، حصص، وضع القراءة فقط
+   ===================================================================== */
+const ndWeek = () => { const d = new Date(); const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); const day = t.getUTCDay() || 7; t.setUTCDate(t.getUTCDate() + 4 - day); const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1)); return t.getUTCFullYear() + '-W' + String(Math.ceil(((t - y0) / 864e5 + 1) / 7)).padStart(2, '0'); };
 
-/* ═══ من أوائل: كود مرجعي للدفع + رفع إيصال التحويل ═══ */
-let _ndRef='', _ndReceipt='';
-function ndRef(){ if(!_ndRef) _ndRef='ND-'+Math.random().toString(36).slice(2,8).toUpperCase(); return _ndRef; }
-function ndPickReceipt(inp){
-  const f=inp.files[0]; if(!f){ _ndReceipt=''; return; }
-  const img=new Image(), r=new FileReader();
-  r.onload=()=>{ img.onload=()=>{ const k=Math.min(1,900/Math.max(img.width,img.height)), c=document.createElement('canvas'); c.width=img.width*k; c.height=img.height*k;
-    c.getContext('2d').drawImage(img,0,0,c.width,c.height); _ndReceipt=c.toDataURL('image/jpeg',.6); }; img.src=r.result; };
-  r.readAsDataURL(f);
+/* ----- 1) بنك أسئلة معتمد (qbank) ----- */
+let qbApproved = null, qbPending = null, qbMine = null;
+function qbLoad(force){
+  if(force){ qbApproved = qbPending = qbMine = null; }
+  if(qbApproved === null){ qbApproved = []; db.collection('qbank').where('status', '==', 'approved').limit(150).get().then(s => { qbApproved = s.docs.map(d => Object.assign({ id: d.id }, d.data())); qbRefresh(); }).catch(() => {}); }
+  if(qbMine === null){ qbMine = []; db.collection('questions').where('ownerUid', '==', currentUid).limit(60).get().then(s => { qbMine = s.docs.map(d => Object.assign({ id: d.id }, d.data())); qbRefresh(); }).catch(() => {}); }
+  if(userStatus && userStatus.isExpert && qbPending === null){ qbPending = []; db.collection('qbank').where('status', '==', 'pending').limit(100).get().then(s => { qbPending = s.docs.map(d => Object.assign({ id: d.id }, d.data())); qbRefresh(); }).catch(() => {}); }
 }
-function ndPayExtra(){ const o={ payRef: ndRef() }; if(_ndReceipt) o.payReceipt=_ndReceipt; return o; }
+function qbRefresh(){ if(PT.prep.tab === 'qbank') ptShow('prep', 'qbank'); }
+let qbFilter = '';
+function qbCard(q, actions){ return `<div class="hp-trow" style="align-items:flex-start;"><span><b>${hpE(q.text || '')}</b><br><small>${hpE(q.subject || '')} · ${hpE(q.grade || '')} · ${hpE(q.difficulty || '')} ${q.ownerName ? '· ' + hpE(q.ownerName) : ''}</small></span><span class="hp-actions" style="margin:0;">${actions}</span></div>`; }
+function ptQbankHtml(){
+  qbLoad();
+  const f = qbFilter.trim().toLowerCase(), ap = (qbApproved || []).filter(q => !f || ((q.text || '') + (q.subject || '') + (q.grade || '')).toLowerCase().includes(f));
+  const isExp = userStatus && userStatus.isExpert;
+  return `<div class="hp-card"><h3>الأسئلة المعتمدة <small>${ap.length}</small></h3><div class="hp-note">أسئلة راجعها معلم خبير واعتمدها. "أضف لأسئلتي" بينسخها لبنكك الشخصي فتظهر في مصنع الاختبارات.</div>
+    <input type="text" placeholder="بحث بالمادة أو الصف أو النص" value="${hpE(qbFilter)}" oninput="qbFilter=this.value; qbRefresh()">
+    ${ap.map(q => qbCard(q, `<button class="hp-chip" onclick="qbCopy('${q.id}')">أضف لأسئلتي</button>`)).join('') || '<div class="hp-note">لسه مفيش أسئلة معتمدة.</div>'}</div>
+  <div class="hp-card"><h3>أسئلتي — أرسلها للمراجعة</h3>${(qbMine || []).slice(0, 30).map(q => qbCard(q, `<button class="hp-chip" onclick="qbSubmit('${q.id}')">إرسال للمراجعة</button>`)).join('') || '<div class="hp-note">ضيف أسئلة من "مصنع الاختبارات" الأول.</div>'}</div>
+  ${isExp ? `<div class="hp-card"><h3>⭐ قيد المراجعة <small>${(qbPending || []).length}</small></h3>${(qbPending || []).filter(q => q.ownerUid !== currentUid).map(q => qbCard(q, `<button class="hp-chip" onclick="qbReview('${q.id}','approved')">اعتماد</button><button class="hp-chip bad" onclick="qbReview('${q.id}','rejected')">رفض</button>`)).join('') || '<div class="hp-note">مفيش أسئلة تنتظر مراجعتك.</div>'}</div>` : ''}`;
+}
+async function qbSubmit(id){
+  const q = (qbMine || []).find(x => x.id === id); if(!q) return;
+  try{ await db.collection('qbank').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', srcId: id, text: q.text || '', subject: q.subject || '', grade: q.grade || '', type: q.type || '', difficulty: q.difficulty || '', options: q.options || [], answer: q.answer || '', status: 'pending', createdMs: Date.now() }); toast('اتبعت للمراجعة.'); }
+  catch(e){ toast('تعذّر الإرسال: ' + (e.message || e), { type: 'err' }); }
+}
+async function qbReview(id, st){
+  try{ await db.collection('qbank').doc(id).update({ status: st, reviewedBy: currentUid, reviewedByName: pendingUser.name || '' }); toast(st === 'approved' ? 'اتعتمد السؤال.' : 'اترفض السؤال.'); qbLoad(true); }
+  catch(e){ toast('تعذّرت المراجعة.', { type: 'err' }); }
+}
+async function qbCopy(id){
+  const q = (qbApproved || []).find(x => x.id === id); if(!q) return;
+  try{ await db.collection('questions').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', text: q.text, subject: q.subject, grade: q.grade, type: q.type, difficulty: q.difficulty, options: q.options || [], answer: q.answer || '', createdAt: firebase.firestore.FieldValue.serverTimestamp() }); toast('اتضاف لأسئلتك.'); }
+  catch(e){ toast('تعذّرت الإضافة.', { type: 'err' }); }
+}
+PT.prep.tabs.push(['qbank', '✅ بنك أسئلة معتمد']); PT_FN.qbank = ptQbankHtml;
+
+/* ----- 2) مسار التربية العملية (8 أسابيع) ----- */
+const PRAC_PATH = [
+  ['التعرّف على المدرسة', ['زيارة المدرسة والتعرّف على الإدارة', 'الاطلاع على الجدول والفصل المخصص', 'ملاحظة حصتين لمعلم المادة', 'كتابة أول يومية']],
+  ['الملاحظة الموجّهة', ['ملء استمارة ملاحظة لحصتين', 'التعرف على الطلاب وأسمائهم', 'تحضير أول درس بمساعدة المشرف', 'مناقشة الملاحظات مع المشرف']],
+  ['التدريس المصغّر', ['تقديم جزء من حصة (10 دقائق)', 'تقييم ذاتي بعد الحصة', 'تجهيز وسيلة تعليمية', 'يومية الأسبوع']],
+  ['أول حصة كاملة', ['تحضير درس كامل مع الأهداف والتقويم', 'تنفيذ الحصة الكاملة', 'استلام تغذية راجعة من المشرف', 'خطة تحسين لحصتين']],
+  ['تنويع الأنشطة', ['تجربة نشاط تعاوني', 'استخدام أداة تقويم سريع', 'ملاحظة زميل (ملاحظة أقران)', 'يومية الأسبوع']],
+  ['الإدارة الصفية', ['تطبيق خطة لضبط الفصل', 'تسجيل الحضور والغياب', 'التواصل مع ولي أمر (نموذج رسالة)', 'تقييم ذاتي']],
+  ['الزيارة التقييمية', ['تجهيز ملف الدرس كاملًا', 'تنفيذ الحصة بحضور المشرف', 'استلام تقرير الزيارة', 'وضع خطة علاجية لنقاط الضعف']],
+  ['ختام الفصل', ['استكمال كل اليوميات', 'تجميع التقييمات الذاتية', 'طباعة الملف الختامي', 'جلسة تقييم ختامية مع المشرف']]
+];
+function prPathHtml(){
+  const P = hpO('path'), tot = PRAC_PATH.reduce((a, w) => a + w[1].length, 0), done = Object.keys(P).filter(k => P[k]).length, cur = PRAC_PATH.findIndex((w, i) => w[1].some((_, j) => !P['w' + i + 't' + j]));
+  return `<div class="hp-card"><h3>مسار التربية العملية <small>${done}/${tot}</small></h3><div class="hp-bar"><i style="width:${Math.round(done / tot * 100)}%"></i></div><div class="hp-note">${cur < 0 ? '🎉 خلّصت كل المسار!' : 'أنت دلوقتي في الأسبوع ' + (cur + 1) + ': ' + PRAC_PATH[cur][0]}</div></div>
+    ${PRAC_PATH.map((w, i) => `<div class="hp-card ${i === cur ? 'sv-cur' : ''}"><h3>الأسبوع ${i + 1} — ${w[0]}</h3>${w[1].map((t, j) => `<label class="sv-chk" style="display:flex;"><input type="checkbox" ${P['w' + i + 't' + j] ? 'checked' : ''} onchange="prPathTick(${i},${j},this.checked)"> ${hpE(t)}</label>`).join('')}</div>`).join('')}`;
+}
+function prPathTick(i, j, on){ const P = hpO('path'); P['w' + i + 't' + j] = on; hpSave(); ptShow('prac', 'path'); }
+PT.prac.tabs.push(['path', '🧭 مسار 8 أسابيع']); PT_FN.path = prPathHtml;
+
+/* ----- 3) تحدي المشرفين الأسبوعي ----- */
+const SV_CHALS = ['وثّق زيارة صفية كاملة بتقرير', 'اكتب خطة تطوير لمعلم واحد', 'أرسل ملاحظة تشجيعية لثلاثة أعضاء', 'حدّث سجل المتابعة بكل حساباتك', 'سجّل محضر اجتماع واحد', 'اربط معلمًا خبيرًا بمجموعة من حساباتك', 'أرسل ملخص نشاطك للإدارة', 'أنشئ استبيانًا قصيرًا لأعضائك', 'راجع مقارنة التقييمات وعلّق على فرق واحد', 'انشر مستندًا (مقياس تقدير) بكود', 'اعمل خطة زيارات للأسبوعين القادمين', 'ارسل تغذية راجعة مكتوبة لثلاثة أعضاء'];
+function svChalHtml(){
+  const wk = ndWeek(), idx = (+wk.split('-W')[1] + +wk.slice(0, 4)) % SV_CHALS.length, C = hpO('chal'), done = !!C[wk], total = Object.keys(C).filter(k => C[k]).length;
+  return `<div class="hp-card"><h3>🏆 تحدي الأسبوع <small>${wk}</small></h3><div class="hp-result" style="font-size:16px;">${hpE(SV_CHALS[idx])}</div>
+    <div class="hp-actions"><button class="btn-primary" ${done ? 'disabled' : ''} onclick="svChalDone('${wk}')">${done ? '✓ تم إنجازه' : 'أنجزت التحدي (+10 نقاط)'}</button></div>
+    <div class="hp-note">إجمالي التحديات اللي أنجزتها: <b>${total}</b></div></div>`;
+}
+async function svChalDone(wk){ const C = hpO('chal'); if(C[wk]) return; C[wk] = true; hpSave(); try{ await awardPoints(10, 'supChallenge', { week: wk }); }catch(e){} toast('🎉 برافو! +10 نقاط'); svShow('chal'); }
+Object.assign(SV_FN, { chal: svChalHtml, survey: svSurveyHtml });
+SUPT.expert.splice(SUPT.expert.length - 1, 0, ['chal', '🏆 تحدي الأسبوع'], ['survey', '📊 استبيان']);
+SUPT.academic.splice(SUPT.academic.length - 1, 0, ['chal', '🏆 تحدي الأسبوع'], ['survey', '📊 استبيان']);
+SUPT.office.splice(SUPT.office.length - 1, 0, ['survey', '📊 استبيان']);
+
+/* ----- 6) استبيان سريع (surveys / surveyAnswers) ----- */
+let svSurv = null, svSurvAns = null;
+function svSurvLoad(){
+  if(svSurv === null){ svSurv = []; svSurvAns = []; Promise.all([db.collection('surveys').where('ownerUid', '==', currentUid).get(), db.collection('surveyAnswers').where('ownerUid', '==', currentUid).get()]).then(([a, b]) => { svSurv = a.docs.map(d => Object.assign({ id: d.id }, d.data())).sort((x, y) => y.createdMs - x.createdMs); svSurvAns = b.docs.map(d => d.data()); if(svTab === 'survey') svShow('survey'); }).catch(() => {}); }
+}
+function svSurveyHtml(){
+  svSurvLoad();
+  return `<div class="hp-card"><h3>استبيان جديد لأعضائي</h3><div class="field"><label>السؤال</label><input type="text" id="su-q" placeholder="مثال: إيه أنسب وقت لاجتماع الأسبوع؟"></div>
+    <div class="field"><label>الاختيارات (واحد في كل سطر، 2–6)</label><textarea id="su-o" rows="4">الأحد\nالثلاثاء\nالخميس</textarea></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="svSurveyAdd()">نشر الاستبيان</button></div></div>
+    ${svSurv.map(s => { const A = svSurvAns.filter(a => a.surveyId === s.id), mx = Math.max(1, A.length); return `<div class="hp-card"><h3>${hpE(s.q)} <small>${A.length} إجابة · ${s.open ? 'مفتوح' : 'مقفول'}</small></h3>${s.options.map(o => { const c = A.filter(a => a.choice === o).length; return `<div class="hp-trow"><span>${hpE(o)}</span><b>${c}</b></div><div class="hp-bar"><i style="width:${Math.round(c / mx * 100)}%"></i></div>`; }).join('')}<div class="hp-actions"><button class="hp-chip" onclick="svSurveyToggle('${s.id}',${!s.open})">${s.open ? 'إقفال' : 'إعادة فتح'}</button><button class="hp-chip bad" onclick="svSurveyDel('${s.id}')">حذف</button></div></div>`; }).join('')}`;
+}
+async function svSurveyAdd(){
+  const q = hpV('su-q').trim(), o = hpV('su-o').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 6); if(!q || o.length < 2){ toast('اكتب السؤال واختيارين على الأقل.', { type: 'err' }); return; }
+  try{ await db.collection('surveys').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', q: q.slice(0, 160), options: o.map(x => x.slice(0, 60)), open: true, createdMs: Date.now() }); svSurv = null; svShow('survey'); toast('اتنشر الاستبيان.'); }
+  catch(e){ toast('تعذّر النشر: ' + (e.message || e), { type: 'err' }); }
+}
+async function svSurveyToggle(id, open){ try{ await db.collection('surveys').doc(id).update({ open }); svSurv = null; svShow('survey'); }catch(e){ toast('تعذّر التعديل.', { type: 'err' }); } }
+async function svSurveyDel(id){ if(!confirm('حذف الاستبيان؟')) return; try{ await db.collection('surveys').doc(id).delete(); svSurv = null; svShow('survey'); }catch(e){ toast('تعذّر الحذف.', { type: 'err' }); } }
+/* عند الأعضاء: الاستبيانات المفتوحة داخل "من مشرفي" */
+let ndMySurv = null, ndMyAns = null;
+function ndMySurvLoad(){
+  if(ndMySurv !== null || !(userStatus && userStatus.supervisorId)) return; ndMySurv = []; ndMyAns = [];
+  Promise.all([db.collection('surveys').where('ownerUid', '==', userStatus.supervisorId).get(), db.collection('surveyAnswers').where('uid', '==', currentUid).get()]).then(([a, b]) => { ndMySurv = a.docs.map(d => Object.assign({ id: d.id }, d.data())).filter(s => s.open); ndMyAns = b.docs.map(d => d.data()); if(hpTab === 'inbox') hpShow('inbox'); }).catch(() => {});
+}
+const _inbSurv = hpInboxHtml; hpInboxHtml = function(){
+  ndMySurvLoad();
+  const blk = (ndMySurv || []).map(s => { const mine = (ndMyAns || []).find(a => a.surveyId === s.id); return `<div class="hp-card"><h3>📊 ${hpE(s.q)}</h3><div class="hp-actions">${s.options.map(o => `<button class="hp-chip ${mine && mine.choice === o ? 'on' : ''}" onclick="ndSurveyAnswer('${s.id}','${s.ownerUid}',${JSON.stringify(o).replace(/"/g, '&quot;')})">${hpE(o)}</button>`).join('')}</div>${mine ? '<div class="hp-note">إجابتك محفوظة — تقدر تغيّرها.</div>' : ''}</div>`; }).join('');
+  return blk + _inbSurv();
+};
+async function ndSurveyAnswer(id, ownerUid, choice){
+  try{ await db.collection('surveyAnswers').doc(id + '_' + currentUid).set({ surveyId: id, ownerUid, uid: currentUid, name: pendingUser.name || '', choice, createdMs: Date.now() }); ndMySurv = null; toast('اتسجلت إجابتك.'); hpShow('inbox'); }
+  catch(e){ toast('تعذّر تسجيل الإجابة.', { type: 'err' }); }
+}
+
+/* ----- 7) حصص (quotas) يحددها الأدمن ----- */
+const ndQuota = k => { const q = window.__ctl && window.__ctl.quotas; const v = q && +q[k]; return v > 0 ? v : 0; };
+const _qPub = ptPublish; ptPublish = async function(){
+  const lim = ndQuota('docs');
+  if(lim){ try{ const s = await db.collection('sharedDocs').where('ownerUid', '==', currentUid).limit(lim + 1).get(); if(s.size >= lim){ toast('وصلت للحد الأقصى للمستندات المنشورة (' + lim + ') — احذف مستندًا قديمًا أو كلّم الإدارة.', { type: 'err' }); return; } }catch(e){} }
+  return _qPub.apply(this, arguments);
+};
+const _qVisit = svVisitSave; svVisitSave = function(){
+  const lim = ndQuota('visits'), mk = new Date().toISOString().slice(0, 7);
+  if(lim && hpA('visits').filter(x => (x.d || '').slice(0, 7) === mk).length >= lim){ toast('وصلت للحد الشهري للزيارات (' + lim + ').', { type: 'err' }); return; }
+  return _qVisit.apply(this, arguments);
+};
+
+/* ----- 4+5) ردود سريعة وتثبيت رسالة في الدردشة ----- */
+const NDQR_DEF = ['تم الاستلام ✅', 'شكرًا لك', 'هراجع وأرد عليك', 'ممكن توضّح أكتر؟', 'ميعاد الزيارة هيتأكد قريب'];
+async function ndChatInit(){
+  const nameEl = document.getElementById('chat-thread-name'), inp = document.getElementById('chat-input'); if(!nameEl || !inp) return;
+  if(!document.getElementById('chat-pin')){ const hd = nameEl.closest('div[style*="display"]') || nameEl.parentElement; hd.insertAdjacentHTML('afterend', '<div id="chat-pin" class="chat-pin" style="display:none;"></div>'); }
+  if(!document.getElementById('chat-qr-btn')){
+    inp.insertAdjacentHTML('beforebegin', '<button type="button" id="chat-qr-btn" class="hp-chip" onclick="ndQrToggle()" title="ردود سريعة">⚡</button><button type="button" id="chat-pin-btn" class="hp-chip" onclick="ndPinSet()" title="تثبيت رسالة">📌</button>');
+    document.body.insertAdjacentHTML('beforeend', '<div id="chat-qr" class="chat-qr"></div>');
+  }
+  try{ await hpEnsureLoaded(); }catch(e){}
+  ndPinShow();
+}
+function ndQrList(){ return (HP && Array.isArray(HP.quick) && HP.quick.length) ? HP.quick : NDQR_DEF; }
+function ndQrToggle(){
+  const box = document.getElementById('chat-qr'), btn = document.getElementById('chat-qr-btn'); if(!box) return; if(box.classList.contains('open')){ box.classList.remove('open'); return; }
+  box.innerHTML = ndQrList().map((t, i) => `<div class="qr-row"><button type="button" class="qr-it" onclick="ndQrUse(${i})">${hpE(t)}</button><button type="button" class="qr-x" onclick="ndQrDel(${i})">✕</button></div>`).join('') + `<div class="qr-add"><input type="text" id="qr-new" placeholder="رد جديد"><button type="button" class="hp-chip" onclick="ndQrAdd()">+</button></div>`;
+  const r = btn.getBoundingClientRect(); box.style.left = Math.max(8, Math.min(r.left, innerWidth - 270)) + 'px'; box.style.bottom = (innerHeight - r.top + 8) + 'px'; box.classList.add('open');
+}
+function ndQrUse(i){ const inp = document.getElementById('chat-input'); inp.value = (inp.value ? inp.value + ' ' : '') + ndQrList()[i]; document.getElementById('chat-qr').classList.remove('open'); inp.focus(); }
+function ndQrAdd(){ const t = (document.getElementById('qr-new').value || '').trim().slice(0, 120); if(!t) return; HP.quick = ndQrList().slice(); HP.quick.push(t); hpSave(); document.getElementById('chat-qr').classList.remove('open'); ndQrToggle(); }
+function ndQrDel(i){ HP.quick = ndQrList().slice(); HP.quick.splice(i, 1); hpSave(); document.getElementById('chat-qr').classList.remove('open'); ndQrToggle(); }
+async function ndPinShow(){
+  const bar = document.getElementById('chat-pin'); if(!bar || !activeConvId) return;
+  try{ const d = await db.collection('conversations').doc(activeConvId).get(); const p = d.exists && d.data().pinned; if(p && p.text){ bar.style.display = 'flex'; bar.innerHTML = `<span>📌 ${hpE(p.text)}</span><button type="button" onclick="ndPinClear()" title="إلغاء التثبيت">✕</button>`; } else bar.style.display = 'none'; }catch(e){ bar.style.display = 'none'; }
+}
+async function ndPinSet(){
+  const inp = document.getElementById('chat-input'); const t = (prompt('اكتب الرسالة اللي عاوز تثبتها (أو اتركها نص مربع الكتابة):', inp.value || '') || '').trim().slice(0, 200); if(!t) return;
+  try{ await db.collection('conversations').doc(activeConvId).update({ pinned: { text: t, by: currentUid, ms: Date.now() } }); toast('اتثبتت الرسالة.'); ndPinShow(); }catch(e){ toast('تعذّر التثبيت.', { type: 'err' }); }
+}
+async function ndPinClear(){ try{ await db.collection('conversations').doc(activeConvId).update({ pinned: firebase.firestore.FieldValue.delete() }); ndPinShow(); }catch(e){} }
+const _ndOpen = openChatWith; openChatWith = async function(){ const r = await _ndOpen.apply(this, arguments); setTimeout(ndChatInit, 150); return r; };
+document.addEventListener('click', e => { const b = document.getElementById('chat-qr'); if(b && b.classList.contains('open') && !e.target.closest('#chat-qr') && !e.target.closest('#chat-qr-btn')) b.classList.remove('open'); });
+
+/* ----- 12) وضع القراءة فقط ----- */
+function ndPatchReadOnly(){
+  if(window.__roPatched) return; window.__roPatched = true;
+  try{
+    const FS = firebase.firestore, ex = ['users', 'idGrants', 'nidFails', 'auditLog', 'notifications', 'supportMessages'];
+    const block = ref => window.__ctl && window.__ctl.readOnly === true && !ex.includes(String((ref && ref.path) || '').split('/')[0]);
+    const deny = () => { toast('🔒 المنصة في وضع الصيانة (قراءة فقط) — الحفظ متوقف مؤقتًا.', { type: 'err' }); return Promise.reject(new Error('read-only')); };
+    ['set', 'update', 'delete'].forEach(m => { const o = FS.DocumentReference.prototype[m]; FS.DocumentReference.prototype[m] = function(){ return block(this) ? deny() : o.apply(this, arguments); }; });
+    const oa = FS.CollectionReference.prototype.add; FS.CollectionReference.prototype.add = function(){ return block(this) ? deny() : oa.apply(this, arguments); };
+  }catch(e){}
+}
+function ndRoBanner(){
+  let b = document.getElementById('ro-banner'); const on = window.__ctl && window.__ctl.readOnly === true;
+  if(on){ ndPatchReadOnly(); if(!b){ b = document.createElement('div'); b.id = 'ro-banner'; b.textContent = '🔒 المنصة في وضع الصيانة — القراءة فقط مؤقتًا، الحفظ والنشر متوقفان.'; document.body.prepend(b); } }
+  else if(b) b.remove();
+}
+const _ctlLoad4 = loadControl; loadControl = async function(){ await _ctlLoad4(); ndRoBanner(); };
+try{ loadControl(); }catch(e){}
+/* =====================================================================
+   دفعة 5: قوالب تحضير، ملف إنجاز، تنبيهات ذكية، أوفلاين، مقارنة متدربين،
+   جدولة زيارات، تقييم 360، إشعارات مستهدفة، تذاكر دعم
+   ===================================================================== */
+const ndF1 = n => (Math.round((+n || 0) * 10) / 10).toFixed(1);
+const ndAvg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+const ndDay = ms => new Date(ms || Date.now()).toISOString().slice(0, 10);
+const _wk5 = ptWeekSave; ptWeekSave = function(){ _wk5.apply(this, arguments); HP.week._ms = Date.now(); hpSave(); };
+
+/* ----- 1) قوالب التحضير ----- */
+const ND_METHODS = {
+  'الاستقصاء (5E)': t => [['الإشراك', 'سؤال محفّز أو موقف مثير عن «' + t + '» لجذب الانتباه واستدعاء الخبرة السابقة.'], ['الاستكشاف', 'نشاط جماعي قصير يكتشف فيه الطلاب فكرة «' + t + '» بأنفسهم.'], ['التفسير', 'مناقشة النتائج وتقديم المفهوم الأساسي وربطه بما اكتشفوه.'], ['التوسّع', 'تطبيق «' + t + '» في موقف جديد أو مسألة من الحياة.'], ['التقويم', 'سؤالان سريعان + بطاقة خروج.']],
+  'التعليم المباشر': t => [['التمهيد', 'مراجعة سريعة للمتطلب السابق وإعلان هدف الدرس.'], ['العرض', 'شرح «' + t + '» بخطوات متسلسلة مع مثال محلول.'], ['التدريب الموجّه', 'تمارين مع المعلم، ثم تغذية راجعة فورية.'], ['التدريب المستقل', 'تمارين فردية متدرجة الصعوبة.'], ['الختام', 'تلخيص النقاط الأساسية والواجب.']],
+  'التعلم التعاوني': t => [['التمهيد', 'تقسيم الطلاب إلى مجموعات (3–4) وتوزيع الأدوار.'], ['المهمة', 'مهمة جماعية حول «' + t + '» لها ناتج محدد.'], ['العمل', 'المعلم يتنقل بين المجموعات ويوجّه.'], ['العرض', 'كل مجموعة تعرض ناتجها في دقيقتين.'], ['التقويم', 'تقويم المجموعة + تقويم ذاتي لكل فرد.']],
+  'حل المشكلات': t => [['عرض المشكلة', 'موقف مشكل مرتبط بـ «' + t + '».'], ['فهم المشكلة', 'تحديد المعطيات والمطلوب.'], ['وضع خطة', 'اقتراح استراتيجيات للحل.'], ['التنفيذ', 'تجربة الحل وتوثيق الخطوات.'], ['المراجعة', 'التحقق من الحل وتعميمه.']],
+  'الصف المقلوب': t => [['قبل الحصة', 'فيديو/ملف قصير عن «' + t + '» + سؤالان للتأكد من المشاهدة.'], ['بداية الحصة', 'مناقشة الأسئلة والأخطاء الشائعة.'], ['أنشطة تطبيقية', 'تطبيقات عملية داخل الفصل بمساعدة المعلم.'], ['التقويم', 'اختبار قصير وتغذية راجعة.']]
+};
+function ptTplHtml(){
+  const S = hpA('prepSaved');
+  return `<div class="hp-card"><h3>قوالب التحضير الجاهزة</h3><div class="hp-note">اختار الطريقة واكتب عنوان الدرس، وهيتولد هيكل جاهز تعدّله وتحفظه وتعمل منه نسخ بعدين.</div>
+    <div class="hp-row hp-row-wrap"><input type="text" id="tp-t" placeholder="عنوان الدرس"><input type="text" id="tp-s" placeholder="المادة"><input type="text" id="tp-g" placeholder="الصف"></div>
+    <div class="hp-row hp-row-wrap"><select id="tp-m">${Object.keys(ND_METHODS).map(k => `<option>${k}</option>`).join('')}</select><input type="number" id="tp-d" value="45" min="10" style="width:90px;" title="دقائق"></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="ptTplGen()">توليد الهيكل</button></div>
+    <div class="field"><label>التحضير (قابل للتعديل)</label><textarea id="tp-b" rows="12"></textarea></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="ptTplSave()">💾 حفظ</button><button class="btn-secondary" onclick="ptTplPrint()">🖨️ طباعة</button></div></div>
+    ${S.length ? `<div class="hp-card"><h3>تحضيراتي المحفوظة (${S.length})</h3>${S.slice().reverse().map(x => `<div class="hp-trow"><span>${hpE(x.d)} — <b>${hpE(x.t)}</b> <small>${hpE(x.s || '')} ${hpE(x.g || '')}</small></span><span class="hp-actions" style="margin:0;"><button class="hp-chip" onclick="ptTplLoad('${x.id}',false)">فتح</button><button class="hp-chip" onclick="ptTplLoad('${x.id}',true)">نسخ كجديد</button><button class="hp-chip bad" onclick="ptTplDel('${x.id}')">حذف</button></span></div>`).join('')}</div>` : ''}`;
+}
+function ptTplGen(){
+  const t = hpV('tp-t').trim(); if(!t){ toast('اكتب عنوان الدرس.', { type: 'err' }); return; }
+  const m = hpV('tp-m'), mins = +hpV('tp-d') || 45, st = ND_METHODS[m](t), per = Math.max(1, Math.round(mins / st.length));
+  document.getElementById('tp-b').value = `الدرس: ${t}\nالمادة: ${hpV('tp-s')} — الصف: ${hpV('tp-g')}\nالطريقة: ${m} — الزمن: ${mins} دقيقة\n\nالأهداف:\n- أن يوضح الطالب مفهوم «${t}».\n- أن يطبق ما تعلمه في موقف جديد.\n\nالمراحل:\n` + st.map((x, i) => `${i + 1}) ${x[0]} (${per} د): ${x[1]}`).join('\n') + '\n\nالوسائل: \nالواجب: ';
+}
+function ptTplSave(){ const b = hpV('tp-b').trim(), t = hpV('tp-t').trim(); if(!b || !t){ toast('ولّد الهيكل أولًا.', { type: 'err' }); return; } hpA('prepSaved').push({ id: hpUid(), t, s: hpV('tp-s'), g: hpV('tp-g'), b, d: hpToday() }); hpSave(); ptShow('prep', 'tpl'); toast('اتحفظ التحضير.'); }
+function ptTplLoad(id, copy){ const x = hpA('prepSaved').find(o => o.id === id); if(!x) return; document.getElementById('tp-t').value = x.t + (copy ? ' (نسخة)' : ''); document.getElementById('tp-s').value = x.s || ''; document.getElementById('tp-g').value = x.g || ''; document.getElementById('tp-b').value = x.b; if(!copy) toast('اتفتح للتعديل — احفظ لإنشاء نسخة.'); }
+function ptTplDel(id){ HP.prepSaved = hpA('prepSaved').filter(x => x.id !== id); hpSave(); ptShow('prep', 'tpl'); }
+function ptTplPrint(){ const b = hpV('tp-b'); if(!b.trim()) return; ptPrint('تحضير درس', '<pre style="white-space:pre-wrap;font-family:inherit;font-size:14px;line-height:2">' + hpE(b) + '</pre>'); }
+PT.prep.tabs.push(['tpl', '📚 قوالب تحضير جاهزة']); PT_FN.tpl = ptTplHtml;
+
+/* ----- 2) ملف إنجاز تلقائي (أدوات مساعدة) ----- */
+function hpFolioHtml(){
+  const c = k => hpA(k).length, inbV = (typeof hpInbox !== 'undefined' && hpInbox ? hpInbox : []).filter(x => x.kind === 'visit').length;
+  const rows = [['زيارات صفية', c('visits') + inbV], ['خطط تطوير', c('plans')], ['تقييمات ذاتية', c('selfs')], ['يوميات تدريب', c('journal')], ['ملاحظات زملاء', c('obs')], ['تحضيرات محفوظة', c('prepSaved')], ['محاضر', c('minutes')], ['تحديات منجزة', Object.keys(hpO('chal')).filter(k => hpO('chal')[k]).length], ['مهام منجزة', (HP.todos || []).filter(t => t.done).length]].filter(r => r[1]);
+  setTimeout(async () => { try{ const el = document.getElementById('fo-pts'); if(!el) return; const p = await pointsAggFor(currentUid), l = levelForPoints(p); el.innerHTML = `${l.emoji} ${p} نقطة · مستوى «${l.label}»`; el.dataset.v = el.textContent; }catch(e){} }, 50);
+  return `<div class="hp-card"><h3>🗂️ ملف الإنجاز التلقائي</h3><div class="hp-note">بيتجمع لوحده من نشاطك. اضغط طباعة وهتحصل على ملف جاهز.</div>
+    <div class="hp-result" id="fo-pts">…</div>
+    <div class="hp-grid hp-stats">${rows.map(r => `<div class="hp-mini"><b>${r[0]}</b>${r[1]}</div>`).join('') || '<div class="hp-note">لسه مفيش نشاط — ابدأ باستخدام الأدوات.</div>'}</div>
+    <div class="hp-actions"><button class="btn-primary" onclick="hpFolioPrint()">🖨️ طباعة / PDF</button></div></div>`;
+}
+function hpFolioPrint(){
+  const rows = [...document.querySelectorAll('#hp-body .hp-mini')].map(m => `<tr><td>${m.querySelector('b').textContent}</td><td>${m.lastChild.textContent}</td></tr>`).join('');
+  const ps = document.getElementById('fo-pts'); 
+  ptPrint('ملف الإنجاز', `<p>الاسم: <b>${hpE(pendingUser.name || '')}</b> — التاريخ: ${hpToday()}</p><p>${hpE((ps && ps.dataset.v) || '')}</p><table><tr><th>البند</th><th>العدد</th></tr>${rows}</table>`);
+}
+
+/* ----- 3) تنبيهات ذكية ----- */
+function ndSmartItems(){
+  const it = [], today = hpToday(), open = (HP.todos || []).filter(t => !t.done).length;
+  if(open) it.push(['✅', open + ' مهمة لسه مخلصتهاش', 'todo']);
+  hpA('vplan').filter(v => v.d && v.d >= today && (new Date(v.d) - new Date(today)) / 864e5 <= 3).forEach(v => it.push(['🏫', 'زيارة ' + (v.n || '') + ' بتاريخ ' + v.d, null]));
+  if(!hpIsStaff() && (!HP.week || !HP.week._ms || Date.now() - HP.week._ms > 7 * 864e5) && pendingRole !== 'office') it.push(['🗓️', 'ماسجلتش التحضير الأسبوعي الأسبوع ده', null]);
+  const ex = HP.exam || {}; if(ex.date){ const d = Math.round((new Date(ex.date) - new Date(today)) / 864e5); if(d >= 0 && d <= 7) it.push(['📝', (ex.name || 'الامتحان') + ' بعد ' + d + ' يوم', null]); }
+  (ndAppts || []).filter(a => !ndApptReplied(a.id) && a.data.d >= today).forEach(a => it.push(['📅', 'موعد زيارة من ' + a.fromName + ' ' + a.data.d + ' — محتاج ردك', 'inbox']));
+  return it;
+}
+function hpTodayHtml(){
+  ndApptsLoad(); const it = ndSmartItems();
+  return `<div class="hp-card"><h3>🔔 تنبيهاتي</h3>${it.length ? it.map(x => `<div class="hp-trow"><span>${x[0]} ${hpE(x[1])}</span>${x[2] ? `<button class="hp-chip" onclick="hpShow('${x[2]}')">فتح</button>` : ''}</div>`).join('') : '<div class="hp-note">🎉 مفيش حاجة متأخرة.</div>'}</div>`;
+}
+
+/* ----- 4) أوفلاين ----- */
+function ndOnlineBanner(){
+  let b = document.getElementById('off-banner');
+  if(navigator.onLine){ if(b) b.remove(); return; }
+  if(!b){ b = document.createElement('div'); b.id = 'off-banner'; b.textContent = '📴 أنت بدون إنترنت — البيانات المحفوظة قبل كده متاحة، وأي تعديل هيتزامن لما النت يرجع.'; document.body.prepend(b); }
+}
+window.addEventListener('online', ndOnlineBanner); window.addEventListener('offline', ndOnlineBanner); setTimeout(ndOnlineBanner, 500);
+
+/* ----- 5) مقارنة تطور المتدربين ----- */
+const ND_COL = ['#1f3a6e', '#e3a82b', '#2e8b57', '#c0392b', '#8e44ad', '#16a2b8', '#d35400', '#566573'];
+function svTrendHtml(){
+  const v = hpA('visits').filter(x => x.d && x.avg), by = {}; v.forEach(x => (by[x.t] = by[x.t] || []).push(x));
+  const names = Object.keys(by); names.forEach(n => by[n].sort((a, b) => a.d < b.d ? -1 : 1));
+  if(!names.length) return '<div class="hp-card"><div class="hp-note">سجّل زيارات صفية الأول وبعدين هيظهر تطور كل معلم هنا.</div></div>';
+  const all = v.map(x => x.d).sort(), d0 = new Date(all[0]).getTime(), d1 = Math.max(new Date(all[all.length - 1]).getTime(), d0 + 864e5), W = 600, H = 220, P = 32;
+  const X = d => P + (new Date(d).getTime() - d0) / (d1 - d0) * (W - 2 * P), Y = a => H - P - (a - 1) / 4 * (H - 2 * P);
+  const svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" direction="ltr">${[1, 2, 3, 4, 5].map(n => `<line x1="${P}" x2="${W - P}" y1="${Y(n)}" y2="${Y(n)}" stroke="#e5e7ee"/><text x="6" y="${Y(n) + 4}" font-size="11" fill="#667">${n}</text>`).join('')}${names.map((n, i) => `<path d="${by[n].map((x, j) => (j ? 'L' : 'M') + X(x.d).toFixed(1) + ' ' + Y(x.avg).toFixed(1)).join(' ')}" fill="none" stroke="${ND_COL[i % 8]}" stroke-width="2.5"/>${by[n].map(x => `<circle cx="${X(x.d).toFixed(1)}" cy="${Y(x.avg).toFixed(1)}" r="3.5" fill="${ND_COL[i % 8]}"><title>${hpE(n)} ${x.d}: ${ndF1(x.avg)}</title></circle>`).join('')}`).join('')}</svg>`;
+  return `<div class="hp-card"><h3>📈 تطور المعلمين عبر الزيارات</h3>${svg}<div class="hp-actions">${names.map((n, i) => `<span class="hp-chip" style="border-color:${ND_COL[i % 8]}">● ${hpE(n)}</span>`).join('')}</div></div>
+    <div class="hp-card"><h3>اللي محتاج متابعة</h3>${names.map(n => { const a = by[n], last = a[a.length - 1].avg, prev = a.length > 1 ? a[a.length - 2].avg : null, flag = last < 3 ? '⚠️ منخفض' : prev !== null && last - prev <= -0.5 ? '⚠️ تراجع' : prev !== null && last - prev >= 0.5 ? '⬆️ تحسّن' : '✓ مستقر'; return `<div class="hp-trow"><span><b>${hpE(n)}</b> <small>${a.length} زيارة</small></span><span>${ndF1(last)} ${prev !== null ? `<small>(${last - prev >= 0 ? '+' : ''}${ndF1(last - prev)})</small>` : ''} ${flag}</span></div>`; }).join('')}</div>`;
+}
+
+/* ----- 6) جدولة الزيارات ----- */
+let ndAppts = null, ndApptRep = null, ndApptSent = null;
+function ndApptReplied(id){ return (ndApptRep || []).some(r => r.data.ref === id); }
+function ndApptsLoad(force){
+  if(force){ ndAppts = ndApptRep = ndApptSent = null; }
+  if(ndAppts !== null) return; ndAppts = []; ndApptRep = []; ndApptSent = [];
+  const q = db.collection('practicumShares');
+  Promise.all([q.where('toUid', '==', currentUid).get(), q.where('fromUid', '==', currentUid).get()]).then(([a, b]) => {
+    const A = a.docs.map(d => ({ id: d.id, ...d.data() })), B = b.docs.map(d => ({ id: d.id, ...d.data() }));
+    ndAppts = A.filter(x => x.kind === 'appt').sort((x, y) => (x.data.d || '') < (y.data.d || '') ? -1 : 1);
+    ndApptRep = A.filter(x => x.kind === 'apptReply').concat(B.filter(x => x.kind === 'apptReply'));
+    ndApptSent = B.filter(x => x.kind === 'appt').sort((x, y) => (y.data.d || '') < (x.data.d || '') ? -1 : 1);
+    if(typeof svTab !== 'undefined' && svTab === 'appt') svShow('appt'); if(hpTab === 'inbox' || hpTab === 'today') hpShow(hpTab);
+  }).catch(() => {});
+}
+function svApptHtml(){
+  ndApptsLoad();
+  return `<div class="hp-card"><h3>📅 جدولة زيارة</h3><div class="hp-row hp-row-wrap">${svTeacherSel('sa-t')}</div><div class="hp-row hp-row-wrap"><input type="date" id="sa-d" value="${hpToday()}"><input type="time" id="sa-h" value="09:00"><input type="text" id="sa-p" placeholder="المدرسة / الفصل"></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="svApptSend()">إرسال الموعد</button></div></div>
+    <div class="hp-card"><h3>المواعيد المرسلة (${ndApptSent.length})</h3>${ndApptSent.map(a => { const r = ndApptRep.find(x => x.data.ref === a.id); return `<div class="hp-trow"><span>${hpE(a.data.d)} ${hpE(a.data.h || '')} — <b>${hpE(a.data.toName || '')}</b> <small>${hpE(a.data.p || '')}</small></span><span>${r ? (r.data.answer === 'ok' ? '✅ أكّد' : '🔁 طلب تغيير: ' + hpE(r.data.note || '')) : '⏳ بانتظار الرد'}</span></div>`; }).join('') || '<div class="hp-note">لسه مفيش.</div>'}</div>`;
+}
+async function svApptSend(){
+  const t = svTeacherVal('sa-t'), m = (svMembers || []).find(x => (x.name || x.email) === t); if(!m){ toast('اختر الاسم من حساباتك.', { type: 'err' }); return; }
+  try{ await db.collection('practicumShares').add({ fromUid: currentUid, fromName: pendingUser.name || '', toUid: m.id, kind: 'appt', title: 'موعد زيارة', data: { d: hpV('sa-d'), h: hpV('sa-h'), p: hpV('sa-p').trim(), toName: t }, createdMs: Date.now() }); try{ createNotification(m.id, 'plan', '📅 موعد زيارة جديد من ' + (pendingUser.name || 'مشرفك') + ' يوم ' + hpV('sa-d'), 'v-helpers'); }catch(e){} toast('اتبعت الموعد.'); ndApptsLoad(true); }
+  catch(e){ toast('تعذّر الإرسال: ' + (e.code || e.message), { type: 'err' }); }
+}
+async function ndApptReply(id, from, answer){
+  const note = answer === 'change' ? (prompt('اقترح وقت بديل أو اكتب السبب:') || '') : '';
+  if(answer === 'change' && !note.trim()) return;
+  try{ await db.collection('practicumShares').add({ fromUid: currentUid, fromName: pendingUser.name || '', toUid: from, kind: 'apptReply', title: 'رد على موعد', data: { ref: id, answer, note: note.slice(0, 200) }, createdMs: Date.now() }); toast('اتبعت ردك.'); ndApptsLoad(true); }
+  catch(e){ toast('تعذّر الإرسال.', { type: 'err' }); }
+}
+const _inb5 = hpInboxHtml; hpInboxHtml = function(){
+  ndApptsLoad();
+  const blk = (ndAppts || []).map(a => { const rep = ndApptRep.find(r => r.data.ref === a.id && r.fromUid === currentUid); return `<div class="hp-card"><h3>📅 موعد زيارة — ${hpE(a.data.d)} ${hpE(a.data.h || '')}</h3><div class="hp-note">من ${hpE(a.fromName)} ${a.data.p ? '· ' + hpE(a.data.p) : ''}</div>${rep ? `<div class="hp-result">${rep.data.answer === 'ok' ? '✅ أكدت الموعد' : '🔁 طلبت تغيير: ' + hpE(rep.data.note)}</div>` : `<div class="hp-actions"><button class="btn-primary" onclick="ndApptReply('${a.id}','${a.fromUid}','ok')">تأكيد</button><button class="btn-secondary" onclick="ndApptReply('${a.id}','${a.fromUid}','change')">طلب تغيير</button></div>`}</div>`; }).join('');
+  return blk + _inb5();
+};
+
+/* ----- 7) تقييم 360° ----- */
+function prX360Html(){
+  const sf = hpA('selfs'), ob = hpA('obs'), vi = (typeof hpInbox !== 'undefined' && hpInbox ? hpInbox : []).filter(x => x.kind === 'visit');
+  if(typeof hpInbox !== 'undefined' && hpInbox === null && userStatus && userStatus.supervisorId) hpInboxHtml();
+  const a = [['أنا (تقييم ذاتي)', ndAvg(sf.map(x => x.avg)), sf.length], ['الزملاء', ndAvg(ob.map(x => x.avg)), ob.length], ['المشرف', ndAvg(vi.map(x => x.data.avg || 0)), vi.length]];
+  const gap = a[0][2] && a[2][2] ? a[0][1] - a[2][1] : null;
+  return `<div class="hp-card"><h3>🔄 تقرير 360°</h3><div class="hp-note">نظرة شاملة: تقييمك لنفسك مقابل رأي الزملاء والمشرف (من 5).</div>
+    ${a.map(x => `<div class="hp-trow"><span>${x[0]} <small>${x[2]} تقييم</small></span><b>${x[2] ? ndF1(x[1]) : '—'}</b></div><div class="hp-bar"><i style="width:${Math.round(x[1] / 5 * 100)}%"></i></div>`).join('')}
+    ${gap !== null ? `<div class="hp-result">${Math.abs(gap) < 0.4 ? '✅ تقييمك لنفسك قريب من رأي المشرف.' : gap > 0 ? '⚠️ بتقيّم نفسك أعلى من المشرف بـ ' + ndF1(gap) + ' — راجع نقاط التحسين في تقاريره.' : '💡 المشرف شايف أداءك أعلى من تقييمك بـ ' + ndF1(-gap) + ' — ثق في نفسك أكتر.'}</div>` : '<div class="hp-note">محتاج تقييم ذاتي وزيارة مشرف على الأقل للمقارنة.</div>'}
+    <div class="hp-actions"><button class="btn-primary" onclick="prX360Print()">🖨️ طباعة التقرير</button></div></div>`;
+}
+function prX360Print(){ const rows = [...document.querySelectorAll('#pr-body .hp-trow')].map(r => `<tr><td>${r.firstElementChild.textContent}</td><td>${r.lastElementChild.textContent}</td></tr>`).join(''); ptPrint('تقرير تقييم 360°', `<p>الاسم: <b>${hpE(pendingUser.name || '')}</b> — ${hpToday()}</p><table><tr><th>المصدر</th><th>المتوسط /5</th></tr>${rows}</table>`); }
+PT.prac.tabs.push(['x360', '🔄 تقرير 360°']); PT_FN.x360 = prX360Html;
+
+/* ----- 9) إشعارات مستهدفة ----- */
+let ndBc = null;
+async function ndBcLoad(){
+  if(ndBc !== null) return; ndBc = [];
+  try{
+    const s = await db.collection('broadcasts').where('sendAtMs', '<=', Date.now()).limit(40).get(), t = userStatus && userStatus.accountType, up = userStatus && userStatus.supervisorId;
+    ndBc = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(b => (!b.endMs || b.endMs >= Date.now()) && (b.audience === 'all' || b.audience === t || (b.audience === 'sup:' + up && up) || (b.audience === 'role:' + pendingRole))).sort((a, b) => b.sendAtMs - a.sendAtMs);
+  }catch(e){}
+  if(hpTab === 'bc') hpShow('bc');
+}
+function hpBcHtml(){
+  ndBcLoad(); const seen = hpO('bcSeen'); (ndBc || []).forEach(b => { seen[b.id] = 1; }); setTimeout(hpSave, 1500);
+  return `<div class="hp-card"><h3>📣 إشعارات المنصة</h3>${(ndBc || []).map(b => `<div class="hp-card" style="margin:8px 0;"><div>${hpE(b.text)}</div><small class="hp-note">${new Date(b.sendAtMs).toLocaleDateString('ar-EG')} — ${hpE(b.from || 'الإدارة')}</small></div>`).join('') || '<div class="hp-note">مفيش إشعارات.</div>'}</div>`;
+}
+async function ndBootExtras(){
+  try{
+    await ndBcLoad(); const seen = hpO('bcSeen'), n = (ndBc || []).filter(b => !seen[b.id]);
+    if(n.length) hpNotify('📣 ' + n[0].text.slice(0, 90) + (n.length > 1 ? ' (+' + (n.length - 1) + ')' : ''));
+    ndApptsLoad(); setTimeout(() => { const it = ndSmartItems(); if(it.length && !sessionStorage.getItem('nd-smart')){ try{ sessionStorage.setItem('nd-smart', '1'); }catch(e){} hpNotify('🔔 عندك ' + it.length + ' تنبيه — افتح "تنبيهاتي" في الأدوات'); } }, 2500);
+  }catch(e){}
+}
+const _boot5 = hpBootReminders; hpBootReminders = async function(){ await _boot5.apply(this, arguments); ndBootExtras(); };
+
+/* ----- 10) تذاكر الدعم ----- */
+let ndTk = null;
+function ndTkLoad(force){ if(force) ndTk = null; if(ndTk !== null) return; ndTk = []; db.collection('tickets').where('ownerUid', '==', currentUid).get().then(s => { ndTk = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.createdMs - a.createdMs); if(hpTab === 'ticket') hpShow('ticket'); }).catch(() => {}); }
+const ND_TK_ST = { new: '🆕 جديدة', progress: '🛠️ قيد الحل', done: '✅ تم الحل' };
+function hpTicketHtml(){
+  ndTkLoad();
+  return `<div class="hp-card"><h3>🎫 تذكرة دعم جديدة</h3><div class="hp-row hp-row-wrap"><select id="tk-c"><option>مشكلة تقنية</option><option>الاشتراك والدفع</option><option>الحساب والصلاحيات</option><option>اقتراح</option><option>أخرى</option></select><input type="text" id="tk-s" placeholder="عنوان المشكلة" maxlength="100"></div>
+    <div class="field"><textarea id="tk-b" rows="4" placeholder="اشرح المشكلة بالتفصيل"></textarea></div><div class="hp-actions"><button class="btn-primary" onclick="ndTkSend()">إرسال التذكرة</button></div></div>
+    ${(ndTk || []).map(t => `<div class="hp-card"><h3>${hpE(t.subject)} <small>${ND_TK_ST[t.status] || t.status} · ${hpE(t.category)}</small></h3><p class="hp-msg">${hpE(t.body)}</p>${(t.replies || []).map(r => `<div class="hp-mini" style="margin:6px 0;${r.admin ? 'background:var(--accent-soft)' : ''}"><b>${r.admin ? 'الدعم' : 'أنت'}:</b> ${hpE(r.text)}</div>`).join('')}${t.status !== 'done' ? `<div class="hp-row"><input type="text" id="tk-r-${t.id}" placeholder="رد / إضافة"><button class="hp-chip" onclick="ndTkReply('${t.id}')">إرسال</button></div>` : ''}</div>`).join('')}`;
+}
+async function ndTkSend(){
+  const s = hpV('tk-s').trim(), b = hpV('tk-b').trim(); if(!s || !b){ toast('اكتب العنوان والتفاصيل.', { type: 'err' }); return; }
+  try{ await db.collection('tickets').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', ownerEmail: pendingUser.email || '', accountType: (userStatus && userStatus.accountType) || '', category: hpV('tk-c'), subject: s, body: b.slice(0, 2000), status: 'new', replies: [], createdMs: Date.now(), updatedMs: Date.now() }); toast('اتبعتت التذكرة — هنرد عليك هنا.'); ndTkLoad(true); }
+  catch(e){ toast('تعذّر الإرسال: ' + (e.code || e.message), { type: 'err' }); }
+}
+async function ndTkReply(id){
+  const t = hpV('tk-r-' + id).trim(); if(!t) return;
+  try{ await db.collection('tickets').doc(id).update({ replies: firebase.firestore.FieldValue.arrayUnion({ text: t.slice(0, 1000), admin: false, ms: Date.now() }), status: 'new', updatedMs: Date.now() }); ndTkLoad(true); }
+  catch(e){ toast('تعذّر الإرسال.', { type: 'err' }); }
+}
+
+/* ----- ربط التبويبات ----- */
+HP_TABS.push(['today', '🔔 تنبيهاتي'], ['folio', '🗂️ ملف إنجازي'], ['bc', '📣 إشعارات المنصة'], ['ticket', '🎫 الدعم']);
+Object.assign(SV_FN, { trend: svTrendHtml, appt: svApptHtml });
+SUPT.expert.splice(SUPT.expert.length - 1, 0, ['trend', '📈 تطور المعلمين'], ['appt', '📅 جدولة زيارة']);
+SUPT.academic.splice(SUPT.academic.length - 1, 0, ['trend', '📈 تطور المعلمين'], ['appt', '📅 جدولة زيارة']);
 </script>
 </body>
 </html>
