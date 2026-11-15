@@ -6870,7 +6870,7 @@ function hpShow(tab){
   hpTab = tab;
   const tabs = document.getElementById('hp-tabs'), body = document.getElementById('hp-body'); if(!tabs || !body) return;
   tabs.innerHTML = HP_TABS.filter(hpTabOk).map(t => `<button class="hp-chip ${t[0] === tab ? 'on' : ''}" onclick="hpShow('${t[0]}')">${t[1]}</button>`).join('');
-  body.innerHTML = ({ timer: hpTimerHtml, inbox: hpInboxHtml, report: hpReportHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml, ideas: hpIdeasHtml, today: hpTodayHtml, folio: hpFolioHtml, bc: hpBcHtml, ticket: hpTicketHtml })[tab]();
+  body.innerHTML = ({ timer: hpTimerHtml, inbox: hpInboxHtml, report: hpReportHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml, ideas: hpIdeasHtml, today: hpTodayHtml, folio: hpFolioHtml, bc: hpBcHtml, ticket: hpTicketHtml, attrep: hpAttRepHtml, sitlib: hpSitHtml, refl: hpReflHtml })[tab]();
   if(tab === 'timer') hpTick(true);
   if(tab === 'msgs') hpMsgRender();
 }
@@ -8479,6 +8479,188 @@ HP_TABS.push(['today', '🔔 تنبيهاتي'], ['folio', '🗂️ ملف إن�
 Object.assign(SV_FN, { trend: svTrendHtml, appt: svApptHtml });
 SUPT.expert.splice(SUPT.expert.length - 1, 0, ['trend', '📈 تطور المعلمين'], ['appt', '📅 جدولة زيارة']);
 SUPT.academic.splice(SUPT.academic.length - 1, 0, ['trend', '📈 تطور المعلمين'], ['appt', '📅 جدولة زيارة']);
+/* =====================================================================
+   دفعة 6: حدود الاستخدام، آخر ظهور، تقرير الحضور، بنك أسئلة بالوسوم،
+   مواقف صفية مشتركة، مفكرة الدرس، إنذار مبكر، شهادات إتمام
+   ===================================================================== */
+/* ----- 3) حدود يومية للإساءة ----- */
+let ndUsage = null;
+async function ndUsageLoad(){
+  if(ndUsage) return ndUsage; ndUsage = { chat: 0, tickets: 0, surveys: 0 };
+  try{ const d = await db.collection('usageDaily').doc(currentUid + '_' + ndDay()).get(); if(d.exists) Object.assign(ndUsage, d.data()); }catch(e){}
+  return ndUsage;
+}
+const ND_USE_LBL = { chat: 'رسائل الدردشة', tickets: 'تذاكر الدعم', surveys: 'الاستبيانات' };
+async function ndUse(kind){
+  const lim = ndQuota(kind); if(!lim) return true;
+  const u = await ndUsageLoad();
+  if((u[kind] || 0) >= lim){ toast('وصلت للحد اليومي (' + lim + ') من ' + ND_USE_LBL[kind] + ' — جرّب بكرة.', { type: 'err' }); return false; }
+  u[kind] = (u[kind] || 0) + 1;
+  db.collection('usageDaily').doc(currentUid + '_' + ndDay()).set({ uid: currentUid, name: (pendingUser && pendingUser.name) || '', day: ndDay(), [kind]: firebase.firestore.FieldValue.increment(1) }, { merge: true }).catch(() => {});
+  return true;
+}
+const _sc6 = sendChatMessage; sendChatMessage = async function(){ if(!(await ndUse('chat'))) return; return _sc6.apply(this, arguments); };
+const _tk6 = ndTkSend; ndTkSend = async function(){ if(!(await ndUse('tickets'))) return; return _tk6.apply(this, arguments); };
+const _su6 = svSurveyAdd; svSurveyAdd = async function(){ if(!(await ndUse('surveys'))) return; return _su6.apply(this, arguments); };
+
+/* ----- 4) آخر ظهور ----- */
+let ndPresence = null;
+function ndPresencePing(){
+  let fresh = true; try{ fresh = !sessionStorage.getItem('nd-login-' + currentUid); sessionStorage.setItem('nd-login-' + currentUid, '1'); }catch(e){}
+  try{ const k = 'nd-pres-' + currentUid, last = +localStorage.getItem(k) || 0; if(!fresh && Date.now() - last < 6 * 36e5) return; localStorage.setItem(k, Date.now()); }catch(e){}
+  const o = { uid: currentUid, name: (pendingUser && pendingUser.name) || '', email: (pendingUser && pendingUser.email) || '', accountType: (userStatus && userStatus.accountType) || '', supervisorId: (userStatus && userStatus.supervisorId) || '', lastSeenMs: Date.now() };
+  if(fresh){ o.lastLoginMs = Date.now(); }
+  db.collection('presence').doc(currentUid).set(o, { merge: true }).catch(() => {});
+}
+const _boot6 = ndBootExtras; ndBootExtras = async function(){ ndPresencePing(); return _boot6.apply(this, arguments); };
+
+/* ----- 5) تقرير الحضور الشهري ----- */
+function hpAttRepHtml(){
+  if(!HP.roster.length) return '<div class="hp-card"><div class="hp-note">أضف قائمة الطلاب والحضور الأول.</div></div>';
+  const m = window.hpAttMonth || hpToday().slice(0, 7), days = Object.keys(HP.attendance).filter(d => d.slice(0, 7) === m);
+  const rows = HP.roster.map(r => { const v = days.map(d => (HP.attendance[d] || {})[r.id]), p = v.filter(x => x === 1).length, a = v.filter(x => x === 0).length, tot = p + a; return { n: r.name, p, a, pct: tot ? Math.round(p / tot * 100) : null }; }).sort((x, y) => (x.pct === null) - (y.pct === null) || x.pct - y.pct);
+  return `<div class="hp-card"><h3>📊 تقرير الحضور الشهري</h3><div class="hp-row"><input type="month" id="ar-m" value="${m}" onchange="hpAttMonth = this.value; hpShow('attrep')"><span class="hp-note">${days.length} يوم مسجّل</span></div>
+    ${rows.map(r => `<div class="hp-trow"><span>${hpE(r.n)} ${r.a >= 3 ? '<span title="غياب متكرر">⚠️</span>' : ''}</span><span><b>${r.pct === null ? '—' : r.pct + '%'}</b> <small>ح ${r.p} / غ ${r.a}</small></span></div>${r.pct !== null ? `<div class="hp-bar"><i style="width:${r.pct}%"></i></div>` : ''}`).join('')}
+    <div class="hp-note">⚠️ = غاب 3 مرات أو أكتر.</div><div class="hp-actions"><button class="btn-primary" onclick="hpAttRepPrint()">🖨️ طباعة</button></div></div>`;
+}
+function hpAttRepPrint(){ const rows = [...document.querySelectorAll('#hp-body .hp-trow')].map(r => `<tr><td>${r.firstElementChild.textContent}</td><td>${r.lastElementChild.textContent}</td></tr>`).join(''); ptPrint('تقرير الحضور الشهري ' + (window.hpAttMonth || hpToday().slice(0, 7)), `<table><tr><th>الطالب</th><th>الحضور</th></tr>${rows}</table>`); }
+
+/* ----- 6) بنك أسئلة بالوسوم + اختبار تلقائي ----- */
+let qtFilter = '', qtDiff = '';
+function ptQtagHtml(){
+  qbLoad(); const Q = qbMine || [], diffs = [...new Set(Q.map(q => q.difficulty).filter(Boolean))];
+  const f = qtFilter.trim().toLowerCase(), L = Q.filter(q => (!qtDiff || q.difficulty === qtDiff) && (!f || ((q.text || '') + ' ' + (q.tags || []).join(' ') + (q.subject || '')).toLowerCase().includes(f)));
+  return `<div class="hp-card"><h3>🏷️ أسئلتي بالوسوم <small>${Q.length}</small></h3><div class="hp-note">ضيف وسوم (فصل، مهارة، مستوى بلوم…) مفصولة بفاصلة، وبعدين ابحث وولّد اختبار تلقائي.</div>
+    <div class="hp-row hp-row-wrap"><input type="text" placeholder="بحث / وسم" value="${hpE(qtFilter)}" oninput="qtFilter=this.value; clearTimeout(window.qtT); window.qtT=setTimeout(()=>ptShow('prep','qtag'),400)"><select onchange="qtDiff=this.value; ptShow('prep','qtag')"><option value="">كل المستويات</option>${diffs.map(d => `<option ${d === qtDiff ? 'selected' : ''}>${hpE(d)}</option>`).join('')}</select></div>
+    ${L.slice(0, 40).map(q => `<div class="hp-trow" style="align-items:flex-start;"><span><b>${hpE((q.text || '').slice(0, 110))}</b><br><small>${hpE(q.difficulty || '')}</small></span><span><input type="text" id="qt-${q.id}" value="${hpE((q.tags || []).join('، '))}" placeholder="وسوم" style="width:150px;"><button class="hp-chip" onclick="qtSave('${q.id}')">حفظ</button></span></div>`).join('') || '<div class="hp-note">مفيش أسئلة — ضيف من "مصنع الاختبارات".</div>'}</div>
+  <div class="hp-card"><h3>🎯 اختبار تلقائي</h3><div class="hp-row hp-row-wrap"><input type="text" id="qa-tag" placeholder="وسم معين (اختياري)">${diffs.map((d, i) => `<label class="hp-note">${hpE(d)} <input type="number" min="0" value="0" id="qa-d${i}" style="width:64px;"></label>`).join('')}</div>
+    <div class="hp-actions"><button class="btn-primary" onclick="qtAuto(false)">ولّد واطبع</button><button class="btn-secondary" onclick="qtAuto(true)">مع نموذج الإجابة</button></div></div>`;
+}
+async function qtSave(id){ const tags = hpV('qt-' + id).split(/[,،]/).map(x => x.trim()).filter(Boolean).slice(0, 8); try{ await db.collection('questions').doc(id).update({ tags }); const q = (qbMine || []).find(x => x.id === id); if(q) q.tags = tags; toast('اتحفظت الوسوم.'); }catch(e){ toast('تعذّر الحفظ.', { type: 'err' }); } }
+function qtAuto(withAns){
+  const Q = qbMine || [], diffs = [...new Set(Q.map(q => q.difficulty).filter(Boolean))], tag = hpV('qa-tag').trim(), pick = [];
+  diffs.forEach((d, i) => { const n = +hpV('qa-d' + i) || 0, pool = Q.filter(q => q.difficulty === d && (!tag || (q.tags || []).includes(tag))).sort(() => Math.random() - .5); pick.push(...pool.slice(0, n)); });
+  if(!pick.length){ toast('مفيش أسئلة مطابقة — حدّد أعداد أو غيّر الوسم.', { type: 'err' }); return; }
+  const body = pick.map((q, i) => `<p><b>${i + 1})</b> ${hpE(q.text || '')}</p>${(q.options || []).length ? '<ol type="A" style="margin:0 24px;">' + q.options.map(o => `<li>${hpE(o)}</li>`).join('') + '</ol>' : '<p>........................................</p>'}`).join('') + (withAns ? '<h2>نموذج الإجابة</h2>' + pick.map((q, i) => `<p>${i + 1}) ${hpE(String(q.answer || ''))}</p>`).join('') : '');
+  ptPrint('اختبار تلقائي' + (tag ? ' — ' + tag : ''), body);
+}
+PT.prep.tabs.push(['qtag', '🏷️ أسئلتي بالوسوم']); PT_FN.qtag = ptQtagHtml;
+
+/* ----- 7) مكتبة مواقف صفية مشتركة ----- */
+let ndSit = null, ndSitV = [], ndSitC = [], ndSitOpen = null;
+function ndSitLoad(force){
+  if(force) ndSit = null; if(ndSit !== null) return; ndSit = [];
+  Promise.all([db.collection('situations').limit(100).get(), db.collection('situationVotes').limit(600).get(), db.collection('situationComments').limit(400).get()]).then(([a, b, c]) => {
+    ndSit = a.docs.map(d => ({ id: d.id, ...d.data() })).sort((x, y) => (y.status === 'approved') - (x.status === 'approved') || y.createdMs - x.createdMs); ndSitV = b.docs.map(d => d.data()); ndSitC = c.docs.map(d => d.data()).sort((x, y) => x.ms - y.ms);
+    if(hpTab === 'sitlib') hpShow('sitlib');
+  }).catch(() => {});
+}
+function hpSitHtml(){
+  ndSitLoad(); const exp = userStatus && userStatus.isExpert;
+  return `<div class="hp-card"><h3>🧩 انشر موقف صفي</h3><div class="field"><input type="text" id="si-t" placeholder="عنوان الموقف" maxlength="100"></div><div class="field"><textarea id="si-p" rows="3" placeholder="إيه اللي حصل؟"></textarea></div><div class="field"><textarea id="si-s" rows="3" placeholder="إزاي اتعاملت معاه؟"></textarea></div><div class="hp-actions"><button class="btn-primary" onclick="ndSitAdd()">نشر</button></div></div>
+    ${(ndSit || []).map(s => { const V = ndSitV.filter(v => v.sid === s.id), avg = V.length ? V.reduce((a, v) => a + v.stars, 0) / V.length : 0, my = V.find(v => v.uid === currentUid), C = ndSitC.filter(c => c.sid === s.id), open = ndSitOpen === s.id;
+      return `<div class="hp-card"><h3>${s.status === 'approved' ? '⭐ ' : ''}${hpE(s.title)} <small>${hpE(s.ownerName || '')} · ${V.length ? ndF1(avg) + '/5 (' + V.length + ')' : 'بدون تقييم'}</small></h3><p class="hp-msg"><b>الموقف:</b> ${hpE(s.problem)}</p><p class="hp-msg"><b>الحل:</b> ${hpE(s.solution)}</p>
+      <div class="hp-actions">${[1, 2, 3, 4, 5].map(n => `<button class="hp-chip ${my && my.stars === n ? 'on' : ''}" onclick="ndSitVote('${s.id}',${n})">${n}★</button>`).join('')}<button class="hp-chip" onclick="ndSitOpen = ${open ? 'null' : "'" + s.id + "'"}; hpShow('sitlib')">💬 ${C.length}</button>${exp && s.status !== 'approved' && s.ownerUid !== currentUid ? `<button class="hp-chip" onclick="ndSitApprove('${s.id}')">اعتماد ⭐</button>` : ''}${s.ownerUid === currentUid ? `<button class="hp-chip bad" onclick="ndSitDel('${s.id}')">حذف</button>` : ''}</div>
+      ${open ? C.map(c => `<div class="hp-mini" style="margin:6px 0;"><b>${hpE(c.name)}:</b> ${hpE(c.text)}</div>`).join('') + `<div class="hp-row"><input type="text" id="sic-${s.id}" placeholder="تعليق"><button class="hp-chip" onclick="ndSitComment('${s.id}')">إرسال</button></div>` : ''}</div>`; }).join('') || '<div class="hp-card"><div class="hp-note">لسه مفيش مواقف منشورة.</div></div>'}`;
+}
+async function ndSitAdd(){ const t = hpV('si-t').trim(), p = hpV('si-p').trim(), s = hpV('si-s').trim(); if(!t || !p || !s){ toast('كمّل الحقول.', { type: 'err' }); return; } try{ await db.collection('situations').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title: t, problem: p.slice(0, 1500), solution: s.slice(0, 1500), status: 'open', createdMs: Date.now() }); toast('اتنشر.'); ndSitLoad(true); }catch(e){ toast('تعذّر النشر.', { type: 'err' }); } }
+async function ndSitVote(id, n){ try{ await db.collection('situationVotes').doc(id + '_' + currentUid).set({ sid: id, uid: currentUid, stars: n }); ndSitV = ndSitV.filter(v => !(v.sid === id && v.uid === currentUid)).concat([{ sid: id, uid: currentUid, stars: n }]); hpShow('sitlib'); }catch(e){ toast('تعذّر التقييم.', { type: 'err' }); } }
+async function ndSitComment(id){ const t = hpV('sic-' + id).trim(); if(!t) return; try{ const o = { sid: id, uid: currentUid, name: pendingUser.name || '', text: t.slice(0, 400), ms: Date.now() }; await db.collection('situationComments').add(o); ndSitC.push(o); hpShow('sitlib'); }catch(e){ toast('تعذّر الإرسال.', { type: 'err' }); } }
+async function ndSitApprove(id){ try{ await db.collection('situations').doc(id).update({ status: 'approved', approvedBy: currentUid, approvedByName: pendingUser.name || '' }); ndSitLoad(true); }catch(e){ toast('تعذّر الاعتماد.', { type: 'err' }); } }
+async function ndSitDel(id){ if(!confirm('حذف الموقف؟')) return; try{ await db.collection('situations').doc(id).delete(); ndSitLoad(true); }catch(e){} }
+
+/* ----- 8) مفكرة الدرس ----- */
+function hpReflHtml(){
+  const R = hpA('refl');
+  return `<div class="hp-card"><h3>📝 مفكرة ما بعد الحصة</h3><div class="hp-note">سؤالين سريعين بعد كل حصة — وهتظهر لك ملاحظاتك لما تحضّر نفس الدرس تاني من قوالب التحضير.</div>
+    <div class="hp-row hp-row-wrap"><input type="text" id="rf-l" placeholder="عنوان الدرس"><input type="date" id="rf-d" value="${hpToday()}"></div>
+    <div class="field"><label>إيه اللي نجح؟</label><textarea id="rf-g" rows="2"></textarea></div><div class="field"><label>إيه اللي هغيّره المرة الجاية؟</label><textarea id="rf-c" rows="2"></textarea></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="hpReflAdd()">حفظ</button></div></div>
+    ${R.length ? `<div class="hp-card"><h3>مفكرتي (${R.length})</h3>${R.slice().reverse().map(x => `<div class="hp-mini" style="margin-bottom:8px;"><b>${hpE(x.d)} — ${hpE(x.l)}</b><div>✅ ${hpE(x.g || '—')}</div><div>🔁 ${hpE(x.c || '—')}</div><button class="hp-chip bad" onclick="hpReflDel('${x.id}')">حذف</button></div>`).join('')}</div>` : ''}`;
+}
+function hpReflAdd(){ const l = hpV('rf-l').trim(); if(!l){ toast('اكتب عنوان الدرس.', { type: 'err' }); return; } hpA('refl').push({ id: hpUid(), l, d: hpV('rf-d'), g: hpV('rf-g').trim(), c: hpV('rf-c').trim() }); hpSave(); hpShow('refl'); }
+function hpReflDel(id){ HP.refl = hpA('refl').filter(x => x.id !== id); hpSave(); hpShow('refl'); }
+const _tg6 = ptTplGen; ptTplGen = function(){
+  _tg6.apply(this, arguments); const t = hpV('tp-t').trim().toLowerCase(); if(!t) return;
+  const prev = hpA('refl').filter(r => r.l.toLowerCase().includes(t) || t.includes(r.l.toLowerCase()));
+  if(prev.length){ const b = document.getElementById('tp-b'); b.value += '\n\nملاحظاتي من تدريس سابق:\n' + prev.map(r => `(${r.d}) نجح: ${r.g || '—'} | أغيّر: ${r.c || '—'}`).join('\n'); toast('📝 ضفت ملاحظاتك السابقة عن الدرس ده.'); }
+};
+
+/* ----- 9) لوحة إنذار مبكر ----- */
+let ndEws = null;
+function ndEwsLoad(force){
+  if(force) ndEws = null; if(ndEws !== null) return; ndEws = { loading: true };
+  Promise.all([db.collection('practicumShares').where('toUid', '==', currentUid).get(), db.collection('presence').where('supervisorId', '==', currentUid).get()]).then(([a, b]) => { ndEws = { shares: a.docs.map(d => d.data()), pres: b.docs.map(d => d.data()) }; if(svTab === 'ews') svShow('ews'); }).catch(() => { ndEws = { shares: [], pres: [] }; if(svTab === 'ews') svShow('ews'); });
+}
+function svEwsHtml(){
+  ndEwsLoad(); if(ndEws.loading) return '<div class="hp-card"><div class="hp-note">جاري التحليل…</div></div>';
+  const now = Date.now(), vis = hpA('visits'), rows = (svMembers || []).map(m => {
+    const sh = ndEws.shares.filter(x => x.fromUid === m.id), nm = m.name || m.email, pr = ndEws.pres.find(p => p.uid === m.id), last = sh.length ? Math.max(...sh.map(x => x.createdMs || 0)) : 0;
+    const selfs = sh.filter(x => x.kind === 'self').sort((a, b) => a.createdMs - b.createdMs), jr = sh.filter(x => x.kind === 'journal').length;
+    const v = vis.filter(x => x.t === nm).sort((a, b) => a.d < b.d ? -1 : 1), lv = v.length ? v[v.length - 1].avg : null, pv = v.length > 1 ? v[v.length - 2].avg : null;
+    const reasons = []; let score = 0;
+    if(!last){ reasons.push('ماسلّمش أي مادة'); score += 3; } else if(now - last > 14 * 864e5){ reasons.push('آخر تسليم من ' + Math.round((now - last) / 864e5) + ' يوم'); score += 2; }
+    if(!selfs.length){ reasons.push('مفيش تقييم ذاتي'); score += 1; }
+    if(!jr && sh.length){ reasons.push('مفيش يوميات'); score += 1; }
+    if(pr && now - pr.lastSeenMs > 14 * 864e5){ reasons.push('آخر دخول من ' + Math.round((now - pr.lastSeenMs) / 864e5) + ' يوم'); score += 2; }
+    if(lv !== null && lv < 3){ reasons.push('متوسط الزيارة ' + ndF1(lv)); score += 3; }
+    if(lv !== null && pv !== null && lv - pv <= -0.5){ reasons.push('تراجع ' + ndF1(pv - lv)); score += 2; }
+    return { n: nm, score, reasons };
+  }).sort((a, b) => b.score - a.score);
+  return `<div class="hp-card"><h3>🚨 لوحة الإنذار المبكر</h3><div class="hp-note">مبنية على تسليماتهم لك، وآخر دخول، وزياراتك المسجّلة.</div><div class="hp-actions"><button class="hp-chip" onclick="ndEwsLoad(true); svShow('ews')">↻ تحديث</button></div>
+    ${rows.map(r => `<div class="hp-trow" style="align-items:flex-start;"><span><b>${hpE(r.n)}</b><br><small>${r.reasons.map(hpE).join(' · ') || 'لا توجد مؤشرات'}</small></span><span>${r.score >= 4 ? '🔴 تدخل عاجل' : r.score >= 2 ? '🟠 متابعة' : '🟢 مستقر'}</span></div>`).join('') || '<div class="hp-note">مفيش حسابات تابعة.</div>'}</div>`;
+}
+Object.assign(SV_FN, { ews: svEwsHtml, cert: svCertHtml });
+SUPT.expert.splice(SUPT.expert.length - 1, 0, ['ews', '🚨 إنذار مبكر']);
+SUPT.academic.splice(SUPT.academic.length - 1, 0, ['ews', '🚨 إنذار مبكر'], ['cert', '🏅 شهادات إتمام']);
+SUPT.office.splice(SUPT.office.length - 1, 0, ['ews', '🚨 إنذار مبكر'], ['cert', '🏅 اعتماد شهادات']);
+
+/* ----- 10) شهادات إتمام التربية العملية ----- */
+let ndCerts = null;
+function ndCertLoad(force){
+  if(force) ndCerts = null; if(ndCerts !== null) return; ndCerts = { loading: true };
+  const c = db.collection('pracCerts');
+  Promise.all([c.where('issuedBy', '==', currentUid).get(), c.where('approverUid', '==', currentUid).get()]).then(([a, b]) => { const m = {}; a.docs.concat(b.docs).forEach(d => { m[d.id] = { id: d.id, ...d.data() }; }); ndCerts = { list: Object.values(m).sort((x, y) => y.issuedMs - x.issuedMs) }; if(svTab === 'cert') svShow('cert'); }).catch(() => { ndCerts = { list: [] }; if(svTab === 'cert') svShow('cert'); });
+}
+function svCertHtml(){
+  ndCertLoad(); if(ndCerts.loading) return '<div class="hp-card"><div class="hp-note">جاري التحميل…</div></div>';
+  const office = svKind() === 'office', up = userStatus && userStatus.supervisorId;
+  return `${office ? '' : `<div class="hp-card"><h3>🏅 إصدار شهادة إتمام</h3><div class="hp-row hp-row-wrap">${svTeacherSel('ce-t')}<input type="number" id="ce-h" placeholder="عدد الساعات" min="0" style="width:120px;"></div><div class="hp-row hp-row-wrap"><input type="text" id="ce-u" placeholder="الجهة / الكلية"><input type="text" id="ce-p" placeholder="الفترة (مثال: الفصل الأول 2026)"></div>
+    <div class="hp-note">${up ? 'هتروح للإدارة للاعتماد قبل ما المتدرب يقدر يطبعها.' : 'مفيش إدارة مرتبطة بك — هتتعتمد مباشرة.'}</div><div class="hp-actions"><button class="btn-primary" onclick="svCertIssue()">إصدار</button></div></div>`}
+    <div class="hp-card"><h3>${office ? 'طلبات الاعتماد' : 'الشهادات الصادرة'} <small>${ndCerts.list.length}</small></h3>${ndCerts.list.map(c => `<div class="hp-trow"><span><b>${hpE(c.name)}</b> <small>${hpE(c.period || '')} · ${hpE(c.code)} · من ${hpE(c.issuedByName || '')}</small></span><span>${c.status === 'approved' ? '✅ معتمدة' : office && c.approverUid === currentUid ? `<button class="hp-chip" onclick="svCertApprove('${c.id}')">اعتماد</button>` : '⏳ بانتظار الاعتماد'}</span></div>`).join('') || '<div class="hp-note">لا يوجد.</div>'}</div>`;
+}
+async function svCertIssue(){
+  const t = svTeacherVal('ce-t'), m = (svMembers || []).find(x => (x.name || x.email) === t); if(!m){ toast('اختر المتدرب من حساباتك.', { type: 'err' }); return; }
+  const code = Array.from(crypto.getRandomValues(new Uint8Array(6)), b => 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b % 31]).join(''), up = (userStatus && userStatus.supervisorId) || '';
+  try{ await db.collection('pracCerts').doc(code).set({ code, uid: m.id, name: m.name || m.email, hours: +hpV('ce-h') || 0, uni: hpV('ce-u').trim(), period: hpV('ce-p').trim(), issuedBy: currentUid, issuedByName: pendingUser.name || '', approverUid: up, status: up ? 'pending' : 'approved', issuedMs: Date.now() }); toast('اتصدرت الشهادة ' + code); ndCertLoad(true); setTimeout(() => svShow('cert'), 300); }
+  catch(e){ toast('تعذّر الإصدار: ' + (e.code || e.message), { type: 'err' }); }
+}
+async function svCertApprove(id){ try{ await db.collection('pracCerts').doc(id).update({ status: 'approved', approvedMs: Date.now(), approvedByName: pendingUser.name || '' }); ndCertLoad(true); setTimeout(() => svShow('cert'), 300); }catch(e){ toast('تعذّر الاعتماد.', { type: 'err' }); } }
+const ndCertUrl = c => location.origin + location.pathname + '#cert=' + c;
+let ndMyCerts = null;
+function prCertHtml(){
+  if(ndMyCerts === null){ ndMyCerts = []; db.collection('pracCerts').where('uid', '==', currentUid).get().then(s => { ndMyCerts = s.docs.map(d => d.data()).filter(c => c.status === 'approved'); if(PT.prac.tab === 'mycert') ptShow('prac', 'mycert'); }).catch(() => {}); }
+  return `<div class="hp-card"><h3>🏅 شهادة إتمام التربية العملية</h3>${ndMyCerts.map(c => `<div class="hp-trow"><span><b>${hpE(c.period || 'شهادة')}</b> <small>${c.hours ? c.hours + ' ساعة · ' : ''}كود ${hpE(c.code)}</small></span><button class="hp-chip" onclick="prCertPrint('${c.code}')">🖨️ طباعة</button></div>`).join('') || '<div class="hp-note">لسه مفيش شهادة معتمدة. هتظهر هنا بعد ما مشرفك يصدرها والإدارة تعتمدها.</div>'}</div>`;
+}
+function prCertPrint(code){
+  const c = ndMyCerts.find(x => x.code === code); if(!c) return;
+  ptPrint('شهادة إتمام التربية العملية', `<div style="border:6px double #1f3a6e;padding:40px 30px;text-align:center;margin-top:20px"><h1 style="color:#1f3a6e;font-size:30px">شهادة إتمام التربية العملية</h1><p style="font-size:18px;margin-top:30px">تشهد منصة <b>نُدرس معًا</b> بأن</p><h2 style="font-size:28px;color:#b8860b">${hpE(c.name)}</h2><p style="font-size:17px;line-height:2">قد أتمّ فترة التربية العملية ${c.period ? '(' + hpE(c.period) + ')' : ''} ${c.hours ? 'بإجمالي <b>' + c.hours + '</b> ساعة' : ''} ${c.uni ? '— ' + hpE(c.uni) : ''}</p><p style="margin-top:30px">تاريخ الإصدار: ${new Date(c.issuedMs).toLocaleDateString('ar-EG')} — أصدرها: ${hpE(c.issuedByName || '')}</p><p style="margin-top:24px;font-size:13px;color:#444">كود التحقق: <b dir="ltr">${hpE(c.code)}</b><br>للتحقق من صحة الشهادة: <span dir="ltr">${hpE(ndCertUrl(c.code))}</span></p></div>`);
+}
+PT.prac.tabs.push(['mycert', '🏅 شهادتي']); PT_FN.mycert = prCertHtml;
+/* صفحة التحقق العامة (#cert=CODE) — من غير تسجيل دخول */
+async function ndCertVerify(){
+  const m = location.hash.match(/^#cert=([A-Za-z0-9]+)$/); if(!m) return;
+  const ov = document.createElement('div'); ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#f4f6fb;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Cairo,Tahoma,sans-serif;direction:rtl'; ov.innerHTML = '<div style="background:#fff;border-radius:20px;padding:28px;max-width:440px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.12);text-align:center" id="cv-box">جاري التحقق…</div>'; document.body.appendChild(ov);
+  const box = document.getElementById('cv-box');
+  try{ const d = await db.collection('pracCerts').doc(m[1].toUpperCase()).get(), c = d.exists && d.data();
+    box.innerHTML = c && c.status === 'approved' ? `<div style="font-size:48px">✅</div><h2 style="color:#1f3a6e">شهادة صحيحة</h2><p style="font-size:18px"><b>${hpE(c.name)}</b></p><p>${hpE(c.period || '')} ${c.hours ? '· ' + c.hours + ' ساعة' : ''}</p><p style="color:#666;font-size:13px">صدرت ${new Date(c.issuedMs).toLocaleDateString('ar-EG')} — ${hpE(c.issuedByName || '')}</p>` : '<div style="font-size:48px">❌</div><h2 style="color:#b3261e">الشهادة غير موجودة أو غير معتمدة</h2>';
+  }catch(e){ box.innerHTML = 'تعذّر التحقق الآن. حاول لاحقًا.'; }
+  const x = document.createElement('button'); x.textContent = 'فتح المنصة'; x.style.cssText = 'margin-top:16px;padding:10px 20px;border:0;border-radius:12px;background:#1f3a6e;color:#fff;cursor:pointer;font:inherit'; x.onclick = () => { ov.remove(); history.replaceState(null, '', location.pathname); }; box.appendChild(x);
+}
+setTimeout(ndCertVerify, 400);
+
+/* ----- ربط تبويبات الأدوات ----- */
+HP_TABS.push(['attrep', '📊 تقرير الحضور', 't'], ['sitlib', '🧩 مواقف صفية'], ['refl', '📝 مفكرة الدرس']);
 </script>
 </body>
 </html>
