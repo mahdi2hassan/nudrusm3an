@@ -1160,6 +1160,23 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
 }
 @media (max-width:380px){ .mb-list,.mb-acc-b{grid-template-columns:1fr;} }
 @media (max-width:1023px){ .mb-single{margin-bottom:6px;} .mb-single .mb-it{width:100%;} }
+/* ===== منع أي تمرير أفقي للصفحة على الموبايل (كان بيزحزح الشريط السفلي والمحتوى) ===== */
+@media (max-width:1023px){
+  html{overflow-x:hidden; overscroll-behavior-x:none; max-width:100%;}
+  body{overflow-x:clip; max-width:100vw; position:relative; touch-action:pan-y pinch-zoom;}
+  .shell,.main,#screen-app{min-width:0; max-width:100vw; overflow-x:clip;}
+  .main{width:100%; margin-inline:0; box-sizing:border-box;}
+  #mbnav{left:10px; right:10px; width:auto; box-sizing:border-box;}
+  #mb-sheet{left:10px; right:10px; box-sizing:border-box;}
+  #mb-top{left:10px; right:10px; box-sizing:border-box;}
+  img,video,iframe,table{max-width:100%;}
+  pre,code{white-space:pre-wrap; word-break:break-word;}
+}
+@media (max-width:1023px){
+  .global-topbar{margin-bottom:26px !important;}
+  .global-topbar input{min-height:42px;}
+  .global-topbar .search-wrap{min-width:0;}
+}
 </style>
 </head>
 <body>
@@ -7942,6 +7959,20 @@ const _mbEnter = enterApp; enterApp = function(role){ const r = _mbEnter(role); 
 const _mbLogout = logoutUser; logoutUser = function(){ const bar = document.getElementById('mbnav'); if(bar) bar.style.display = 'none'; mbCloseAll(); document.body.classList.remove('has-mbnav'); return _mbLogout.apply(this, arguments); };
 window.addEventListener('resize', () => { if(!mbIsMobile()) mbCloseAll(); });
 document.addEventListener('keydown', e => { if(e.key === 'Escape') mbCloseAll(); });
+/* حارس التمرير الأفقي: لو أي عنصر زوّد عرض الصفحة نكتشفه ونقصّه بدل ما الصفحة تتزحزح */
+function mbOverflowGuard(){
+  if(!mbIsMobile()) return;
+  try{
+    const W = document.documentElement.clientWidth, bad = [];
+    document.querySelectorAll('.main *').forEach(e => { const cs = getComputedStyle(e); if(cs.position === 'fixed' || cs.display === 'none') return; const r = e.getBoundingClientRect(); if(r.width > 0 && (r.right > W + 2 || r.left < -2)) bad.push(e); });
+    bad.slice(0, 40).forEach(e => { if(!e.closest('#hp-tabs,#pp-tabs,#pr-tabs,#sv-tabs,.hp-tbl,table,.filter-tabs,.tabs')){ e.style.maxWidth = '100%'; e.style.boxSizing = 'border-box'; } });
+    if(bad.length) console.warn('overflow offenders', bad.slice(0, 5).map(e => e.id || e.className || e.tagName));
+  }catch(e){}
+  if(window.scrollX !== 0) window.scrollTo(0, window.scrollY);
+}
+const _mbShow2 = showView; showView = function(id, btn){ const r = _mbShow2(id, btn); setTimeout(mbOverflowGuard, 350); return r; };
+window.addEventListener('load', () => setTimeout(mbOverflowGuard, 1500));
+window.addEventListener('orientationchange', () => setTimeout(mbOverflowGuard, 400));
 /* =====================================================================
    دفعة 3: تحكم الأدمن (siteSettings/control)، بحث موحد، تقويم المشرف، قوالب معايير الزيارة، PDF
    ===================================================================== */
