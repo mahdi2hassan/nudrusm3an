@@ -151,7 +151,77 @@
     .chat-back-btn{display:flex;}
   }
 </style>
+<style>
+@media (max-width:760px){
+  input,select,textarea{font-size:16px !important; min-height:44px;}
+  .btn,button{min-height:42px;}
+  table{display:block; overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch;}
+  .card{padding:14px !important; border-radius:16px;}
+  #pm-users,#pt-list{max-height:none;}
+}
+</style>
+<style id="admin-theme">
+/* ===== نفس النمط البصري للمنصة الرئيسية: كحلي + ذهبي + كروت زجاجية + قائمة جانبية ===== */
+:root{ --ink:#0f1b36; --ink-soft:#56627c; --paper:#f4f6fb; --paper-dim:#eaeef6; --brick:#2c4194; --brick-dark:#1f2f72; --sage:#1d9a6c; --gold:#e3a82b; --line:#e2e7f1; --white:#fff; --danger:#b3261e;
+  --navy-1:#0b1530; --navy-2:#14244d; --navy-3:#1f3578; --accent-soft:rgba(44,65,148,.09); --radius:16px;
+  --shadow-sm:0 1px 2px rgba(15,27,54,.05),0 2px 8px rgba(15,27,54,.04); --shadow-md:0 10px 30px rgba(15,27,54,.09);
+  --grad:linear-gradient(135deg,#2c4194,#1f3578); --grad-gold:linear-gradient(135deg,#f0b93a,#e3a82b); }
+body{font-family:'Cairo','Almarai',sans-serif; background:radial-gradient(900px 420px at 100% -10%,rgba(227,168,43,.10),transparent 60%),radial-gradient(800px 420px at -10% 0,rgba(44,65,148,.08),transparent 60%),var(--paper); background-attachment:fixed;}
+::selection{background:var(--gold); color:var(--navy-1);}
+/* الدخول */
+.gate-box{border-radius:22px; border-color:var(--line); box-shadow:var(--shadow-md); padding:34px 28px; background:rgba(255,255,255,.9); backdrop-filter:blur(10px);}
+.gate-box button{background:var(--grad); border-radius:12px; padding:12px; box-shadow:0 8px 20px rgba(44,65,148,.28);}
+.gate-box input{border-radius:12px; padding:12px 14px;}
+.gate-err,.status.err{color:var(--danger);}
+/* الهيكل: قائمة جانبية على الديسكتوب */
+#dash{max-width:1180px;}
+.head{display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap; padding:24px 26px; border-radius:22px; color:#fff; background:radial-gradient(500px 220px at 90% 0,rgba(227,168,43,.25),transparent 60%),linear-gradient(135deg,var(--navy-1),var(--navy-3)); box-shadow:var(--shadow-md);}
+.head h1{font-size:24px; color:#fff;}
+.head p{color:#c3cde8;}
+.head .icon-btn,.head-actions button{background:rgba(255,255,255,.12) !important; color:#fff !important; border:1px solid rgba(255,255,255,.22) !important; border-radius:12px; padding:9px 14px; font-weight:800; backdrop-filter:blur(6px);}
+.head .icon-btn:hover{background:rgba(255,255,255,.22) !important;}
+.tabs{gap:6px;}
+.tab{border-radius:12px; border-color:var(--line); font-weight:800; opacity:1; color:var(--ink-soft); transition:all .18s;}
+.tab:hover{border-color:var(--brick); color:var(--brick);}
+.tab.active{background:var(--grad); color:#fff; border-color:transparent; box-shadow:0 6px 16px rgba(44,65,148,.28);}
+@media (min-width:1024px){
+  #dash{margin:0; max-width:none; padding:24px 28px 40px; padding-inline-start:290px;}
+  .tabs{position:fixed; inset-block:0; inset-inline-start:0; width:262px; z-index:50; display:flex; flex-direction:column; flex-wrap:nowrap; gap:3px; margin:0; padding:86px 12px 20px; overflow-y:auto; background:linear-gradient(180deg,var(--navy-1),var(--navy-2)); box-shadow:4px 0 28px rgba(11,21,48,.2); scrollbar-width:thin;}
+  .tabs::before{content:'نُدرس معًا'; position:absolute; top:22px; inset-inline:18px; font-family:'Cairo',sans-serif; font-weight:900; font-size:24px; color:#fff;}
+  .tabs::after{content:'لوحة التحكم'; position:absolute; top:56px; inset-inline-start:18px; background:var(--grad-gold); color:var(--navy-1); font-size:11px; font-weight:900; padding:2px 10px; border-radius:999px;}
+  .tab{width:100%; justify-content:flex-start; background:transparent; border:0; color:#b9c4e2; padding:11px 14px; border-radius:12px; font-size:14px; position:relative;}
+  .tab:hover{background:rgba(255,255,255,.08); color:#fff;}
+  .tab.active{background:rgba(255,255,255,.12); color:#fff; box-shadow:none;}
+  .tab.active::before{content:''; position:absolute; inset-inline-end:-12px; top:8px; bottom:8px; width:4px; border-radius:4px 0 0 4px; background:var(--gold);}
+}
+@media (max-width:1023px){
+  .tabs{flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; position:sticky; top:0; z-index:30; padding:8px 2px 10px; margin-inline:-4px; background:linear-gradient(var(--paper) 80%,transparent);}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{flex:0 0 auto; white-space:nowrap;}
+  #dash{padding:16px 14px;}
+  .head{padding:18px 16px; border-radius:18px;}
+  .head h1{font-size:20px;}
+}
+/* الكروت والعناصر */
+.card,.item,.urow{border-radius:18px; border-color:var(--line); box-shadow:var(--shadow-sm); background:rgba(255,255,255,.86); backdrop-filter:blur(8px);}
+.item,.urow{transition:transform .18s,box-shadow .18s;}
+.item:hover,.urow:hover{box-shadow:var(--shadow-md); transform:translateY(-1px);}
+.card h3{font-family:'Cairo',sans-serif; font-weight:900;}
+.warn{background:#fff8e8; border:1px solid rgba(227,168,43,.5); color:#7a5a0c; border-radius:16px; font-size:12px; margin-top:16px;}
+.warn b{color:var(--navy-3);}
+.btn{background:var(--grad); border-radius:12px; padding:10px 20px; box-shadow:0 8px 20px rgba(44,65,148,.22); transition:transform .15s,filter .15s;}
+.btn:hover{transform:translateY(-1px); filter:brightness(1.1);}
+.del{background:#fdeceb; color:var(--danger); border-radius:10px;}
+.urow .save-btn{background:var(--sage); border-radius:10px;}
+.field input,.field textarea,.field select,select,input[type=text],input[type=number],input[type=email],input[type=date],input[type=password],textarea{border-radius:12px; border:1px solid var(--line); font-family:inherit;}
+.field input,.field textarea{background:#fff;}
+input:focus,select:focus,textarea:focus{outline:none; border-color:var(--brick); box-shadow:0 0 0 3px rgba(44,65,148,.16);}
+.badge{border-radius:999px;}
+.badge.active{background:#e3f4ec; color:#157a55;}
+table{border-collapse:separate; border-spacing:0;}
+</style>
 </head>
+
 <body>
 <svg style="display:none" aria-hidden="true">
 <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></symbol>
@@ -427,6 +497,17 @@
       </div>
       <div class="status" id="pm-status"></div>
     </div>
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">📦 قوالب الصلاحيات</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.9; margin-bottom:10px;">احفظ الأدوات المحددة فوق كقالب باسم (مثلاً "طالب معلم كامل")، وطبّقه على المشتركين المختارين بضغطة. حفظ نفس الاسم تاني بيضيف عليه.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+        <input type="text" id="pt-name" placeholder="اسم القالب" style="flex:1; min-width:160px;">
+        <select id="pt-mode"><option value="allow">الأدوات المحددة = سماح</option><option value="deny">الأدوات المحددة = منع</option></select>
+        <button class="btn" onclick="saveTpl()">💾 حفظ قالب</button>
+      </div>
+      <div id="pt-list"></div>
+      <div class="status" id="pt-status"></div>
+    </div>
   </div>
 
   <div class="panel" id="panel-nid">
@@ -510,6 +591,16 @@
   </div>
 
   <div class="panel" id="panel-settings">
+    <div class="card" style="margin-bottom:16px;">
+      <h3 style="margin-bottom:6px;">💾 نسخة احتياطية (JSON)</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.9; margin-bottom:10px;">بتصدّر إعدادات الموقع (الأسعار، الصلاحيات حسب النوع، البريد…) + استثناءات صلاحيات المشتركين + منح الأرقام القومية (مشفّرة بالـ hash). الاستيراد بيدمج مع الموجود ولا يمسح شيئًا.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <button class="btn" onclick="exportBackup()">⬇️ تصدير نسخة احتياطية</button>
+        <input type="file" id="bk-file" accept="application/json,.json" style="max-width:240px;">
+        <button class="btn" style="background:var(--ink)" onclick="importBackup()">⬆️ استيراد</button>
+      </div>
+      <div class="status" id="bk-status"></div>
+    </div>
     <div class="card">
       <div class="field"><label>رقم واتساب (بالصيغة الدولية بدون +، مثال: 201234567890)</label><input type="text" id="set-whatsapp" placeholder="201007586279"></div>
       <div class="field"><label>رقم هاتف للاتصال</label><input type="text" id="set-phone"></div>
@@ -2093,7 +2184,7 @@ let PERM_SEL = new Set();
 function initPerm(){
   const t=document.getElementById('pm-type'); if(t && t.options.length<2) t.innerHTML='<option value="">كل الأنواع</option>'+Object.keys(ACC_TYPES).map(k=>`<option value="${k}">${ACC_TYPES[k]}</option>`).join('');
   const f=document.getElementById('pm-feats'); if(f && !f.children.length) f.innerHTML=FEATURE_FLAG_ITEMS.map(x=>`<label style="display:flex; gap:6px; align-items:center; font-size:13px;"><input type="checkbox" class="pm-feat" value="${x[0]}" style="width:auto;"> ${x[1]}</label>`).join('');
-  renderPermUsers();
+  renderPermUsers(); loadTpls();
 }
 function permFiltered(){
   const q=(document.getElementById('pm-q').value||'').trim().toLowerCase(), ty=document.getElementById('pm-type').value, ov=document.getElementById('pm-ov').value;
@@ -2132,6 +2223,59 @@ async function applyPerm(mode){
     st.className='status ok'; st.textContent=`✓ اتطبّق على ${ids.length} مشترك. التغيير بيظهر عند دخولهم أو تحديث الصفحة.`;
     renderPermUsers();
   }catch(e){ st.textContent='تعذّر التطبيق: '+(e.message||e.code); }
+}
+
+/* ================= قوالب الصلاحيات + النسخة الاحتياطية ================= */
+let PERM_TPLS = {};
+async function loadTpls(){ try{ const d=await db.collection('siteSettings').doc('permTemplates').get(); PERM_TPLS=(d.exists&&d.data().items)||{}; }catch(e){ PERM_TPLS={}; } renderTpls(); }
+function renderTpls(){
+  const el=document.getElementById('pt-list'); if(!el) return; const lab=Object.fromEntries(FEATURE_FLAG_ITEMS), names=Object.keys(PERM_TPLS);
+  el.innerHTML=names.length?names.map(n=>{ const t=PERM_TPLS[n]||{}, al=(t.allow||[]).map(k=>lab[k]||k), dn=(t.deny||[]).map(k=>lab[k]||k);
+    return `<div style="border:1px solid var(--line); border-radius:12px; padding:10px; margin-bottom:8px;"><div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;"><b style="flex:1;">${escapeHtml(n)}</b><button class="btn" style="background:#1d9a6c" onclick="applyTpl('${encodeURIComponent(n)}')">تطبيق على المختارين</button><button class="btn" style="background:#b3261e" onclick="delTpl('${encodeURIComponent(n)}')">حذف</button></div><div style="font-size:12px; color:var(--ink-soft); margin-top:6px; line-height:1.8;">${al.length?'✓ سماح: '+escapeHtml(al.join('، ')):''}${al.length&&dn.length?'<br>':''}${dn.length?'✗ منع: '+escapeHtml(dn.join('، ')):''}</div></div>`; }).join(''):'<div style="color:var(--ink-soft); font-size:13px;">لا توجد قوالب بعد.</div>';
+}
+async function saveTpl(){
+  const st=document.getElementById('pt-status'); st.className='status';
+  const name=document.getElementById('pt-name').value.trim(), mode=document.getElementById('pt-mode').value, feats=[...document.querySelectorAll('.pm-feat:checked')].map(x=>x.value);
+  if(!name||name.includes('.')||name.includes('/')){ st.textContent='اكتب اسمًا صالحًا (بدون نقطة أو /).'; return; } if(!feats.length){ st.textContent='حدد أداة واحدة على الأقل من الأدوات فوق.'; return; }
+  const t=PERM_TPLS[name]||{allow:[],deny:[]}; const other=mode==='allow'?'deny':'allow';
+  t[mode]=[...new Set((t[mode]||[]).concat(feats))]; t[other]=(t[other]||[]).filter(k=>!feats.includes(k));
+  PERM_TPLS[name]=t;
+  try{ await db.collection('siteSettings').doc('permTemplates').set({items:PERM_TPLS}); st.className='status ok'; st.textContent='✓ اتحفظ القالب.'; renderTpls(); }catch(e){ st.textContent='تعذّر الحفظ: '+(e.message||e.code); }
+}
+async function delTpl(en){ const n=decodeURIComponent(en); if(!confirm('حذف القالب "'+n+'"؟')) return; delete PERM_TPLS[n]; try{ await db.collection('siteSettings').doc('permTemplates').set({items:PERM_TPLS}); renderTpls(); }catch(e){ toast('تعذّر الحذف'); } }
+async function applyTpl(en){
+  const n=decodeURIComponent(en), t=PERM_TPLS[n]; const st=document.getElementById('pt-status'); st.className='status';
+  if(!t) return; if(!PERM_SEL.size){ st.textContent='اختار مشترك واحد على الأقل من القايمة فوق.'; return; }
+  const ids=[...PERM_SEL]; if(!confirm(`تطبيق القالب "${n}" على ${ids.length} مشترك؟`)) return;
+  const o={}; (t.allow||[]).forEach(k=>o[k]=true); (t.deny||[]).forEach(k=>o[k]=false);
+  try{
+    for(let i=0;i<ids.length;i+=400){ const b=db.batch(); ids.slice(i,i+400).forEach(id=>b.set(db.collection('users').doc(id),{featureOverrides:o},{merge:true})); await b.commit(); }
+    ids.forEach(id=>{ const u=ALL_USERS.find(x=>x.id===id); if(u) u.featureOverrides=Object.assign({},u.featureOverrides,o); });
+    audit('perm','','',`تطبيق قالب "${n}" على ${ids.length} مشترك`); st.className='status ok'; st.textContent=`✓ اتطبّق القالب على ${ids.length} مشترك.`; renderPermUsers();
+  }catch(e){ st.textContent='تعذّر التطبيق: '+(e.message||e.code); }
+}
+async function exportBackup(){
+  const st=document.getElementById('bk-status'); st.className='status'; st.textContent='جاري التجميع...';
+  try{
+    const out={ app:'nudrus', version:1, at:new Date().toISOString(), siteSettings:{}, featureOverrides:{}, idGrants:{} };
+    (await db.collection('siteSettings').get()).forEach(d=>out.siteSettings[d.id]=d.data());
+    ALL_USERS.forEach(u=>{ if(u.featureOverrides&&Object.keys(u.featureOverrides).length) out.featureOverrides[u.id]=u.featureOverrides; });
+    (await db.collection('idGrants').get()).forEach(d=>out.idGrants[d.id]=d.data());
+    const blob=new Blob([JSON.stringify(out,null,1)],{type:'application/json'}), a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='nudrus-backup-'+out.at.slice(0,10)+'.json'; a.click();
+    audit('backup','','','تصدير نسخة احتياطية'); st.className='status ok'; st.textContent=`✓ تم: ${Object.keys(out.siteSettings).length} إعدادات، ${Object.keys(out.featureOverrides).length} استثناء، ${Object.keys(out.idGrants).length} منحة.`;
+  }catch(e){ st.textContent='تعذّر التصدير: '+(e.message||e.code); }
+}
+async function importBackup(){
+  const st=document.getElementById('bk-status'); st.className='status'; const f=document.getElementById('bk-file').files[0]; if(!f){ st.textContent='اختر ملف النسخة الاحتياطية.'; return; }
+  let j; try{ j=JSON.parse(await f.text()); }catch(e){ st.textContent='الملف مش JSON صالح.'; return; } if(j.app!=='nudrus'){ st.textContent='الملف مش نسخة احتياطية من المنصة.'; return; }
+  const ss=Object.entries(j.siteSettings||{}), fo=Object.entries(j.featureOverrides||{}).filter(([id])=>ALL_USERS.some(u=>u.id===id)), ig=Object.entries(j.idGrants||{});
+  if(!confirm(`استيراد ${ss.length} إعدادات + ${fo.length} استثناء + ${ig.length} منحة (دمج بدون مسح)؟`)) return;
+  st.textContent='جاري الاستيراد...';
+  try{
+    const ops=[]; ss.forEach(([id,d])=>ops.push([db.collection('siteSettings').doc(id),d])); fo.forEach(([id,d])=>ops.push([db.collection('users').doc(id),{featureOverrides:d}])); ig.forEach(([id,d])=>ops.push([db.collection('idGrants').doc(id),d]));
+    for(let i=0;i<ops.length;i+=400){ const b=db.batch(); ops.slice(i,i+400).forEach(([r,d])=>b.set(r,d,{merge:true})); await b.commit(); }
+    audit('backup','','','استيراد نسخة احتياطية'); st.className='status ok'; st.textContent='✓ تم الاستيراد. حدّث الصفحة لرؤية التغييرات.';
+  }catch(e){ st.textContent='تعذّر الاستيراد: '+(e.message||e.code); }
 }
 </script>
 </body>

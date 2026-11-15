@@ -1015,6 +1015,100 @@ details.hp-card summary{font-size:14.5px; list-style:none;}
 .quick-grid .quick-card{display:flex; flex-direction:column; align-items:center; gap:4px; padding:16px 10px; cursor:pointer; border:1px solid var(--line); background:var(--white);}
 .quick-grid .quick-card .qc-icon{color:var(--brick); background:var(--accent-soft, var(--paper-dim));}
 .quick-grid .quick-card small{font-size:11.5px; color:var(--ink-soft); font-weight:600; line-height:1.5;}
+/* ===== Modern v2: ملفات ومكتبة وتابات وكروت الإشراف ===== */
+:root{ --glass:rgba(255,255,255,.78); --ring:0 0 0 3px rgba(44,65,148,.16); --grad:linear-gradient(135deg,#2c4194,#1f3578); --grad-gold:linear-gradient(135deg,#f0b93a,#e3a82b); }
+/* قوائم الملفات → شبكة كروت */
+.content-list{display:grid !important; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:14px;}
+.content-list > .empty-state{grid-column:1/-1;}
+.content-item{position:relative; display:flex !important; flex-direction:column; justify-content:space-between; gap:12px; padding:16px 16px 14px 16px; padding-inline-start:70px; background:var(--glass); backdrop-filter:blur(8px); border:1px solid var(--line); border-radius:18px; min-height:104px; overflow:hidden; transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;}
+.content-item::before{content:'📄'; position:absolute; inset-inline-start:14px; top:16px; width:44px; height:44px; border-radius:14px; display:grid; place-items:center; font-size:21px; background:var(--accent-soft); box-shadow:inset 0 0 0 1px rgba(44,65,148,.10);}
+.content-item::after{content:''; position:absolute; inset-inline-end:0; top:0; width:4px; height:100%; background:var(--grad-gold); opacity:0; transition:opacity .2s;}
+.content-item:hover{transform:translateY(-3px); box-shadow:0 14px 34px rgba(15,27,54,.12);}
+.content-item:hover::after{opacity:1;}
+.ci-title{font-weight:900; font-size:15px; line-height:1.5; display:flex; flex-wrap:wrap; align-items:center; gap:6px;}
+.ci-desc{color:var(--ink-soft); font-size:13px; line-height:1.6; margin-top:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+.lib-item-type{font-size:11px; font-weight:800; padding:3px 10px; border-radius:999px; background:var(--accent-soft); color:var(--brick);}
+a.ci-link{display:inline-flex; align-items:center; gap:6px; padding:7px 16px; border-radius:999px !important; background:var(--grad) !important; color:#fff !important; text-decoration:none; font-size:13px;}
+a.ci-link:hover{filter:brightness(1.12);}
+.bookmark-btn{width:36px; height:36px; border-radius:50%; border:1px solid var(--line); background:#fff;}
+.bookmark-btn.saved{background:var(--grad-gold); border-color:transparent; color:#fff;}
+/* تابات الفلترة */
+.filter-tab{border-radius:999px !important; padding:8px 18px !important; border:1px solid var(--line) !important; background:#fff !important; font-weight:800; transition:all .18s;}
+.filter-tab.active{background:var(--grad) !important; color:#fff !important; border-color:transparent !important; box-shadow:0 6px 16px rgba(44,65,148,.28);}
+/* تابات الأدوات: شريط أفقي ناعم */
+.hp-chips,.hp-tabs{display:flex; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; gap:8px; padding:8px 2px;}
+.hp-chips::-webkit-scrollbar,.hp-tabs::-webkit-scrollbar{display:none;}
+#hp-tabs,#pp-tabs,#pr-tabs,#sv-tabs{display:flex; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; gap:8px; padding:8px 2px 10px; position:sticky; top:0; z-index:6; background:linear-gradient(var(--paper) 78%, transparent);}
+#hp-tabs::-webkit-scrollbar,#pp-tabs::-webkit-scrollbar,#pr-tabs::-webkit-scrollbar,#sv-tabs::-webkit-scrollbar{display:none;}
+.hp-chip{flex:0 0 auto; white-space:nowrap; transition:all .18s;}
+.hp-chip:hover{border-color:var(--brick); transform:translateY(-1px);}
+.hp-chip.on{background:var(--grad) !important; color:#fff !important; border-color:transparent !important; box-shadow:0 6px 16px rgba(44,65,148,.25);}
+.hp-card{max-width:none; border-radius:18px; box-shadow:var(--shadow-sm); background:var(--glass);}
+.hp-card h3{display:flex; align-items:baseline; gap:8px; margin:0 0 10px; font-size:16px;}
+.hp-card h3 small{font-weight:600; color:var(--ink-soft);}
+input[type=text],input[type=number],input[type=date],input[type=email],select,textarea{border-radius:12px !important;}
+input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); border-color:var(--brick) !important;}
+.btn-primary{background:var(--grad) !important; border:none !important; box-shadow:0 8px 20px rgba(44,65,148,.25); transition:transform .15s, filter .15s;}
+.btn-primary:hover{transform:translateY(-1px); filter:brightness(1.1);}
+.btn-primary[disabled]{opacity:.5; transform:none; box-shadow:none;}
+/* كروت الإشراف */
+.sv-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px;}
+.sv-mcard{background:var(--glass); border:1px solid var(--line); border-radius:18px; padding:16px; box-shadow:var(--shadow-sm); transition:transform .2s, box-shadow .2s;}
+.sv-mcard:hover{transform:translateY(-3px); box-shadow:var(--shadow-md);}
+.sv-mcard.warn{border-color:rgba(179,38,30,.4); background:linear-gradient(#fff,#fff6f5);}
+.sv-mhead{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+.sv-av{width:38px; height:38px; border-radius:50%; background:var(--grad); color:#fff; display:grid; place-items:center; font-weight:900;}
+.sv-tag{background:var(--accent-soft); color:var(--brick); padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800;}
+.sv-kv{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed var(--line); font-size:13px;}
+.sv-kv span{color:var(--ink-soft);}
+.sv-chk{display:inline-flex; align-items:center; gap:6px; margin:4px 10px 4px 0; padding:6px 12px; border:1px solid var(--line); border-radius:999px; background:#fff; font-size:13px; cursor:pointer;}
+.sv-rank{display:flex; gap:12px; align-items:center; padding:10px 0; border-bottom:1px solid var(--line);}
+.sv-pos{width:32px; height:32px; border-radius:50%; background:var(--grad-gold); color:var(--navy-1); display:grid; place-items:center; font-weight:900;}
+.sv-dot{display:inline-grid; place-items:center; min-width:18px; height:18px; padding:0 5px; margin-inline-start:6px; border-radius:999px; background:#e0443c; color:#fff; font-size:11px; font-style:normal; font-weight:900;}
+@media (max-width:640px){ .content-list{grid-template-columns:1fr;} .sv-grid{grid-template-columns:1fr;} }
+/* ===== Mobile pass ===== */
+#mbnav{display:none !important;}
+@media (max-width:1023px){
+  #mbnav{display:flex !important; position:fixed; z-index:90; inset-inline:10px; bottom:calc(10px + env(safe-area-inset-bottom)); gap:2px; padding:6px; background:rgba(11,21,48,.94); backdrop-filter:blur(14px); border-radius:22px; box-shadow:0 14px 34px rgba(11,21,48,.4);}
+  #mbnav[style*="display: none"]{display:none !important;}
+  #mbnav button{flex:1; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:8px 2px; min-height:52px; background:none; border:0; color:#aeb9d6; font:inherit; font-size:11px; font-weight:800; border-radius:16px; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:background .18s,color .18s;}
+  #mbnav button .icon{width:21px; height:21px;}
+  #mbnav button.on{background:var(--grad-gold); color:var(--navy-1);}
+  body.has-mbnav .main, body.has-mbnav #screen-app{padding-bottom:calc(92px + env(safe-area-inset-bottom));}
+  body.has-mbnav #toast-stack{bottom:calc(92px + env(safe-area-inset-bottom));}
+  body.has-mbnav .sidebar-foot{padding-bottom:calc(16px + env(safe-area-inset-bottom));}
+}
+@media (max-width:760px){
+  /* لمس مريح + منع تكبير iOS عند الكتابة */
+  input,select,textarea{font-size:16px !important; min-height:46px;}
+  textarea{min-height:90px;}
+  .btn-primary,.btn-secondary,button.btn,.hp-chip,.filter-tab,.linklike{min-height:44px;}
+  .hp-chip{padding:10px 16px;}
+  .menu-toggle-btn,.bookmark-btn,.hp-chip.bad{min-width:44px; min-height:44px;}
+  .global-topbar{position:sticky; top:0; z-index:40; backdrop-filter:blur(10px); background:rgba(244,246,251,.88);}
+  /* مساحات أخف */
+  .hero{padding:20px 16px; border-radius:20px;}
+  .hero h1,.hero h2{font-size:22px;}
+  .hp-card,.card-panel{padding:14px; border-radius:16px;}
+  .page-title,.view > h2{font-size:21px;}
+  /* صفوف الأدوات: تتكدس بدل ما تتضغط */
+  .hp-row,.hp-row-wrap,.hp-actions{flex-wrap:wrap; gap:8px;}
+  .hp-row > input,.hp-row > select{flex:1 1 140px; min-width:0;}
+  .hp-actions > .btn-primary,.hp-actions > .btn-secondary{flex:1 1 auto;}
+  .hp-trow{gap:8px; flex-wrap:wrap;}
+  .hp-grid.hp-stats{grid-template-columns:repeat(2,1fr);}
+  /* جداول تتمرر أفقيًا بدل ما تكسر الصفحة */
+  .hp-tbl{display:block; overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch;}
+  /* تابات: تلميح إن في المزيد جنب الحافة */
+  #hp-tabs,#pp-tabs,#pr-tabs,#sv-tabs,.filter-tabs{-webkit-mask-image:linear-gradient(to left,#000 88%,transparent); mask-image:linear-gradient(to left,#000 88%,transparent); scroll-snap-type:x proximity;}
+  #hp-tabs .hp-chip,#pp-tabs .hp-chip,#pr-tabs .hp-chip,#sv-tabs .hp-chip{scroll-snap-align:center;}
+  /* نوافذ الدفع/التأكيد كـ Bottom Sheet */
+  /* شريط الاشتراك التجريبي أصغر */
+  .top-banner,#top-banner{font-size:12px; padding:8px 12px; border-radius:12px;}
+  .content-item{padding-inline-start:64px;}
+  .sv-mcard{padding:14px;}
+}
+@media (max-width:380px){ .hp-grid.hp-stats{grid-template-columns:1fr 1fr;} .hero h1{font-size:20px;} #mbnav button span{font-size:10px;} }
 </style>
 </head>
 <body>
@@ -5879,6 +5973,7 @@ function isAccountLocked(){
 }
 function onAccountLoaded(){
   try{ hpBootReminders(); }catch(e){}
+  try{ svNotifyBoot(); }catch(e){}
   loadLimits(); checkDueReminders(); renderAccDropdown(); setTimeout(maybeOfferBio, 2500);
   const show = !!userStatus.supervisorId && (ACCOUNT_TYPES[userStatus.accountType] || {}).paid !== false;
   ['navi-sup-t','navi-sup-s'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = show ? '' : 'none'; });
@@ -6691,7 +6786,7 @@ function hpShow(tab){
   hpTab = tab;
   const tabs = document.getElementById('hp-tabs'), body = document.getElementById('hp-body'); if(!tabs || !body) return;
   tabs.innerHTML = HP_TABS.filter(hpTabOk).map(t => `<button class="hp-chip ${t[0] === tab ? 'on' : ''}" onclick="hpShow('${t[0]}')">${t[1]}</button>`).join('');
-  body.innerHTML = ({ timer: hpTimerHtml, inbox: hpInboxHtml, report: hpReportHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml })[tab]();
+  body.innerHTML = ({ timer: hpTimerHtml, inbox: hpInboxHtml, report: hpReportHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml, ideas: hpIdeasHtml })[tab]();
   if(tab === 'timer') hpTick(true);
   if(tab === 'msgs') hpMsgRender();
 }
@@ -7511,6 +7606,241 @@ function hpInboxHtml(){
   if(!mine.length) return '<div class="hp-card"><div class="hp-note">لسه مفيش تقارير زيارات أو خطط من مشرفك.</div></div>';
   return mine.map(x => x.kind === 'visit' ? `<div class="hp-card"><h3>🏫 ${hpE(x.title)} <small>— من ${hpE(x.fromName)}</small></h3><div class="hp-result">المتوسط <b>${(x.data.avg || 0).toFixed(1)}</b> / 5</div><div class="hp-trow"><span>نقاط القوة</span></div><p class="hp-msg">${hpE(x.data.s || '—')}</p><div class="hp-trow"><span>التوصيات</span></div><p class="hp-msg">${hpE(x.data.i || '—')}</p>${x.data.f ? `<div class="hp-note">موعد المتابعة: ${hpE(x.data.f)}</div>` : ''}</div>` : `<div class="hp-card"><h3>📈 ${hpE(x.title)} <small>— من ${hpE(x.fromName)}</small></h3>${(x.data.items || []).map(i => `<div class="hp-trow"><span>• ${hpE(i.t)}</span></div>`).join('')}<div class="hp-note">حتى ${hpE(x.data.e || '—')}</div></div>`).join('');
 }
+/* =====================================================================
+   توسعة الإشراف (دفعة 2): لوحة متابعة، تقدم، ربط خبير، إشعارات، ملخص للإدارة، مقارنة مشرفين،
+   بنك أنشطة، خطة علاجية من النتيجة، الملف الختامي للطالب المعلم
+   ===================================================================== */
+SUPT.expert = [['dash', '🧭 لوحة المتابعة'], ['visit', '🏫 زيارة صفية'], ['plan', '📈 خطة تطوير'], ['progress', '📉 تقدم المتعلمين'], ['fb', '💬 تغذية راجعة'], ['log', '📒 سجل المتابعة'], ['compare', '⚖️ مقارنة التقييمات'], ['sendrep', '📤 ملخصي للإدارة'], ['docs', '📎 مستندات بكود']];
+SUPT.academic = [['dash', '🧭 لوحة المتابعة'], ['monitor', '📊 متابعة الطلاب'], ['link', '🔗 ربط بمعلم خبير'], ['comments', '💬 بنك تعليقات'], ['sem', '📅 خطة فصل'], ['tpl', '📝 قوالب تكاليف'], ['compare', '⚖️ مقارنة التقييمات'], ['sendrep', '📤 ملخصي للإدارة'], ['docs', '📎 مستندات بكود']];
+SUPT.office = [['auto', '🤖 تقرير شهري تلقائي'], ['rank', '🏆 مقارنة المشرفين'], ['rep', '📄 نماذج تقارير'], ['minutes', '🗒️ محضر اجتماع'], ['visits', '🗓️ خطة زيارات'], ['monitor', '📊 متابعة المشرفين'], ['docs', '📎 مستندات بكود']];
+Object.assign(SV_FN, { dash: svDashHtml, progress: svProgressHtml, link: svLinkHtml, sendrep: svSendRepHtml, auto: svAutoHtml, rank: svRankHtml });
+
+/* ----- تحميل أعضاء الخبير المربوطين (expertLinks) ----- */
+const _svOpen0 = supToolsOpen;
+supToolsOpen = async function(){
+  svMembers = svMembers || null;
+  await _svOpen0();
+  if(svKind() === 'expert' && !svMembers._linked){
+    try{
+      const em = ((auth.currentUser && auth.currentUser.email) || '').toLowerCase();
+      const s = await db.collection('expertLinks').where('expertEmail', '==', em).get();
+      const ids = new Set(svMembers.map(m => m.id));
+      s.docs.forEach(d => { const x = d.data(); if(!ids.has(x.memberUid)) svMembers.push({ id: x.memberUid, name: x.memberName, email: x.memberEmail || '', linked: true }); });
+    }catch(e){}
+    svMembers._linked = true; svShow(svTab);
+  }
+};
+function svEnsure(){
+  if(svSelfs === null){ svSelfs = []; db.collection('practicumShares').where('toUid', '==', currentUid).get().then(s => { svSelfs = s.docs.map(d => d.data()).filter(x => x.kind === 'self'); svRefresh(); }).catch(() => {}); }
+  if(svMon === null && svKind() === 'academic'){ svMon = { loading: true }; Promise.all([db.collection('assignments').where('ownerUid', '==', currentUid).get(), db.collection('submissions').where('ownerUid', '==', currentUid).get()]).then(([a, s]) => { svMon = { as: a.docs.map(d => d.data()), subs: s.docs.map(d => d.data()) }; svRefresh(); }).catch(() => { svMon = { as: [], subs: [] }; svRefresh(); }); }
+}
+function svRefresh(){ if(['dash', 'progress'].includes(svTab)) svShow(svTab); }
+const svAvgOf = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+const svF1 = n => n === null || n === undefined || isNaN(n) ? '—' : (+n).toFixed(1);
+
+/* ----- 1) لوحة المتابعة الموحدة ----- */
+function svDashHtml(){
+  svEnsure();
+  const ms = svMembers || [];
+  if(!ms.length) return '<div class="hp-card"><div class="hp-note">لسه مفيش حسابات تابعة ليك. الإدارة بتربط الحسابات من لوحة الأدمن (أو المشرف الأكاديمي بيربطك بمعلمين من تبويب "ربط").</div></div>';
+  const now = Date.now(), tot = (svMon && svMon.as) ? svMon.as.length : 0;
+  const cards = ms.map(m => {
+    const nm = m.name || m.email, vs = hpA('visits').filter(x => x.t === nm), lv = vs.slice(-1)[0];
+    const ss = (svSelfs || []).filter(x => x.fromName === nm), sa = svAvgOf(ss.map(x => x.data.avg || 0));
+    let late = '', subN = '';
+    if(svMon && svMon.subs){ const mine = svMon.subs.filter(s => s.studentUid === m.id); subN = mine.length + '/' + tot; late = tot - mine.length; }
+    const gap = (lv && sa !== null) ? sa - lv.avg : null;
+    const flag = (gap !== null && Math.abs(gap) >= 1) || (late !== '' && late > 1);
+    return `<div class="sv-mcard ${flag ? 'warn' : ''}"><div class="sv-mhead"><span class="sv-av">${hpE((nm || '؟').trim().charAt(0))}</span><b>${hpE(nm)}</b>${m.linked ? '<small class="sv-tag">مربوط بك</small>' : ''}</div>
+      <div class="sv-kv"><span>آخر زيارة</span><b>${lv ? hpE(lv.d) + ' · ' + svF1(lv.avg) : '—'}</b></div>
+      <div class="sv-kv"><span>الزيارات</span><b>${vs.length}</b></div>
+      <div class="sv-kv"><span>تقييم ذاتي</span><b>${svF1(sa)}${gap !== null ? ` <small style="color:${Math.abs(gap) >= 1 ? '#b3261e' : '#1d9a6c'}">(${gap > 0 ? '+' : ''}${gap.toFixed(1)})</small>` : ''}</b></div>
+      ${svKind() === 'academic' ? `<div class="sv-kv"><span>تسليمات</span><b>${subN || '…'}${late > 1 ? ' <small style="color:#b3261e">متأخر ' + late + '</small>' : ''}</b></div>` : ''}
+      <div class="hp-actions"><button class="hp-chip" onclick="svQuick('${hpE(nm).replace(/'/g, '')}','${svKind() === 'expert' ? 'visit' : 'comments'}')">${svKind() === 'expert' ? 'زيارة جديدة' : 'تعليقات'}</button></div></div>`;
+  }).join('');
+  return `<div class="hp-card"><h3>لوحة المتابعة <small>${ms.length} حساب</small></h3><div class="hp-note">الكروت الملوّنة بالأحمر تحتاج انتباه: فرق ≥ 1 بين تقييمك وتقييمهم الذاتي، أو تكاليف متأخرة.</div></div><div class="sv-grid">${cards}</div>`;
+}
+function svQuick(name, tab){ svShow(tab); setTimeout(() => { const el = document.getElementById('sv-t-x'); if(el) el.value = name; }, 50); }
+
+/* ----- 2) تقدم المتعلمين (مخطط خطي SVG) ----- */
+let svProgSel = '';
+function svProgressHtml(){
+  const names = [...new Set(hpA('visits').map(x => x.t))];
+  if(!names.length) return '<div class="hp-card"><div class="hp-note">سجّل زيارتين على الأقل لنفس المعلم علشان يظهر مخطط التقدم.</div></div>';
+  if(!names.includes(svProgSel)) svProgSel = names[0];
+  const vs = hpA('visits').filter(x => x.t === svProgSel).sort((a, b) => (a.d || '').localeCompare(b.d || ''));
+  const W = 560, H = 220, p = 34, n = vs.length, X = i => n === 1 ? W / 2 : p + i * (W - 2 * p) / (n - 1), Y = v => H - p - (v - 1) / 4 * (H - 2 * p);
+  const pts = vs.map((v, i) => X(i) + ',' + Y(v.avg)).join(' ');
+  const svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:640px;" role="img" aria-label="تقدم المعلم">${[1, 2, 3, 4, 5].map(g => `<line x1="${p}" x2="${W - p}" y1="${Y(g)}" y2="${Y(g)}" stroke="#e2e7f1"/><text x="6" y="${Y(g) + 4}" font-size="11" fill="#56627c">${g}</text>`).join('')}<polyline points="${pts}" fill="none" stroke="#2c4194" stroke-width="3"/>${vs.map((v, i) => `<circle cx="${X(i)}" cy="${Y(v.avg)}" r="5" fill="#e3a82b"/><text x="${X(i)}" y="${Y(v.avg) - 10}" font-size="11" text-anchor="middle" fill="#0f1b36">${v.avg.toFixed(1)}</text><text x="${X(i)}" y="${H - 10}" font-size="10" text-anchor="middle" fill="#56627c">${hpE((v.d || '').slice(5))}</text>`).join('')}</svg>`;
+  const tr = n > 1 ? vs[n - 1].avg - vs[0].avg : 0;
+  const crit = SV_CRIT.map((c, i) => { const a = vs.map(v => v.r[i]); return `<div class="hp-trow"><span>${c}</span><span><b>${svF1(a[0])}</b> ← <b>${svF1(a[a.length - 1])}</b></span></div>`; }).join('');
+  return `<div class="hp-card"><h3>تقدم المعلم</h3><select onchange="svProgSel=this.value; svShow('progress')">${names.map(x => `<option ${x === svProgSel ? 'selected' : ''}>${hpE(x)}</option>`).join('')}</select>
+    <div style="margin-top:10px;">${svg}</div><div class="hp-result">${n} زيارة — ${n > 1 ? (tr > 0 ? '📈 تحسّن ' : tr < 0 ? '📉 تراجع ' : '➖ ثبات ') + Math.abs(tr).toFixed(1) : 'زيارة واحدة فقط'}</div></div>
+    <div class="hp-card"><h3>أول زيارة ← آخر زيارة (لكل معيار)</h3>${crit}</div>`;
+}
+
+/* ----- 3) ربط معلم خبير بمجموعة من طلاب الأكاديمي (expertLinks) ----- */
+let svLinks = null;
+function svLinkHtml(){
+  if(svLinks === null){ svLinks = []; db.collection('expertLinks').where('academicUid', '==', currentUid).get().then(s => { svLinks = s.docs.map(d => Object.assign({ id: d.id }, d.data())); if(svTab === 'link') svShow('link'); }).catch(() => {}); }
+  const ms = svMembers || [];
+  return `<div class="hp-card"><h3>ربط معلم خبير بمجموعة من حساباتك</h3><div class="hp-note">الخبير هيشوف الأسماء اللي تختارها ويقدر يرسل لهم زيارات وخطط تطوير — من غير ما يتعامل معاهم مباشرة. اكتب إيميل حساب الخبير زي ما هو مسجل.</div>
+    <div class="field"><label>إيميل المعلم الخبير</label><input type="email" id="sk-e" placeholder="expert@example.com" dir="ltr"></div>
+    <div class="field"><label>اختر الأعضاء</label>${ms.length ? ms.map((m, i) => `<label class="sv-chk"><input type="checkbox" class="sk-m" value="${i}"> ${hpE(m.name || m.email)}</label>`).join('') : '<div class="hp-note">مفيش حسابات تابعة.</div>'}</div>
+    <div class="hp-actions"><button class="btn-primary" onclick="svLinkSave()">ربط</button></div></div>
+    ${svLinks.length ? `<div class="hp-card"><h3>الروابط الحالية</h3>${svLinks.map(l => `<div class="hp-trow"><span>${hpE(l.memberName)} ⇄ <small dir="ltr">${hpE(l.expertEmail)}</small></span><button class="hp-chip bad" onclick="svLinkDel('${l.id}')">إلغاء</button></div>`).join('')}</div>` : ''}`;
+}
+async function svLinkSave(){
+  const em = hpV('sk-e').trim().toLowerCase(); if(!/^\S+@\S+\.\S+$/.test(em)){ toast('اكتب إيميل صحيح للخبير.', { type: 'err' }); return; }
+  const sel = [...document.querySelectorAll('.sk-m:checked')].map(c => (svMembers || [])[+c.value]).filter(Boolean); if(!sel.length){ toast('اختر عضوًا واحدًا على الأقل.', { type: 'err' }); return; }
+  try{
+    for(const m of sel){ const id = m.id + '_' + em; await db.collection('expertLinks').doc(id).set({ academicUid: currentUid, academicName: pendingUser.name || '', expertEmail: em, memberUid: m.id, memberName: m.name || m.email, memberEmail: m.email || '', createdMs: Date.now() }); }
+    svLinks = null; toast('تم الربط (' + sel.length + ').'); svShow('link');
+  }catch(e){ toast('تعذّر الربط: ' + (e.message || e), { type: 'err' }); }
+}
+async function svLinkDel(id){ try{ await db.collection('expertLinks').doc(id).delete(); svLinks = null; svShow('link'); }catch(e){ toast('تعذّر الإلغاء.', { type: 'err' }); } }
+
+/* ----- 4) إشعارات داخلية (شارات + تنبيه عند الدخول) ----- */
+async function svNotifyBoot(){
+  try{
+    const s = await db.collection('practicumShares').where('toUid', '==', currentUid).get();
+    let seen = 0; try{ seen = +localStorage.getItem('nd-seen-' + currentUid) || 0; }catch(e){}
+    const fresh = s.docs.map(d => d.data()).filter(x => (x.createdMs || 0) > seen);
+    window.__svFresh = fresh.length;
+    if(!fresh.length) return;
+    const kinds = {}; fresh.forEach(x => kinds[x.kind] = (kinds[x.kind] || 0) + 1);
+    const lab = { visit: 'تقرير زيارة', plan: 'خطة', self: 'تقييم ذاتي', journal: 'يومية', activity: 'ملخص نشاط' };
+    toast('🔔 وصلك: ' + Object.keys(kinds).map(k => kinds[k] + ' ' + (lab[k] || k)).join(' · '));
+    ['navi-helpers', 'navi-sup-tools'].forEach(id => { const el = document.querySelector('[data-view="v-helpers"],[data-view="v-sup-tools"]'); });
+    document.querySelectorAll('[onclick*="v-helpers"],[onclick*="v-sup-tools"]').forEach(el => { if(!el.querySelector('.sv-dot')) el.insertAdjacentHTML('beforeend', '<i class="sv-dot">' + fresh.length + '</i>'); });
+  }catch(e){}
+}
+function svMarkSeen(){ try{ localStorage.setItem('nd-seen-' + currentUid, String(Date.now())); }catch(e){} document.querySelectorAll('.sv-dot').forEach(e => e.remove()); }
+const _svShow0 = svShow; svShow = function(t){ if(t === 'compare' || t === 'auto' || t === 'rank') svMarkSeen(); return _svShow0(t); };
+const _hpShow0 = hpShow; hpShow = function(t){ if(t === 'inbox') svMarkSeen(); return _hpShow0(t); };
+
+/* ----- 5) ملخص نشاط المشرف → الإدارة ----- */
+function svMonthKey(ms){ return new Date(ms || Date.now()).toISOString().slice(0, 7); }
+function svActivityNow(){
+  const mk = svMonthKey(), inM = d => (d || '').slice(0, 7) === mk;
+  return { month: mk, visits: hpA('visits').filter(x => inM(x.d)).length, logs: hpA('flog').filter(x => inM(x.d)).length, minutes: hpA('minutes').filter(x => inM(x.d)).length, plans: hpA('plans').length, members: (svMembers || []).length };
+}
+function svSendRepHtml(){
+  const a = svActivityNow(), up = userStatus && userStatus.supervisorId;
+  return `<div class="hp-card"><h3>ملخص نشاط شهر ${a.month}</h3><div class="hp-grid hp-stats"><div class="hp-mini"><b>زيارات</b>${a.visits}</div><div class="hp-mini"><b>سجل متابعة</b>${a.logs}</div><div class="hp-mini"><b>محاضر</b>${a.minutes}</div><div class="hp-mini"><b>خطط</b>${a.plans}</div><div class="hp-mini"><b>حسابات تابعة</b>${a.members}</div></div>
+    <div class="hp-note">الملخص بيتحسب من سجلاتك وبيتبعت للإدارة المرتبطة بحسابك — الإدارة بتجمّعه في تقريرها الشهري.</div>
+    <div class="hp-actions"><button class="btn-primary" ${up ? '' : 'disabled'} onclick="svSendActivity()">إرسال للإدارة</button></div>${up ? '' : '<div class="hp-note">لسه مفيش جهة إدارة مرتبطة بحسابك.</div>'}</div>`;
+}
+async function svSendActivity(){
+  const up = userStatus && userStatus.supervisorId; if(!up) return;
+  try{ await db.collection('practicumShares').add({ fromUid: currentUid, fromName: pendingUser.name || '', toUid: up, kind: 'activity', title: 'ملخص نشاط ' + svMonthKey(), data: svActivityNow(), createdMs: Date.now() }); toast('اتبعت للإدارة.'); }catch(e){ toast('تعذّر الإرسال: ' + (e.message || e), { type: 'err' }); }
+}
+let svActs = null;
+function svActsLoad(){ if(svActs === null){ svActs = []; db.collection('practicumShares').where('toUid', '==', currentUid).get().then(s => { svActs = s.docs.map(d => d.data()).filter(x => x.kind === 'activity'); if(['auto', 'rank'].includes(svTab)) svShow(svTab); }).catch(() => {}); } }
+let svAutoMonth = svMonthKey();
+function svLatestPerSup(mk){ const m = {}; (svActs || []).filter(x => x.data && x.data.month === mk).forEach(x => { if(!m[x.fromUid] || x.createdMs > m[x.fromUid].createdMs) m[x.fromUid] = x; }); return Object.values(m); }
+function svAutoHtml(){
+  svActsLoad();
+  const months = [...new Set((svActs || []).map(x => x.data && x.data.month).concat([svMonthKey()]).filter(Boolean))].sort().reverse();
+  const rows = svLatestPerSup(svAutoMonth), sum = k => rows.reduce((a, x) => a + (+x.data[k] || 0), 0);
+  window.__svAuto = [['المشرف', 'زيارات', 'سجل متابعة', 'محاضر', 'خطط', 'حسابات تابعة']].concat(rows.map(x => [x.fromName, x.data.visits, x.data.logs, x.data.minutes, x.data.plans, x.data.members]));
+  return `<div class="hp-card"><h3>التقرير الشهري التلقائي</h3><select onchange="svAutoMonth=this.value; svShow('auto')">${months.map(m => `<option ${m === svAutoMonth ? 'selected' : ''}>${m}</option>`).join('')}</select>
+    ${rows.length ? `<div class="hp-grid hp-stats" style="margin-top:10px;"><div class="hp-mini"><b>مشرفين أرسلوا</b>${rows.length}</div><div class="hp-mini"><b>زيارات</b>${sum('visits')}</div><div class="hp-mini"><b>سجل متابعة</b>${sum('logs')}</div><div class="hp-mini"><b>محاضر</b>${sum('minutes')}</div><div class="hp-mini"><b>حسابات متابَعة</b>${sum('members')}</div></div>
+    <div style="overflow:auto;"><table class="hp-tbl">${window.__svAuto.map((r, i) => `<tr>${r.map(c => i ? `<td>${hpE(c)}</td>` : `<th>${hpE(c)}</th>`).join('')}</tr>`).join('')}</table></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="svAutoPrint()">🖨️ طباعة التقرير</button><button class="btn-secondary" onclick="supDownloadCsv('تقرير-' + svAutoMonth + '.csv', window.__svAuto)">⬇️ CSV</button></div>` : '<div class="hp-note">لسه مفيش ملخصات وصلت لهذا الشهر. المشرفون بيرسلوها من تبويب "ملخصي للإدارة".</div>'}</div>`;
+}
+function svAutoPrint(){
+  const rows = svLatestPerSup(svAutoMonth), sum = k => rows.reduce((a, x) => a + (+x.data[k] || 0), 0);
+  ptPrint('التقرير الشهري لنشاط الإشراف — ' + svAutoMonth, `<p>عدد المشرفين المُرسِلين: <b>${rows.length}</b> — إجمالي الزيارات: <b>${sum('visits')}</b> — سجلات المتابعة: <b>${sum('logs')}</b> — المحاضر: <b>${sum('minutes')}</b></p><table><tr>${window.__svAuto[0].map(h => `<th>${hpE(h)}</th>`).join('')}</tr>${window.__svAuto.slice(1).map(r => `<tr>${r.map(c => `<td>${hpE(c)}</td>`).join('')}</tr>`).join('')}</table>`);
+}
+/* ----- 6) مقارنة المشرفين ----- */
+function svRankHtml(){
+  svActsLoad();
+  const rows = svLatestPerSup(svAutoMonth).sort((a, b) => (+b.data.visits || 0) - (+a.data.visits || 0)), mx = Math.max(1, ...rows.map(x => +x.data.visits || 0));
+  if(!rows.length) return '<div class="hp-card"><div class="hp-note">مفيش بيانات للشهر ' + svAutoMonth + ' بعد.</div></div>';
+  return `<div class="hp-card"><h3>مقارنة المشرفين — ${svAutoMonth}</h3>${rows.map((x, i) => `<div class="sv-rank"><span class="sv-pos">${i + 1}</span><div style="flex:1;"><div class="hp-trow"><b>${hpE(x.fromName)}</b><span>${x.data.visits || 0} زيارة · ${x.data.logs || 0} متابعة · ${x.data.minutes || 0} محضر</span></div><div class="hp-bar"><i style="width:${Math.round((+x.data.visits || 0) / mx * 100)}%"></i></div></div></div>`).join('')}<div class="hp-note">الترتيب حسب عدد الزيارات في الشهر المختار.</div></div>`;
+}
+
+/* ===================== أدوات المعلم/الطالب ===================== */
+/* ----- 7) بنك أنشطة وأفكار حصص ----- */
+const HP_IDEAS = {
+  'رياضيات': { 'ابتدائي': ['لعبة "من يجمع الأقرب لـ 100" بالنرد', 'صيد الأشكال: البحث عن أشكال هندسية في الفصل', 'سوق صغير لتدريب الجمع والطرح'], 'إعدادي': ['مسابقة فرق لحل مسألة بأكثر من طريقة', 'قياس ارتفاع مبنى الفناء بالتشابه', 'بطاقات "اكتشف الخطأ" في حل معادلة'], 'ثانوي': ['مشروع: نمذجة قسط قرض بدوال أسية', 'لوحة جدارية لتطبيقات التفاضل', 'مناظرة: أي طريقة حل أسرع؟'] },
+  'عربي': { 'ابتدائي': ['مسرحة قصة قصيرة', 'سلسلة الكلمات: آخر حرف أول حرف', 'صندوق الجمل المبعثرة'], 'إعدادي': ['محكمة أدبية لشخصية في نص', 'كتابة نهاية بديلة لقصة', 'مسابقة إعراب سريع بالفرق'], 'ثانوي': ['ندوة نقدية مصغّرة', 'مقارنة بين شاعرين في لوحة', 'تحرير مقال مشترك (قبل/بعد)'] },
+  'علوم': { 'ابتدائي': ['تجربة إنبات في أكواب شفافة', 'رحلة بحث عن عناصر الطبيعة', 'نموذج الجهاز الدوري بالمجسمات'], 'إعدادي': ['تجربة الكشف عن النشا', 'تصميم دائرة كهربية بسيطة', 'لعبة تصنيف الكائنات بالبطاقات'], 'ثانوي': ['معمل افتراضي لمحاكاة تفاعل', 'عرض بوستر بحثي', 'حل لغز كيميائي بأدلة'] },
+  'إنجليزي': { 'ابتدائي': ['Simon Says بالمفردات', 'Flashcard memory game', 'أغنية الحروف'], 'إعدادي': ['Role-play في المطعم', 'Picture description race', 'Story chain بالفرق'], 'ثانوي': ['Debate round', 'Mini podcast script', 'Peer essay editing'] },
+  'عام': { 'كل المراحل': ['فكر-زاوج-شارك (Think-Pair-Share)', 'تذكرة الخروج: سؤال واحد قبل المغادرة', 'جدول KWL', 'محطات التعلم (Stations)', 'لعبة الكراسي الموسيقية للأسئلة', 'الجدول الدوّار للمجموعات'] }
+};
+let hpIdeaSubj = 'عام', hpIdeaStage = 'كل المراحل';
+function hpIdeasHtml(){
+  const subs = Object.keys(HP_IDEAS), stages = Object.keys(HP_IDEAS[hpIdeaSubj] || {});
+  if(!stages.includes(hpIdeaStage)) hpIdeaStage = stages[0];
+  const base = (HP_IDEAS[hpIdeaSubj] || {})[hpIdeaStage] || [], mine = hpA('ideas').filter(x => x.s === hpIdeaSubj);
+  return `<div class="hp-card"><h3>بنك أنشطة وأفكار حصص</h3><div class="hp-row hp-row-wrap"><select onchange="hpIdeaSubj=this.value; hpShow('ideas')">${subs.map(s => `<option ${s === hpIdeaSubj ? 'selected' : ''}>${s}</option>`).join('')}</select><select onchange="hpIdeaStage=this.value; hpShow('ideas')">${stages.map(s => `<option ${s === hpIdeaStage ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+    ${base.map((x, i) => `<div class="hp-trow"><span>💡 ${hpE(x)}</span><button class="hp-chip" onclick="hpCopy(HP_IDEAS['${hpIdeaSubj}']['${hpIdeaStage}'][${i}])">نسخ</button></div>`).join('')}</div>
+    <div class="hp-card"><h3>أفكاري (${hpE(hpIdeaSubj)})</h3>${mine.map(x => `<div class="hp-trow"><span>⭐ ${hpE(x.t)}</span><button class="hp-chip bad" onclick="hpIdeaDel('${x.id}')">حذف</button></div>`).join('') || '<div class="hp-note">لسه مفيش أفكار مضافة.</div>'}
+    <div class="hp-row"><input type="text" id="hp-idea" placeholder="أضف فكرتك"><button class="btn-primary" onclick="hpIdeaAdd()">إضافة</button></div></div>`;
+}
+function hpIdeaAdd(){ const t = hpV('hp-idea').trim(); if(!t) return; hpA('ideas').push({ id: hpUid(), s: hpIdeaSubj, t }); hpSave(); hpShow('ideas'); }
+function hpIdeaDel(id){ HP.ideas = hpA('ideas').filter(x => x.id !== id); hpSave(); hpShow('ideas'); }
+HP_TABS.splice(HP_TABS.findIndex(t => t[0] === 'cards'), 0, ['ideas', '💡 بنك أنشطة']);
+
+/* ----- 8) خطة علاجية من تحليل النتيجة ----- */
+const _hpClass0 = hpClassRun;
+hpClassRun = function(){
+  _hpClass0();
+  const max = parseFloat(hpV('hp-cmax')) || 0, pass = parseFloat(hpV('hp-cpass')) || 50, out = document.getElementById('hp-cls-out'); if(!out || max <= 0) return;
+  const rows = hpV('hp-cls').split('\n').map(l => l.split(/[,،;\t]/)).map(a => ({ name: (a[0] || '').trim(), s: parseFloat(String(a[1] || '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))) })).filter(r => r.name && !isNaN(r.s));
+  const weak = rows.filter(r => r.s / max * 100 < pass).sort((a, b) => a.s - b.s), mid = rows.filter(r => { const p = r.s / max * 100; return p >= pass && p < 65; }), top = rows.filter(r => r.s / max * 100 >= 85);
+  window.__hpRem = { weak, mid, top, max, pass };
+  out.insertAdjacentHTML('beforeend', `<div class="hp-card" style="margin-top:12px;"><h3>🩹 خطة علاجية مقترحة</h3><div class="hp-note">ضعاف (${weak.length}) · يحتاجون دعمًا (${mid.length}) · متفوقون (${top.length})</div><div class="hp-actions"><button class="btn-primary" onclick="hpRemPrint()">🖨️ طباعة الخطة</button></div></div>`);
+};
+function hpRemPrint(){
+  const r = window.__hpRem; if(!r) return; const L = a => a.length ? a.map(x => hpE(x.name) + ' (' + x.s + ')').join('، ') : '—';
+  ptPrint('خطة علاجية وإثرائية من نتيجة الفصل', `<h2>الفئة العلاجية (أقل من ${r.pass}%)</h2><p>${L(r.weak)}</p><ul><li>جلسات علاجية صغيرة (3–4 طلاب) مرتين أسبوعيًا لمدة 20 دقيقة.</li><li>مراجعة المتطلبات السابقة بأسئلة قصيرة متدرجة.</li><li>تكليف تدريب يومي من 3 أسئلة مع تغذية راجعة فورية.</li><li>إعادة اختبار قصير بعد أسبوعين لقياس التحسن.</li></ul><h2>فئة الدعم (حتى 65%)</h2><p>${L(r.mid)}</p><ul><li>تعلّم بالأقران مع طالب متفوق.</li><li>ورقة عمل أسبوعية على نقاط الضعف.</li></ul><h2>فئة الإثراء (85% فأكثر)</h2><p>${L(r.top)}</p><ul><li>مسائل تحدٍّ ومشروع مصغّر.</li><li>دور "مساعد المعلم" في المجموعات.</li></ul>`);
+}
+
+/* ----- 9) الملف الختامي للطالب المعلم ----- */
+PT.prac.tabs.push(['final', '🎓 الملف الختامي']);
+PT_FN.final = prFinalHtml;
+function prFinalHtml(){
+  const sf = hpA('selfs'), jr = hpA('journal'), ob = hpA('obs'), hrs = hpO('hours'), vi = (typeof hpInbox !== 'undefined' && hpInbox ? hpInbox : []).filter(x => x.kind === 'visit');
+  if(typeof hpInbox !== 'undefined' && hpInbox === null && userStatus && userStatus.supervisorId){ hpInbox = []; db.collection('practicumShares').where('toUid', '==', currentUid).get().then(s => { hpInbox = s.docs.map(d => d.data()).sort((a, b) => b.createdMs - a.createdMs); if(PT.prac.tab === 'final') ptShow('prac', 'final'); }).catch(() => {}); }
+  const avgSelf = svAvgOf(sf.map(x => x.avg || 0)), avgVis = svAvgOf(vi.map(x => x.data.avg || 0));
+  return `<div class="hp-card"><h3>الملف الختامي للتربية العملية</h3><div class="hp-note">بيجمّع كل بياناتك في ملف واحد جاهز للطباعة آخر الفصل.</div>
+    <div class="hp-grid hp-stats"><div class="hp-mini"><b>يوميات</b>${jr.length}</div><div class="hp-mini"><b>تقييمات ذاتية</b>${sf.length} · ${svF1(avgSelf)}</div><div class="hp-mini"><b>زيارات المشرف</b>${vi.length} · ${svF1(avgVis)}</div><div class="hp-mini"><b>ملاحظات زملاء</b>${ob.length}</div></div>
+    <div class="field"><label>اسم الجهة / الكلية</label><input type="text" id="pf-u" value="${hpE(hpO('sem')._u || '')}"></div>
+    <div class="hp-actions"><button class="btn-primary" onclick="prFinalPrint()">🖨️ طباعة الملف الختامي</button></div></div>`;
+}
+function prFinalPrint(){
+  const nl = t => hpE(t || '').replace(/\n/g, '<br>'), sf = hpA('selfs'), jr = hpA('journal'), ob = hpA('obs'), vi = (hpInbox || []).filter(x => x.kind === 'visit');
+  const body = `<p>الاسم: <b>${hpE(pendingUser.name || '')}</b> — الجهة: ${hpE(hpV('pf-u'))} — تاريخ الطباعة: ${hpToday()}</p>
+    <h2>زيارات المشرف (${vi.length})</h2>${vi.map(x => `<p><b>${hpE(x.title)}</b> — ${hpE(x.fromName)} — المتوسط ${(x.data.avg || 0).toFixed(1)}/5<br>قوة: ${nl(x.data.s)}<br>توصيات: ${nl(x.data.i)}</p>`).join('') || '<p>—</p>'}
+    <h2>التقييمات الذاتية (${sf.length})</h2><table><tr><th>التاريخ</th><th>الدرس</th><th>المتوسط</th><th>ملاحظات</th></tr>${sf.map(x => `<tr><td>${hpE(x.d)}</td><td>${hpE(x.l || '')}</td><td>${(x.avg || 0).toFixed(1)}</td><td>${nl(x.n)}</td></tr>`).join('')}</table>
+    <h2>يوميات التدريب (${jr.length})</h2>${jr.map(x => `<p><b>${hpE(x.date || '')}</b> ${hpE(x.school || '')} ${hpE(x.cls || '')} — ${hpE(x.lesson || '')}<br>إيجابيات: ${nl(x.good)}<br>للتحسين: ${nl(x.imp)}</p>`).join('') || '<p>—</p>'}
+    <h2>ملاحظات الزملاء (${ob.length})</h2><p>${ob.length} ملاحظة مسجلة.</p>`;
+  ptPrint('الملف الختامي للتربية العملية', body);
+}
+/* =====================================================================
+   موبايل: شريط تنقل سفلي (تطبيق-لوك) حسب الدور، يظهر على الشاشات الصغيرة فقط
+   ===================================================================== */
+const MB_ITEMS = {
+  student: [['s-home', 'i-home', 'الرئيسية', 's-home'], ['v-tools-hub', 'i-layers', 'الأدوات', 'v-tools-hub v-lesson-planner v-questions v-quizzes v-certificates v-helpers v-prep-tools v-prac-tools'], ['v-chats', 'i-chat-circle', 'الدردشات', 'v-chats'], ['t-community', 'i-users', 'المجتمع', 't-community v-qa v-groups v-expert v-problems']],
+  teacher: [['t-dash', 'i-home', 'الرئيسية', 't-dash'], ['v-tools-hub', 'i-layers', 'الأدوات', 'v-tools-hub v-lesson-planner v-questions v-quizzes v-certificates v-helpers v-prep-tools'], ['v-chats', 'i-chat-circle', 'الدردشات', 'v-chats'], ['t-community', 'i-users', 'المجتمع', 't-community v-qa v-groups v-expert v-problems']],
+  supervisor: [['v-sup', 'i-home', 'الرئيسية', 'v-sup'], ['v-sup-tools', 'i-clipboard', 'الإشراف', 'v-sup-tools'], ['v-chats', 'i-chat-circle', 'الدردشات', 'v-chats'], ['v-helpers', 'i-layers', 'أدوات', 'v-helpers v-prep-tools']]
+};
+function mbBuild(role){
+  let bar = document.getElementById('mbnav');
+  if(!bar){ bar = document.createElement('nav'); bar.id = 'mbnav'; bar.setAttribute('aria-label', 'تنقل سريع'); document.body.appendChild(bar); }
+  const items = MB_ITEMS[role === 'office' ? 'supervisor' : role] || MB_ITEMS.student;
+  bar.innerHTML = items.map(i => `<button type="button" data-v="${i[3]}" onclick="mbGo('${i[0]}')"><svg class="icon"><use href="#${i[1]}"></use></svg><span>${i[2]}</span></button>`).join('') + `<button type="button" onclick="toggleSidebar(true)"><svg class="icon"><use href="#i-menu"></use></svg><span>المزيد</span></button>`;
+  bar.style.display = '';
+  document.body.classList.add('has-mbnav'); mbMark(document.querySelector('.view.active') && document.querySelector('.view.active').id);
+}
+function mbGo(id){ const t = document.querySelector('#app-sidebar .nav-item[data-views~="' + id + '"]') || document.querySelector('#app-sidebar .nav-item'); try{ showView(id, t); }catch(e){ showView(id); } window.scrollTo(0, 0); }
+function mbMark(id){ document.querySelectorAll('#mbnav button[data-v]').forEach(b => b.classList.toggle('on', !!id && b.dataset.v.split(' ').includes(id))); }
+const _mbShow = showView; showView = function(id, btn){ const r = _mbShow(id, btn); try{ mbMark(id); }catch(e){} return r; };
+const _mbEnter = enterApp; enterApp = function(role){ const r = _mbEnter(role); try{ mbBuild(role); }catch(e){} return r; };
+const _mbLogout = logoutUser; logoutUser = function(){ const bar = document.getElementById('mbnav'); if(bar) bar.style.display = 'none'; document.body.classList.remove('has-mbnav'); return _mbLogout.apply(this, arguments); };
 </script>
 </body>
 </html>
