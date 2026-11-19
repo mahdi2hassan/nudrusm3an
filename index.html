@@ -5938,7 +5938,7 @@ async function chatSendLink(){
    ===================================================================== */
 const ACCOUNT_TYPES = {
   student_teacher:    { label:'طالب معلم',      role:'student',    paid:true,  icon:'cap',   desc:'أتعلم أصول المهنة، أسجّل التربية العملية وأبني ملف إنجازي.' },
-  university_student: { label:'طالب جامعي',     role:'student',    paid:true,  icon:'book',  desc:'أدوات مذاكرة وتحضير ومجتمع زملاء لطلاب الجامعة.' },
+  university_student: { label:'طالب معلم',     role:'student',    paid:true,  icon:'book',  desc:'أدوات مذاكرة وتحضير ومجتمع زملاء لطلاب الجامعة.' },
   non_edu_teacher:    { label:'معلم غير تربوي', role:'teacher',    paid:true,  icon:'user',  desc:'أطوّر مهاراتي التربوية وأدواتي في التدريس.' },
   supervisor:         { label:'إشراف أكاديمي',   role:'supervisor', paid:false, icon:'award', desc:'أتابع طلابي أكاديميًا: أنظّم غرف صوت/فيديو، أرفع تكاليف وأستلم التسليمات وأقيّمها.' },
   expert_supervisor:  { label:'إشراف معلم خبير', role:'supervisor', paid:false, icon:'star',  desc:'أشرف على المعلمين والطلاب المعلمين بخبرتي: زيارات صفية، خطط تطوير وتغذية راجعة.' },
@@ -5969,7 +5969,7 @@ async function showAcctype(){
     return `<button class="at-card ${closed ? 'closed' : ''}" ${closed ? 'disabled' : `onclick="startSignup('${key}')"`}>
       <div class="at-ic">${ic(t.icon)}</div><div class="at-body"><h4>${t.label}</h4><p>${t.desc}</p></div>${closed ? '<span class="at-price free">التسجيل مغلق مؤقتًا</span>' : price}</button>`;
   };
-  grid.innerHTML = `<div class="at-group">حسابات المعلمين والطلاب <small>(رسوم لمرة واحدة بدون تجديد)</small></div>${['student_teacher','university_student','non_edu_teacher'].map(card).join('')}
+  grid.innerHTML = `<div class="at-group">حسابات المعلمين والطلاب <small>(رسوم لمرة واحدة بدون تجديد)</small></div>${['student_teacher','non_edu_teacher'].map(card).join('')}
     <div class="at-group">حسابات الإشراف والإدارة <small>(مجانية — يعتمدها فريق المنصة)</small></div>${['supervisor','expert_supervisor','office'].map(card).join('')}`;
 }
 async function proceedAfterSignup(){
@@ -6671,7 +6671,7 @@ async function renderLandPricing(){
   const pr = await loadPricing();
   const row = key => { const t = ACCOUNT_TYPES[key], c = pr[key] || {}, fee = Number(c.fee) || 0, closed = t.paid && c.enabled === false;
     return `<button class="dd-item" ${closed ? 'disabled' : `onclick="startSignup('${key}')"`}><span class="dd-t">${t.label}</span><span class="dd-p ${(!t.paid || !fee) ? 'free' : ''}">${closed ? 'مغلق مؤقتًا' : (!t.paid ? 'مجاني' : (fee ? fee + ' جنيه · مرة واحدة' : 'مجاني'))}</span></button>`; };
-  el.innerHTML = ['student_teacher','university_student','non_edu_teacher'].map(row).join('') + '<div class="dd-sep">مجاني — بدون اشتراك</div>' + ['supervisor','expert_supervisor','office'].map(row).join('') + '<div class="dd-foot">الدفع مرة واحدة بدون تجديد، وعندك كوبون خصم؟ هتكتبه في شاشة الدفع.</div>';
+  el.innerHTML = ['student_teacher','non_edu_teacher'].map(row).join('') + '<div class="dd-sep">مجاني — بدون اشتراك</div>' + ['supervisor','expert_supervisor','office'].map(row).join('') + '<div class="dd-foot">الدفع مرة واحدة بدون تجديد، وعندك كوبون خصم؟ هتكتبه في شاشة الدفع.</div>';
 }
 
 /* =====================================================================
@@ -8595,6 +8595,7 @@ function ndEwsLoad(force){
 }
 function svEwsHtml(){
   ndEwsLoad(); if(ndEws.loading) return '<div class="hp-card"><div class="hp-note">جاري التحليل…</div></div>';
+  try{ attStaffLoad(); }catch(e){}
   const now = Date.now(), vis = hpA('visits'), rows = (svMembers || []).map(m => {
     const sh = ndEws.shares.filter(x => x.fromUid === m.id), nm = m.name || m.email, pr = ndEws.pres.find(p => p.uid === m.id), last = sh.length ? Math.max(...sh.map(x => x.createdMs || 0)) : 0;
     const selfs = sh.filter(x => x.kind === 'self').sort((a, b) => a.createdMs - b.createdMs), jr = sh.filter(x => x.kind === 'journal').length;
@@ -8604,6 +8605,7 @@ function svEwsHtml(){
     if(!selfs.length){ reasons.push('مفيش تقييم ذاتي'); score += 1; }
     if(!jr && sh.length){ reasons.push('مفيش يوميات'); score += 1; }
     if(pr && now - pr.lastSeenMs > 14 * 864e5){ reasons.push('آخر دخول من ' + Math.round((now - pr.lastSeenMs) / 864e5) + ' يوم'); score += 2; }
+    try{ const ar = attRateOf(m.id); if(ar && ar.pct < attCfg().minPct){ reasons.push('حضور ' + ar.pct + '%'); score += 2; } }catch(e){}
     if(lv !== null && lv < 3){ reasons.push('متوسط الزيارة ' + ndF1(lv)); score += 3; }
     if(lv !== null && pv !== null && lv - pv <= -0.5){ reasons.push('تراجع ' + ndF1(pv - lv)); score += 2; }
     return { n: nm, score, reasons };
@@ -8886,7 +8888,7 @@ function ndRoomReminder(id){
 /* =====================================================================
    دفعة 8: نظام الحضور الأكاديمي (موقع + بصمة + حساب Google/Microsoft)
    ===================================================================== */
-const attCfg = () => Object.assign({ enabled: true, idp: true, bio: true, geo: true, maxAcc: 150, allowOutside: false, graceMin: 10 }, (window.__ctl && window.__ctl.att) || {}, window.__ctl && window.__ctl.attendance === false ? { enabled: false } : {});
+let attCfg = () => Object.assign({ enabled: true, idp: true, bio: true, geo: true, maxAcc: 150, allowOutside: false, graceMin: 10 }, (window.__ctl && window.__ctl.att) || {}, window.__ctl && window.__ctl.attendance === false ? { enabled: false } : {});
 const attDev = () => { try{ let d = localStorage.getItem('nd-dev'); if(!d){ d = Math.random().toString(36).slice(2, 12); localStorage.setItem('nd-dev', d); } return d; }catch(e){ return 'x'; } };
 const attDist = (a, b, c, d) => { const R = 6371000, r = x => x * Math.PI / 180, dl = r(c - a), dg = r(d - b), h = Math.sin(dl / 2) ** 2 + Math.cos(r(a)) * Math.cos(r(c)) * Math.sin(dg / 2) ** 2; return Math.round(2 * R * Math.asin(Math.sqrt(h))); };
 const ATT = { st: {}, target: null, sites: null, sessions: null, logs: null };
@@ -9015,6 +9017,279 @@ function svAttCsv(id){
 function svAttPrint(id){ ptPrint('سجل الحضور', '<table><tr><th>الاسم</th><th>الحصة/الموقع</th><th>النوع</th><th>الوقت</th><th>الحالة</th><th>م</th></tr>' + attRows(id).map(l => `<tr><td>${hpE(l.name)}</td><td>${hpE(l.sessionTitle || l.siteName || '')}</td><td>${l.dir === 'out' ? 'انصراف' : 'حضور'}</td><td>${attFmt(l.ms)}</td><td>${attStatusLbl[l.status] || ''}</td><td>${l.distanceM}</td></tr>`).join('') + '</table>'); }
 Object.assign(SV_FN, { attsess: svAttHtml });
 ['expert', 'academic', 'office'].forEach(k => SUPT[k].splice(SUPT[k].length - 1, 0, ['attsess', '📍 حضور وحصص']));
+/* =====================================================================
+   دفعة 9: الحضور — QR متغير، أعذار، تسجيل يدوي، حصص أسبوعية، حد أدنى، ربط بالملف والإنذار
+   ===================================================================== */
+const _attCfg0 = attCfg; attCfg = function(){ const c = _attCfg0(); if(!(c.minPct >= 0)) c.minPct = 75; return c; };
+let ATTE = null, ATTX = null; // أعذاري / أعذار أعضائي
+async function attExcLoad(){ if(ATTE) return; ATTE = []; try{ const s = await db.collection('attExcuses').where('uid', '==', currentUid).get(); ATTE = s.docs.map(d => ({ id: d.id, ...d.data() })); if(hpTab === 'checkin') attRender(); }catch(e){} }
+
+/* ---- نسب الحضور ---- */
+function attRateOf(uid){
+  if(!ATTS) return null; const now = Date.now(), ended = (ATTS.sess || []).filter(s => s.endMs < now); if(!ended.length) return null;
+  const got = ended.filter(s => (ATTS.logs || []).some(l => l.sessionId === s.id && l.uid === uid) || (ATTX || []).some(x => x.sessionId === s.id && x.uid === uid && x.status === 'accepted')).length;
+  return { pct: Math.round(got / ended.length * 100), n: got, total: ended.length };
+}
+function attMyRate(){
+  const now = Date.now(), ended = (ATT.sessions || []).filter(s => s.endMs < now); if(!ended.length) return null;
+  const got = ended.filter(s => (ATT.logs || []).some(l => l.sessionId === s.id) || (ATTE || []).some(x => x.sessionId === s.id && x.status === 'accepted')).length;
+  return { pct: Math.round(got / ended.length * 100), n: got, total: ended.length };
+}
+
+/* ---- تبويب الحضور عند العضو: نسبة + أعذار + QR ---- */
+const _ck9 = hpCheckinHtml; hpCheckinHtml = function(){
+  let h = _ck9.apply(this, arguments); if(!attCfg().enabled) return h;
+  attExcLoad(); const c = attCfg(), r = attMyRate(), now = Date.now();
+  if(ATT.target && ATT.target.type === 's' && ATT.target.sess.qr){
+    h = h.replace('<div class="hp-actions"><button class="btn-primary"', `<div class="hp-row hp-row-wrap"><input type="text" id="ck-qr" inputmode="numeric" maxlength="6" placeholder="كود الحصة (6 أرقام من شاشة المشرف)" value="${hpE(ATT.qr || '')}" oninput="ATT.qr=this.value"><button class="hp-chip" onclick="attScan()">📷 مسح QR</button></div><div class="hp-actions"><button class="btn-primary"`);
+  }
+  const top = r ? `<div class="hp-card" style="${r.pct < c.minPct ? 'border-color:#e6b3ae;background:#fff5f4' : ''}"><h3>نسبة التزامي بالحضور: ${r.pct}% <small>${r.n}/${r.total} حصة</small></h3><div class="hp-bar"><i style="width:${r.pct}%"></i></div>${r.pct < c.minPct ? `<div class="hp-note">⚠️ أقل من الحد الأدنى (${c.minPct}%) — لازم تنتظم.</div>` : ''}</div>` : '';
+  const missed = (ATT.sessions || []).filter(s => s.endMs < now && !(ATT.logs || []).some(l => l.sessionId === s.id)).slice(0, 10);
+  const ex = !missed.length ? '' : `<div class="hp-card"><h3>حصص فاتتني</h3>${missed.map(s => { const e = (ATTE || []).find(x => x.sessionId === s.id); return `<div class="hp-trow" style="align-items:flex-start;"><span><b>${hpE(s.title)}</b> <small>${attFmt(s.startMs)}</small></span><span>${e ? (e.status === 'accepted' ? '✅ العذر مقبول' : e.status === 'rejected' ? '❌ العذر مرفوض' : '⏳ العذر قيد المراجعة') : `<button class="hp-chip" onclick="attExcOpen('${s.id}')">تقديم عذر</button>`}</span></div><div id="exc-${s.id}"></div>`; }).join('')}</div>`;
+  return top + h + ex;
+};
+function attExcOpen(sid){
+  const b = document.getElementById('exc-' + sid); if(b.innerHTML){ b.innerHTML = ''; return; }
+  b.innerHTML = `<div class="field"><textarea id="exr-${sid}" rows="2" placeholder="سبب الغياب"></textarea></div>${ndFileField('exf-' + sid, 'مرفق (شهادة/صورة) — اختياري')}<button class="btn-primary" onclick="attExcSend('${sid}')">إرسال العذر</button>`;
+}
+async function attExcSend(sid){
+  const why = hpV('exr-' + sid).trim(); if(why.length < 3){ toast('اكتب السبب.', { type: 'err' }); return; }
+  const s = (ATT.sessions || []).find(x => x.id === sid), f = (document.getElementById('exf-' + sid) || {}).files;
+  try{ const file = f && f[0] ? await ndFileSave(f[0], { shareUp: (userStatus && userStatus.supervisorId) || '' }) : null;
+    await db.collection('attExcuses').doc(sid + '_' + currentUid).set({ sessionId: sid, sessionTitle: s ? s.title : '', uid: currentUid, name: (pendingUser && pendingUser.name) || '', supervisorId: (userStatus && userStatus.supervisorId) || '', reason: why.slice(0, 400), file, status: 'pending', ms: Date.now() });
+    try{ createNotification(userStatus.supervisorId, 'message', (pendingUser.name || 'عضو') + ' قدّم عذر غياب: ' + (s ? s.title : ''), 'v-sup-tools'); }catch(e){}
+    toast('اتبعت العذر.'); ATTE = null; attRender(); }
+  catch(e){ toast('تعذّر الإرسال: ' + (e.message || e.code), { type: 'err' }); }
+}
+
+/* ---- مسح كود QR (BarcodeDetector) ---- */
+async function attScan(){
+  if(!('BarcodeDetector' in window)){ toast('متصفحك لا يدعم مسح QR — اكتب الكود يدويًا.', { type: 'err' }); return; }
+  const ov = document.createElement('div'); ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px'; ov.innerHTML = '<video autoplay playsinline muted style="max-width:100%;max-height:75vh"></video><button style="padding:10px 24px;border:0;border-radius:12px;font:inherit">إلغاء</button>'; document.body.appendChild(ov);
+  const v = ov.querySelector('video'); let stream, stop = false; const close = () => { stop = true; try{ stream && stream.getTracks().forEach(t => t.stop()); }catch(e){} ov.remove(); }; ov.querySelector('button').onclick = close;
+  try{ stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } }); v.srcObject = stream; const det = new BarcodeDetector({ formats: ['qr_code'] });
+    const loop = async () => { if(stop) return; try{ const r = await det.detect(v); if(r.length){ const m = /^nd:([^:]+):(\d{6})$/.exec(r[0].rawValue); if(m){ ATT.qr = m[2]; close(); attRender(); toast('✓ تم قراءة الكود'); return; } } }catch(e){} setTimeout(loop, 300); }; loop(); }
+  catch(e){ close(); toast('تعذّر فتح الكاميرا.', { type: 'err' }); }
+}
+
+/* ---- تسجيل الحضور (مع كود الجلسة) ---- */
+attSubmit = async function(){
+  const c = attCfg(), tg = ATT.target; if(!tg) return;
+  const site = tg.type === 's' ? { id: tg.sess.siteId, name: tg.sess.siteName, lat: tg.sess.lat, lng: tg.sess.lng, radiusM: tg.sess.radiusM } : tg.siteObj;
+  const g = ATT.st.geo, d = g ? attDist(g.lat, g.lng, site.lat, site.lng) : null, within = d !== null ? d <= (site.radiusM || 150) : true;
+  if(c.geo && !within && !c.allowOutside){ toast('أنت بعيد عن الموقع بـ ' + d + ' م (المسموح ' + (site.radiusM || 150) + ' م).', { type: 'err', duration: 6000 }); return; }
+  const qr = tg.type === 's' && tg.sess.qr ? (ATT.qr || hpV('ck-qr')).trim() : ''; if(tg.type === 's' && tg.sess.qr && !/^\d{6}$/.test(qr)){ toast('اكتب كود الحصة (6 أرقام) أو امسح QR.', { type: 'err' }); return; }
+  let status = within ? 'ok' : 'outside'; if(tg.type === 's' && Date.now() > tg.sess.startMs + (tg.sess.graceMin || c.graceMin) * 60000 && status === 'ok') status = 'late';
+  const log = { uid: currentUid, name: (pendingUser && pendingUser.name) || '', email: (pendingUser && pendingUser.email) || '', accountType: (userStatus && userStatus.accountType) || '', supervisorId: (userStatus && userStatus.supervisorId) || '', kind: site.kind || (tg.type === 's' ? 'academic' : 'school'), sessionId: tg.type === 's' ? tg.sid : '', sessionTitle: tg.type === 's' ? tg.sess.title : '', siteId: site.id || '', siteName: site.name || '', siteLat: site.lat, siteLng: site.lng, radiusM: site.radiusM || 150, dir: tg.type === 'p' ? tg.dir : 'in', lat: g ? g.lat : 0, lng: g ? g.lng : 0, acc: g ? g.acc : 0, distanceM: d, within, status, idp: ATT.st.idp ? ATT.st.idp.provider : '', idpEmail: ATT.st.idp ? ATT.st.idp.email : '', bio: !!ATT.st.bio, qrCode: qr, dev: attDev(), ua: navigator.userAgent.slice(0, 120), ms: Date.now(), day: ndDay(), ts: firebase.firestore.FieldValue.serverTimestamp() };
+  try{
+    const col = db.collection('attendanceLogs'); if(tg.type === 's') await col.doc(tg.sid + '_' + currentUid).set(log); else await col.add(log);
+    toast('✅ اتسجّل ' + (log.dir === 'out' ? 'الانصراف' : 'الحضور') + (status === 'late' ? ' (متأخر)' : '')); ATT.st = {}; ATT.target = null; ATT.qr = ''; attLoad(true);
+  }catch(e){ toast(e.code === 'permission-denied' ? (qr ? 'الكود غلط أو انتهى (بيتغير كل 30 ثانية) — أو سجّلت قبل كده.' : 'مسجّل قبل كده في الحصة دي، أو الصلاحيات غير منشورة.') : 'تعذّر التسجيل: ' + (e.code || e.message), { type: 'err', duration: 6000 }); }
+};
+
+/* ---- للمشرف: شاشة QR متغير ---- */
+function attLoadQrLib(){ return new Promise((res, rej) => { if(window.QRCode) return res(); const x = document.createElement('script'); x.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'; x.onload = res; x.onerror = () => rej(new Error('qr')); document.head.appendChild(x); }); }
+let attQrTimer = null;
+async function svAttQr(sid){
+  const s = ATTS.sess.find(x => x.id === sid); if(!s) return;
+  let lib = true; try{ await attLoadQrLib(); }catch(e){ lib = false; }
+  const ov = document.createElement('div'); ov.id = 'att-qr-ov'; ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:20px;font-family:inherit';
+  ov.innerHTML = `<h2 style="color:#1f3a6e">${hpE(s.title)}</h2><div id="qr-box"></div><div id="qr-code" style="font-size:54px;font-weight:900;letter-spacing:10px;direction:ltr;color:#b8860b"></div><div id="qr-bar" style="height:8px;width:min(320px,80vw);background:#eee;border-radius:99px"><div id="qr-i" style="height:8px;background:#1f3a6e;border-radius:99px;width:100%"></div></div><div style="color:#666;font-size:14px">الكود بيتغير كل 30 ثانية — الطلاب يمسحوه أو يكتبوه</div><button style="padding:10px 26px;border:0;border-radius:12px;background:#1f3a6e;color:#fff;font:inherit;cursor:pointer" onclick="attQrClose()">إغلاق</button>`;
+  document.body.appendChild(ov);
+  let t0 = 0; const cycle = async () => {
+    const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1000000).padStart(6, '0'); t0 = Date.now();
+    try{ await db.collection('attCodes').doc(sid).set({ ownerUid: currentUid, code, ms: Date.now() }); }catch(e){ toast('تعذّر تحديث الكود — الصلاحيات غير منشورة؟', { type: 'err' }); }
+    document.getElementById('qr-code').textContent = code; const box = document.getElementById('qr-box'); box.innerHTML = ''; if(lib && window.QRCode) new QRCode(box, { text: 'nd:' + sid + ':' + code, width: 260, height: 260 });
+  };
+  await cycle(); attQrTimer = setInterval(() => { const el = document.getElementById('qr-i'); if(!el){ attQrClose(); return; } const p = (Date.now() - t0) / 30000; el.style.width = Math.max(0, 100 - p * 100) + '%'; if(p >= 1) cycle(); }, 500);
+}
+function attQrClose(){ clearInterval(attQrTimer); const o = document.getElementById('att-qr-ov'); if(o) o.remove(); }
+
+/* ---- للمشرف: القائمة الكاملة (QR، أعذار، يدوي، أسبوعي، نسب) ---- */
+const _asl9 = attStaffLoad; attStaffLoad = async function(force){
+  const first = !ATTS || force; await _asl9.apply(this, arguments);
+  if(first){ try{ const s = await db.collection('attExcuses').where('supervisorId', '==', currentUid).get(); ATTX = s.docs.map(d => ({ id: d.id, ...d.data() })); }catch(e){ ATTX = []; } attRecurTick(); if(svTab === 'attsess') svShow('attsess'); }
+};
+async function attRecurTick(){
+  const now = Date.now(); const due = (ATTS.sess || []).filter(s => s.repeat && !s.spawned && s.endMs < now + 7 * 864e5 && s.startMs + 7 * 864e5 < now + 8 * 864e5);
+  for(const s of due){
+    try{ const n = Object.assign({}, s); delete n.id; n.startMs += 7 * 864e5; n.endMs += 7 * 864e5; n.spawned = false; n.createdMs = Date.now();
+      await db.collection('attSessions').add(n); await db.collection('attSessions').doc(s.id).update({ spawned: true });
+      (svMembers || []).forEach(m => createNotification(m.id, 'message', '📍 حصة حضور جديدة: ' + s.title + ' — ' + new Date(n.startMs).toLocaleDateString('ar-EG'), 'v-helpers')); }catch(e){}
+  }
+  if(due.length){ ATTS = null; attStaffLoad(true); }
+}
+svAttHtml = function(){
+  attStaffLoad(); if(!ATTS) return '<div class="hp-card"><div class="hp-note">جاري التحميل…</div></div>';
+  const mem = svMembers || [], c = attCfg(), nowL = Date.now() - new Date().getTimezoneOffset() * 6e4, dt = ms => new Date(ms).toISOString().slice(0, 16), now = Date.now();
+  const pend = (ATTX || []).filter(x => x.status === 'pending');
+  return `<div class="hp-card"><h3>📍 حصة حضور جديدة</h3><div class="hp-row hp-row-wrap"><input type="text" id="as2-t" placeholder="عنوان الحصة / المحاضرة"><select id="as2-s"><option value="">— الموقع —</option>${ATTS.sites.map(s => `<option value="${s.id}">${s.kind === 'school' ? '🏫' : '🎓'} ${hpE(s.name)}</option>`).join('')}</select></div>
+    <div class="hp-row hp-row-wrap"><label class="hp-note">يبدأ <input type="datetime-local" id="as2-a" value="${dt(nowL)}"></label><label class="hp-note">ينتهي <input type="datetime-local" id="as2-b" value="${dt(nowL + 3600000)}"></label><input type="number" id="as2-g" value="10" min="0" style="width:90px;" title="مهلة التأخير بالدقائق"></div>
+    <div class="hp-row hp-row-wrap"><label class="hp-note"><input type="checkbox" id="as2-q"> إلزام كود QR متغير (يمنع التأكيد من بعيد)</label><label class="hp-note"><input type="checkbox" id="as2-r"> تكرار أسبوعي تلقائي</label></div>
+    <div class="hp-note">التكرار الأسبوعي بيتولّد لما تفتح التبويب ده. لو مفيش مواقع، الأدمن بيضيفها أو الأعضاء يسجّلوا مدارسهم.</div><div class="hp-actions"><button class="btn-primary" onclick="svAttCreate()">فتح الحصة وإبلاغ الأعضاء</button></div></div>
+  ${pend.length ? `<div class="hp-card"><h3>📨 أعذار غياب بانتظارك <small>${pend.length}</small></h3>${pend.map(x => `<div class="hp-trow" style="align-items:flex-start;"><span><b>${hpE(x.name)}</b> — ${hpE(x.sessionTitle || '')}<br><small>${hpE(x.reason)}</small> ${ndFileChip(x.file)}</span><span><button class="hp-chip" onclick="svAttExc('${x.id}','accepted')">قبول</button><button class="hp-chip bad" onclick="svAttExc('${x.id}','rejected')">رفض</button></span></div>`).join('')}</div>` : ''}
+  <div class="hp-card"><h3>📊 التزام الأعضاء <small>الحد الأدنى ${c.minPct}%</small></h3>${mem.map(m => ({ m, r: attRateOf(m.id) })).filter(x => x.r).sort((a, b) => a.r.pct - b.r.pct).map(({ m, r }) => `<div class="hp-trow"><span>${hpE(m.name || m.email)} <small>${r.n}/${r.total}</small></span><span><b style="color:${r.pct < c.minPct ? '#b3261e' : '#2e8b57'}">${r.pct}%</b> ${r.pct < c.minPct ? `<button class="hp-chip bad" onclick="svAttWarn('${m.id}',${r.pct})">⚠️ أنذر</button>` : ''}</span></div>`).join('') || '<div class="hp-note">بتظهر بعد ما تنتهي أول حصة.</div>'}</div>
+  ${ATTS.sess.map(s => { const L = ATTS.logs.filter(l => l.sessionId === s.id), got = new Set(L.map(l => l.uid)), ended = s.endMs < now; const miss = mem.filter(m => !got.has(m.id)); return `<div class="hp-card"><h3>${hpE(s.title)} ${s.qr ? '🔳' : ''}${s.repeat ? '🔁' : ''} <small>${attFmt(s.startMs)} · ${hpE(s.siteName || '')}</small></h3><div class="hp-note">حضر ${L.length} من ${mem.length} (${mem.length ? Math.round(L.length / mem.length * 100) : 0}%)</div>
+    ${L.map(l => `<div class="hp-trow"><span>${hpE(l.name)} ${l.manual ? '✍️' : ''}<small> ${attFmt(l.ms)} · ${l.manual ? 'يدوي: ' + hpE(l.reason || '') : l.distanceM + ' م · ' + (l.idp ? (l.idp === 'microsoft.com' ? 'MS' : 'G') : '') + (l.bio ? ' 🔒' : '')}</small></span><span>${attStatusLbl[l.status] || l.status}</span></div>`).join('')}
+    ${miss.map(m => `<div class="hp-trow"><span>${hpE(m.name || m.email)} <small>غائب</small></span><button class="hp-chip" onclick="svAttManual('${s.id}','${m.id}')">✍️ تسجيل يدوي</button></div>`).join('')}
+    <div class="hp-actions">${s.qr && !ended ? `<button class="btn-primary" onclick="svAttQr('${s.id}')">📺 شاشة QR</button>` : ''}${miss.length ? `<button class="hp-chip" onclick="svAttRemind('${s.id}')">🔔 ذكّر الغائبين</button>` : ''}<button class="hp-chip" onclick="svAttCsv('${s.id}')">⬇️ CSV</button><button class="hp-chip" onclick="svAttPrint('${s.id}')">🖨️ PDF</button><button class="hp-chip bad" onclick="svAttDel('${s.id}')">حذف</button></div></div>`; }).join('')}
+  <div class="hp-card"><h3>سجل حضور أعضائي <small>${ATTS.logs.length}</small></h3><div class="hp-actions"><button class="hp-chip" onclick="svAttCsv('')">⬇️ تصدير الكل CSV</button><button class="hp-chip" onclick="svAttPrint('')">🖨️ طباعة / PDF</button></div>
+    ${ATTS.logs.slice(0, 40).map(l => `<div class="hp-trow"><span>${hpE(l.name)} — ${l.dir === 'out' ? 'انصراف' : 'حضور'} <small>${hpE(l.siteName || '')} · ${attFmt(l.ms)}</small></span><span>${attStatusLbl[l.status] || l.status}</span></div>`).join('')}</div>`;
+};
+SV_FN.attsess = svAttHtml;
+svAttCreate = async function(){
+  const t = hpV('as2-t').trim(), sid = hpV('as2-s'), s = ATTS.sites.find(x => x.id === sid), a = hpV('as2-a'), b = hpV('as2-b'); if(!t || !s || !a || !b){ toast('كمّل العنوان والموقع والوقت.', { type: 'err' }); return; }
+  try{ await db.collection('attSessions').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title: t.slice(0, 100), siteId: s.id, siteName: s.name, lat: s.lat, lng: s.lng, radiusM: s.radiusM || 150, startMs: new Date(a).getTime(), endMs: new Date(b).getTime(), graceMin: +hpV('as2-g') || 10, qr: document.getElementById('as2-q').checked, repeat: document.getElementById('as2-r').checked, spawned: false, active: true, createdMs: Date.now() });
+    (svMembers || []).forEach(m => createNotification(m.id, 'message', '📍 حصة حضور: ' + t + ' — أكّد حضورك من "تأكيد الحضور" في الأدوات', 'v-helpers')); toast('اتفتحت الحصة.'); attStaffLoad(true); }
+  catch(e){ toast('تعذّر: ' + (e.code || e.message), { type: 'err' }); }
+};
+async function svAttExc(id, st){ try{ await db.collection('attExcuses').doc(id).update({ status: st, reviewedMs: Date.now() }); const x = ATTX.find(o => o.id === id); if(x){ x.status = st; createNotification(x.uid, 'message', 'عذر غيابك (' + (x.sessionTitle || '') + ') ' + (st === 'accepted' ? 'اتقبل ✅' : 'اترفض ❌'), 'v-helpers'); } svShow('attsess'); }catch(e){ toast('تعذّر.', { type: 'err' }); } }
+async function svAttManual(sid, uid){
+  const s = ATTS.sess.find(x => x.id === sid), m = (svMembers || []).find(x => x.id === uid), why = (prompt('سبب التسجيل اليدوي لـ ' + (m.name || m.email) + ':') || '').trim(); if(why.length < 3) return;
+  try{ await db.collection('attendanceLogs').doc(sid + '_' + uid).set({ uid, name: m.name || '', email: m.email || '', accountType: m.accountType || '', supervisorId: currentUid, kind: 'academic', sessionId: sid, sessionTitle: s.title, siteId: s.siteId, siteName: s.siteName, siteLat: s.lat, siteLng: s.lng, radiusM: s.radiusM, dir: 'in', lat: 0, lng: 0, acc: 0, distanceM: null, within: true, status: 'ok', manual: true, reason: why.slice(0, 200), by: currentUid, byName: pendingUser.name || '', idp: '', idpEmail: '', bio: false, qrCode: '', dev: '', ua: '', ms: Date.now(), day: ndDay(), ts: firebase.firestore.FieldValue.serverTimestamp() });
+    toast('اتسجّل الحضور يدويًا.'); attStaffLoad(true); }
+  catch(e){ toast('تعذّر: ' + (e.code || e.message), { type: 'err' }); }
+}
+function svAttWarn(uid, pct){ createNotification(uid, 'message', '⚠️ نسبة حضورك ' + pct + '% — أقل من الحد الأدنى المطلوب (' + attCfg().minPct + '%). من فضلك انتظم.', 'v-helpers'); toast('اتبعت الإنذار.'); }
+
+/* ---- ملف الإنجاز: نسبة الحضور ---- */
+const _fo9 = hpFolioHtml; hpFolioHtml = function(){
+  let h = _fo9.apply(this, arguments); try{ attLoad(); const r = attMyRate(); if(r) h = h.replace('<div class="hp-actions"><button class="btn-primary" onclick="hpFolioPrint()">', `<div class="hp-mini" style="margin:8px 0;"><b>نسبة الالتزام بالحضور</b>${r.pct}% (${r.n}/${r.total})</div><div class="hp-actions"><button class="btn-primary" onclick="hpFolioPrint()">`); }catch(e){} return h;
+};
+/* تنبيه يومي لو النسبة تحت الحد */
+const _bt9 = ndBootExtras; ndBootExtras = async function(){
+  await _bt9.apply(this, arguments);
+  try{ if(!(userStatus && userStatus.supervisorId)) return; await attLoad(); await attExcLoad(); const r = attMyRate(), k = 'nd-attw-' + currentUid + ndDay(); if(r && r.pct < attCfg().minPct && !sessionStorage.getItem(k)){ sessionStorage.setItem(k, '1'); hpNotify('⚠️ نسبة حضورك ' + r.pct + '% — أقل من ' + attCfg().minPct + '%'); } }catch(e){}
+};
+
+/* ===== الدفعة 10: تفويض الحضور الأكاديمي + ظهوره لكل الحسابات ===== */
+function attMode(){ const m = window.__ctl && window.__ctl.attMode; return (m === 'all' || m === 'off') ? m : 'delegated'; }
+let ATTACC = { loaded: false, mine: false, granted: {} };
+async function attAccLoad(force){
+  if(ATTACC.loaded && !force) return; ATTACC.loaded = true;
+  try{
+    const me = await db.collection('attAccess').doc(currentUid).get(); ATTACC.mine = me.exists;
+    if(hpIsStaff()){ const g = await db.collection('attAccess').where('by', '==', currentUid).get(); ATTACC.granted = {}; g.docs.forEach(d => ATTACC.granted[d.id] = true); }
+  }catch(e){}
+  try{ if(hpTab === 'checkin') attRender(); }catch(e){}
+  try{ if(typeof svTab !== 'undefined' && svTab === 'attsess') svShow('attsess'); }catch(e){}
+}
+function attHasAccess(){
+  const m = attMode(); if(m === 'off') return false; if(m === 'all') return true;
+  if(pendingRole === 'office') return true;
+  if(!hpIsStaff() && !(userStatus && userStatus.supervisorId)) return true;
+  return ATTACC.mine;
+}
+function attLockedHtml(){
+  const m = attMode(), why = m === 'off' ? 'إدارة المنصة أوقفت الحضور الأكاديمي مؤقتًا.' : (hpIsStaff() ? 'لسه محدّش فعّله لحسابك. اطلب من الإدارة تفعيل الحضور الأكاديمي لك.' : 'الحضور الأكاديمي لسه مش مفعّل لحسابك. اطلب من مشرفك يفعّله لك.');
+  return `<div class="hp-card"><h3>📍 الحضور الأكاديمي</h3><div class="hp-note">${why}</div><div class="hp-actions"><button class="hp-chip" onclick="attAccLoad(true)">🔄 تحديث</button></div></div>`;
+}
+const _hpCheckin10 = hpCheckinHtml;
+hpCheckinHtml = function(){ attAccLoad(); return attHasAccess() ? _hpCheckin10() : attLockedHtml(); };
+const _svAtt10 = svAttHtml;
+svAttHtml = function(){
+  attAccLoad(); if(!attHasAccess()) return attLockedHtml();
+  const mem = svMembers || [], g = ATTACC.granted, on = mem.filter(m => g[m.id]).length, mode = attMode();
+  const card = `<div class="hp-card"><h3>👥 تفعيل الحضور الأكاديمي لـ${pendingRole === 'office' ? 'المشرفين' : 'الطلاب'} <small>${on}/${mem.length}</small></h3>
+    ${mode === 'all' ? '<div class="hp-note">الأدمن مفعّل الحضور للجميع حاليًا — التفويض مش مطلوب.</div>' : ''}
+    <div class="hp-row hp-row-wrap"><input type="text" id="ag-q" placeholder="ابحث بالاسم لتفعيل مجموعة" oninput="attGrantFilter()"></div>
+    <div class="hp-actions"><button class="hp-chip" onclick="attGrantAll(true)">✅ تفعيل للمعروضين</button><button class="hp-chip" onclick="attGrantAll(false)">🚫 إلغاء للمعروضين</button></div>
+    ${mem.length ? mem.map(m => `<div class="hp-trow ag-row" data-n="${hpE(((m.name || '') + ' ' + (m.email || '')).toLowerCase())}"><span>${hpE(m.name || m.email || m.id)}</span><button class="hp-chip ${g[m.id] ? 'on' : ''}" onclick="attGrant('${m.id}',${!g[m.id]})">${g[m.id] ? 'مفعّل ✓' : 'تفعيل'}</button></div>`).join('') : '<div class="hp-note">لا يوجد أعضاء تابعين لك لسه.</div>'}</div>`;
+  return card + _svAtt10();
+};
+if(typeof SV_FN !== 'undefined') SV_FN.attsess = svAttHtml;
+async function attGrant(id, on, quiet){
+  try{
+    if(on){ await db.collection('attAccess').doc(id).set({ uid: id, by: currentUid, byName: (pendingUser && pendingUser.name) || '', ms: Date.now(), ts: firebase.firestore.FieldValue.serverTimestamp() }); ATTACC.granted[id] = true; if(!quiet) createNotification(id, 'message', '📍 تم تفعيل الحضور الأكاديمي لحسابك — افتحه من القائمة', 'v-helpers'); }
+    else{ await db.collection('attAccess').doc(id).delete(); delete ATTACC.granted[id]; }
+    if(!quiet){ toast(on ? 'اتفعّل.' : 'اتلغى.'); svShow('attsess'); }
+  }catch(e){ toast('تعذّر: ' + (e.code || e.message), { type: 'err' }); }
+}
+function attGrantFilter(){ const q = document.getElementById('ag-q').value.trim().toLowerCase(); document.querySelectorAll('.ag-row').forEach(r => { r.style.display = (!q || r.dataset.n.includes(q)) ? '' : 'none'; }); }
+async function attGrantAll(on){
+  const q = ((document.getElementById('ag-q') || {}).value || '').trim().toLowerCase();
+  const mem = (svMembers || []).filter(m => !q || ((m.name || '') + ' ' + (m.email || '')).toLowerCase().includes(q)); if(!mem.length) return; if(!confirm((on ? 'تفعيل' : 'إلغاء') + ' الحضور الأكاديمي لـ' + mem.length + ' عضو؟')) return;
+  for(const m of mem){ if(!!ATTACC.granted[m.id] !== on) await attGrant(m.id, on, true); }
+  toast(on ? 'اتفعّل للكل.' : 'اتلغى للكل.'); svShow('attsess');
+}
+/* أيقونة الحضور في كل القوايم */
+function attOpen(){
+  try{
+    if(hpIsStaff()){ showView('v-sup', document.querySelector('#nav-sup .nav-item')); setTimeout(() => { try{ svShow('attsess'); }catch(e){} }, 250); }
+    else{ const nav = document.querySelector('#app-sidebar .nav-item[data-views~="v-helpers"]'); showView('v-helpers', nav); setTimeout(() => { try{ hpShow('checkin'); }catch(e){} }, 250); }
+  }catch(e){}
+}
+(function(){
+  const btn = (id) => `<button class="nav-item" id="${id}" data-views="att-open" onclick="attOpen()"><svg class="icon"><use href="#i-clipboard"></use></svg> الحضور الأكاديمي</button>`;
+  ['teacher', 'student', 'sup'].forEach(k => {
+    const nav = document.getElementById('nav-' + k); if(!nav || document.getElementById('navi-att-' + k)) return;
+    const labels = nav.querySelectorAll('.nav-group-label'); let at = null;
+    labels.forEach(l => { if(l.textContent.trim() === 'المجتمع' || (k === 'sup' && l.textContent.trim() === 'الحساب')) at = at || l; });
+    if(at) at.insertAdjacentHTML('beforebegin', btn('navi-att-' + k)); else nav.insertAdjacentHTML('beforeend', btn('navi-att-' + k));
+  });
+})();
+/* لوحة الرئيسية: بطاقة سريعة */
+const _attBoot10 = (typeof ndBootExtras === 'function') ? ndBootExtras : null;
+if(_attBoot10){ ndBootExtras = function(){ const r = _attBoot10.apply(this, arguments); try{ attAccLoad(); }catch(e){} return r; }; }
+
+/* ===== الدفعة 11: تحسينات الحضور ===== */
+/* 1) إلغاء مشرف يلغي تفويضاته للطلاب */
+const _attGrant11 = attGrant;
+attGrant = async function(id, on, quiet){
+  await _attGrant11(id, on, quiet);
+  if(!on && pendingRole === 'office'){ try{ const q = await db.collection('attAccess').where('by', '==', id).get(); for(const d of q.docs) await d.ref.delete(); }catch(e){} }
+};
+/* 11) تعريف أول مرة */
+function attOnbOk(){ try{ localStorage.setItem('att_onb', '1'); }catch(e){} try{ hpShow('checkin'); }catch(e){} }
+const _hpC11 = hpCheckinHtml;
+hpCheckinHtml = function(){
+  let seen = false; try{ seen = !!localStorage.getItem('att_onb'); }catch(e){}
+  const h = _hpC11(); if(seen || !attHasAccess()) return h;
+  return `<div class="hp-card"><h3>👋 أول مرة؟ تسجيل الحضور على 3 خطوات</h3><div class="hp-note">① <b>الموقع:</b> اسمح للمتصفح بالموقع وكن داخل نطاق المكان.<br>② <b>البصمة:</b> فعّلها مرة واحدة من جهازك (قفل الشاشة).<br>③ <b>الحساب:</b> أكّد بحساب Google أو Microsoft. بعدها اضغط تأكيد الحضور.</div><div class="hp-actions"><button class="hp-chip on" onclick="attOnbOk()">تمام، فهمت</button></div></div>` + h;
+};
+/* 3 + 4 + 5) للمشرف: تنبيه الاقتراب من الحد، مشاركة الجهاز، تقرير شهري */
+const _svAtt11 = svAttHtml;
+svAttHtml = function(){
+  const h = _svAtt11(); if(!ATTS || !attHasAccess()) return h;
+  setTimeout(attNearWarn, 50);
+  const bySess = {}; (ATTS.logs || []).forEach(l => { if(l.dev && l.sessionId){ const k = l.sessionId + '|' + l.dev; (bySess[k] = bySess[k] || new Set()).add(l.name || l.uid); } });
+  const sh = Object.values(bySess).filter(x => x.size > 1).map(x => [...x].join(' + '));
+  const warn = sh.length ? `<div class="hp-card" style="border-color:#e6b3ae;"><h3>⚠️ تسجيل من نفس الجهاز</h3><div class="hp-note">${sh.map(hpE).join('<br>')}<br>راجع الحضور يدويًا — ممكن يكون حد سجّل لزميله.</div></div>` : '';
+  const rep = `<div class="hp-card"><h3>📄 تقرير شهري</h3><div class="hp-actions"><button class="hp-chip" onclick="svAttMonthly()">🖨️ تقرير الشهر الحالي (PDF)</button><button class="hp-chip" onclick="svAttMonthly(-1)">الشهر السابق</button></div></div>`;
+  return warn + rep + h;
+};
+if(typeof SV_FN !== 'undefined') SV_FN.attsess = svAttHtml;
+function attNearWarn(){
+  if(!ATTS || !hpIsStaff()) return; const min = attCfg().minPct, day = new Date().toISOString().slice(0, 10); let n = 0;
+  (svMembers || []).forEach(m => { const r = attRateOf(m.id); if(!r || r.pct < min || r.pct >= min + 10) return; const k = 'attnear_' + m.id + '_' + day; try{ if(localStorage.getItem(k)) return; localStorage.setItem(k, '1'); }catch(e){} createNotification(m.id, 'message', '⚠️ نسبة حضورك ' + r.pct + '% — قريبة من الحد الأدنى (' + min + '%). حاول ما تغيبش.', 'v-helpers'); n++; });
+  if(n) toast('اتبعت تنبيه لـ ' + n + ' عضو قريبين من حد الغياب.');
+}
+function svAttMonthly(off){
+  if(!ATTS) return; const d = new Date(); d.setMonth(d.getMonth() + (off || 0)); const y = d.getFullYear(), mo = d.getMonth();
+  const ss = (ATTS.sess || []).filter(s => { const t = new Date(s.startMs); return t.getFullYear() === y && t.getMonth() === mo && s.endMs < Date.now(); });
+  const rows = (svMembers || []).map(m => { let p = 0, l = 0, e = 0, a = 0; ss.forEach(s => { const lg = (ATTS.logs || []).find(x => x.sessionId === s.id && x.uid === m.id); if(lg){ if(lg.status === 'late') l++; else p++; } else if((typeof ATTX !== 'undefined' ? ATTX : []).some(x => x.sessionId === s.id && x.uid === m.id && x.status === 'accepted')) e++; else a++; }); const tot = ss.length, pct = tot ? Math.round((p + l + e) / tot * 100) : 0; return `<tr><td>${hpE(m.name || m.email || '')}</td><td>${p}</td><td>${l}</td><td>${e}</td><td>${a}</td><td>${pct}%</td></tr>`; }).join('');
+  const w = window.open('', '_blank'); if(!w){ toast('اسمح بالنوافذ المنبثقة.', { type: 'err' }); return; }
+  w.document.write(`<html dir="rtl"><head><meta charset="utf-8"><title>تقرير حضور</title><style>body{font-family:Tahoma,Arial;padding:24px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #999;padding:6px;text-align:center}th{background:#eee}</style></head><body><h2>تقرير الحضور الأكاديمي — ${mo + 1}/${y}</h2><p>المشرف: ${hpE((pendingUser && pendingUser.name) || '')} · عدد الحصص: ${ss.length} · نسبة الحد الأدنى: ${attCfg().minPct}%</p><table><tr><th>الاسم</th><th>حاضر</th><th>متأخر</th><th>معذور</th><th>غائب</th><th>النسبة</th></tr>${rows}</table><script>setTimeout(function(){print()},400)<\/script></body></html>`); w.document.close();
+}
+/* 9 + 10) بطاقة حضور اليوم + تذكير قبل الحصة */
+function attTodayHtml(){
+  if(hpIsStaff() || !attHasAccess() || !ATT.sessions) return '';
+  const now = Date.now(), s = ATT.sessions.filter(x => x.endMs > now && x.startMs - now < 864e5).sort((a, b) => a.startMs - b.startMs)[0]; if(!s) return '';
+  const live = s.startMs <= now, done = (ATT.logs || []).some(l => l.sessionId === s.id);
+  return `<div class="card" style="margin-bottom:14px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;"><div style="flex:1; min-width:180px;"><b>📍 ${live ? 'حصة شغالة الآن' : 'حصتك الجاية'}: ${hpE(s.title)}</b><div style="font-size:12.5px; color:var(--ink-soft);">${attFmt(s.startMs)} · ${hpE(s.siteName || '')}</div></div>${done ? '<span class="badge active">✅ سجّلت حضورك</span>' : '<button class="btn" onclick="attOpen()">سجّل حضورك</button>'}</div>`;
+}
+function attTodayRender(){
+  ['t-dash', 's-home'].forEach(id => { const v = document.getElementById(id); if(!v) return; let h = document.getElementById('att-today-' + id); if(!h){ h = document.createElement('div'); h.id = 'att-today-' + id; const hero = v.querySelector('.hero'); if(hero) hero.insertAdjacentElement('afterend', h); else v.prepend(h); } h.innerHTML = attTodayHtml(); });
+}
+function attRemindTick(){
+  if(hpIsStaff() || !attHasAccess() || !ATT.sessions) return; const now = Date.now();
+  ATT.sessions.forEach(s => { const m = Math.round((s.startMs - now) / 6e4); if(m > 0 && m <= 15){ const k = 'attrem_' + s.id; try{ if(localStorage.getItem(k)) return; localStorage.setItem(k, '1'); }catch(e){ return; } toast('⏰ حصة «' + s.title + '» بعد ' + m + ' دقيقة — جهّز تسجيل الحضور.'); try{ if(window.Notification && Notification.permission === 'granted') new Notification('نُدرس معًا', { body: 'حصة ' + s.title + ' بعد ' + m + ' دقيقة' }); }catch(e){} } });
+}
+async function attTodayBoot(){
+  try{ await attAccLoad(); if(hpIsStaff() || !attHasAccess()){ attTodayRender(); return; } await attLoad(); attTodayRender(); attRemindTick(); }catch(e){}
+}
+setInterval(() => { try{ if(currentUid){ attTodayRender(); attRemindTick(); } }catch(e){} }, 60000);
+const _attBoot11 = ndBootExtras; ndBootExtras = async function(){ const r = await _attBoot11.apply(this, arguments); setTimeout(attTodayBoot, 1200); return r; };
 </script>
 </body>
 </html>
