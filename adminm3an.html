@@ -357,6 +357,9 @@ table{border-collapse:separate; border-spacing:0;}
     <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
     <button class="tab" onclick="switchTab('perm', this)"><svg class="icon"><use href="#i-lock"></use></svg> صلاحيات المشتركين</button>
     <button class="tab" onclick="switchTab('control', this)"><svg class="icon"><use href="#i-star"></use></svg> التحكم الشامل</button>
+    <button class="tab" onclick="switchTab('attend', this)"><svg class="icon"><use href="#i-check"></use></svg> الحضور الأكاديمي</button>
+    <button class="tab" onclick="switchTab('books', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> الكتب</button>
+    <button class="tab" onclick="switchTab('files', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> مخزن الملفات</button>
     <button class="tab" onclick="switchTab('logins', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> آخر تسجيل دخول</button>
     <button class="tab" onclick="switchTab('acct', this)"><svg class="icon"><use href="#i-check"></use></svg> إدارة نوع الحساب</button>
     <button class="tab" onclick="switchTab('tickets', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> تذاكر الدعم</button>
@@ -555,7 +558,7 @@ table{border-collapse:separate; border-spacing:0;}
       <h3 style="margin-bottom:6px;">📏 حدود الاستخدام</h3>
       <p style="font-size:12.5px; color:var(--ink-soft); margin-bottom:8px;">اتركها 0 أو فاضية لعدم التحديد. الحدود بتتطبق من الواجهة.</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px;"><div class="field"><label>أقصى مستندات منشورة بكود لكل مستخدم</label><input type="number" min="0" id="ctl-q-docs"></div><div class="field"><label>أقصى زيارات صفية في الشهر لكل مشرف</label><input type="number" min="0" id="ctl-q-visits"></div>
-      <div class="field"><label>أقصى رسائل دردشة في اليوم لكل حساب</label><input type="number" min="0" id="ctl-q-chat"></div><div class="field"><label>أقصى تذاكر دعم في اليوم</label><input type="number" min="0" id="ctl-q-tickets"></div><div class="field"><label>أقصى استبيانات في اليوم</label><input type="number" min="0" id="ctl-q-surveys"></div></div>
+      <div class="field"><label>أقصى رسائل دردشة في اليوم لكل حساب</label><input type="number" min="0" id="ctl-q-chat"></div><div class="field"><label>أقصى تذاكر دعم في اليوم</label><input type="number" min="0" id="ctl-q-tickets"></div><div class="field"><label>أقصى استبيانات في اليوم</label><input type="number" min="0" id="ctl-q-surveys"></div><div class="field"><label>أقصى رفع ملفات في اليوم لكل حساب</label><input type="number" min="0" id="ctl-q-files"></div><div class="field"><label>أقصى حجم ملف مرفوع (KB) — الافتراضي 2048</label><input type="number" min="200" max="3000" id="ctl-file-kb"></div></div>
       <label style="display:flex; gap:10px; align-items:center; margin-top:12px; padding:12px 14px; border:1px solid #e6b3ae; background:#fff5f4; border-radius:14px; font-weight:800; font-size:13.5px; cursor:pointer;"><input type="checkbox" id="ctl-ro" style="width:auto; min-height:0;"> 🔒 وضع الصيانة (قراءة فقط): إيقاف أي حفظ أو نشر من المستخدمين مؤقتًا</label>
     </div>
     <div class="card">
@@ -574,6 +577,40 @@ table{border-collapse:separate; border-spacing:0;}
       <h3 style="margin-bottom:8px;">🧭 اختصارات لباقي أدوات التحكم</h3>
       <div id="ctl-shortcuts" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
     </div>
+  </div>
+
+  <div class="panel" id="panel-attend">
+    <div class="card"><h3 style="margin-bottom:6px;">⚙️ إعدادات التحقق</h3>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; font-size:13.5px; font-weight:700; margin-bottom:10px;"><label><input type="checkbox" id="at-geo" style="width:auto;min-height:0;"> إلزام الموقع</label><label><input type="checkbox" id="at-bio" style="width:auto;min-height:0;"> إلزام البصمة</label><label><input type="checkbox" id="at-idp" style="width:auto;min-height:0;"> إلزام حساب Google/Microsoft</label><label><input type="checkbox" id="at-out" style="width:auto;min-height:0;"> السماح بالتسجيل خارج النطاق (بعلامة)</label></div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px;"><div class="field"><label>أقصى خطأ مسموح لدقة الموقع (م)</label><input type="number" id="at-acc" min="20" max="1000"></div><div class="field"><label>مهلة التأخير الافتراضية (دقيقة)</label><input type="number" id="at-grace" min="0"></div></div>
+      <button class="btn" onclick="saveAttCfg()">حفظ الإعدادات</button><div class="status" id="at-cfg-st"></div>
+      <p style="font-size:12px; color:var(--ink-soft); line-height:1.9; margin-top:8px;">لتفعيل Google و Microsoft: من Firebase Console ← Authentication ← Sign-in method ← فعّل Google و Microsoft (Microsoft محتاج Client ID/Secret من Azure). وأضف نطاق موقعك في Authorized domains.</p></div>
+    <div class="card"><h3 style="margin-bottom:6px;">📍 مواقع الكلية / المدارس العامة</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px;"><div class="field"><label>الاسم</label><input type="text" id="st-n"></div><div class="field"><label>النوع</label><select id="st-k"><option value="academic">🎓 كلية / قاعة</option><option value="school">🏫 مدرسة</option></select></div><div class="field"><label>خط العرض</label><input type="number" step="any" id="st-lat"></div><div class="field"><label>خط الطول</label><input type="number" step="any" id="st-lng"></div><div class="field"><label>النطاق (م)</label><input type="number" id="st-r" value="150"></div></div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;"><button class="btn" style="background:var(--ink)" onclick="siteHere()">📍 استخدم موقعي الحالي</button><button class="btn" onclick="siteAdd()">إضافة الموقع</button></div><div class="status" id="st-st"></div><div id="st-list" style="margin-top:10px;"></div></div>
+    <div class="card"><h3 style="margin-bottom:6px;">🗂️ سجل الحضور</h3>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"><label style="font-size:12px;">من <input type="date" id="al-from" style="width:auto;"></label><label style="font-size:12px;">إلى <input type="date" id="al-to" style="width:auto;"></label><select id="al-kind" onchange="renderAtt()" style="width:auto;"><option value="">الكل</option><option value="academic">أكاديمي</option><option value="school">مدرسة</option></select><select id="al-st" onchange="renderAtt()" style="width:auto;"><option value="">كل الحالات</option><option value="ok">حاضر</option><option value="late">متأخر</option><option value="outside">خارج النطاق</option><option value="flag">⚠️ للمراجعة</option></select><input type="text" id="al-q" placeholder="بحث بالاسم/الإيميل/الموقع" oninput="renderAtt()" style="flex:1; min-width:160px;"><button class="btn" onclick="loadAtt()">↻ تحميل</button></div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;"><button class="btn" style="background:#1d6f42" onclick="attXlsx()">📗 Excel</button><button class="btn" style="background:var(--ink)" onclick="attCsvA()">CSV</button><button class="btn" style="background:#b3261e" onclick="attPdfA()">📕 PDF</button></div><div class="status" id="al-st-msg"></div><div id="al-sum" style="margin-top:10px;"></div></div>
+    <div class="card" style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse; font-size:12.5px;"><thead><tr><th style="text-align:right; padding:6px;">الاسم</th><th>الموقع/الحصة</th><th>الوقت</th><th>الحالة</th><th>م</th><th>التحقق</th><th>خريطة</th></tr></thead><tbody id="al-body"></tbody></table></div>
+  </div>
+
+  <div class="panel" id="panel-books">
+    <div class="card"><h3 style="margin-bottom:6px;">📚 إضافة كتاب للمكتبة</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.9; margin-bottom:10px;">الأفضل رابط Drive (مجاني وبدون حد). الرفع المباشر لـ PDF صغير (حتى 6MB) بيتخزن في Firestore. الكتاب بيظهر لكل المستخدمين في المكتبة → "كتب".</p>
+      <div class="field"><label>عنوان الكتاب</label><input type="text" id="bk-t"></div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px;"><div class="field"><label>المؤلف</label><input type="text" id="bk-a"></div><div class="field"><label>المادة</label><input type="text" id="bk-s"></div><div class="field"><label>الصف / الفرقة</label><input type="text" id="bk-g"></div></div>
+      <div class="field"><label>نبذة</label><textarea id="bk-d" rows="2" maxlength="300"></textarea></div>
+      <div class="field"><label>رابط الكتاب (Drive أو أي رابط)</label><input type="text" id="bk-u" placeholder="https://drive.google.com/file/d/.../view"></div>
+      <div class="field"><label>أو ارفع PDF (حتى 6MB)</label><input type="file" id="bk-f" accept="application/pdf"></div>
+      <button class="btn" onclick="adminBookAdd()">نشر الكتاب</button><div class="status" id="bk-status"></div></div>
+    <div id="bk-list"></div>
+  </div>
+
+  <div class="panel" id="panel-files">
+    <div class="card"><h3 style="margin-bottom:6px;">🗄️ مخزن الملفات (Firestore)</h3>
+      <p style="font-size:12.5px; color:var(--ink-soft); line-height:1.9; margin-bottom:10px;">الخطة المجانية: 1GB تخزين و20,000 كتابة/يوم. تابع الحجم وامسح القديم.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"><button class="btn" onclick="loadFiles()">↻ تحديث</button><input type="number" id="fl-days" value="90" min="1" style="width:90px;"><button class="btn" style="background:#b3261e" onclick="purgeOldFiles()">حذف الملفات الأقدم من (يوم)</button></div><div class="status" id="fl-status"></div></div>
+    <div id="fl-sum"></div><div class="card" style="overflow-x:auto;"><table style="width:100%; border-collapse:collapse; font-size:13px;"><thead><tr><th style="text-align:right; padding:8px;">الملف</th><th>صاحبه</th><th>الحجم</th><th>التاريخ</th><th></th></tr></thead><tbody id="fl-body"></tbody></table></div>
   </div>
 
   <div class="panel" id="panel-logins">
@@ -957,6 +994,9 @@ function switchTab(name, btn){
   btn.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
   if(name==='health'){ try{ loadHealth(); }catch(e){} }
+  if(name==='attend'){ try{ initAtt(); }catch(e){} }
+  if(name==='books'){ try{ loadBooksAdmin(); }catch(e){} }
+  if(name==='files'){ try{ loadFiles(); }catch(e){} }
   if(name==='logins'){ try{ loadLogins(); }catch(e){} }
   if(name==='acct'){ try{ renderAcct(); }catch(e){} }
   if(name==='tickets'){ try{ loadTickets(); }catch(e){} }
@@ -1988,7 +2028,7 @@ async function confirmPayment(uid){
     toast('اتفعّل الحساب.'); loadUsers(); loadSupervisorsAdmin();
   }catch(err){ toast('حصل خطأ: ' + err.message, {type:'err'}); }
 }
-const AUDIT_LABELS = { remind:'تذكير مشرفين خاملين', acctChange:'تغيير نوع/حالة حساب', acctBulk:'تغيير جماعي للحسابات', ticket:'رد على تذكرة', broadcast:'إشعار مستهدف', control:'تعديل التحكم الشامل', backup:'نسخة احتياطية', perm:'صلاحيات أدوات', confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط مشرف بالإدارة', assign:'ربط حسابات بمشرف', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل', nid:'أرقام قومية', perm:'صلاحيات مشتركين' };
+const AUDIT_LABELS = { site:'إضافة موقع حضور', book:'إضافة كتاب', fileDel:'حذف ملف', filePurge:'تنظيف ملفات قديمة', remind:'تذكير مشرفين خاملين', acctChange:'تغيير نوع/حالة حساب', acctBulk:'تغيير جماعي للحسابات', ticket:'رد على تذكرة', broadcast:'إشعار مستهدف', control:'تعديل التحكم الشامل', backup:'نسخة احتياطية', perm:'صلاحيات أدوات', confirm_payment:'تأكيد دفع', approve:'اعتماد حساب', suspend:'إيقاف حساب', promote:'ترقية حساب', link_office:'ربط مشرف بالإدارة', assign:'ربط حسابات بمشرف', save_user:'تعديل مستخدم', expert:'شارة خبير', verified:'توثيق', pricing:'تعديل الرسوم', access:'تعديل صلاحيات الميزات', coupon:'كوبون', limits:'حدود الملفات', email_config:'إعداد الإيميل', nid:'أرقام قومية', perm:'صلاحيات مشتركين' };
 async function loadAudit(){
   const el = document.getElementById('audit-list'); if(!el) return;
   el.innerHTML = 'جاري التحميل...';
@@ -2425,13 +2465,13 @@ async function importBackup(){
 }
 
 /* ================= التحكم الشامل ================= */
-const CTL_SWITCHES=[['signup','التسجيل الجديد في المنصة'],['nidLogin','الدخول بالرقم القومي'],['biometric','الدخول بالبصمة للمستخدمين'],['shares','إرسال التقارير بين المشرف والمتدرب'],['sharedDocs','نشر المستندات بكود'],['notifications','الإشعارات الداخلية (الشارات)'],['pdfExport','تصدير PDF'],['bottomNav','شريط التنقل السفلي بالموبايل']];
+const CTL_SWITCHES=[['attendance','نظام الحضور الأكاديمي (موقع + بصمة + حساب)'],['fileUpload','رفع الصور وملفات PDF (بيتخزن داخل Firestore)'],['signup','التسجيل الجديد في المنصة'],['nidLogin','الدخول بالرقم القومي'],['biometric','الدخول بالبصمة للمستخدمين'],['shares','إرسال التقارير بين المشرف والمتدرب'],['sharedDocs','نشر المستندات بكود'],['notifications','الإشعارات الداخلية (الشارات)'],['pdfExport','تصدير PDF'],['bottomNav','شريط التنقل السفلي بالموبايل']];
 let CTL={};
 async function loadControlAdmin(){
   try{ const d=await db.collection('siteSettings').doc('control').get(); CTL=d.exists?d.data():{}; }catch(e){ CTL={}; }
   const sw=document.getElementById('ctl-switches'); if(!sw) return;
   sw.innerHTML=CTL_SWITCHES.map(x=>`<label style="display:flex; gap:10px; align-items:center; padding:12px 14px; border:1px solid var(--line); border-radius:14px; background:#fff; cursor:pointer; font-weight:700; font-size:13.5px;"><input type="checkbox" class="ctl-sw" value="${x[0]}" ${CTL[x[0]]===false?'':'checked'} style="width:auto; min-height:0;"> ${escapeHtml(x[1])}</label>`).join('');
-  const Q=CTL.quotas||{}; document.getElementById('ctl-q-docs').value=Q.docs||''; document.getElementById('ctl-q-visits').value=Q.visits||''; ['chat','tickets','surveys'].forEach(k=>document.getElementById('ctl-q-'+k).value=Q[k]||''); document.getElementById('ctl-ro').checked=CTL.readOnly===true;
+  const Q=CTL.quotas||{}; document.getElementById('ctl-q-docs').value=Q.docs||''; document.getElementById('ctl-q-visits').value=Q.visits||''; ['chat','tickets','surveys','files'].forEach(k=>document.getElementById('ctl-q-'+k).value=Q[k]||''); document.getElementById('ctl-file-kb').value=CTL.fileMaxKB||''; document.getElementById('ctl-ro').checked=CTL.readOnly===true;
   document.getElementById('ctl-crit').value=(CTL.visitCriteria||[]).join('\n'); document.getElementById('ctl-ideas').value=(CTL.ideasBank||[]).join('\n');
   const sc=document.getElementById('ctl-shortcuts');
   sc.innerHTML=[['accounts','الحسابات والأسعار'],['perm','صلاحيات المشتركين'],['nid','الأرقام القومية'],['audit','سجل التدقيق'],['settings','الإعدادات والنسخ الاحتياطي'],['users','المستخدمين'],['reports','البلاغات']].map(x=>`<button class="btn" style="background:var(--ink)" onclick="goTab('${x[0]}')">${x[1]}</button>`).join('');
@@ -2440,7 +2480,7 @@ function goTab(name){ const b=[...document.querySelectorAll('.tab')].find(t=>(t.
 async function saveControl(){
   const st=document.getElementById('ctl-status'); st.className='status';
   const o={}; document.querySelectorAll('.ctl-sw').forEach(c=>o[c.value]=c.checked);
-  o.quotas={docs:Math.max(0,+document.getElementById('ctl-q-docs').value||0),visits:Math.max(0,+document.getElementById('ctl-q-visits').value||0),chat:Math.max(0,+document.getElementById('ctl-q-chat').value||0),tickets:Math.max(0,+document.getElementById('ctl-q-tickets').value||0),surveys:Math.max(0,+document.getElementById('ctl-q-surveys').value||0)}; o.readOnly=document.getElementById('ctl-ro').checked;
+  o.quotas={docs:Math.max(0,+document.getElementById('ctl-q-docs').value||0),visits:Math.max(0,+document.getElementById('ctl-q-visits').value||0),chat:Math.max(0,+document.getElementById('ctl-q-chat').value||0),tickets:Math.max(0,+document.getElementById('ctl-q-tickets').value||0),surveys:Math.max(0,+document.getElementById('ctl-q-surveys').value||0),files:Math.max(0,+document.getElementById('ctl-q-files').value||0)}; o.fileMaxKB=Math.min(3000,Math.max(0,+document.getElementById('ctl-file-kb').value||0)); o.readOnly=document.getElementById('ctl-ro').checked;
   o.visitCriteria=document.getElementById('ctl-crit').value.split('\n').map(x=>x.trim().slice(0,60)).filter(Boolean).slice(0,12);
   o.ideasBank=document.getElementById('ctl-ideas').value.split('\n').map(x=>x.trim()).filter(x=>x.split('|').length===3&&x.split('|')[2].trim()).slice(0,300);
   try{ await db.collection('siteSettings').doc('control').set(o,{merge:true}); CTL=Object.assign(CTL,o); audit('control','','','تعديل إعدادات التحكم الشامل'); st.className='status ok'; st.textContent='✓ اتحفظت. بتسري عند تحديث صفحة المستخدمين.'; }
@@ -2450,6 +2490,100 @@ function growthSvg(pts){
   const W=640,H=200,P=30,mx=Math.max(...pts.map(p=>p.total),1),mn=Math.min(...pts.map(p=>p.total)),rg=Math.max(1,mx-mn);
   const X=i=>P+i*(W-2*P)/(pts.length-1), Y=v=>H-P-(v-mn)/rg*(H-2*P), d=pts.map((p,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(p.total).toFixed(1)).join(' ');
   return `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto;" direction="ltr"><path d="${d}" fill="none" stroke="#1f3a6e" stroke-width="2.5" stroke-linejoin="round"/>${pts.map((p,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(p.total).toFixed(1)}" r="3" fill="#e3a82b"><title>${p.day}: ${p.total}</title></circle>`).join('')}<text x="${P}" y="14" font-size="11" fill="#667">${mx}</text><text x="${P}" y="${H-8}" font-size="11" fill="#667">${pts[0].day}</text><text x="${W-P}" y="${H-8}" font-size="11" fill="#667" text-anchor="end">${pts[pts.length-1].day}</text></svg>`;
+}
+/* ===== الحضور الأكاديمي ===== */
+let ATL=[], ATSITES=[];
+const atHav=(a,b,c,d)=>{const R=6371000,r=x=>x*Math.PI/180,dl=r(c-a),dg=r(d-b),h=Math.sin(dl/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(dg/2)**2; return Math.round(2*R*Math.asin(Math.sqrt(h)));};
+const ATS={ok:'حاضر',late:'متأخر',outside:'خارج النطاق'};
+function initAtt(){
+  const c=Object.assign({geo:true,bio:true,idp:true,allowOutside:false,maxAcc:150,graceMin:10},(CTL&&CTL.att)||{});
+  document.getElementById('at-geo').checked=c.geo!==false; document.getElementById('at-bio').checked=c.bio!==false; document.getElementById('at-idp').checked=c.idp!==false; document.getElementById('at-out').checked=!!c.allowOutside; document.getElementById('at-acc').value=c.maxAcc; document.getElementById('at-grace').value=c.graceMin;
+  const t=new Date(), f=document.getElementById('al-from'); if(!f.value){ f.value=new Date(t.getTime()-30*864e5).toISOString().slice(0,10); document.getElementById('al-to').value=t.toISOString().slice(0,10); }
+  loadSites(); loadAtt();
+}
+async function saveAttCfg(){ const st=document.getElementById('at-cfg-st'), att={geo:document.getElementById('at-geo').checked,bio:document.getElementById('at-bio').checked,idp:document.getElementById('at-idp').checked,allowOutside:document.getElementById('at-out').checked,maxAcc:+document.getElementById('at-acc').value||150,graceMin:+document.getElementById('at-grace').value||10};
+  try{ await db.collection('siteSettings').doc('control').set({att},{merge:true}); CTL.att=att; audit('control','','','إعدادات الحضور'); st.className='status ok'; st.textContent='✓ اتحفظت.'; }catch(e){ st.className='status err'; st.textContent='تعذّر: '+(e.code||e.message); } }
+function siteHere(){ if(!navigator.geolocation) return toast('المتصفح لا يدعم الموقع.'); navigator.geolocation.getCurrentPosition(p=>{ document.getElementById('st-lat').value=p.coords.latitude.toFixed(6); document.getElementById('st-lng').value=p.coords.longitude.toFixed(6); toast('تم التقاط موقعك (دقة '+Math.round(p.coords.accuracy)+' م).'); },()=>toast('تعذّر تحديد الموقع.'),{enableHighAccuracy:true,timeout:20000}); }
+async function loadSites(){
+  try{ const s=await db.collection('attSites').where('scope','==','global').get(); ATSITES=s.docs.map(d=>({id:d.id,...d.data()})); }catch(e){ ATSITES=[]; }
+  document.getElementById('st-list').innerHTML=ATSITES.map(x=>`<div style="display:flex; justify-content:space-between; gap:8px; align-items:center; padding:8px 0; border-bottom:1px solid var(--line);"><span>${x.kind==='school'?'🏫':'🎓'} <b>${escapeHtml(x.name)}</b> <small style="color:var(--ink-soft)">${x.radiusM} م · <a href="https://maps.google.com/?q=${x.lat},${x.lng}" target="_blank">خريطة</a> ${x.active===false?'(موقوف)':''}</small></span><span><button class="btn" style="padding:4px 10px; background:var(--ink)" onclick="siteTog('${x.id}',${x.active===false})">${x.active===false?'تفعيل':'إيقاف'}</button> <button class="btn" style="padding:4px 10px; background:#b3261e" onclick="siteDel('${x.id}')">حذف</button></span></div>`).join('')||'<div style="color:var(--ink-soft)">لا مواقع.</div>';
+}
+async function siteAdd(){ const st=document.getElementById('st-st'), v=id=>document.getElementById(id).value.trim(), lat=parseFloat(v('st-lat')), lng=parseFloat(v('st-lng'));
+  if(!v('st-n')||isNaN(lat)||isNaN(lng)){ st.className='status err'; st.textContent='الاسم والإحداثيات مطلوبين.'; return; }
+  try{ const u=auth.currentUser||{}; await db.collection('attSites').add({name:v('st-n').slice(0,80),kind:v('st-k'),scope:'global',lat,lng,radiusM:Math.min(2000,Math.max(30,+v('st-r')||150)),active:true,ownerUid:u.uid||'',ownerName:'الأدمن',supervisorId:'',createdMs:Date.now()}); audit('site','','',v('st-n')); st.className='status ok'; st.textContent='✓ اتضاف.'; document.getElementById('st-n').value=''; loadSites(); }catch(e){ st.className='status err'; st.textContent='تعذّر: '+(e.code||e.message); } }
+async function siteTog(id,on){ await db.collection('attSites').doc(id).update({active:on}); loadSites(); }
+async function siteDel(id){ if(!confirm('حذف الموقع؟')) return; await db.collection('attSites').doc(id).delete(); loadSites(); }
+async function loadAtt(){
+  const st=document.getElementById('al-st-msg'); st.className='status'; st.textContent='جاري التحميل...';
+  const f=document.getElementById('al-from').value, t=document.getElementById('al-to').value, from=f?new Date(f).getTime():0, to=t?new Date(t).getTime()+864e5:Date.now()+864e5;
+  try{ const s=await db.collection('attendanceLogs').where('ms','>=',from).where('ms','<',to).orderBy('ms','desc').limit(2000).get(); ATL=s.docs.map(d=>({id:d.id,...d.data()})); st.className='status ok'; st.textContent='✓ '+ATL.length+' تسجيل'; }
+  catch(e){ ATL=[]; st.className='status err'; st.textContent='تعذّر: '+(e.code||e.message)+' — انشر قواعد attendanceLogs.'; }
+  const dv={}; ATL.forEach(l=>{ const k=l.dev+'|'+l.day; (dv[k]=dv[k]||new Set()).add(l.uid); });
+  ATL.forEach(l=>{ const fl=[]; const d=(l.siteLat!=null)?atHav(l.lat,l.lng,l.siteLat,l.siteLng):null; if(d!==null&&Math.abs(d-(l.distanceM||0))>50) fl.push('مسافة غير متطابقة'); if(l.acc===0||(String(l.lat).split('.')[1]||'').length<=2) fl.push('إحداثيات مشبوهة'); if(dv[l.dev+'|'+l.day]&&dv[l.dev+'|'+l.day].size>1) fl.push('نفس الجهاز لأكثر من حساب'); if(l.ts&&l.ts.toMillis&&Math.abs(l.ts.toMillis()-l.ms)>10*60000) fl.push('فرق توقيت'); l._flags=fl; });
+  renderAtt();
+}
+function attFiltered(){ const k=document.getElementById('al-kind').value, s=document.getElementById('al-st').value, q=document.getElementById('al-q').value.trim().toLowerCase();
+  return ATL.filter(l=>(!k||l.kind===k)&&(!s||(s==='flag'?l._flags.length:l.status===s))&&(!q||((l.name||'')+' '+(l.email||'')+' '+(l.siteName||'')+' '+(l.idpEmail||'')).toLowerCase().includes(q))); }
+function renderAtt(){
+  const L=attFiltered(), tm=ms=>new Date(ms).toLocaleString('ar-EG',{dateStyle:'short',timeStyle:'short'});
+  const by={}; L.forEach(l=>{ const u=by[l.uid]=by[l.uid]||{name:l.name,email:l.email,days:new Set(),late:0,out:0,hrs:0,ins:{}}; u.days.add(l.day); if(l.status==='late')u.late++; if(l.status==='outside')u.out++; if(l.dir==='out'){ const i=u.ins[l.day+l.siteId]; if(i){ u.hrs+=(l.ms-i)/36e5; delete u.ins[l.day+l.siteId]; } } else u.ins[l.day+l.siteId]=l.ms; });
+  window.ATSUM=Object.values(by);
+  document.getElementById('al-sum').innerHTML=`<div style="font-size:13px; color:var(--ink-soft);">${L.length} تسجيل · ${window.ATSUM.length} شخص · ⚠️ ${L.filter(l=>l._flags.length).length} للمراجعة · متأخر ${L.filter(l=>l.status==='late').length} · خارج النطاق ${L.filter(l=>l.status==='outside').length}</div>`;
+  document.getElementById('al-body').innerHTML=L.slice(0,400).map(l=>`<tr style="border-top:1px solid var(--line);"><td style="padding:6px;"><b>${escapeHtml(l.name||'')}</b><br><small style="color:var(--ink-soft)">${escapeHtml(l.email||'')}</small></td><td style="text-align:center;">${escapeHtml(l.sessionTitle||l.siteName||'')}<br><small>${l.dir==='out'?'انصراف':'حضور'}</small></td><td style="text-align:center;">${tm(l.ms)}</td><td style="text-align:center;">${ATS[l.status]||l.status}${l._flags.length?'<br><span style="color:#b3261e;font-size:11px;">⚠️ '+escapeHtml(l._flags.join('، '))+'</span>':''}</td><td style="text-align:center;">${l.distanceM??''}</td><td style="text-align:center; font-size:11px;">${l.idp==='microsoft.com'?'MS':l.idp?'G':'—'} ${escapeHtml(l.idpEmail||'')}${l.bio?' 🔒':''}</td><td style="text-align:center;"><a href="https://maps.google.com/?q=${l.lat},${l.lng}" target="_blank">📍</a></td></tr>`).join('')||'<tr><td colspan="7" style="padding:14px; color:var(--ink-soft);">لا نتائج.</td></tr>';
+}
+const atRows=()=>[['الاسم','الإيميل','النوع','الحصة','الموقع','حضور/انصراف','التاريخ والوقت','الحالة','المسافة (م)','دقة الموقع (م)','حساب التحقق','البصمة','ملاحظات المراجعة','خريطة']].concat(attFiltered().map(l=>[l.name||'',l.email||'',l.kind==='school'?'مدرسة':'أكاديمي',l.sessionTitle||'',l.siteName||'',l.dir==='out'?'انصراف':'حضور',new Date(l.ms).toLocaleString('ar-EG'),ATS[l.status]||l.status,l.distanceM??'',l.acc??'',(l.idp==='microsoft.com'?'Microsoft: ':l.idp?'Google: ':'')+(l.idpEmail||''),l.bio?'نعم':'لا',(l._flags||[]).join('، '),'https://maps.google.com/?q='+l.lat+','+l.lng]));
+const atSumRows=()=>[['الاسم','الإيميل','أيام الحضور','مرات التأخير','خارج النطاق','ساعات (حضور↔انصراف)']].concat((window.ATSUM||[]).map(u=>[u.name,u.email,u.days.size,u.late,u.out,u.hrs.toFixed(1)]));
+function attCsvA(){ const csv='\ufeff'+atRows().map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n'), a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='attendance.csv'; a.click(); }
+function loadScript(src){ return new Promise((res,rej)=>{ if(document.querySelector('script[src="'+src+'"]')) return res(); const x=document.createElement('script'); x.src=src; x.onload=res; x.onerror=()=>rej(new Error('تعذّر تحميل المكتبة')); document.head.appendChild(x); }); }
+async function attXlsx(){
+  try{ await loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'); const wb=XLSX.utils.book_new(); const w1=XLSX.utils.aoa_to_sheet(atRows()), w2=XLSX.utils.aoa_to_sheet(atSumRows()); w1['!cols']=atRows()[0].map(()=>({wch:20})); w2['!cols']=atSumRows()[0].map(()=>({wch:20})); wb.Workbook={Views:[{RTL:true}]}; XLSX.utils.book_append_sheet(wb,w1,'السجل'); XLSX.utils.book_append_sheet(wb,w2,'ملخص'); XLSX.writeFile(wb,'attendance.xlsx'); }
+  catch(e){ toast('تعذّر إنشاء Excel ('+e.message+') — جرّب CSV.'); }
+}
+function attPdfA(){
+  const R=atRows(); const w=window.open('','_blank'); if(!w) return toast('اسمح بالنوافذ المنبثقة.');
+  const cols=[0,3,4,5,6,7,8,10,12];
+  w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>تقرير الحضور</title><style>@page{size:A4 landscape;margin:10mm} body{font-family:Cairo,Tahoma,sans-serif;font-size:10.5px;color:#111} h1{text-align:center;color:#1f3a6e;font-size:18px;margin:0 0 4px} .c{text-align:center;color:#666;margin-bottom:8px} table{width:100%;border-collapse:collapse;margin-bottom:14px} th,td{border:1px solid #555;padding:3px 5px;text-align:center} th{background:#eef1f8} h2{font-size:13px;border-right:4px solid #e3a82b;padding-right:6px}</style></head><body><h1>نُدرس معًا — تقرير الحضور الأكاديمي</h1><div class="c">${new Date().toLocaleDateString('ar-EG')} · ${R.length-1} تسجيل</div><table>${R.map((r,i)=>'<tr>'+cols.map(c=>(i?'<td>':'<th>')+escapeHtml(String(r[c]))+(i?'</td>':'</th>')).join('')+'</tr>').join('')}</table><h2>ملخص لكل شخص</h2><table>${atSumRows().map((r,i)=>'<tr>'+r.map(c=>(i?'<td>':'<th>')+escapeHtml(String(c))+(i?'</td>':'</th>')).join('')+'</tr>').join('')}</table><script>setTimeout(()=>print(),500)<\/script></body></html>`); w.document.close();
+}
+/* ===== مخزن الملفات + الكتب ===== */
+const FS_CHUNK=600*1024, fsB64=b=>new Promise((res,rej)=>{const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]||''); r.onerror=rej; r.readAsDataURL(b);});
+const fsSz=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+async function adminFileSave(file){
+  if(file.type!=='application/pdf') throw new Error('PDF فقط.'); if(file.size>6*1048576) throw new Error('الحد 6MB — استخدم رابط Drive.');
+  const fid=db.collection('fileBlobs').doc().id, n=Math.max(1,Math.ceil(file.size/FS_CHUNK)), uid=(auth.currentUser||{}).uid||'', base={fid,ownerUid:uid,shareUp:'',public:true};
+  for(let i=0;i<n;i++) await db.collection('fileChunks').doc(fid+'_'+i).set(Object.assign({i,data:await fsB64(file.slice(i*FS_CHUNK,(i+1)*FS_CHUNK))},base));
+  const meta=Object.assign({name:file.name.slice(0,120),mime:file.type,size:file.size,chunks:n,ownerName:'الأدمن',createdMs:Date.now()},base); await db.collection('fileBlobs').doc(fid).set(meta); return {fid,name:meta.name,mime:meta.mime,size:meta.size,chunks:n};
+}
+async function adminFileDel(f){ if(!f||!f.fid) return; const b=db.batch(); for(let i=0;i<(f.chunks||1);i++) b.delete(db.collection('fileChunks').doc(f.fid+'_'+i)); b.delete(db.collection('fileBlobs').doc(f.fid)); await b.commit(); }
+let BOOKS=[];
+async function loadBooksAdmin(){
+  try{ const s=await db.collection('books').orderBy('createdMs','desc').limit(200).get(); BOOKS=s.docs.map(d=>({id:d.id,...d.data()})); }catch(e){ BOOKS=[]; }
+  document.getElementById('bk-list').innerHTML=BOOKS.map(b=>`<div class="card" style="padding:12px; display:flex; gap:10px; justify-content:space-between; align-items:center;"><div><b>${escapeHtml(b.title)}</b> <small style="color:var(--ink-soft)">${escapeHtml([b.author,b.subject,b.grade].filter(Boolean).join(' · '))}</small><div style="font-size:12px; color:var(--ink-soft)">${b.file?'📄 ملف مرفوع ('+fsSz(b.file.size)+')':'🔗 رابط'} · ${escapeHtml(b.ownerName||'')}</div></div><button class="btn" style="background:#b3261e; padding:6px 12px;" onclick="adminBookDel('${b.id}')">حذف</button></div>`).join('')||'<div class="card" style="color:var(--ink-soft)">لسه مفيش كتب.</div>';
+}
+async function adminBookAdd(){
+  const st=document.getElementById('bk-status'), v=id=>document.getElementById(id).value.trim(), t=v('bk-t'); let url=v('bk-u'); const f=document.getElementById('bk-f').files[0];
+  if(!t){ st.className='status err'; st.textContent='اكتب العنوان.'; return; }
+  if(url&&!/^https:\/\//i.test(url)){ st.className='status err'; st.textContent='الرابط لازم يبدأ بـ https://'; return; } if(!url&&!f){ st.className='status err'; st.textContent='حط رابط أو ارفع PDF.'; return; }
+  st.className='status'; st.textContent='جاري النشر...';
+  try{ const file=f?await adminFileSave(f):null; const u=auth.currentUser||{};
+    await db.collection('books').add({title:t.slice(0,150),author:v('bk-a'),subject:v('bk-s'),grade:v('bk-g'),desc:v('bk-d').slice(0,300),url,file,ownerUid:u.uid||'',ownerName:'الأدمن',createdMs:Date.now()});
+    audit('book','','',t); st.className='status ok'; st.textContent='✓ اتنشر.'; ['bk-t','bk-a','bk-s','bk-g','bk-d','bk-u'].forEach(i=>document.getElementById(i).value=''); document.getElementById('bk-f').value=''; loadBooksAdmin(); }
+  catch(e){ st.className='status err'; st.textContent='تعذّر: '+(e.message||e.code); }
+}
+async function adminBookDel(id){ const b=BOOKS.find(x=>x.id===id); if(!b||!confirm('حذف الكتاب؟')) return; try{ await db.collection('books').doc(id).delete(); if(b.file) await adminFileDel(b.file); loadBooksAdmin(); }catch(e){ toast('تعذّر الحذف: '+(e.code||e.message)); } }
+let FILES=[];
+async function loadFiles(){
+  const st=document.getElementById('fl-status'); st.className='status'; st.textContent='جاري التحميل...';
+  try{ const s=await db.collection('fileBlobs').orderBy('createdMs','desc').limit(500).get(); FILES=s.docs.map(d=>({id:d.id,...d.data()})); st.className='status ok'; st.textContent='✓ تم'; }
+  catch(e){ FILES=[]; st.className='status err'; st.textContent='تعذّر: '+(e.code||e.message)+' — انشر قواعد fileBlobs.'; }
+  const tot=FILES.reduce((a,f)=>a+(f.size||0),0);
+  document.getElementById('fl-sum').innerHTML=`<div class="card"><b>${FILES.length}${FILES.length===500?'+':''}</b> ملف · إجمالي تقريبي <b>${fsSz(tot)}</b> من 1 GB <div style="height:8px; background:var(--paper-dim); border-radius:99px; margin-top:8px;"><div style="height:8px; width:${Math.min(100,tot/1073741824*100).toFixed(2)}%; background:var(--accent); border-radius:99px;"></div></div></div>`;
+  document.getElementById('fl-body').innerHTML=FILES.map(f=>`<tr style="border-top:1px solid var(--line);"><td style="padding:8px;">${escapeHtml(f.name||'')}${f.public?' <small>(كتاب)</small>':''}</td><td style="text-align:center;">${escapeHtml(f.ownerName||'')}</td><td style="text-align:center;">${fsSz(f.size||0)}</td><td style="text-align:center;">${new Date(f.createdMs).toLocaleDateString('ar-EG')}</td><td><button class="btn" style="background:#b3261e; padding:4px 10px;" onclick="adminFileRm('${f.id}')">حذف</button></td></tr>`).join('')||'<tr><td colspan="5" style="padding:14px; color:var(--ink-soft);">لا ملفات.</td></tr>';
+}
+async function adminFileRm(id){ const f=FILES.find(x=>x.id===id); if(!f||!confirm('حذف الملف؟ (أي تكليف/تسليم مرتبط بيه هيفقد الملف)')) return; try{ await adminFileDel(f); audit('fileDel',id,f.ownerName||'',f.name||''); loadFiles(); }catch(e){ toast('تعذّر: '+(e.code||e.message)); } }
+async function purgeOldFiles(){
+  const d=+document.getElementById('fl-days').value||90, old=FILES.filter(f=>!f.public&&Date.now()-f.createdMs>d*864e5); if(!old.length) return toast('مفيش ملفات أقدم من '+d+' يوم (الكتب مستثناة).');
+  if(!confirm('حذف '+old.length+' ملف أقدم من '+d+' يوم؟ (الكتب مستثناة)')) return;
+  try{ for(const f of old) await adminFileDel(f); audit('filePurge','','',old.length+' ملف'); toast('اتحذف '+old.length+' ملف.'); loadFiles(); }catch(e){ toast('تعذّر: '+(e.code||e.message)); }
 }
 /* ===== آخر تسجيل دخول ===== */
 let PRES={}, LG_ROWS=[];

@@ -1949,6 +1949,7 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
           <button class="filter-tab" data-type="tip" onclick="setLibraryFilter('tip', this)">التربية العملية</button>
           <button class="filter-tab" data-type="video" onclick="setLibraryFilter('video', this)">فيديوهات</button>
           <button class="filter-tab" data-type="notebook" onclick="setLibraryFilter('notebook', this)">دفاتر تحضير</button>
+          <button class="filter-tab" data-type="book" onclick="setLibraryFilter('book', this)">📚 كتب</button>
         </div>
         <div id="library-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
       </div>
@@ -4261,7 +4262,7 @@ function renderLibrary(){
     <div class="content-item">
       <div><div class="ci-title">${escapeHtml(it.title)}<span class="lib-item-type">${escapeHtml(it.typeLabel)}</span></div>${it.sub ? `<div class="ci-desc">${escapeHtml(it.sub)}</div>` : ''}</div>
       <div style="display:flex; align-items:center; gap:6px;">
-        ${it.link ? `<a class="ci-link" href="${escapeAttr(it.link)}" target="_blank">فتح</a>` : ''}
+        ${it.link ? `<a class="ci-link" href="${escapeAttr(it.link)}" target="_blank">فتح</a>` : ''}${it.dl ? `<a class="ci-link" href="${escapeAttr(it.dl)}" target="_blank" title="تحميل">⬇️</a>` : ''}${it.fid ? `<button class="ci-link" onclick="ndFileOpen('${it.fid}')">فتح</button><button class="ci-link" onclick="ndFileOpen('${it.fid}',1)" title="تحميل">⬇️</button>` : ''}
         <button class="bookmark-btn ${isBookmarked(it.type, it.id)?'saved':''}" onclick="toggleBookmark('${it.type}','${it.id}')"><svg class="icon"><use href="#i-bookmark"></use></svg></button>
       </div>
     </div>`).join('');
@@ -6870,7 +6871,7 @@ function hpShow(tab){
   hpTab = tab;
   const tabs = document.getElementById('hp-tabs'), body = document.getElementById('hp-body'); if(!tabs || !body) return;
   tabs.innerHTML = HP_TABS.filter(hpTabOk).map(t => `<button class="hp-chip ${t[0] === tab ? 'on' : ''}" onclick="hpShow('${t[0]}')">${t[1]}</button>`).join('');
-  body.innerHTML = ({ timer: hpTimerHtml, inbox: hpInboxHtml, report: hpReportHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml, ideas: hpIdeasHtml, today: hpTodayHtml, folio: hpFolioHtml, bc: hpBcHtml, ticket: hpTicketHtml, attrep: hpAttRepHtml, sitlib: hpSitHtml, refl: hpReflHtml })[tab]();
+  body.innerHTML = ({ timer: hpTimerHtml, inbox: hpInboxHtml, report: hpReportHtml, random: hpRandomHtml, grades: hpGradesHtml, attend: hpAttendHtml, schedule: hpScheduleHtml, cards: hpCardsHtml, todo: hpTodoHtml, msgs: hpMsgsHtml, ideas: hpIdeasHtml, today: hpTodayHtml, folio: hpFolioHtml, bc: hpBcHtml, ticket: hpTicketHtml, attrep: hpAttRepHtml, sitlib: hpSitHtml, refl: hpReflHtml, checkin: hpCheckinHtml })[tab]();
   if(tab === 'timer') hpTick(true);
   if(tab === 'msgs') hpMsgRender();
 }
@@ -8661,6 +8662,359 @@ setTimeout(ndCertVerify, 400);
 
 /* ----- ربط تبويبات الأدوات ----- */
 HP_TABS.push(['attrep', '📊 تقرير الحضور', 't'], ['sitlib', '🧩 مواقف صفية'], ['refl', '📝 مفكرة الدرس']);
+/* =====================================================================
+   دفعة 7: مخزن ملفات مجاني (Firestore chunks) + تكاليف بملفات + كتب + اجتماعات متطورة
+   ===================================================================== */
+const ND_CHUNK = 600 * 1024;
+const ndFileMaxKB = () => { const v = window.__ctl && +window.__ctl.fileMaxKB; return v > 0 ? v : 2048; };
+const ndFileOn = () => !(window.__ctl && window.__ctl.fileUpload === false);
+const ndSizeLbl = b => b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+ND_USE_LBL.files = 'رفع الملفات';
+
+function ndFileField(id, hint){
+  if(!ndFileOn()) return '<div class="hp-note">رفع الملفات مغلق حاليًا — استخدم رابط.</div>';
+  return `<div class="field" style="flex:1; min-width:200px;"><label>${hint || 'أو ارفع صورة / PDF'} <small>(حتى ${ndSizeLbl(ndFileMaxKB() * 1024)})</small></label><input type="file" id="${id}" accept="image/*,application/pdf" onchange="ndFileChosen(this)"><small class="sup-meta" id="${id}-i"></small></div>`;
+}
+function ndFileChosen(inp){
+  const f = inp.files[0], i = document.getElementById(inp.id + '-i'); if(!f){ if(i) i.textContent = ''; return; }
+  const ok = /^image\//.test(f.type) || f.type === 'application/pdf';
+  if(!ok){ toast('المسموح صور أو PDF فقط.', { type: 'err' }); inp.value = ''; if(i) i.textContent = ''; return; }
+  if(f.type === 'application/pdf' && f.size > ndFileMaxKB() * 1024){ toast('الـ PDF أكبر من الحد المسموح (' + ndSizeLbl(ndFileMaxKB() * 1024) + ') — ضغطه أو استخدم رابط Drive.', { type: 'err' }); inp.value = ''; if(i) i.textContent = ''; return; }
+  if(i) i.textContent = '✓ ' + f.name + ' (' + ndSizeLbl(f.size) + ')';
+}
+async function ndImgCompress(file, maxKB){
+  let bmp; try{ bmp = await createImageBitmap(file); }catch(e){ bmp = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = URL.createObjectURL(file); }); }
+  let w = bmp.width || bmp.naturalWidth, h = bmp.height || bmp.naturalHeight, sc = Math.min(1, 1600 / Math.max(w, h)), q = 0.75, blob;
+  for(let k = 0; k < 6; k++){
+    const c = document.createElement('canvas'); c.width = Math.round(w * sc); c.height = Math.round(h * sc);
+    const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(bmp, 0, 0, c.width, c.height);
+    blob = await new Promise(r => c.toBlob(r, 'image/jpeg', q));
+    if(blob.size <= maxKB * 1024) break; q = Math.max(0.4, q - 0.1); sc *= 0.8;
+  }
+  if(blob.size > maxKB * 1024) throw new Error('الصورة كبيرة جدًا حتى بعد الضغط.');
+  return blob;
+}
+const ndB64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1] || ''); r.onerror = rej; r.readAsDataURL(blob); });
+async function ndFileSave(file, opts){
+  opts = opts || {}; if(!ndFileOn()) throw new Error('رفع الملفات مغلق حاليًا.');
+  const maxKB = opts.maxKB || ndFileMaxKB(); let blob = file, mime = file.type, name = file.name;
+  if(/^image\//.test(mime)){ blob = await ndImgCompress(file, maxKB); mime = 'image/jpeg'; name = name.replace(/\.[^.]+$/, '') + '.jpg'; }
+  else if(mime === 'application/pdf'){ if(file.size > maxKB * 1024) throw new Error('الملف أكبر من الحد المسموح (' + ndSizeLbl(maxKB * 1024) + ').'); }
+  else throw new Error('المسموح صور أو PDF فقط.');
+  if(!(await ndUse('files'))) throw new Error('حد الرفع اليومي.');
+  const fid = db.collection('fileBlobs').doc().id, n = Math.max(1, Math.ceil(blob.size / ND_CHUNK)), base = { fid, ownerUid: currentUid, shareUp: opts.shareUp || '', public: !!opts.public };
+  for(let i = 0; i < n; i++){
+    toast('جاري الرفع ' + (i + 1) + '/' + n + '…');
+    await db.collection('fileChunks').doc(fid + '_' + i).set(Object.assign({ i, data: await ndB64(blob.slice(i * ND_CHUNK, (i + 1) * ND_CHUNK)) }, base));
+  }
+  const meta = Object.assign({ name: name.slice(0, 120), mime, size: blob.size, chunks: n, ownerName: (pendingUser && pendingUser.name) || '', createdMs: Date.now() }, base);
+  await db.collection('fileBlobs').doc(fid).set(meta);
+  return { fid, name: meta.name, mime, size: blob.size, chunks: n };
+}
+const ndFileCache = {};
+async function ndFileBlobUrl(fid){
+  if(ndFileCache[fid]) return ndFileCache[fid];
+  const m = await db.collection('fileBlobs').doc(fid).get(); if(!m.exists) throw new Error('الملف غير موجود (اتحذف).');
+  const d = m.data(), ps = []; for(let i = 0; i < d.chunks; i++) ps.push(db.collection('fileChunks').doc(fid + '_' + i).get());
+  const parts = (await Promise.all(ps)).map(s => { const b = atob(s.data().data), u = new Uint8Array(b.length); for(let k = 0; k < b.length; k++) u[k] = b.charCodeAt(k); return u; });
+  return (ndFileCache[fid] = { url: URL.createObjectURL(new Blob(parts, { type: d.mime })), name: d.name });
+}
+async function ndFileOpen(fid, dl){
+  try{ toast('جاري فتح الملف…'); const f = await ndFileBlobUrl(fid), a = document.createElement('a'); a.href = f.url; if(dl) a.download = f.name; else a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove(); }
+  catch(e){ toast('تعذّر فتح الملف: ' + (e.code || e.message), { type: 'err' }); }
+}
+async function ndFileDel(f){
+  if(!f || !f.fid) return;
+  try{ const b = db.batch(); for(let i = 0; i < (f.chunks || 1); i++) b.delete(db.collection('fileChunks').doc(f.fid + '_' + i)); b.delete(db.collection('fileBlobs').doc(f.fid)); await b.commit(); }catch(e){}
+}
+const ndFileChip = f => f && f.fid ? `<span class="nd-file"><button type="button" class="sup-link" onclick="ndFileOpen('${f.fid}')">${/^image/.test(f.mime) ? '🖼️' : '📄'} ${escapeHtml(f.name || 'ملف')} <small>(${ndSizeLbl(f.size || 0)})</small></button><button type="button" class="sup-link" onclick="ndFileOpen('${f.fid}',1)" title="تحميل">⬇️</button></span>` : '';
+const ndDriveDl = u => { const m = /drive\.google\.com\/file\/d\/([^/?#]+)/.exec(u || '') || /[?&]id=([^&]+)/.exec(/drive\.google\.com/.test(u || '') ? u : ''); return m ? 'https://drive.google.com/uc?export=download&id=' + m[1] : ''; };
+
+/* ----- التكاليف: ملف مرفق من المشرف + تسليم الطالب بملف ----- */
+const _rt7 = supRenderTasks; supRenderTasks = async function(){
+  await _rt7.apply(this, arguments);
+  const ab = document.getElementById('as-link'); if(ab && !document.getElementById('as-file')) ab.closest('.field').insertAdjacentHTML('afterend', ndFileField('as-file', 'أو ارفع ملف/صورة للتكليف'));
+  document.querySelectorAll('[id^="sub-link-"]').forEach(inp => { const aid = inp.id.slice(9); if(!document.getElementById('sub-file-' + aid)) inp.insertAdjacentHTML('afterend', ndFileField('sub-file-' + aid, 'أو ارفع صورة / PDF')); });
+  // عرض ملفات التكاليف والتسليمات
+  try{ Object.values(supTaskCache || {}).forEach(c => { /* نعرضها عبر ndTaskFiles */ }); ndTaskFiles(); }catch(e){}
+};
+function ndTaskFiles(){
+  const cache = supTaskCache || {};
+  Object.keys(cache).forEach(aid => {
+    const c = cache[aid]; document.querySelectorAll('details.sup-det').forEach(det => {
+      if(det.dataset.nf || !det.innerHTML.includes("supDelAssignment('" + aid + "')")) return; det.dataset.nf = 1;
+      if(c.a.file){ const b = det.querySelector('.sup-det-body'); if(b) b.insertAdjacentHTML('afterbegin', '<div>' + ndFileChip(c.a.file) + '</div>'); }
+      det.querySelectorAll('.sup-sub').forEach(row => { const sid = (row.querySelector('[id^="gr-"]') || {}).id; if(!sid) return; const s = c.mine.find(x => 'gr-' + x.id === sid); if(s && s.file) row.querySelector('.sup-meta').insertAdjacentHTML('afterend', ' ' + ndFileChip(s.file)); });
+    });
+  });
+}
+const _ca7 = supCreateAssignment; supCreateAssignment = async function(){
+  const inp = document.getElementById('as-file'), f = inp && inp.files[0];
+  if(!f) return _ca7.apply(this, arguments);
+  const title = document.getElementById('as-title').value.trim(); if(!title){ toast('اكتب عنوان التكليف.', { type: 'err' }); return; }
+  const btn = document.getElementById('as-btn'); btn.disabled = true; btn.textContent = 'جاري رفع الملف…';
+  try{
+    const file = await ndFileSave(f, { shareUp: currentUid }), groupId = document.getElementById('as-group').value || null, link = cleanLink(document.getElementById('as-link').value) || '', due = document.getElementById('as-due').value;
+    await db.collection('assignments').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title, description: document.getElementById('as-desc').value.trim(), groupId, dueMs: due ? new Date(due).getTime() : null, fileUrl: link, fileName: link ? linkHost(link) : '', file, createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    supNotifyMembers('تكليف جديد من ' + (pendingUser.name || 'المشرف') + ': ' + title, groupId); toast('اتنشر التكليف.'); supRenderTasks();
+  }catch(e){ toast('تعذّر: ' + (e.message || e.code), { type: 'err' }); btn.disabled = false; btn.textContent = 'نشر التكليف'; }
+};
+const _sb7 = supSubmit; supSubmit = async function(aid){
+  const inp = document.getElementById('sub-file-' + aid), f = inp && inp.files[0];
+  if(!f) return _sb7.apply(this, arguments);
+  const btn = document.getElementById('sub-btn-' + aid); btn.disabled = true;
+  try{
+    const text = document.getElementById('sub-txt-' + aid).value.trim(), link = cleanLink(document.getElementById('sub-link-' + aid).value);
+    if(link === null){ toast('الرابط مش صالح.', { type: 'err' }); btn.disabled = false; return; }
+    let old = null; try{ old = (await db.collection('submissions').doc(aid + '_' + currentUid).get()).data(); }catch(e){}
+    const file = await ndFileSave(f, { shareUp: supUp.id });
+    const data = { assignmentId: aid, ownerUid: supUp.id, studentUid: currentUid, studentName: pendingUser.name || '', text, status: 'submitted', submittedMs: Date.now(), submittedAt: firebase.firestore.FieldValue.serverTimestamp(), file };
+    if(link){ data.fileUrl = link; data.fileName = linkHost(link); }
+    await db.collection('submissions').doc(aid + '_' + currentUid).set(data, { merge: true });
+    if(old && old.file) ndFileDel(old.file);
+    createNotification(supUp.id, 'message', (pendingUser.name || 'طالب') + ' سلّم تكليف', 'v-sup'); toast('اتسلّم التكليف.'); supRenderTasks();
+  }catch(e){ toast('تعذّر التسليم: ' + (e.message || e.code), { type: 'err' }); btn.disabled = false; }
+};
+const _da7 = supDelAssignment; supDelAssignment = async function(id){
+  const c = (supTaskCache || {})[id]; const ok = confirm('حذف التكليف ده؟ التسليمات هتفضل محفوظة.'); if(!ok) return;
+  try{ await db.collection('assignments').doc(id).delete(); if(c && c.a.file) ndFileDel(c.a.file); supRenderTasks(); }catch(err){ toast('تعذّر الحذف.', { type: 'err' }); }
+};
+// عرض ملف التسليم عند الطالب
+const _rtm = supRenderTasks; supRenderTasks = async function(){
+  await _rtm.apply(this, arguments);
+  try{ const mine = await db.collection('submissions').where('studentUid', '==', currentUid).get(), m = {}; mine.forEach(d => { const x = d.data(); if(x.file) m[x.assignmentId] = x.file; });
+    document.querySelectorAll('[id^="sub-btn-"]').forEach(b => { const aid = b.id.slice(8), f = m[aid]; if(f && !b.parentNode.parentNode.querySelector('.nd-file')) b.parentNode.insertAdjacentHTML('beforebegin', '<div class="sup-meta">تسليمك الحالي: ' + ndFileChip(f) + '</div>'); });
+    // ملف التكليف عند الطالب
+    if(supUp){ const as = await db.collection('assignments').where('ownerUid', '==', supUp.id).get(); as.forEach(d => { const a = d.data(); if(!a.file) return; const btn = document.getElementById('sub-btn-' + d.id) || document.getElementById('sub-txt-' + d.id); if(btn){ const card = btn.closest('.sup-card'); if(card && !card.dataset.af){ card.dataset.af = 1; card.querySelector('div').insertAdjacentHTML('afterend', '<div>' + ndFileChip(a.file) + '</div>'); } } }); }
+  }catch(e){}
+};
+
+/* ----- الكتب ----- */
+let booksCache = [];
+async function ndBooksLoad(){ try{ const s = await db.collection('books').orderBy('createdMs', 'desc').limit(200).get(); booksCache = s.docs.map(d => ({ id: d.id, ...d.data() })); renderLibrary(); }catch(e){} }
+const _li7 = libraryItems; libraryItems = function(){
+  const it = _li7(); booksCache.forEach(b => it.push({ type: 'book', id: b.id, title: b.title || '', sub: [b.author, b.subject, b.grade].filter(Boolean).join(' · ') + (b.desc ? ' — ' + b.desc : ''), link: b.url || '', dl: b.url ? ndDriveDl(b.url) : '', fid: (b.file && b.file.fid) || '', typeLabel: 'كتاب', createdAt: { toMillis: () => b.createdMs || 0 } }));
+  it.sort((a, b) => ((b.createdAt && b.createdAt.toMillis) ? b.createdAt.toMillis() : 0) - ((a.createdAt && a.createdAt.toMillis) ? a.createdAt.toMillis() : 0)); return it;
+};
+const _ln7 = loadNotebooks; loadNotebooks = async function(){ await _ln7.apply(this, arguments); ndBooksLoad(); };
+const _rl7 = renderLibrary; renderLibrary = function(){
+  _rl7.apply(this, arguments);
+  const lst = document.getElementById('library-list'); if(!lst) return;
+  if(!document.getElementById('book-add') && (typeof supIsStaff === 'function' && supIsStaff())) lst.insertAdjacentHTML('beforebegin', `<div id="book-add" class="hp-card"><button class="btn-primary" onclick="ndBookForm()">➕ إضافة كتاب للمكتبة</button><div id="book-form"></div></div>`);
+};
+function ndBookForm(){
+  const b = document.getElementById('book-form'); if(b.innerHTML){ b.innerHTML = ''; return; }
+  b.innerHTML = `<div class="field"><label>عنوان الكتاب</label><input type="text" id="bk-t"></div><div class="hp-row hp-row-wrap"><input type="text" id="bk-a" placeholder="المؤلف"><input type="text" id="bk-s" placeholder="المادة"><input type="text" id="bk-g" placeholder="الصف / الفرقة"></div>
+    <div class="field"><textarea id="bk-d" rows="2" placeholder="نبذة (اختياري)"></textarea></div><div class="hp-row hp-row-wrap"><div class="field" style="flex:1;min-width:200px;"><label>رابط الكتاب (Drive أو أي رابط)</label><input type="text" id="bk-u" placeholder="https://drive.google.com/..."></div>${ndFileField('bk-f', 'أو ارفع PDF')}</div>
+    <div class="hp-note">لو الكتاب كبير الأفضل رابط Drive (مجاني ومن غير حد). الرفع المباشر مناسب للملفات الصغيرة (حتى ${ndSizeLbl(ndFileMaxKB() * 1024 * 3)}).</div><div class="hp-actions"><button class="btn-primary" id="bk-btn" onclick="ndBookSave()">نشر الكتاب</button></div>`;
+}
+async function ndBookSave(){
+  const t = hpV('bk-t').trim(); if(!t){ toast('اكتب عنوان الكتاب.', { type: 'err' }); return; }
+  const url = cleanLink(hpV('bk-u')); if(url === null){ toast('الرابط مش صالح.', { type: 'err' }); return; }
+  const inp = document.getElementById('bk-f'), f = inp && inp.files[0]; if(!url && !f){ toast('حط رابط أو ارفع ملف.', { type: 'err' }); return; }
+  const btn = document.getElementById('bk-btn'); btn.disabled = true;
+  try{ const file = f ? await ndFileSave(f, { public: true, maxKB: ndFileMaxKB() * 3 }) : null;
+    await db.collection('books').add({ title: t.slice(0, 150), author: hpV('bk-a').trim(), subject: hpV('bk-s').trim(), grade: hpV('bk-g').trim(), desc: hpV('bk-d').trim().slice(0, 300), url: url || '', file: file || null, ownerUid: currentUid, ownerName: pendingUser.name || '', createdMs: Date.now() });
+    toast('اتنشر الكتاب.'); document.getElementById('book-form').innerHTML = ''; ndBooksLoad(); }
+  catch(e){ toast('تعذّر النشر: ' + (e.message || e.code), { type: 'err' }); btn.disabled = false; }
+}
+
+/* ----- الاجتماعات: جدول أعمال، محضر، رابط خارجي، تأكيد حضور، تقويم ----- */
+const _rr7 = supRenderRooms; supRenderRooms = async function(){
+  await _rr7.apply(this, arguments);
+  const btn = document.getElementById('room-create-btn');
+  if(btn && !document.getElementById('room-ext')) btn.insertAdjacentHTML('beforebegin', `<div class="field"><label>رابط اجتماع خارجي (Google Meet / Zoom / Teams) — اختياري، لو فاضي بنستخدم غرفة المنصة</label><input type="text" id="room-ext" placeholder="https://meet.google.com/..."></div><div class="field"><label>جدول الأعمال (اختياري)</label><textarea id="room-agenda" rows="2" placeholder="بنود الاجتماع، كل بند في سطر"></textarea></div>`);
+  Object.keys(supRoomsCache || {}).forEach(id => { const r = supRoomsCache[id], box = document.getElementById('att-' + id); if(box && !box.parentNode.querySelector('.nd-rx')) box.parentNode.insertAdjacentHTML('beforeend', ndRoomExtra(r)); });
+  ndRsvpLoad();
+};
+supCreateRoom = async function(){
+  const title = document.getElementById('room-title').value.trim(); if(!title){ toast('اكتب عنوان الغرفة.', { type: 'err' }); return; }
+  const mode = document.getElementById('room-mode').value, st = document.getElementById('room-start').value, groupId = document.getElementById('room-group').value || null;
+  const ext = cleanLink((document.getElementById('room-ext') || {}).value || ''); if(ext === null){ toast('الرابط الخارجي مش صالح.', { type: 'err' }); return; }
+  const agenda = ((document.getElementById('room-agenda') || {}).value || '').trim().slice(0, 800);
+  const roomName = 'NudrusMaan-' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+  const url = ext || ('https://meet.jit.si/' + roomName + (mode === 'voice' ? '#config.startWithVideoMuted=true&config.prejoinPageEnabled=false' : ''));
+  const btn = document.getElementById('room-create-btn'); btn.disabled = true;
+  try{
+    await db.collection('liveRooms').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title, mode, url, external: !!ext, agenda, groupId, startsAtMs: st ? new Date(st).getTime() : null, active: true, createdMs: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+    supNotifyMembers((pendingUser.name || 'المشرف') + ' دعاك لاجتماع: ' + title + (st ? ' — ' + new Date(st).toLocaleString('ar-EG') : ''), groupId);
+    window.open(url, '_blank', 'noopener'); supRenderRooms();
+  }catch(err){ toast('تعذّر إنشاء الغرفة (' + (err.code || err.message) + ')', { type: 'err' }); btn.disabled = false; }
+};
+let ndRsvp = {};
+async function ndRsvpLoad(){
+  try{ const s = await db.collection('roomRsvp').where(supIsStaff() ? 'ownerUid' : 'uid', '==', currentUid).get(); ndRsvp = {}; s.forEach(d => { const x = d.data(); (ndRsvp[x.roomId] = ndRsvp[x.roomId] || []).push(x); }); Object.keys(ndRsvp).forEach(id => { const el = document.getElementById('rsvp-' + id); if(el) el.innerHTML = ndRsvpHtml(supRoomsCache[id]); }); }catch(e){}
+}
+function ndRsvpHtml(r){
+  if(!r) return ''; const L = ndRsvp[r.id] || [];
+  if(r.ownerUid === currentUid){ const y = L.filter(x => x.answer === 'yes'), n = L.filter(x => x.answer === 'no'); return `<div class="sup-meta">تأكيد الحضور: ✅ ${y.length} ${y.map(x => escapeHtml(x.name)).join('، ')} · ❌ اعتذر ${n.length} ${n.map(x => escapeHtml(x.name + (x.note ? ' (' + x.note + ')' : ''))).join('، ')}</div>`; }
+  const me = L.find(x => x.uid === currentUid);
+  return `<div class="sup-meta">هتحضر؟ <button class="sup-btn ${me && me.answer === 'yes' ? 'primary' : ''}" onclick="ndRsvpSet('${r.id}','yes')">✅ حاضر</button><button class="sup-btn ${me && me.answer === 'no' ? 'danger' : ''}" onclick="ndRsvpSet('${r.id}','no')">❌ أعتذر</button></div>`;
+}
+async function ndRsvpSet(id, answer){
+  const r = supRoomsCache[id]; if(!r) return; const note = answer === 'no' ? (prompt('سبب الاعتذار (اختياري):') || '').slice(0, 100) : '';
+  try{ const o = { roomId: id, ownerUid: r.ownerUid, uid: currentUid, name: pendingUser.name || '', answer, note, ms: Date.now() }; await db.collection('roomRsvp').doc(id + '_' + currentUid).set(o); ndRsvp[id] = (ndRsvp[id] || []).filter(x => x.uid !== currentUid).concat([o]); document.getElementById('rsvp-' + id).innerHTML = ndRsvpHtml(r); toast('اتسجّل ردك.'); }
+  catch(e){ toast('تعذّر التسجيل.', { type: 'err' }); }
+}
+function ndRoomExtra(r){
+  const own = r.ownerUid === currentUid, id = r.id;
+  return `<div class="nd-rx" style="margin-top:8px; border-top:1px dashed var(--line); padding-top:8px;">
+    ${r.agenda ? `<div class="sup-meta"><b>جدول الأعمال:</b><br>${escapeHtml(r.agenda).replace(/\n/g, '<br>')}</div>` : ''}
+    <div id="rsvp-${id}">${ndRsvpHtml(r)}</div>
+    ${r.minutes || r.minutesFile ? `<div class="sup-meta" style="margin-top:6px;"><b>📝 المحضر:</b><br>${escapeHtml(r.minutes || '').replace(/\n/g, '<br>')} ${ndFileChip(r.minutesFile)}</div>` : ''}
+    <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;">${r.startsAtMs ? `<button class="sup-btn" onclick="ndRoomIcs('${id}')">📅 أضف للتقويم</button>` : ''}${own ? `<button class="sup-btn" onclick="ndMinutesForm('${id}')">📝 محضر / ملف</button><button class="sup-btn" onclick="ndRoomReminder('${id}')">🔔 ذكّر من لم يرد</button>` : ''}</div><div id="min-${id}"></div></div>`;
+}
+function ndRoomIcs(id){
+  const r = supRoomsCache[id]; if(!r || !r.startsAtMs) return; const f = ms => new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d+/, ''), e = r.startsAtMs + 3600000;
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Nudrus//AR', 'BEGIN:VEVENT', 'UID:' + id + '@nudrus', 'DTSTAMP:' + f(Date.now()), 'DTSTART:' + f(r.startsAtMs), 'DTEND:' + f(e), 'SUMMARY:' + (r.title || '').replace(/[\r\n,;]/g, ' '), 'DESCRIPTION:' + (r.url || '') + (r.agenda ? '\\n' + r.agenda.replace(/\n/g, '\\n') : ''), 'URL:' + (r.url || ''), 'BEGIN:VALARM', 'TRIGGER:-PT15M', 'ACTION:DISPLAY', 'DESCRIPTION:اجتماع', 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' })); a.download = 'meeting.ics'; a.click();
+}
+function ndMinutesForm(id){
+  const r = supRoomsCache[id], b = document.getElementById('min-' + id); if(b.innerHTML){ b.innerHTML = ''; return; }
+  b.innerHTML = `<div class="field"><label>محضر الاجتماع</label><textarea id="mn-t-${id}" rows="4">${escapeHtml(r.minutes || '')}</textarea></div>${ndFileField('mn-f-' + id, 'أو ارفع محضر/صورة')}<button class="btn-primary" onclick="ndMinutesSave('${id}')">حفظ ونشر للأعضاء</button>`;
+}
+async function ndMinutesSave(id){
+  const r = supRoomsCache[id], f = (document.getElementById('mn-f-' + id) || {}).files; const upd = { minutes: hpV('mn-t-' + id).trim().slice(0, 4000) };
+  try{ if(f && f[0]){ upd.minutesFile = await ndFileSave(f[0], { shareUp: currentUid }); if(r.minutesFile) ndFileDel(r.minutesFile); }
+    await db.collection('liveRooms').doc(id).update(upd); Object.assign(r, upd); supNotifyMembers('📝 تم نشر محضر الاجتماع: ' + r.title, r.groupId); toast('اتحفظ المحضر.'); supRenderRooms(); }
+  catch(e){ toast('تعذّر الحفظ: ' + (e.message || e.code), { type: 'err' }); }
+}
+function ndRoomReminder(id){
+  const r = supRoomsCache[id], got = new Set((ndRsvp[id] || []).map(x => x.uid)), miss = supTargets(r.groupId).filter(t => !got.has(t.id));
+  miss.forEach(m => createNotification(m.id, 'message', '🔔 من فضلك أكّد حضورك لاجتماع: ' + r.title, 'v-sup')); toast('اتبعت تذكير لـ ' + miss.length + '.');
+}
+/* =====================================================================
+   دفعة 8: نظام الحضور الأكاديمي (موقع + بصمة + حساب Google/Microsoft)
+   ===================================================================== */
+const attCfg = () => Object.assign({ enabled: true, idp: true, bio: true, geo: true, maxAcc: 150, allowOutside: false, graceMin: 10 }, (window.__ctl && window.__ctl.att) || {}, window.__ctl && window.__ctl.attendance === false ? { enabled: false } : {});
+const attDev = () => { try{ let d = localStorage.getItem('nd-dev'); if(!d){ d = Math.random().toString(36).slice(2, 12); localStorage.setItem('nd-dev', d); } return d; }catch(e){ return 'x'; } };
+const attDist = (a, b, c, d) => { const R = 6371000, r = x => x * Math.PI / 180, dl = r(c - a), dg = r(d - b), h = Math.sin(dl / 2) ** 2 + Math.cos(r(a)) * Math.cos(r(c)) * Math.sin(dg / 2) ** 2; return Math.round(2 * R * Math.asin(Math.sqrt(h))); };
+const ATT = { st: {}, target: null, sites: null, sessions: null, logs: null };
+const attFresh = k => ATT.st[k] && Date.now() - ATT.st[k].ms < 5 * 60000;
+
+/* ---- خطوات التأكيد ---- */
+function attGeo(){
+  return new Promise((res, rej) => { if(!navigator.geolocation){ rej(new Error('المتصفح لا يدعم تحديد الموقع.')); return; }
+    navigator.geolocation.getCurrentPosition(p => res({ lat: p.coords.latitude, lng: p.coords.longitude, acc: Math.round(p.coords.accuracy || 0), ms: Date.now() }), e => rej(new Error(e.code === 1 ? 'اسمح للمتصفح بالوصول لموقعك (إعدادات الموقع).' : 'تعذّر تحديد الموقع — فعّل GPS وجرّب تاني.')), { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }); });
+}
+async function attStepGeo(){
+  try{ toast('جاري تحديد الموقع…'); const g = await attGeo(); if(g.acc > attCfg().maxAcc){ toast('دقة الموقع ضعيفة (' + g.acc + ' م) — اطلع مكان مفتوح وجرّب.', { type: 'err' }); return; } ATT.st.geo = g; toast('✓ تم تحديد الموقع (دقة ' + g.acc + ' م)'); }catch(e){ toast(e.message, { type: 'err' }); }
+  attRender();
+}
+async function attStepBio(){
+  try{
+    if(!(await bioAvailable())){ toast('جهازك لا يدعم البصمة/قفل الشاشة عبر المتصفح.', { type: 'err' }); return; }
+    const b = bioGet();
+    if(b && b.uid === currentUid) await bioVerifyCred(b.credId); else if(!(await bioEnable())) return;
+    ATT.st.bio = { ms: Date.now() }; toast('✓ تم التحقق بالبصمة');
+  }catch(e){ toast('فشل التحقق بالبصمة (' + (e.name || e.message) + ')', { type: 'err' }); }
+  attRender();
+}
+async function attStepIdp(kind){
+  const u = auth.currentUser; if(!u) return;
+  const pid = kind === 'ms' ? 'microsoft.com' : 'google.com', prov = kind === 'ms' ? new firebase.auth.OAuthProvider('microsoft.com') : new firebase.auth.GoogleAuthProvider();
+  prov.setCustomParameters(kind === 'ms' ? { prompt: 'login' } : { prompt: 'select_account' });
+  try{
+    const linked = u.providerData.some(p => p.providerId === pid); let r;
+    r = linked ? await u.reauthenticateWithPopup(prov) : await u.linkWithPopup(prov);
+    const pd = (r.user.providerData.find(p => p.providerId === pid) || {}); ATT.st.idp = { ms: Date.now(), provider: pid, email: pd.email || (r.additionalUserInfo && r.additionalUserInfo.profile && r.additionalUserInfo.profile.email) || '' };
+    toast('✓ تم التحقق بحساب ' + (kind === 'ms' ? 'Microsoft' : 'Google'));
+  }catch(e){
+    const c = e.code || ''; toast(c === 'auth/operation-not-allowed' ? 'مزوّد الدخول ده مش مفعّل في Firebase — الأدمن يفعّله من Authentication.' : c === 'auth/popup-blocked' ? 'المتصفح منع النافذة — اسمح بالنوافذ المنبثقة.' : c === 'auth/credential-already-in-use' ? 'الحساب ده مربوط بمستخدم تاني.' : c === 'auth/user-mismatch' ? 'اختار نفس الحساب المربوط قبل كده.' : 'تعذّر التحقق (' + (c || e.message) + ')', { type: 'err', duration: 6000 });
+  }
+  attRender();
+}
+
+/* ---- تحميل البيانات ---- */
+async function attLoad(force){
+  if(!force && ATT.sites) return; ATT.sites = []; ATT.sessions = []; ATT.logs = [];
+  const sup = userStatus && userStatus.supervisorId, q = [db.collection('attSites').where('scope', '==', 'global').get(), db.collection('attSites').where('ownerUid', '==', currentUid).get(), db.collection('attendanceLogs').where('uid', '==', currentUid).limit(120).get()];
+  if(sup) q.push(db.collection('attSessions').where('ownerUid', '==', sup).limit(40).get());
+  try{ const r = await Promise.all(q), m = {}; r[0].docs.concat(r[1].docs).forEach(d => m[d.id] = { id: d.id, ...d.data() }); ATT.sites = Object.values(m).filter(s => s.active !== false); ATT.logs = r[2].docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.ms - a.ms); if(r[3]) ATT.sessions = r[3].docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.startMs - a.startMs); }catch(e){}
+  if(hpTab === 'checkin') attRender();
+}
+const attStatusLbl = { ok: '✅ حاضر', late: '🕒 متأخر', outside: '📍 خارج النطاق' };
+const attFmt = ms => new Date(ms).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' });
+function hpCheckinHtml(){
+  const c = attCfg(); if(!c.enabled) return '<div class="hp-card"><div class="hp-note">نظام الحضور موقوف حاليًا من الإدارة.</div></div>';
+  attLoad();
+  const now = Date.now(), open = (ATT.sessions || []).filter(s => s.active !== false && now >= s.startMs - 30 * 60000 && now <= s.endMs), done = new Set((ATT.logs || []).map(l => l.sessionId).filter(Boolean));
+  const tg = ATT.target, step = (k, ok, label, fn, need) => need === false ? '' : `<div class="hp-trow"><span>${ok ? '✅' : '⬜'} ${label}</span><button class="hp-chip ${ok ? 'on' : ''}" onclick="${fn}">${ok ? 'تم — إعادة' : 'ابدأ'}</button></div>`;
+  const ready = (!c.geo || attFresh('geo')) && (!c.bio || attFresh('bio')) && (!c.idp || attFresh('idp')) && tg;
+  return `<div class="hp-card"><h3>📍 تأكيد الحضور</h3><div class="hp-note">اختار الحصة أو الموقع، وبعدين كمّل الخطوات (كل خطوة صالحة 5 دقايق).</div>
+    ${open.map(s => `<div class="hp-trow"><span><b>${hpE(s.title)}</b> <small>${hpE(s.siteName || '')} · ${attFmt(s.startMs)}</small></span>${done.has(s.id) ? '✅ سجّلت' : `<button class="hp-chip ${tg && tg.sid === s.id ? 'on' : ''}" onclick="attPick('s','${s.id}')">اختار</button>`}</div>`).join('') || ''}
+    <div class="hp-row hp-row-wrap"><select id="ck-site"><option value="">— أو اختار موقع (كلية / مدرسة) —</option>${(ATT.sites || []).map(s => `<option value="${s.id}" ${tg && tg.site === s.id ? 'selected' : ''}>${s.kind === 'school' ? '🏫' : '🎓'} ${hpE(s.name)}</option>`).join('')}</select><select id="ck-dir"><option value="in">حضور</option><option value="out">انصراف</option></select><button class="hp-chip" onclick="attPick('p')">اختار</button></div>
+    <div class="hp-note">الهدف الحالي: <b>${tg ? hpE(tg.label) : 'لم يُحدد'}</b></div>
+    ${step('geo', attFresh('geo'), '1) الموقع الجغرافي' + (attFresh('geo') ? ' (دقة ' + ATT.st.geo.acc + ' م)' : ''), 'attStepGeo()', c.geo)}
+    ${step('bio', attFresh('bio'), '2) البصمة / قفل الجهاز', 'attStepBio()', c.bio)}
+    ${c.idp ? `<div class="hp-trow"><span>${attFresh('idp') ? '✅' : '⬜'} 3) حساب Google أو Microsoft ${attFresh('idp') ? '<small>(' + hpE(ATT.st.idp.email) + ')</small>' : ''}</span><span><button class="hp-chip" onclick="attStepIdp('g')">Google</button><button class="hp-chip" onclick="attStepIdp('ms')">Microsoft</button></span></div>` : ''}
+    <div class="hp-actions"><button class="btn-primary" ${ready ? '' : 'disabled'} onclick="attSubmit()">✅ تسجيل الحضور</button></div></div>
+  <div class="hp-card"><h3>🏫 مدرستي</h3><div class="hp-note">سجّل مكان مدرستك مرة واحدة وإنت واقف فيها، وبعدها تقدر تأكد حضورك فيها.</div>
+    <div class="hp-row hp-row-wrap"><input type="text" id="sch-n" placeholder="اسم المدرسة"><input type="number" id="sch-r" value="150" min="50" max="1000" style="width:90px;" title="نصف القطر بالمتر"><button class="hp-chip" onclick="attAddSchool()">📍 حفظ بموقعي الحالي</button></div></div>
+  <div class="hp-card"><h3>سجل حضوري <small>${(ATT.logs || []).length}</small></h3>${(ATT.logs || []).slice(0, 25).map(l => `<div class="hp-trow"><span>${l.dir === 'out' ? '🚪 انصراف' : '🟢 حضور'} — <b>${hpE(l.siteName || '')}</b><br><small>${attFmt(l.ms)}${l.distanceM != null ? ' · ' + l.distanceM + ' م' : ''}</small></span><span>${attStatusLbl[l.status] || l.status}</span></div>`).join('') || '<div class="hp-note">لسه مفيش تسجيلات.</div>'}</div>`;
+}
+function attPick(kind, sid){
+  if(kind === 's'){ const s = (ATT.sessions || []).find(x => x.id === sid); ATT.target = { type: 's', sid, label: s.title + ' — ' + (s.siteName || ''), sess: s }; }
+  else { const id = hpV('ck-site'), s = (ATT.sites || []).find(x => x.id === id); if(!s){ toast('اختار الموقع.', { type: 'err' }); return; } ATT.target = { type: 'p', site: id, dir: hpV('ck-dir'), label: (hpV('ck-dir') === 'out' ? 'انصراف من ' : 'حضور في ') + s.name, siteObj: s }; }
+  attRender();
+}
+function attRender(){ if(hpTab === 'checkin') hpShow('checkin'); }
+async function attAddSchool(){
+  const n = hpV('sch-n').trim(); if(!n){ toast('اكتب اسم المدرسة.', { type: 'err' }); return; }
+  try{ const g = await attGeo(); await db.collection('attSites').add({ name: n.slice(0, 80), kind: 'school', scope: 'private', lat: g.lat, lng: g.lng, radiusM: Math.min(1000, Math.max(50, +hpV('sch-r') || 150)), active: true, ownerUid: currentUid, ownerName: pendingUser.name || '', supervisorId: (userStatus && userStatus.supervisorId) || '', createdMs: Date.now() }); toast('اتسجّلت المدرسة.'); attLoad(true); }
+  catch(e){ toast(e.message || 'تعذّر الحفظ.', { type: 'err' }); }
+}
+async function attSubmit(){
+  const c = attCfg(), tg = ATT.target; if(!tg) return;
+  const site = tg.type === 's' ? { id: tg.sess.siteId, name: tg.sess.siteName, lat: tg.sess.lat, lng: tg.sess.lng, radiusM: tg.sess.radiusM } : tg.siteObj;
+  const g = ATT.st.geo, d = g ? attDist(g.lat, g.lng, site.lat, site.lng) : null, within = d !== null ? d <= (site.radiusM || 150) : true;
+  if(c.geo && !within && !c.allowOutside){ toast('أنت بعيد عن الموقع بـ ' + d + ' م (المسموح ' + (site.radiusM || 150) + ' م).', { type: 'err', duration: 6000 }); return; }
+  let status = within ? 'ok' : 'outside'; if(tg.type === 's' && Date.now() > tg.sess.startMs + (tg.sess.graceMin || c.graceMin) * 60000 && status === 'ok') status = 'late';
+  const log = { uid: currentUid, name: (pendingUser && pendingUser.name) || '', email: (pendingUser && pendingUser.email) || '', accountType: (userStatus && userStatus.accountType) || '', supervisorId: (userStatus && userStatus.supervisorId) || '', kind: site.kind || (tg.type === 's' ? 'academic' : 'school'), sessionId: tg.type === 's' ? tg.sid : '', sessionTitle: tg.type === 's' ? tg.sess.title : '', siteId: site.id || '', siteName: site.name || '', siteLat: site.lat, siteLng: site.lng, radiusM: site.radiusM || 150, dir: tg.type === 'p' ? tg.dir : 'in', lat: g ? g.lat : 0, lng: g ? g.lng : 0, acc: g ? g.acc : 0, distanceM: d, within, status, idp: ATT.st.idp ? ATT.st.idp.provider : '', idpEmail: ATT.st.idp ? ATT.st.idp.email : '', bio: !!ATT.st.bio, dev: attDev(), ua: navigator.userAgent.slice(0, 120), ms: Date.now(), day: ndDay(), ts: firebase.firestore.FieldValue.serverTimestamp() };
+  try{
+    const col = db.collection('attendanceLogs'); if(tg.type === 's') await col.doc(tg.sid + '_' + currentUid).set(log); else await col.add(log);
+    toast('✅ اتسجّل ' + (log.dir === 'out' ? 'الانصراف' : 'الحضور') + (status === 'late' ? ' (متأخر)' : '')); ATT.st = {}; ATT.target = null; attLoad(true);
+  }catch(e){ toast(e.code === 'permission-denied' ? 'مسجّل قبل كده في الحصة دي، أو الصلاحيات غير منشورة.' : 'تعذّر التسجيل: ' + (e.code || e.message), { type: 'err' }); }
+}
+HP_TABS.push(['checkin', '📍 تأكيد الحضور']);
+(function(){ const m = HP_TABS.find(t => t[0] === 'checkin'); })();
+
+/* ---- للمشرف: حصص الحضور + المتابعة + التصدير ---- */
+let ATTS = null;
+async function attStaffLoad(force){
+  if(!force && ATTS) return; ATTS = { sites: [], sess: [], logs: [] };
+  try{ const [a, b, c, d] = await Promise.all([db.collection('attSites').where('scope', '==', 'global').get(), db.collection('attSites').where('ownerUid', '==', currentUid).get(), db.collection('attSessions').where('ownerUid', '==', currentUid).get(), db.collection('attendanceLogs').where('supervisorId', '==', currentUid).limit(1500).get()]);
+    const m = {}; a.docs.concat(b.docs).forEach(x => m[x.id] = { id: x.id, ...x.data() }); ATTS.sites = Object.values(m).filter(s => s.active !== false); ATTS.sess = c.docs.map(x => ({ id: x.id, ...x.data() })).sort((p, q) => q.startMs - p.startMs); ATTS.logs = d.docs.map(x => ({ id: x.id, ...x.data() })).sort((p, q) => q.ms - p.ms); }catch(e){}
+  if(svTab === 'attsess') svShow('attsess');
+}
+function svAttHtml(){
+  attStaffLoad(); if(!ATTS) return '<div class="hp-card"><div class="hp-note">جاري التحميل…</div></div>';
+  const mem = svMembers || [], dt = ms => new Date(ms).toISOString().slice(0, 16);
+  return `<div class="hp-card"><h3>📍 حصة حضور جديدة</h3><div class="hp-row hp-row-wrap"><input type="text" id="as2-t" placeholder="عنوان الحصة / المحاضرة"><select id="as2-s"><option value="">— الموقع —</option>${ATTS.sites.map(s => `<option value="${s.id}">${s.kind === 'school' ? '🏫' : '🎓'} ${hpE(s.name)}</option>`).join('')}</select></div>
+    <div class="hp-row hp-row-wrap"><label class="hp-note">يبدأ <input type="datetime-local" id="as2-a" value="${dt(Date.now() - new Date().getTimezoneOffset() * 6e4)}"></label><label class="hp-note">ينتهي <input type="datetime-local" id="as2-b" value="${dt(Date.now() - new Date().getTimezoneOffset() * 6e4 + 3600000)}"></label><input type="number" id="as2-g" value="10" min="0" style="width:90px;" title="مهلة التأخير بالدقائق"></div>
+    <div class="hp-note">لو مفيش مواقع، الأدمن بيضيف مواقع الكلية، أو أي عضو يسجّل مدرسته وتظهر لك هنا.</div><div class="hp-actions"><button class="btn-primary" onclick="svAttCreate()">فتح الحصة وإبلاغ الأعضاء</button></div></div>
+  ${ATTS.sess.map(s => { const L = ATTS.logs.filter(l => l.sessionId === s.id), got = new Set(L.map(l => l.uid)), miss = mem.filter(m => !got.has(m.id)); return `<div class="hp-card"><h3>${hpE(s.title)} <small>${attFmt(s.startMs)} · ${hpE(s.siteName || '')}</small></h3><div class="hp-note">حضر ${L.length} من ${mem.length} (${mem.length ? Math.round(L.length / mem.length * 100) : 0}%)</div>
+    ${L.map(l => `<div class="hp-trow"><span>${hpE(l.name)} <small>${attFmt(l.ms)} · ${l.distanceM} م · ${l.idp ? (l.idp === 'microsoft.com' ? 'MS' : 'G') : ''}${l.bio ? ' 🔒' : ''}</small></span><span>${attStatusLbl[l.status] || l.status}</span></div>`).join('')}
+    ${miss.length ? `<div class="hp-note">غائبون: ${miss.map(m => hpE(m.name || m.email)).join('، ')}</div>` : ''}<div class="hp-actions">${miss.length ? `<button class="hp-chip" onclick="svAttRemind('${s.id}')">🔔 ذكّر الغائبين</button>` : ''}<button class="hp-chip" onclick="svAttCsv('${s.id}')">⬇️ CSV</button><button class="hp-chip" onclick="svAttPrint('${s.id}')">🖨️ PDF</button><button class="hp-chip bad" onclick="svAttDel('${s.id}')">إنهاء/حذف</button></div></div>`; }).join('')}
+  <div class="hp-card"><h3>سجل حضور أعضائي <small>${ATTS.logs.length}</small></h3><div class="hp-actions"><button class="hp-chip" onclick="svAttCsv('')">⬇️ تصدير الكل CSV</button><button class="hp-chip" onclick="svAttPrint('')">🖨️ طباعة / PDF</button></div>
+    ${ATTS.logs.slice(0, 40).map(l => `<div class="hp-trow"><span>${hpE(l.name)} — ${l.dir === 'out' ? 'انصراف' : 'حضور'} <small>${hpE(l.siteName || '')} · ${attFmt(l.ms)}</small></span><span>${attStatusLbl[l.status] || l.status}</span></div>`).join('')}</div>`;
+}
+async function svAttCreate(){
+  const t = hpV('as2-t').trim(), sid = hpV('as2-s'), s = ATTS.sites.find(x => x.id === sid), a = hpV('as2-a'), b = hpV('as2-b'); if(!t || !s || !a || !b){ toast('كمّل العنوان والموقع والوقت.', { type: 'err' }); return; }
+  try{ await db.collection('attSessions').add({ ownerUid: currentUid, ownerName: pendingUser.name || '', title: t.slice(0, 100), siteId: s.id, siteName: s.name, lat: s.lat, lng: s.lng, radiusM: s.radiusM || 150, startMs: new Date(a).getTime(), endMs: new Date(b).getTime(), graceMin: +hpV('as2-g') || 10, active: true, createdMs: Date.now() });
+    (svMembers || []).forEach(m => createNotification(m.id, 'message', '📍 حصة حضور: ' + t + ' — أكّد حضورك من "تأكيد الحضور" في الأدوات', 'v-helpers')); toast('اتفتحت الحصة.'); attStaffLoad(true); }
+  catch(e){ toast('تعذّر: ' + (e.code || e.message), { type: 'err' }); }
+}
+function svAttRemind(id){ const s = ATTS.sess.find(x => x.id === id), got = new Set(ATTS.logs.filter(l => l.sessionId === id).map(l => l.uid)), miss = (svMembers || []).filter(m => !got.has(m.id)); miss.forEach(m => createNotification(m.id, 'message', '🔔 لسه ماأكدتش حضور: ' + s.title, 'v-helpers')); toast('اتبعت تذكير لـ ' + miss.length + '.'); }
+async function svAttDel(id){ if(!confirm('حذف الحصة؟ (سجلات الحضور تفضل محفوظة)')) return; try{ await db.collection('attSessions').doc(id).delete(); attStaffLoad(true); }catch(e){ toast('تعذّر.', { type: 'err' }); } }
+const attRows = id => (ATTS.logs || []).filter(l => !id || l.sessionId === id);
+function svAttCsv(id){
+  const rows = [['الاسم', 'الإيميل', 'الحصة', 'الموقع', 'النوع', 'الوقت', 'الحالة', 'المسافة م', 'الحساب', 'بصمة', 'خريطة']].concat(attRows(id).map(l => [l.name, l.email, l.sessionTitle || '', l.siteName, l.dir === 'out' ? 'انصراف' : 'حضور', new Date(l.ms).toLocaleString('ar-EG'), attStatusLbl[l.status] || l.status, l.distanceM, l.idpEmail, l.bio ? 'نعم' : 'لا', 'https://maps.google.com/?q=' + l.lat + ',' + l.lng]));
+  supDownloadCsv('حضور.csv', rows);
+}
+function svAttPrint(id){ ptPrint('سجل الحضور', '<table><tr><th>الاسم</th><th>الحصة/الموقع</th><th>النوع</th><th>الوقت</th><th>الحالة</th><th>م</th></tr>' + attRows(id).map(l => `<tr><td>${hpE(l.name)}</td><td>${hpE(l.sessionTitle || l.siteName || '')}</td><td>${l.dir === 'out' ? 'انصراف' : 'حضور'}</td><td>${attFmt(l.ms)}</td><td>${attStatusLbl[l.status] || ''}</td><td>${l.distanceM}</td></tr>`).join('') + '</table>'); }
+Object.assign(SV_FN, { attsess: svAttHtml });
+['expert', 'academic', 'office'].forEach(k => SUPT[k].splice(SUPT[k].length - 1, 0, ['attsess', '📍 حضور وحصص']));
 </script>
 </body>
 </html>
