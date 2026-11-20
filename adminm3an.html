@@ -245,6 +245,32 @@ table{border-collapse:separate; border-spacing:0;}
   .head{position:relative;}
 }
 @media (min-width:1024px){ #amb-cur{display:none !important;} }
+
+/* ===== وضوح لوحة التحكم ===== */
+.hint{font-size:13px; color:#3f4c68; line-height:1.9; margin:4px 0 12px;}
+.fgrid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;} @media(max-width:700px){.fgrid{grid-template-columns:1fr;}}
+label{display:block; font-weight:800; font-size:13.5px; color:var(--ink); margin-bottom:12px;} label input,label select,label textarea{margin-top:6px; font-weight:500;}
+label.chk{display:flex; align-items:center; gap:8px;} label.chk input{width:auto; margin:0; min-height:0;}
+input[type=text],input[type=search],input[type=email],input[type=number],input[type=date],select,textarea{border:1.5px solid #c3cde2 !important; background:#fff; border-radius:10px; padding:9px 12px; width:100%; color:var(--ink);}
+input:focus,select:focus,textarea:focus{outline:3px solid rgba(44,65,148,.25); border-color:var(--brick) !important;}
+.card h3{font-size:18px; font-weight:900; color:var(--ink); margin-bottom:6px; padding-bottom:10px; border-bottom:2px solid var(--paper-dim);}
+.card{border-color:#d5ddee;}
+.sec-head{display:flex; align-items:center; gap:14px; margin:0 0 20px; padding:16px 20px; background:#fff; border:1px solid #d5ddee; border-inline-start:5px solid var(--gold); border-radius:14px;}
+.sec-head h2{font-size:21px; font-weight:900; color:var(--ink); margin:0 0 2px;} .sec-head p{font-size:13.5px; color:#3f4c68; margin:0;}
+.sec-head .sh-i{width:44px; height:44px; border-radius:12px; background:var(--brick); color:#fff; display:grid; place-items:center; flex:none;} .sec-head .sh-i .icon{width:22px; height:22px;}
+.warn-d{margin-bottom:16px; background:#fff; border:1px solid #ecd9a8; border-radius:12px;} .warn-d summary{cursor:pointer; padding:10px 14px; font-weight:800; font-size:13px; color:#7a5b0a;} .warn-d .warn{margin:0; border:0; border-top:1px solid #ecd9a8; border-radius:0 0 12px 12px;}
+table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--ink); font-weight:900; font-size:13px; padding:10px 12px; text-align:right; border-bottom:2px solid #d5ddee;} td{padding:9px 12px; border-bottom:1px solid #e6ebf5; font-size:13.5px;} tbody tr:nth-child(even) td{background:#f8f9fd;} tr:hover td{background:#eef2fc !important;}
+.badge{font-size:12px; padding:3px 10px;}
+.btn{font-size:13.5px;} .btn:focus-visible,.tab:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+@media (min-width:1024px){
+  .tabs{width:270px; padding-top:92px;} .tabs::after{top:58px;}
+  .tab-search{position:sticky; top:-1px; z-index:2; display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); border-radius:12px; padding:0 12px; margin:0 2px 8px;}
+  .tab-search .icon{width:16px; height:16px; color:#c9d4f0; flex:none;} .tab-search input{background:transparent !important; border:0 !important; color:#fff; min-height:40px; padding:0; font-size:14px !important;} .tab-search input::placeholder{color:#aebbe0;} .tab-search input:focus{outline:0;}
+  .tab-group{font-size:11.5px; font-weight:900; letter-spacing:.4px; color:#f1c869; padding:14px 14px 5px; text-transform:none;}
+  .tab{font-size:14.5px; color:#dbe3f7; padding:9px 14px;} .tab .icon{width:17px; height:17px; opacity:.9;}
+  .tab.active{background:rgba(255,255,255,.18); font-weight:900;}
+}
+@media (max-width:1023px){ .tab-group,.tab-search{display:none;} .sec-head{padding:12px 14px;} .sec-head h2{font-size:18px;} }
 </style>
 </head>
 
@@ -290,6 +316,15 @@ table{border-collapse:separate; border-spacing:0;}
 <symbol id="i-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
 <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
 <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.6 21.6 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-bars" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/></symbol>
+<symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></symbol>
+<symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5 5h14l3 7v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7z"/></symbol>
 <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
 <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
 <symbol id="i-check-double" viewBox="0 0 24 24"><polyline points="18 6 7 17 2 12"/><polyline points="22 10 13 19 11 17"/></symbol>
@@ -357,6 +392,7 @@ table{border-collapse:separate; border-spacing:0;}
     <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
     <button class="tab" onclick="switchTab('perm', this)"><svg class="icon"><use href="#i-lock"></use></svg> صلاحيات المشتركين</button>
     <button class="tab" onclick="switchTab('control', this)"><svg class="icon"><use href="#i-star"></use></svg> التحكم الشامل</button>
+    <button class="tab" onclick="switchTab('landing', this)"><svg class="icon"><use href="#i-layout"></use></svg> الصفحة الرئيسية</button>
     <button class="tab" onclick="switchTab('attend', this)"><svg class="icon"><use href="#i-check"></use></svg> الحضور الأكاديمي</button>
     <button class="tab" onclick="switchTab('books', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> الكتب</button>
     <button class="tab" onclick="switchTab('files', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> مخزن الملفات</button>
@@ -546,6 +582,28 @@ table{border-collapse:separate; border-spacing:0;}
       <div id="pt-list"></div>
       <div class="status" id="pt-status"></div>
     </div>
+  </div>
+
+  <div class="panel" id="panel-landing">
+    <div class="card"><h3>نصوص الصفحة الرئيسية</h3>
+      <p class="hint">بتظهر لزوار المنصة قبل التسجيل. سيب الخانة فاضية عشان يفضل النص الافتراضي.</p>
+      <div class="fgrid">
+        <label>الشارة العلوية<input type="text" id="ln-tag" placeholder="منصة المعلم وطالب المعلم"></label>
+        <label>رقم الواتساب (بصيغة دولية بدون +)<input type="text" id="ln-wa" placeholder="201007586279" dir="ltr"></label>
+        <label>العنوان — الجزء العادي<input type="text" id="ln-h1a" placeholder="نتعلم… نتطور… و"></label>
+        <label>العنوان — الجزء الذهبي<input type="text" id="ln-h1b" placeholder="نُدرس معًا"></label>
+      </div>
+      <label>الوصف تحت العنوان<textarea id="ln-lead" rows="2" placeholder="أدوات التحضير والاختبارات…"></textarea></label>
+      <label>رابط الموقع (لتوليد روابط الدعوة)<input type="text" id="ln-url" dir="ltr" placeholder="https://yoursite.com/index.html"></label>
+    </div>
+    <div class="card"><h3>الأسئلة الشائعة</h3><p class="hint">سطر لكل سؤال بالشكل: <b>السؤال | الإجابة</b></p><textarea id="ln-faq" rows="7"></textarea></div>
+    <div class="card"><h3>الجهات المشاركة</h3><p class="hint">سطر لكل جهة: <b>الاسم | رابط صورة الشعار (اختياري)</b>. لو القايمة فاضية القسم مش بيظهر.</p><textarea id="ln-partners" rows="4"></textarea></div>
+    <div class="card"><h3>أرقام المنصة</h3><p class="hint">أرقام حقيقية بتتحسب من حسابات المنصة وبتظهر في الصفحة الرئيسية لو فعّلتها.</p>
+      <label class="chk"><input type="checkbox" id="ln-stats"> إظهار الأرقام في الصفحة الرئيسية</label>
+      <div class="row"><button class="btn" onclick="lnRefreshStats()">تحديث الأرقام الآن</button><span id="ln-stats-v" class="hint"></span></div></div>
+    <div class="card"><h3>روابط التسجيل المباشرة</h3><p class="hint">انشرها لكل فئة — الرابط بيفتح صفحة التسجيل على النوع ده مباشرة.</p><div id="ln-links"></div></div>
+    <div class="row"><button class="btn" onclick="lnSave()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الصفحة الرئيسية</button></div>
+    <div class="status" id="ln-st"></div>
   </div>
 
   <div class="panel" id="panel-control">
@@ -1005,6 +1063,8 @@ function switchTab(name, btn){
   if(name==='acct'){ try{ renderAcct(); }catch(e){} }
   if(name==='tickets'){ try{ loadTickets(); }catch(e){} }
   if(name==='bcast'){ try{ loadBroadcasts(); }catch(e){} }
+  if(name==='landing'){ try{ initLanding(); }catch(e){} }
+  try{ adminSecHead(name); }catch(e){}
 }
 
 /* ================= لسه كيف / التربية العملية / بحوث الفعل ================= */
@@ -2501,6 +2561,47 @@ let ATL=[], ATSITES=[];
 const atHav=(a,b,c,d)=>{const R=6371000,r=x=>x*Math.PI/180,dl=r(c-a),dg=r(d-b),h=Math.sin(dl/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(dg/2)**2; return Math.round(2*R*Math.asin(Math.sqrt(h)));};
 const ATS={ok:'حاضر',late:'متأخر',outside:'خارج النطاق'};
 const ATT_MODE_LBL={all:'مفعّل للكل',delegated:'حسب التفويض',off:'ملغي للكل'};
+
+/* ===== الصفحة الرئيسية (landing) ===== */
+const LN_TYPES=[['student_teacher','طالب معلم'],['non_edu_teacher','معلم غير تربوي'],['supervisor','إشراف أكاديمي'],['expert_supervisor','إشراف معلم خبير'],['office','الإدارة']];
+let LN={};
+async function initLanding(){
+  try{ const d=await db.collection('siteSettings').doc('landing').get(); LN=d.exists?d.data():{}; }catch(e){ LN={}; }
+  const set=(i,v)=>{ const e=document.getElementById(i); if(e) e.value=v||''; };
+  set('ln-tag',LN.tag); set('ln-wa',LN.wa); set('ln-h1a',LN.h1a); set('ln-h1b',LN.h1b); set('ln-lead',LN.lead); set('ln-url',LN.siteUrl||location.href.split('#')[0].replace(/adminplay\.html.*$/,'index.html'));
+  set('ln-faq',(LN.faq||[]).map(x=>x.q+' | '+x.a).join('\n')); set('ln-partners',(LN.partners||[]).map(x=>x.name+(x.logo?' | '+x.logo:'')).join('\n'));
+  document.getElementById('ln-stats').checked=!!LN.showStats; lnShowStats(); lnLinks();
+}
+function lnShowStats(){ const v=document.getElementById('ln-stats-v'), s=LN.stats; v.textContent=s?('الأعضاء '+s.members+' · المشرفون '+s.supervisors+' · تسجيلات حضور '+s.checkins):'لم يتم الحساب بعد'; }
+function lnLinks(){ const base=(document.getElementById('ln-url').value||'').trim().split('#')[0];
+  document.getElementById('ln-links').innerHTML=LN_TYPES.map(t=>{ const u=base+'#join='+t[0]; return '<div class="urow" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><b style="min-width:130px;">'+t[1]+'</b><input type="text" readonly dir="ltr" value="'+u+'" style="flex:1;min-width:200px;"><button class="btn" onclick="navigator.clipboard.writeText(\''+u+'\');this.textContent=\'تم النسخ\'">نسخ</button></div>'; }).join(''); }
+async function lnRefreshStats(){ const v=document.getElementById('ln-stats-v'); v.textContent='جاري الحساب…';
+  try{ const staff=['supervisor','expert_supervisor','office']; const sup=ALL_USERS.filter(u=>staff.includes(u.accountType)||u.role==='supervisor'||u.role==='office').length;
+    const att=(await db.collection('attendanceLogs').get()).size; LN.stats={members:ALL_USERS.length-sup,supervisors:sup,checkins:att,ms:Date.now()}; lnShowStats(); }catch(e){ v.textContent='تعذّر: '+(e.code||e.message); } }
+async function lnSave(){ const g=i=>(document.getElementById(i).value||'').trim(), st=document.getElementById('ln-st');
+  const faq=g('ln-faq').split('\n').map(l=>l.split('|')).filter(a=>a[0]&&a[1]).map(a=>({q:a[0].trim(),a:a.slice(1).join('|').trim()})).slice(0,12);
+  const partners=g('ln-partners').split('\n').map(l=>l.split('|')).filter(a=>a[0].trim()).map(a=>({name:a[0].trim().slice(0,60),logo:(a[1]||'').trim()})).slice(0,24);
+  const doc={tag:g('ln-tag'),wa:g('ln-wa').replace(/\D/g,''),h1a:g('ln-h1a'),h1b:g('ln-h1b'),lead:g('ln-lead'),siteUrl:g('ln-url'),faq,partners,showStats:document.getElementById('ln-stats').checked,stats:LN.stats||null};
+  try{ await db.collection('siteSettings').doc('landing').set(doc); LN=doc; audit('control','','','تحديث الصفحة الرئيسية'); st.className='status ok'; st.textContent='✓ اتحفظت وبتظهر دلوقتي في الصفحة الرئيسية.'; lnLinks(); }catch(e){ st.className='status err'; st.textContent='تعذّر: '+(e.code||e.message); } }
+
+/* ===== وضوح لوحة التحكم: مجموعات + بحث + عنوان القسم ===== */
+const ADM_GROUPS=[['المحتوى',['lessons','tips','videos','courses','notebooks','books','challenges']],['المجتمع والتحفيز',['community','wallet','referrals']],['الحسابات والاشتراكات',['users','accounts','acct','supervisors','perm','nid','logins']],['المتابعة والحضور',['attend','health','tickets','support','bcast','files']],['التقارير والسجلات',['analytics','activity','reports','audit']],['الإعدادات',['landing','control','settings']]];
+const ADM_ICON={lessons:'book',tips:'clipboard',videos:'video',courses:'grad',notebooks:'notebook',books:'book',challenges:'award',community:'users',wallet:'cash',referrals:'gift',users:'user',accounts:'card',acct:'refresh',supervisors:'cap',perm:'lock',nid:'key',logins:'history',attend:'pin',health:'bars',tickets:'inbox',support:'chat-circle',bcast:'bell',files:'folder',analytics:'bars',activity:'bars',reports:'file',audit:'history',landing:'layout',control:'settings',settings:'settings'};
+const ADM_DESC={lessons:'أضف وعدّل دروس "تعلم كيف" اللي بتظهر للمشتركين.',tips:'نصائح وموارد التربية العملية.',videos:'فيديوهات بحوث الفعل.',courses:'الدورات والدروس والاختبارات.',notebooks:'راجع دفاتر التحضير اللي نشرها الأعضاء.',books:'أضف كتب للمكتبة بملف أو رابط.',challenges:'تحدي الأسبوع والجوايز.',community:'راجع منشورات المجتمع واحذف المخالف.',wallet:'أرصدة الأعضاء وطلبات الشحن والصرف.',referrals:'الإحالات والمكافآت.',users:'كل المستخدمين: بحث وتفاصيل وتفعيل وإيقاف.',accounts:'أسعار أنواع الحسابات وفتح/غلق التسجيل لكل نوع.',acct:'غيّر نوع أي حساب وحالته ومشرفه وتاريخ انتهائه.',supervisors:'اعتماد المشرفين والإدارة وربط الأعضاء بهم.',perm:'تحكم في الميزات المتاحة لكل مشترك.',nid:'منح الدخول بالرقم القومي وإدارة المنح.',logins:'آخر تسجيل دخول وظهور لكل حساب.',attend:'مواقع الحضور وسجلاته وتصديره وتفعيله للحسابات.',health:'استهلاك الحدود اليومية والمشرفون غير النشطين.',tickets:'تذاكر الدعم من المستخدمين.',support:'رسائل الدعم الواردة.',bcast:'إرسال إعلانات مجدولة لفئات محددة.',files:'مخزن الملفات: الحجم والحذف القديم.',analytics:'إحصاءات الاستخدام.',activity:'آخر نشاط على المنصة.',reports:'تقارير شهرية قابلة للطباعة.',audit:'سجل كل إجراءات الأدمن مع الفلترة والتصدير.',landing:'نصوص الصفحة الرئيسية والأسئلة الشائعة وأرقام المنصة وروابط التسجيل.',control:'مفاتيح التحكم الشامل، الحدود، والصيانة.',settings:'إعدادات عامة.'};
+function adminSecHead(name){ const b=document.querySelector('.tab.active'); const h=document.getElementById('sec-head'); if(!h||!b) return; h.innerHTML='<div class="sh-i">'+b.querySelector('svg').outerHTML+'</div><div><h2>'+b.textContent.trim()+'</h2><p>'+(ADM_DESC[name]||'')+'</p></div>'; }
+function adminUx(){
+  const tabs=document.querySelector('.tabs'); if(!tabs||tabs.dataset.ux) return; tabs.dataset.ux='1';
+  const map={}; tabs.querySelectorAll('.tab').forEach(b=>{ const m=(b.getAttribute('onclick')||'').match(/switchTab\('([a-z0-9]+)'/); if(m){ map[m[1]]=b; const ic=ADM_ICON[m[1]]; if(ic){ const u=b.querySelector('use'); if(u) u.setAttribute('href','#i-'+ic); } } });
+  const used=new Set(); const frag=document.createDocumentFragment();
+  const search=document.createElement('div'); search.className='tab-search'; search.innerHTML='<svg class="icon"><use href="#i-search"></use></svg><input type="search" id="tab-q" placeholder="ابحث في الأقسام…" aria-label="بحث في الأقسام">'; frag.appendChild(search);
+  const add=(title,keys)=>{ const ks=keys.filter(k=>map[k]); if(!ks.length) return; const l=document.createElement('div'); l.className='tab-group'; l.textContent=title; frag.appendChild(l); ks.forEach(k=>{ used.add(k); frag.appendChild(map[k]); }); };
+  ADM_GROUPS.forEach(g=>add(g[0],g[1])); add('أخرى',Object.keys(map).filter(k=>!used.has(k)));
+  tabs.innerHTML=''; tabs.appendChild(frag);
+  document.getElementById('tab-q').addEventListener('input',e=>{ const q=e.target.value.trim(); let lastLabel=null, any=false; tabs.querySelectorAll('.tab-group,.tab').forEach(el=>{ if(el.classList.contains('tab-group')){ if(lastLabel) lastLabel.style.display=any||!q?'':'none'; lastLabel=el; any=false; } else { const ok=!q||el.textContent.includes(q); el.style.display=ok?'':'none'; if(ok) any=true; } }); if(lastLabel) lastLabel.style.display=any||!q?'':'none'; });
+  const main=tabs.nextElementSibling; const sh=document.createElement('div'); sh.id='sec-head'; sh.className='sec-head'; tabs.parentNode.insertBefore(sh,tabs.nextSibling); adminSecHead((document.querySelector('.tab.active').getAttribute('onclick').match(/'([a-z0-9]+)'/)||[])[1]);
+  const w=document.querySelector('.warn'); if(w){ const d=document.createElement('details'); d.className='warn-d'; d.innerHTML='<summary>ملاحظة عن تسجيل الدخول (اضغط للعرض)</summary>'; w.parentNode.insertBefore(d,w); d.appendChild(w); }
+}
+adminUx();
 async function attBackup(){ const st=document.getElementById('am-st'); st.className='status'; st.textContent='جاري التجميع…'; const out={ts:new Date().toISOString()};
   try{ for(const c of ['attSites','attSessions','attendanceLogs','attExcuses','attAccess']){ const q=await db.collection(c).get(); out[c]=q.docs.map(d=>Object.assign({id:d.id},JSON.parse(JSON.stringify(d.data())))); }
     const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(out)],{type:'application/json'})); a.download='attendance-backup-'+out.ts.slice(0,10)+'.json'; a.click(); audit('control','','','نسخة احتياطية للحضور'); st.className='status ok'; st.textContent='✓ اتنزّلت ('+Object.keys(out).filter(k=>k!=='ts').map(k=>k+':'+out[k].length).join(' · ')+')'; }
@@ -2724,7 +2825,8 @@ async function printMonthly(){
   let tk='—'; try{ const s=await db.collection('tickets').limit(500).get(), c={new:0,progress:0,done:0}; s.forEach(d=>{ c[d.data().status]=(c[d.data().status]||0)+1; }); tk='جديدة '+c.new+' · قيد الحل '+c.progress+' · محلولة '+c.done; }catch(e){}
   let rk=''; try{ const s=await db.collection('userTools').limit(500).get(), sup=ALL_USERS.filter(u=>u.role==='supervisor'), cnt=u=>{ const d=s.docs.find(x=>x.id===u.id); const o=d&&d.data().data||{}; return ['visits','plans','flog','minutes','vplan'].reduce((a,k)=>a+(Array.isArray(o[k])?o[k].length:0),0); }; rk=sup.map(u=>[u.name||u.email,cnt(u),ALL_USERS.filter(x=>x.supervisorId===u.id).length]).sort((a,b)=>b[1]-a[1]).slice(0,10).map(r=>`<tr><td>${escapeHtml(r[0])}</td><td>${r[2]}</td><td>${r[1]}</td></tr>`).join(''); }catch(e){}
   const w=window.open('','_blank'); if(!w) return toast('اسمح بالنوافذ المنبثقة.');
-  w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>تقرير شهري</title><style>@page{size:A4;margin:14mm} body{font-family:Cairo,Tahoma,sans-serif;padding:16px;color:#111} h1{text-align:center;color:#1f3a6e;margin:0} .c{text-align:center;color:#666;margin-bottom:16px} table{width:100%;border-collapse:collapse;margin:8px 0 18px} th,td{border:1px solid #444;padding:6px 8px;text-align:center} th{background:#eef1f8} h2{border-right:5px solid #e3a82b;padding-right:8px;font-size:16px}</style></head><body><h1>نُدرس معًا — التقرير الشهري للإدارة</h1><div class="c">${mk} · أُنشئ ${new Date().toLocaleDateString('ar-EG')}</div>
+  w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>تقرير شهري</title><style>@page{size:A4;margin:14mm} body{font-family:Cairo,Tahoma,sans-serif;padding:16px;color:#111} h1{text-align:center;color:#1f3a6e;margin:0} .c{text-align:center;color:#666;margin-bottom:16px} table{width:100%;border-collapse:collapse;margin:8px 0 18px} th,td{border:1px solid #444;padding:6px 8px;text-align:center} th{background:#eef1f8} h2{border-right:5px solid #e3a82b;padding-right:8px;font-size:16px}
+</style></head><body><h1>نُدرس معًا — التقرير الشهري للإدارة</h1><div class="c">${mk} · أُنشئ ${new Date().toLocaleDateString('ar-EG')}</div>
   <h2>ملخص</h2><table><tr><th>إجمالي الحسابات</th><th>جدد هذا الشهر</th><th>جدد آخر 30 يوم</th><th>صافي النمو (لقطات)</th></tr><tr><td>${U.length}</td><td>${nm}</td><td>${n30}</td><td>${delta}</td></tr></table>
   <h2>الحسابات حسب النوع</h2><table><tr><th>النوع</th><th>العدد</th></tr>${Object.keys(byType).map(k=>`<tr><td>${escapeHtml(k)}</td><td>${byType[k]}</td></tr>`).join('')}</table>
   <h2>الدعم الفني</h2><p>${tk}</p>${rk?`<h2>أنشط المشرفين (سجلات الأدوات)</h2><table><tr><th>المشرف</th><th>عدد الحسابات</th><th>السجلات</th></tr>${rk}</table>`:''}<script>setTimeout(()=>print(),500)<\/script></body></html>`); w.document.close();

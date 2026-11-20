@@ -11,7 +11,14 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
-<title>نُدرس معًا</title>
+<title>نُدرس معًا — منصة المعلم وطالب المعلم</title>
+<meta name="description" content="منصة عربية للمعلمين وطلاب المعلمين: تحضير ودفاتر وأسئلة واختبارات، مجتمع معلمين، تربية عملية وإشراف، وحضور أكاديمي بالموقع والبصمة.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_EG">
+<meta property="og:site_name" content="نُدرس معًا">
+<meta property="og:title" content="نُدرس معًا — منصة المعلم وطالب المعلم">
+<meta property="og:description" content="أدوات التحضير والاختبارات، مجتمع معلمين، وإشراف وحضور أكاديمي في مكان واحد.">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
@@ -1191,57 +1198,127 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
   .global-topbar input{min-height:42px;}
   .global-topbar .search-wrap{min-width:0;}
 }
-/* ===== الصفحة الرئيسية (تصميم بسيط) ===== */
-#screen-role.l2{display:block; flex-direction:column; align-items:stretch; justify-content:flex-start; padding:0; background:var(--paper); min-height:100vh; text-align:right;}
-.l2 .l2-in{width:100%; max-width:980px; margin:0 auto; padding-inline:20px;}
-.l2-head{background:var(--white); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:50;}
-.l2-bar{display:flex; align-items:center; gap:16px; min-height:64px;}
-.l2-bar .brand-mark{font-size:24px;}
-.l2-bar .land-menu{margin-inline-start:12px; flex:1;}
-.l2-act{display:flex; gap:8px; align-items:center;}
-.l2 .l2-chev{width:12px; height:12px; transform:rotate(-90deg); margin-inline-start:2px;}
-.l2-hero{text-align:center; padding:64px 0 44px;}
-.l2-tag{display:inline-block; font-size:12.5px; font-weight:800; color:var(--ink-soft); border:1px solid var(--line); background:var(--white); border-radius:99px; padding:5px 14px; margin-bottom:18px;}
-.l2-hero h1{font-size:clamp(30px,6vw,50px); line-height:1.35; color:var(--ink); font-weight:900;}
-.l2-hero h1 span{color:var(--gold);}
-.l2-lead{max-width:560px; margin:14px auto 26px; font-size:15.5px; line-height:1.9; color:var(--ink-soft);}
-.l2-cta{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
-.l2-btn{display:inline-flex; align-items:center; gap:8px; font-size:15px; font-weight:800; padding:13px 28px; border-radius:12px; min-height:48px; border:1.5px solid var(--ink);}
-.l2-btn.pri{background:var(--ink); color:#fff;}
-.l2-btn.sec{background:var(--white); color:var(--ink);}
-.l2-btn:hover{transform:translateY(-1px);}
-.l2-btn .icon{width:18px; height:18px;}
-.l2-nid{display:flex; width:fit-content; margin-inline:auto; align-items:center; gap:6px; margin-top:14px; background:none; border:0; color:var(--ink-soft); font-size:13.5px; font-weight:700; text-decoration:underline; text-underline-offset:4px;}
-.l2-nid .icon{width:15px; height:15px;}
-.l2-note{margin-top:14px; font-size:13px; color:var(--ink-soft);}
-.l2-note b{color:var(--ink);}
-.l2-sec{padding:34px 0;}
-.l2-sec h2{font-size:22px; text-align:center; margin-bottom:22px; color:var(--ink);}
-.l2-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
-.l2-f{display:flex; gap:12px; align-items:flex-start; background:var(--white); border:1px solid var(--line); border-radius:14px; padding:16px;}
-.l2-i{flex:none; width:40px; height:40px; border-radius:10px; background:var(--paper-dim); color:var(--ink); display:grid; place-items:center;}
-.l2-i .icon{width:20px; height:20px;}
-.l2-f h4{font-size:14.5px; color:var(--ink); margin-bottom:3px;}
-.l2-f p{font-size:12.5px; color:var(--ink-soft); line-height:1.7;}
-.l2-steps{display:flex; gap:12px; justify-content:center;}
-.l2-steps>div{flex:1; max-width:300px; display:flex; gap:10px; align-items:center; border-top:2px solid var(--line); padding-top:12px;}
-.l2-steps b{flex:none; width:30px; height:30px; border-radius:50%; background:var(--ink); color:#fff; display:grid; place-items:center; font-size:14px;}
-.l2-steps p{font-size:13.5px; color:var(--ink-soft); line-height:1.7;}
-.l2-foot{margin-top:24px; border-top:1px solid var(--line); background:var(--white); padding:22px 0; text-align:center; font-size:12.5px; color:var(--ink-soft); line-height:2;}
-.l2-foot a{color:var(--ink); font-weight:700;}
-@media(max-width:820px){ .l2-grid{grid-template-columns:repeat(2,1fr);} }
+/* ===== الصفحة الرئيسية الفخمة ===== */
+#screen-role.l3{--n0:#0a1226; --n1:#101c3d; --n2:#1b2a5a; --g:#e3a92f; --g2:#f4cf7a; display:block; padding:0; min-height:100vh; background:var(--paper); text-align:right; position:relative; flex-direction:column; align-items:stretch; justify-content:flex-start;}
+#screen-role.l3>*{width:100%; align-self:stretch;}
+.l3 .l3-in{width:100%; max-width:1120px; margin:0 auto; padding-inline:22px;}
+.l3 .icon{width:18px; height:18px;}
+.l3-head{position:sticky; top:0; z-index:60; background:rgba(10,18,38,.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid rgba(255,255,255,.08); transition:background .25s, box-shadow .25s;}
+.l3-head.sc{background:rgba(10,18,38,.94); box-shadow:0 8px 30px rgba(0,0,0,.28);}
+.l3-bar{display:flex; align-items:center; gap:18px; min-height:68px;}
+.l3-bar .brand-mark{font-size:25px; color:#fff;} .l3-bar .brand-mark span{color:var(--g);}
+.l3-nav{display:flex; align-items:center; gap:4px; flex:1; margin-inline-start:10px;}
+.l3-act{display:flex; align-items:center; gap:8px; margin-inline-start:auto;}
+.l3-dd{position:relative;}
+.l3-ddb,.l3-link{background:transparent; color:#e8ecf8; border:0; font-weight:700; font-size:14px; font-family:inherit; padding:9px 13px; border-radius:10px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; text-decoration:none;}
+.l3-ddb:hover,.l3-link:hover,.l3-dd.open>.l3-ddb{background:rgba(255,255,255,.1);}
+.l3-cv{width:14px!important; height:14px!important; transition:transform .2s;} .l3-dd.open .l3-cv{transform:rotate(180deg);}
+.l3-hb{display:inline-flex; align-items:center; gap:7px; font-weight:800; font-size:13.5px; font-family:inherit; color:#fff; background:transparent; border:1px solid rgba(255,255,255,.28); border-radius:11px; padding:9px 15px; cursor:pointer;}
+.l3-hb:hover{background:rgba(255,255,255,.1);}
+.l3-hb.pri{background:var(--g); color:#1a1305; border-color:var(--g);} .l3-hb.pri:hover{background:var(--g2);}
+.l3 .land-btn.install-nav{background:transparent; color:#e8ecf8; border:1px solid rgba(255,255,255,.2); border-radius:11px; padding:9px 13px; font-size:13px;}
+.l3-panel{display:none; position:absolute; top:calc(100% + 10px); inset-inline-start:0; min-width:300px; background:#fff; color:var(--ink); border-radius:18px; box-shadow:0 28px 60px rgba(8,14,34,.35); padding:8px; z-index:70; animation:l3pop .18s ease;}
+.l3-dd.open>.l3-panel{display:block;} .l3-end{inset-inline-start:auto; inset-inline-end:0;}
+@keyframes l3pop{from{opacity:0; transform:translateY(-6px);}to{opacity:1; transform:none;}}
+.l3-mega{width:380px;}
+.l3-panel>button{width:100%; display:flex; align-items:center; gap:12px; text-align:right; background:transparent; border:0; border-radius:12px; padding:10px; color:var(--ink); font-family:inherit; cursor:pointer;}
+.l3-panel>button:hover:not(:disabled){background:var(--paper-dim);} .l3-panel>button:disabled{opacity:.5; cursor:not-allowed;}
+.l3-panel b{display:block; font-size:14px;} .l3-panel small{display:block; font-size:12px; color:var(--ink-soft); margin-top:2px; line-height:1.5;}
+.l3-panel em{margin-inline-start:auto; font-style:normal; font-size:12.5px; font-weight:800; color:var(--ink); background:var(--paper-dim); border-radius:99px; padding:4px 10px; white-space:nowrap;} .l3-panel em.free{color:#1f7a4a; background:#e3f3ea;}
+.l3-sep{font-size:11.5px; font-weight:800; color:var(--ink-soft); padding:10px 10px 4px; border-top:1px solid var(--line); margin-top:4px;}
+.l3-foot2{font-size:12px; color:var(--ink-soft); padding:8px 10px 4px; border-top:1px dashed var(--line); margin-top:4px;} .l3-load{padding:14px; font-size:13px; color:var(--ink-soft);}
+.l3-i{flex:none; width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg,#eef1fb,#dfe5f6); color:var(--n2); display:grid; place-items:center;}
+.l3-i .icon{width:20px; height:20px;}
+/* hero */
+.l3-hero{position:relative; overflow:hidden; background:radial-gradient(1200px 600px at 80% -10%,#25398a 0,transparent 60%),linear-gradient(160deg,var(--n0),var(--n1) 55%,#16275a); color:#fff; padding:70px 0 84px;}
+.l3-hero::before{content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px); background-size:46px 46px; -webkit-mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 75%); mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 75%);}
+.l3-glow{position:absolute; border-radius:50%; filter:blur(70px); opacity:.5; animation:l3fl 9s ease-in-out infinite;}
+.l3-glow.g1{width:360px; height:360px; background:#c79a2b; top:-120px; inset-inline-start:-80px; opacity:.28;} .l3-glow.g2{width:420px; height:420px; background:#3d58d6; bottom:-180px; inset-inline-end:-100px; animation-delay:-4s;}
+@keyframes l3fl{0%,100%{transform:translateY(0);}50%{transform:translateY(22px);}}
+.l3-hgrid{position:relative; display:grid; grid-template-columns:1.15fr .85fr; gap:40px; align-items:center;}
+.l3-tag{display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:800; color:var(--g2); border:1px solid rgba(244,207,122,.35); background:rgba(244,207,122,.08); border-radius:99px; padding:6px 14px; margin-bottom:20px;} .l3-tag .icon{width:15px; height:15px;}
+.l3-copy h1{font-size:clamp(32px,5.4vw,54px); line-height:1.3; font-weight:900; color:#fff;} .l3-copy h1 .g{background:linear-gradient(90deg,var(--g),var(--g2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.l3-lead{font-size:16.5px; line-height:1.95; color:#c9d2ee; max-width:560px; margin:16px 0 28px;}
+.l3-cta{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+.l3-btn{display:inline-flex; align-items:center; gap:8px; font-weight:800; font-size:15px; font-family:inherit; border-radius:13px; padding:13px 22px; min-height:50px; border:1.5px solid transparent; cursor:pointer; transition:transform .15s, box-shadow .15s, background .15s;}
+.l3-btn:hover{transform:translateY(-2px);} .l3-btn.gold{background:linear-gradient(135deg,var(--g),var(--g2)); color:#1a1305; box-shadow:0 10px 30px rgba(227,169,47,.35);}
+.l3-btn.ghost{background:rgba(255,255,255,.07); color:#fff; border-color:rgba(255,255,255,.28);} .l3-btn.ghost:hover{background:rgba(255,255,255,.15);}
+.l3-hero .l3-panel{min-width:320px;}
+.l3-trust{list-style:none; display:flex; flex-wrap:wrap; gap:8px 20px; margin:26px 0 0; padding:0; font-size:13px; color:#aeb9dc;} .l3-trust li{display:inline-flex; align-items:center; gap:6px;} .l3-trust .icon{color:var(--g); width:16px; height:16px;}
+/* demo */
+.l3-demo{position:relative; display:flex; justify-content:center; animation:l3fl 7s ease-in-out infinite;}
+.l3-card{width:100%; max-width:360px; background:rgba(255,255,255,.96); color:var(--ink); border-radius:22px; padding:18px; box-shadow:0 40px 80px rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.6);}
+.l3-ch{display:flex; align-items:center; gap:12px; margin-bottom:12px;} .l3-ch b{display:block; font-size:15px;} .l3-ch small,.l3-step small{display:block; font-size:12px; color:var(--ink-soft);}
+.l3-live{margin-inline-start:auto; font-size:11px; font-weight:800; background:var(--paper-dim); color:var(--ink-soft); border-radius:99px; padding:3px 10px;}
+.l3-step{display:flex; align-items:center; gap:12px; padding:10px; border:1px solid var(--line); border-radius:14px; margin-top:8px;} .l3-step b{font-size:13.5px;} .l3-step .l3-i{width:36px; height:36px;}
+.l3-step.ok{background:#f2faf5; border-color:#cfe9da;} .l3-step.ok .l3-i{background:#dff3e6; color:#1f7a4a;} .l3-tick{margin-inline-start:auto; color:#1f7a4a; width:20px!important; height:20px!important;}
+.l3-dot{margin-inline-start:auto; width:10px; height:10px; border-radius:50%; background:var(--g); box-shadow:0 0 0 6px rgba(227,169,47,.2); animation:l3pulse 1.6s infinite;}
+@keyframes l3pulse{50%{box-shadow:0 0 0 10px rgba(227,169,47,0);}}
+.l3-fake{margin-top:12px; background:var(--n2); color:#fff; border-radius:13px; padding:12px; text-align:center; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; gap:8px;}
+.l3-chip{position:absolute; display:inline-flex; align-items:center; gap:7px; background:#fff; color:var(--ink); font-size:12.5px; font-weight:800; border-radius:12px; padding:9px 13px; box-shadow:0 16px 36px rgba(0,0,0,.35);} .l3-chip .icon{color:var(--g); width:16px; height:16px;}
+.l3-chip.c1{top:-14px; inset-inline-start:-6px;} .l3-chip.c2{bottom:-14px; inset-inline-end:-6px;}
+/* sections */
+.l3-sec{padding:76px 0;} .l3-sec.alt{background:var(--paper-dim);}
+.l3-eb{display:block; text-align:center; font-size:12.5px; font-weight:800; letter-spacing:.5px; color:var(--g); margin-bottom:8px;}
+.l3-sec h2{text-align:center; font-size:clamp(24px,3.6vw,34px); color:var(--ink); margin-bottom:30px;}
+.l3-tabs{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:22px;}
+.l3-tabs button{display:inline-flex; align-items:center; gap:7px; background:#fff; color:var(--ink-soft); border:1px solid var(--line); border-radius:99px; padding:9px 18px; font-weight:800; font-size:13.5px; font-family:inherit; cursor:pointer; transition:all .15s;}
+.l3-tabs button:hover{border-color:var(--n2); color:var(--n2);} .l3-tabs button.on{background:var(--n1); color:#fff; border-color:var(--n1);}
+.l3-tp{display:none; grid-template-columns:repeat(4,1fr); gap:14px;} .l3-tp.on{display:grid; animation:l3pop .3s ease;}
+.l3-f{background:#fff; border:1px solid var(--line); border-radius:18px; padding:18px; display:flex; flex-direction:column; gap:12px; transition:transform .2s, box-shadow .2s, border-color .2s;}
+.l3-f:hover{transform:translateY(-4px); box-shadow:0 18px 40px rgba(16,28,61,.12); border-color:#cfd7ee;}
+.l3-f h4{font-size:15px; margin-bottom:4px; color:var(--ink);} .l3-f p{font-size:13px; color:var(--ink-soft); line-height:1.8;}
+.l3-acc,.l3-faq{max-width:760px; margin:0 auto; display:grid; gap:10px;}
+.l3-acc details,.l3-faq details{background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; transition:box-shadow .2s;} .l3-acc details[open],.l3-faq details[open]{box-shadow:0 14px 34px rgba(16,28,61,.1); border-color:#cfd7ee;}
+.l3-acc summary,.l3-faq summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:12px; padding:14px 16px; font-weight:800; font-size:14.5px;} summary::-webkit-details-marker{display:none;}
+.l3-acc summary small{margin-inline-start:auto; font-size:12px; font-weight:800; color:var(--ink-soft); background:var(--paper-dim); border-radius:99px; padding:3px 10px;} .l3-acc summary .l3-cv,.l3-faq summary .l3-cv{margin-inline-start:6px;} .l3-faq summary .l3-cv{margin-inline-start:auto;}
+details[open]>summary .l3-cv{transform:rotate(180deg);}
+.l3-ab{padding:0 16px 16px 16px; display:flex; flex-direction:column; align-items:flex-start; gap:12px;} .l3-ab p,.l3-faq p{font-size:13.5px; color:var(--ink-soft); line-height:1.9; padding:0 16px 14px;} .l3-ab p{padding:0;}
+.l3-mini{display:inline-flex; align-items:center; gap:7px; background:var(--n1); color:#fff; border-radius:11px; padding:9px 16px; font-weight:800; font-size:13px; font-family:inherit; cursor:pointer;} .l3-mini:hover{background:var(--n2);} .l3-mini .icon{width:15px; height:15px;}
+.l3-steps{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; position:relative;}
+.l3-steps>div{background:#fff; border:1px solid var(--line); border-radius:18px; padding:22px; text-align:center;} .l3-steps b{display:grid; place-items:center; width:42px; height:42px; margin:0 auto 12px; border-radius:50%; background:linear-gradient(135deg,var(--g),var(--g2)); color:#1a1305; font-size:17px;}
+.l3-steps h4{font-size:16px; margin-bottom:6px;} .l3-steps p{font-size:13.5px; color:var(--ink-soft); line-height:1.8;}
+.l3-narrow{max-width:820px;}
+.l3-cta2{background:linear-gradient(160deg,var(--n0),var(--n2)); color:#fff; text-align:center; padding:70px 0;} .l3-cta2 h2{color:#fff; margin-bottom:8px;} .l3-cta2 p{color:#c9d2ee; margin-bottom:24px;}
+.l3-foot{background:var(--n0); color:#aeb9dc; padding:34px 0; text-align:center;} .l3-foot .brand-mark{font-size:22px; color:#fff;} .l3-foot .brand-mark span{color:var(--g);}
+.l3-fl{display:flex; gap:20px; justify-content:center; flex-wrap:wrap; margin:14px 0 10px;} .l3-fl a{color:#e8ecf8; font-size:13.5px; font-weight:700; text-decoration:none;} .l3-fl a:hover{color:var(--g);} .l3-copy2{font-size:12.5px;}
+.l3-rv{opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;} .l3-rv.in{opacity:1; transform:none;}
+@media(prefers-reduced-motion:reduce){ .l3-rv{opacity:1; transform:none; transition:none;} .l3-glow,.l3-demo,.l3-dot{animation:none;} }
+@media(max-width:900px){ .l3-hgrid{grid-template-columns:1fr;} .l3-demo{order:2; margin-top:10px;} .l3-tp{grid-template-columns:repeat(2,1fr);} .l3-bar{flex-wrap:wrap; padding-block:6px; gap:6px 12px;} .l3-nav{order:3; flex:none; width:100%; margin:0; overflow-x:auto; padding-bottom:4px; gap:2px;} .l3-ddb,.l3-link{white-space:nowrap; font-size:13px; padding:7px 11px;} .l3-nav .l3-panel,.l3-bar .l3-panel{position:fixed; top:112px; inset-inline:12px; min-width:0!important; width:auto!important; max-height:70vh; overflow:auto;} }
 @media(max-width:600px){
-  .l2-bar{flex-wrap:wrap; padding-block:8px; gap:8px;}
-  .l2-bar .land-menu{order:3; width:100%; margin:0; flex:none; overflow:visible;}
-  .l2-act{margin-inline-start:auto;}
-  .l2-act .land-btn:not(.solid){display:none;}
-  .l2-hero{padding:36px 0 28px;}
-  .l2-btn{width:100%; justify-content:center;}
-  .l2-grid{grid-template-columns:1fr;}
-  .l2-steps{flex-direction:column;}
-  .l2-steps>div{max-width:none;}
+  .l3-bar{min-height:60px;} .l3 .land-btn.install-nav,.l3-act>.l3-hb:not(.pri){display:none;}
+  .l3-hero{padding:40px 0 56px;} .l3-btn{width:100%; justify-content:center;} .l3-cta>.l3-dd{width:100%;} .l3-cta>.l3-dd>.l3-btn{width:100%;}
+  .l3-sec{padding:50px 0;} .l3-tp{grid-template-columns:1fr;} .l3-steps{grid-template-columns:1fr;}
+  .l3-hero .l3-panel{position:absolute; inset-inline:0; top:calc(100% + 8px);} .l3-tabs{justify-content:flex-start; flex-wrap:nowrap; overflow-x:auto; padding-bottom:6px;} .l3-tabs button{flex:none;}
 }
-@media(max-width:600px){ .l2 .land-menu .dd-panel{position:fixed; top:118px; inset-inline:12px; width:auto;} }
+.l3-copy h1 .g{white-space:nowrap;}
+/* شرائح الأرقام والجهات */
+.l3-strip{padding:34px 0 0;} .l3-strip[hidden]{display:none;}
+.l3-slist{display:flex; justify-content:center; gap:14px; flex-wrap:wrap;} .l3-slist>div{min-width:170px; text-align:center; background:#fff; border:1px solid var(--line); border-radius:16px; padding:16px 24px;} .l3-slist b{display:block; font-size:28px; font-weight:900; color:var(--n2);} .l3-slist span{font-size:13px; color:var(--ink-soft);}
+.l3-plist{display:flex; flex-wrap:wrap; gap:10px; justify-content:center;} .l3-pc{display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--line); border-radius:99px; padding:8px 16px; font-weight:800; font-size:13.5px;} .l3-pc img{height:24px; width:auto; border-radius:4px;} .l3-pc .icon{color:var(--g);}
+.l3-hb.ic{padding:9px 11px;}
+/* شاشة الترحيب */
+.wel-ov{position:fixed; inset:0; z-index:9999; background:rgba(8,14,34,.6); display:grid; place-items:center; padding:20px; animation:l3pop .2s ease;}
+.wel-box{width:100%; max-width:420px; background:var(--white); color:var(--ink); border-radius:22px; padding:24px; box-shadow:0 30px 70px rgba(0,0,0,.4); text-align:right;} .wel-box h3{font-size:21px; margin-bottom:4px;} .wel-box p{color:var(--ink-soft); font-size:14px; margin-bottom:14px;}
+.wel-st{width:100%; display:flex; align-items:center; gap:12px; background:var(--paper-dim); border:1px solid var(--line); border-radius:14px; padding:13px; margin-bottom:8px; color:var(--ink); font-family:inherit; font-weight:800; font-size:14.5px; cursor:pointer; text-align:right;} .wel-st:hover{border-color:var(--gold);} .wel-st b{width:28px; height:28px; border-radius:50%; background:var(--ink); color:var(--white); display:grid; place-items:center; font-size:13px; flex:none;} .wel-st span{flex:1;} .wel-st .icon{width:16px; height:16px;}
+.wel-x{background:none; color:var(--ink-soft); font-weight:700; font-size:13px; width:100%; padding:8px; cursor:pointer; font-family:inherit;}
+/* الوضع الليلي */
+html[data-theme=dark]{color-scheme:dark; --ink:#e7ecfa; --ink-soft:#a9b6d8; --paper:#0b1226; --paper-dim:#141e3f; --white:#111a36; --line:#27345f;}
+html[data-theme=dark] body{background:var(--paper); color:var(--ink);}
+html[data-theme=dark] input,html[data-theme=dark] select,html[data-theme=dark] textarea{background:#0d152e; color:var(--ink); border-color:var(--line);}
+html[data-theme=dark] .l3-f,html[data-theme=dark] .l3-steps>div,html[data-theme=dark] .l3-acc details,html[data-theme=dark] .l3-faq details,html[data-theme=dark] .l3-tabs button,html[data-theme=dark] .l3-slist>div,html[data-theme=dark] .l3-pc{background:var(--white); border-color:var(--line); color:var(--ink);}
+html[data-theme=dark] .l3-tabs button.on{background:var(--g); color:#1a1305; border-color:var(--g);}
+html[data-theme=dark] .l3-i{background:#1c2a57; color:#cdd8f5;} html[data-theme=dark] .l3-panel{background:#121c3a; color:var(--ink);} html[data-theme=dark] .l3-panel>button:hover:not(:disabled){background:#1c2a57;}
+html[data-theme=dark] .l3-sec.alt{background:#0e1630;} html[data-theme=dark] .l3-slist b{color:var(--g2);} html[data-theme=dark] .l3-mini{background:var(--g); color:#1a1305;}
+html[data-theme=dark] .card,html[data-theme=dark] .card-panel,html[data-theme=dark] .hp-card,html[data-theme=dark] .role-card,html[data-theme=dark] .modal,html[data-theme=dark] .post,html[data-theme=dark] .item{background:var(--white) !important; color:var(--ink); border-color:var(--line) !important;}
+html[data-theme=dark] .topbar,html[data-theme=dark] .bell-btn,html[data-theme=dark] .notif-dropdown,html[data-theme=dark] .search-dropdown{background:var(--white); color:var(--ink); border-color:var(--line);}
+html[data-theme=dark] .hp-chip{background:var(--paper-dim); color:var(--ink); border-color:var(--line);} html[data-theme=dark] .hp-chip.on{background:var(--g); color:#1a1305;}
+html[data-theme=dark] table th{background:#16224a; color:var(--ink);} html[data-theme=dark] table td{border-color:var(--line);}
+html[data-theme=dark] .sidebar{--ink:#0f1b36; --ink-soft:#56627c; --paper:#f4f6fb; --paper-dim:#eaeef6; --white:#fff; --line:#e2e7f1;}
+html[data-theme=dark] .global-topbar{background:rgba(11,18,38,.92); border-color:var(--line);}
+html[data-theme=dark] .search-input-box{background:#0d152e; border-color:var(--line);} html[data-theme=dark] .search-input-box input{background:transparent !important; color:var(--ink);}
+html[data-theme=dark] .bell-btn,html[data-theme=dark] .topbar-actions button{background:var(--white); color:var(--ink); border-color:var(--line);}
+html[data-theme=dark] .bottom-nav,html[data-theme=dark] .mb-bar,html[data-theme=dark] .mb-top{background:#0d152e; border-color:var(--line);}
 </style>
 </head>
 <body>
@@ -1316,79 +1393,198 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
 <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.6 21.6 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
 <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></symbol>
 <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+<symbol id="i-chev-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="i-fingerprint" viewBox="0 0 24 24"><path d="M12 11v3c0 2-.5 4-1.5 6M8 12a4 4 0 0 1 8 0c0 3-.4 5.5-1.5 8M5 12a7 7 0 0 1 14 0c0 1.5 0 3-.3 4.5M9 20c.8-1.6 1.2-3.4 1.2-5.5"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></symbol>
+<symbol id="i-qr" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v.01M20 20v.01M14 20h3"/></symbol>
 <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
 <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
 <symbol id="i-check-double" viewBox="0 0 24 24"><polyline points="18 6 7 17 2 12"/><polyline points="22 10 13 19 11 17"/></symbol>
 </svg>
 
 <!-- ========== ROLE SELECT ========== -->
-<div id="screen-role" class="l2">
-  <header class="l2-head">
-    <div class="l2-in l2-bar">
+<div id="screen-role" class="l3">
+  <header class="l3-head" id="l3-head">
+    <div class="l3-in l3-bar">
       <div class="brand-mark">نُدرس <span>معًا</span></div>
-      <nav class="land-menu">
-        <div class="dd"><button class="dd-btn" onclick="toggleLandDd(this)">المميزات <svg class="icon l2-chev"><use href="#i-chevron"></use></svg></button>
-          <div class="dd-panel">
-            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">التعلم والمكتبة<span class="dd-d">دورات ودروس وكتب ودفاتر تحضير جاهزة</span></span></button>
-            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">أدوات المعلم<span class="dd-d">تحضير، بنك أسئلة، اختبارات، شهادات</span></span></button>
-            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">مجتمع المعلمين<span class="dd-d">أسئلة، خبراء، مجموعات تخصص</span></span></button>
-            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">التربية العملية<span class="dd-d">سجل زيارات وتقرير جاهز للطباعة</span></span></button>
-            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">المشرف والإدارة<span class="dd-d">اجتماعات، تكاليف بملفات وروابط، متابعة وتقارير</span></span></button>
-            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">الحضور الأكاديمي<span class="dd-d">موقع + بصمة + حساب Google أو Microsoft</span></span></button>
-            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">دردشة<span class="dd-d">رسائل وروابط وملفات</span></span></button>
-            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">نقاط وتحفيز<span class="dd-d">شارات، تحدي أسبوعي، لوحة متصدرين</span></span></button>
-          </div></div>
-        <div class="dd" data-kind="pricing"><button class="dd-btn" onclick="toggleLandDd(this)">الاشتراك <svg class="icon l2-chev"><use href="#i-chevron"></use></svg></button>
-          <div class="dd-panel" id="land-dd-pricing"><div class="dd-foot" style="border:0;">جاري التحميل...</div></div></div>
+      <nav class="l3-nav" aria-label="القائمة الرئيسية">
+        <div class="l3-dd">
+          <button class="l3-ddb" onclick="l3Dd(this)" aria-expanded="false">أدوات المنصة <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></button>
+          <div class="l3-panel l3-mega">
+            <button onclick="l3Tool('learn')"><span class="l3-i"><svg class="icon"><use href="#i-layers"></use></svg></span><span><b>التعلم والمكتبة</b><small>دورات، كتب، دفاتر، شهادات</small></span></button>
+            <button onclick="l3Tool('teach')"><span class="l3-i"><svg class="icon"><use href="#i-edit"></use></svg></span><span><b>أدوات المعلم</b><small>تحضير، أسئلة، اختبارات، سبورة</small></span></button>
+            <button onclick="l3Tool('sup')"><span class="l3-i"><svg class="icon"><use href="#i-clipboard"></use></svg></span><span><b>التربية العملية والإشراف</b><small>زيارات، تكاليف، اجتماعات، تقارير</small></span></button>
+            <button onclick="l3Tool('att')"><span class="l3-i"><svg class="icon"><use href="#i-pin"></use></svg></span><span><b>الحضور الأكاديمي</b><small>موقع + بصمة + حساب Google / Microsoft</small></span></button>
+            <button onclick="l3Tool('comm')"><span class="l3-i"><svg class="icon"><use href="#i-users"></use></svg></span><span><b>المجتمع والتحفيز</b><small>خبراء، مجموعات، دردشة، نقاط</small></span></button>
+          </div>
+        </div>
+        <div class="l3-dd">
+          <button class="l3-ddb" onclick="l3Dd(this,'pricing')" aria-expanded="false">الحسابات والأسعار <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></button>
+          <div class="l3-panel l3-list" id="l3-dd-pricing"><div class="l3-load">جاري التحميل…</div></div>
+        </div>
+        <a class="l3-link" href="javascript:void(0)" onclick="l3Go('l3-faq')">أسئلة شائعة</a>
       </nav>
-      <div class="l2-act">
-        <button class="land-btn install-nav" onclick="installApp()"><svg class="icon"><use href="#i-star"></use></svg> ثبّت التطبيق</button>
-        <button class="land-btn solid" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
+      <div class="l3-act">
+        <button class="land-btn install-nav" onclick="installApp()"><svg class="icon"><use href="#i-download"></use></svg> ثبّت التطبيق</button>
+        <button class="l3-hb ic" onclick="themeToggle()" aria-label="تبديل الوضع الليلي"><svg class="icon"><use href="#i-moon"></use></svg></button>
+        <button class="l3-hb" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
+        <div class="l3-dd">
+          <button class="l3-hb pri" onclick="l3Dd(this,'signup')" aria-expanded="false"><svg class="icon"><use href="#i-sparkle"></use></svg> إنشاء حساب <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></button>
+          <div class="l3-panel l3-list l3-end" id="l3-dd-signup"><div class="l3-load">جاري التحميل…</div></div>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="l2-in">
-    <section class="l2-hero">
-      <span class="l2-tag">منصة المعلم وطالب المعلم</span>
-      <h1>نتعلم… نتطور… و<span>نُدرس معًا</span></h1>
-      <p class="l2-lead">أدوات التحضير والاختبارات، مجتمع معلمين حقيقي، ومتابعة أكاديمية — كله في مكان واحد وبدون تعقيد.</p>
-      <div class="l2-cta">
-        <button class="l2-btn pri" onclick="showAcctype()"><svg class="icon"><use href="#i-sparkle"></use></svg> إنشاء حساب</button>
-        <button class="l2-btn sec" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
+  <section class="l3-hero">
+    <div class="l3-glow g1"></div><div class="l3-glow g2"></div>
+    <div class="l3-in l3-hgrid">
+      <div class="l3-copy">
+        <span class="l3-tag"><svg class="icon"><use href="#i-sparkle"></use></svg> <span id="l3-tag">منصة المعلم وطالب المعلم</span></span>
+        <h1><span id="l3-h1a" class="pl">نتعلم… نتطور… و</span><span class="g" id="l3-h1b">نُدرس معًا</span></h1>
+        <p class="l3-lead" id="l3-lead">أدوات التحضير والاختبارات، مجتمع معلمين حقيقي، وحضور ومتابعة أكاديمية — كل ده في مكان واحد وبدون تعقيد.</p>
+        <div class="l3-cta">
+          <div class="l3-dd">
+            <button class="l3-btn gold" onclick="l3Dd(this,'signup2')" aria-expanded="false"><svg class="icon"><use href="#i-sparkle"></use></svg> إنشاء حساب <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></button>
+            <div class="l3-panel l3-list" id="l3-dd-signup2"><div class="l3-load">جاري التحميل…</div></div>
+          </div>
+          <button class="l3-btn ghost" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
+          <button class="l3-btn ghost" onclick="showNidScreen()"><svg class="icon"><use href="#i-lock"></use></svg> الدخول بالرقم القومي</button>
+        </div>
+        <ul class="l3-trust">
+          <li><svg class="icon"><use href="#i-check"></use></svg> اشتراك مرة واحدة بدون تجديد</li>
+          <li><svg class="icon"><use href="#i-check"></use></svg> المشرف والإدارة مجانًا</li>
+          <li><svg class="icon"><use href="#i-check"></use></svg> يعمل كتطبيق على الموبايل</li>
+        </ul>
       </div>
-      <button class="land-link l2-nid" onclick="showNidScreen()"><svg class="icon"><use href="#i-lock"></use></svg> الدخول بالرقم القومي</button>
-      <div class="l2-note">اشتراك <b>مرة واحدة</b> بدون تجديد — والمشرف والإدارة <b>مجانًا</b></div>
+      <div class="l3-demo" aria-hidden="true">
+        <div class="l3-card">
+          <div class="l3-ch"><span class="l3-i"><svg class="icon"><use href="#i-pin"></use></svg></span><div><b>تأكيد الحضور</b><small>محاضرة — كلية التربية</small></div><span class="l3-live">معاينة</span></div>
+          <div class="l3-step ok"><span class="l3-i"><svg class="icon"><use href="#i-pin"></use></svg></span><div><b>الموقع</b><small>داخل نطاق القاعة</small></div><svg class="icon l3-tick"><use href="#i-check"></use></svg></div>
+          <div class="l3-step ok"><span class="l3-i"><svg class="icon"><use href="#i-fingerprint"></use></svg></span><div><b>البصمة</b><small>التحقق على جهازك</small></div><svg class="icon l3-tick"><use href="#i-check"></use></svg></div>
+          <div class="l3-step"><span class="l3-i"><svg class="icon"><use href="#i-user"></use></svg></span><div><b>حساب Google / Microsoft</b><small>تأكيد الهوية</small></div><span class="l3-dot"></span></div>
+          <div class="l3-fake"><svg class="icon"><use href="#i-shield"></use></svg> تأكيد الحضور</div>
+        </div>
+        <div class="l3-chip c1"><svg class="icon"><use href="#i-award"></use></svg> نقاط وشارات</div>
+        <div class="l3-chip c2"><svg class="icon"><use href="#i-file"></use></svg> تقرير PDF / Excel</div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="l3-strip" id="l3-stats" hidden><div class="l3-in"><div class="l3-slist" id="l3-slist"></div></div></section>
+    <section class="l3-strip" id="l3-partners" hidden><div class="l3-in"><span class="l3-eb">جهات مشاركة</span><div class="l3-plist" id="l3-plist"></div></div></section>
+    <section class="l3-sec l3-rv" id="l3-tools">
+      <div class="l3-in">
+        <span class="l3-eb">أدوات المنصة</span>
+        <h2>كل اللي محتاجه في مكان واحد</h2>
+        <div class="l3-tabs" role="tablist">
+          <button class="on" data-t="learn" onclick="l3Tool('learn')"><svg class="icon"><use href="#i-layers"></use></svg> التعلم</button>
+          <button data-t="teach" onclick="l3Tool('teach')"><svg class="icon"><use href="#i-edit"></use></svg> أدوات المعلم</button>
+          <button data-t="sup" onclick="l3Tool('sup')"><svg class="icon"><use href="#i-clipboard"></use></svg> الإشراف</button>
+          <button data-t="att" onclick="l3Tool('att')"><svg class="icon"><use href="#i-pin"></use></svg> الحضور</button>
+          <button data-t="comm" onclick="l3Tool('comm')"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
+        </div>
+        <div class="l3-tp on" data-t="learn">
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-grad"></use></svg></span><div><h4>دورات ودروس</h4><p>مسارات تعلم مع تتبع التقدم وشهادات إتمام.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-book"></use></svg></span><div><h4>مكتبة وكتب</h4><p>كتب ومراجع بملف أو برابط Drive.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-notebook"></use></svg></span><div><h4>دفاتر تحضير جاهزة</h4><p>من زملاء ومن مكتبة المنصة، وتحفظ اللي يعجبك.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-award"></use></svg></span><div><h4>شهادات</h4><p>شهادات إتمام قابلة للطباعة والتحقق.</p></div></div>
+        </div>
+        <div class="l3-tp" data-t="teach">
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-edit"></use></svg></span><div><h4>مولد تحضير الدروس</h4><p>نموذج منظم وطباعة جاهزة.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-clipboard"></use></svg></span><div><h4>بنك الأسئلة والاختبارات</h4><p>اختبارات وأوراق عمل بمستويات وإجابات نموذجية.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-settings"></use></svg></span><div><h4>أدوات مساعدة</h4><p>مؤقت، توزيع مجموعات، درجات، جدول أسبوعي.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-monitor"></use></svg></span><div><h4>سبورة إلكترونية</h4><p>اشرح واعرض لطلابك من أي مكان.</p></div></div>
+        </div>
+        <div class="l3-tp" data-t="sup">
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-clipboard"></use></svg></span><div><h4>سجل زيارات وتقارير</h4><p>تقرير جاهز للطباعة لجامعتك.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-file"></use></svg></span><div><h4>تكاليف بصور وPDF</h4><p>رفع التكليف والتسليم مباشرة أو برابط.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-video"></use></svg></span><div><h4>اجتماعات وغرف</h4><p>أجندة ومحاضر وتأكيد حضور وملف تقويم.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-calendar"></use></svg></span><div><h4>متابعة وتقويم</h4><p>إنذار مبكر، مواعيد زيارات، تقارير شهرية.</p></div></div>
+        </div>
+        <div class="l3-tp" data-t="att">
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-pin"></use></svg></span><div><h4>تأكيد بالموقع</h4><p>نطاق جغرافي لكل قاعة أو مدرسة.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-fingerprint"></use></svg></span><div><h4>بصمة الجهاز</h4><p>التحقق يتم على جهازك ولا نخزن بصمتك.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-qr"></use></svg></span><div><h4>رمز QR متجدد</h4><p>يمنع التسجيل من خارج القاعة.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-file"></use></svg></span><div><h4>تقارير Excel وPDF</h4><p>نسب حضور وأعذار وتنبيهات للمشرف.</p></div></div>
+        </div>
+        <div class="l3-tp" data-t="comm">
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-users"></use></svg></span><div><h4>خبراء ومجموعات</h4><p>اسأل خبيرًا وانضم لمجموعة تخصصك.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-chat-circle"></use></svg></span><div><h4>دردشة</h4><p>رسائل وروابط وملفات بين الزملاء.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-award"></use></svg></span><div><h4>نقاط وشارات</h4><p>تحدي أسبوعي ولوحة متصدرين.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-bell"></use></svg></span><div><h4>إشعارات وتذكيرات</h4><p>مواعيدك وتنبيهاتك في مكان واحد.</p></div></div>
+        </div>
+      </div>
     </section>
 
-    <section class="l2-sec" id="land-features">
-      <h2>كل اللي محتاجه في مكان واحد</h2>
-      <div class="l2-grid">
-        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-layers"></use></svg></span><div><h4>التعلم والمكتبة</h4><p>دورات ودروس وكتب ودفاتر تحضير جاهزة.</p></div></div>
-        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-edit"></use></svg></span><div><h4>أدوات المعلم</h4><p>تحضير الدروس، بنك الأسئلة، اختبارات وشهادات.</p></div></div>
-        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-users"></use></svg></span><div><h4>مجتمع المعلمين</h4><p>اسأل خبيرًا وانضم لمجموعة تخصصك.</p></div></div>
-        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-clipboard"></use></svg></span><div><h4>التربية العملية</h4><p>سجّل زياراتك واطبع تقريرًا جاهزًا لجامعتك.</p></div></div>
-        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-grad"></use></svg></span><div><h4>الإشراف والإدارة</h4><p>اجتماعات وتكاليف ومتابعة وتقارير.</p></div></div>
-        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-pin"></use></svg></span><div><h4>الحضور الأكاديمي</h4><p>تأكيد بالموقع والبصمة وحساب Google أو Microsoft.</p></div></div>
-        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-chat-circle"></use></svg></span><div><h4>دردشة</h4><p>رسائل وروابط وملفات بين الزملاء.</p></div></div>
-        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-award"></use></svg></span><div><h4>نقاط وتحفيز</h4><p>شارات وتحدي أسبوعي ولوحة متصدرين.</p></div></div>
-        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-monitor"></use></svg></span><div><h4>سبورة إلكترونية</h4><p>اشرح واعرض لطلابك من أي مكان.</p></div></div>
+    <section class="l3-sec alt l3-rv" id="l3-accts">
+      <div class="l3-in">
+        <span class="l3-eb">الحسابات</span>
+        <h2>اختار الحساب المناسب لك</h2>
+        <div class="l3-acc">
+          <details open><summary><span class="l3-i"><svg class="icon"><use href="#i-cap"></use></svg></span><b>طالب معلم</b><small>اشتراك مرة واحدة</small><svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary>
+            <div class="l3-ab"><p>للطلاب في مرحلة التربية العملية: تحضير، تدريب، ملف إنجاز، وزيارات إشراف وحضور.</p><button class="l3-mini" onclick="startSignup('student_teacher')">ابدأ بهذا الحساب <svg class="icon"><use href="#i-arrow"></use></svg></button></div></details>
+          <details><summary><span class="l3-i"><svg class="icon"><use href="#i-user"></use></svg></span><b>معلم غير تربوي</b><small>اشتراك مرة واحدة</small><svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary>
+            <div class="l3-ab"><p>لمن يدرّس ويريد أدوات التحضير والاختبارات ومجتمع المعلمين.</p><button class="l3-mini" onclick="startSignup('non_edu_teacher')">ابدأ بهذا الحساب <svg class="icon"><use href="#i-arrow"></use></svg></button></div></details>
+          <details><summary><span class="l3-i"><svg class="icon"><use href="#i-grad"></use></svg></span><b>إشراف أكاديمي / معلم خبير</b><small>مجاني</small><svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary>
+            <div class="l3-ab"><p>متابعة المتدربين: زيارات وتقارير وتكاليف واجتماعات، وتفعيل الحضور للطلاب التابعين لك.</p><button class="l3-mini" onclick="startSignup('supervisor')">ابدأ بهذا الحساب <svg class="icon"><use href="#i-arrow"></use></svg></button></div></details>
+          <details><summary><span class="l3-i"><svg class="icon"><use href="#i-settings"></use></svg></span><b>الإدارة</b><small>مجاني</small><svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary>
+            <div class="l3-ab"><p>متابعة المشرفين، تقارير شهرية، وتفعيل الحضور الأكاديمي لهم.</p><button class="l3-mini" onclick="startSignup('office')">ابدأ بهذا الحساب <svg class="icon"><use href="#i-arrow"></use></svg></button></div></details>
+        </div>
       </div>
     </section>
 
-    <section class="l2-sec">
-      <h2>ابدأ في 3 خطوات</h2>
-      <div class="l2-steps">
-        <div><b>1</b><p>أنشئ حسابك واختار نوعه</p></div>
-        <div><b>2</b><p>ادفع الرسوم مرة واحدة وفعّل حسابك</p></div>
-        <div><b>3</b><p>استخدم الأدوات المفتوحة لنوع حسابك</p></div>
+    <section class="l3-sec l3-rv">
+      <div class="l3-in">
+        <span class="l3-eb">البداية</span>
+        <h2>ابدأ في 3 خطوات</h2>
+        <div class="l3-steps">
+          <div><b>1</b><h4>أنشئ حسابك</h4><p>اختار نوع الحساب المناسب لك.</p></div>
+          <div><b>2</b><h4>فعّل حسابك</h4><p>ادفع الرسوم مرة واحدة (المشرف والإدارة بدون رسوم).</p></div>
+          <div><b>3</b><h4>استخدم الأدوات</h4><p>كل الأدوات المفتوحة لنوع حسابك.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="l3-sec alt l3-rv" id="l3-faq">
+      <div class="l3-in l3-narrow">
+        <span class="l3-eb">أسئلة شائعة</span>
+        <h2>إجابات سريعة</h2>
+        <div class="l3-faq" id="l3-faqlist">
+          <details><summary>كم الاشتراك؟ <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary><p>مرة واحدة بدون تجديد، والقيمة بتظهر في قايمة "الحسابات والأسعار". حسابات المشرف والإدارة مجانية.</p></details>
+          <details><summary>إزاي بيتفعّل حسابي؟ <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary><p>بعد الدفع بتأكد عبر واتساب والإدارة بتفعّل الحساب. وممكن تدخل بالرقم القومي لو الإدارة سجّلته لك.</p></details>
+          <details><summary>هل بصمتي بتتخزن؟ <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary><p>لا. التحقق بيتم على جهازك نفسه، واحنا بنحفظ بس معرّفًا عامًا. التفاصيل في سياسة الخصوصية.</p></details>
+          <details><summary>إزاي أسجّل حضوري؟ <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary><p>من "الحضور الأكاديمي" في القايمة: الموقع ثم البصمة ثم حساب Google أو Microsoft. لازم المشرف أو الإدارة يكون فعّله لك.</p></details>
+          <details><summary>هل يشتغل على الموبايل؟ <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary><p>أيوه، وتقدر تثبّته كتطبيق من زرار "ثبّت التطبيق".</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="l3-cta2 l3-rv">
+      <div class="l3-in">
+        <h2>جاهز تبدأ؟</h2>
+        <p>انضم لمجتمع المعلمين وابدأ رحلتك النهاردة.</p>
+        <div class="l3-cta" style="justify-content:center;">
+          <button class="l3-btn gold" onclick="showAcctype()"><svg class="icon"><use href="#i-sparkle"></use></svg> إنشاء حساب</button>
+          <button class="l3-btn ghost" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
+          <button class="l3-btn ghost" onclick="showNidScreen()"><svg class="icon"><use href="#i-lock"></use></svg> الدخول بالرقم القومي</button>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="l2-foot">
-    <div class="l2-in">جميع الحقوق محفوظة لمنصات بلس ومهدي حسن © <span id="role-footer-year"></span> — واتساب: <a href="https://wa.me/201007586279" target="_blank" rel="noopener">01007586279</a><br>
-    <a href="javascript:void(0)" onclick="openLegal('terms')">الشروط والأحكام</a> · <a href="javascript:void(0)" onclick="openLegal('privacy')">سياسة الخصوصية</a></div>
+  <footer class="l3-foot">
+    <div class="l3-in">
+      <div class="brand-mark">نُدرس <span>معًا</span></div>
+      <div class="l3-fl"><a href="javascript:void(0)" onclick="openLegal('terms')">الشروط والأحكام</a><a href="javascript:void(0)" onclick="openLegal('privacy')">سياسة الخصوصية</a><a class="l3-wa" href="https://wa.me/201007586279" target="_blank" rel="noopener">واتساب: 01007586279</a></div>
+      <div class="l3-copy2">جميع الحقوق محفوظة لمنصات بلس ومهدي حسن © <span id="role-footer-year"></span></div>
+    </div>
   </footer>
 </div>
 
@@ -9392,6 +9588,108 @@ openLegal = function(tab){
   document.getElementById('screen-legal').style.display = 'flex'; showLegalTab(tab || 'terms'); window.scrollTo(0, 0);
 };
 closeLegal = function(){ document.getElementById('screen-legal').style.display = 'none'; _lgPrev.forEach(([el, d]) => { el.style.display = d || (el.id === 'screen-role' ? 'block' : ''); }); _lgPrev = []; window.scrollTo(0, 0); };
+
+/* ===== الدفعة 13: محتوى الصفحة الرئيسية، روابط الدعوة والتسجيل، الوضع الليلي، الترحيب ===== */
+/* 1) محتوى الصفحة الرئيسية من لوحة الأدمن */
+async function l3LoadContent(){
+  let d = {}; try{ const x = await db.collection('siteSettings').doc('landing').get(); d = x.exists ? x.data() : {}; }catch(e){ return; }
+  const set = (id, v) => { const e = document.getElementById(id); if(e && v) e.textContent = v; };
+  set('l3-tag', d.tag); set('l3-h1a', d.h1a); set('l3-h1b', d.h1b); set('l3-lead', d.lead);
+  if(d.wa){ document.querySelectorAll('.l3-wa').forEach(a => { a.href = 'https://wa.me/' + d.wa; a.textContent = 'واتساب: ' + d.wa.replace(/^20/, '0'); }); }
+  if(d.faq && d.faq.length){ const f = document.getElementById('l3-faqlist'); if(f) f.innerHTML = d.faq.map(x => `<details><summary>${hpE(x.q)} <svg class="icon l3-cv"><use href="#i-chev-down"></use></svg></summary><p>${hpE(x.a)}</p></details>`).join(''); }
+  if(d.partners && d.partners.length){ const p = document.getElementById('l3-partners'); if(p){ p.hidden = false; document.getElementById('l3-plist').innerHTML = d.partners.map(x => `<span class="l3-pc">${/^https?:\/\//.test(x.logo || '') ? `<img src="${hpE(x.logo)}" alt="" loading="lazy">` : '<svg class="icon"><use href="#i-grad"></use></svg>'}${hpE(x.name)}</span>`).join(''); } }
+  if(d.showStats && d.stats){ const s = document.getElementById('l3-stats'); if(s){ s.hidden = false; document.getElementById('l3-slist').innerHTML = [['members', 'عضو في المنصة'], ['supervisors', 'مشرف وإدارة'], ['checkins', 'تسجيل حضور']].map(k => `<div><b>${Number(d.stats[k[0]] || 0).toLocaleString('ar-EG')}</b><span>${k[1]}</span></div>`).join(''); } }
+}
+/* 2) روابط التسجيل المباشر والدعوة */
+let inviteBy = null; try{ inviteBy = sessionStorage.getItem('inviteBy') || null; }catch(e){}
+const _newAccFields13 = newAccountFields;
+newAccountFields = function(){ const f = _newAccFields13(); if(inviteBy) f.inviteBy = inviteBy; return f; };
+function l3Hash(){
+  const h = (location.hash || '').replace(/^#/, ''); if(!h) return;
+  const inv = h.match(/^invite=([A-Za-z0-9]{10,40})(?:&t=([a-z_]+))?/), jn = h.match(/^join=([a-z_]+)/);
+  if(!inv && !jn) return;
+  if(inv){ inviteBy = inv[1]; try{ sessionStorage.setItem('inviteBy', inviteBy); }catch(e){} }
+  const type = (inv && inv[2]) || (jn && jn[1]) || 'student_teacher';
+  const go = () => { const r = document.getElementById('screen-role'); if(r && getComputedStyle(r).display !== 'none' && !currentUid){ startSignup(ACCOUNT_TYPES[type] ? type : 'student_teacher'); if(inv){ const t = document.getElementById('signup-step-tag'); if(t) t.textContent += ' — عبر دعوة من مشرفك'; } } };
+  setTimeout(go, 900);
+}
+function svInviteLink(){ return location.href.split('#')[0] + '#invite=' + currentUid; }
+let INV = null;
+async function svInviteLoad(){ try{ const q = await db.collection('users').where('inviteBy', '==', currentUid).get(); INV = q.docs.map(d => Object.assign({ id: d.id }, d.data())); }catch(e){ INV = []; } if(typeof svTab !== 'undefined' && svTab === 'invite') svShow('invite'); }
+function svInviteHtml(){
+  if(INV === null) svInviteLoad();
+  const link = svInviteLink(), wa = 'https://wa.me/?text=' + encodeURIComponent('سجّل في نُدرس معًا عن طريق رابط الدعوة الخاص بي: ' + link);
+  const rows = (INV || []).map(u => { const mine = u.supervisorId === currentUid; return `<div class="hp-trow"><span>${hpE(u.name || u.email || u.id)} <small>${hpE((ACCOUNT_TYPES[u.accountType] || {}).label || '')}</small></span>${mine ? '<span class="badge active">مرتبط</span>' : (u.supervisorId ? '<span class="badge expired">مرتبط بمشرف آخر</span>' : `<button class="hp-chip on" onclick="svInviteAccept('${u.id}')">قبول وربطه بي</button>`)}</div>`; }).join('');
+  return `<div class="hp-card"><h3>رابط الدعوة</h3><div class="hp-note">ابعت الرابط لأعضائك. لما يسجّلوا بيه بيظهروا هنا وتقدر تقبلهم وتربطهم بحسابك.</div>
+    <div class="hp-row"><input type="text" readonly dir="ltr" value="${hpE(link)}" onclick="this.select()"></div>
+    <div class="hp-actions"><button class="hp-chip on" onclick="navigator.clipboard.writeText('${link}');toast('اتنسخ الرابط.')">نسخ الرابط</button><a class="hp-chip" href="${wa}" target="_blank" rel="noopener">مشاركة على واتساب</a><button class="hp-chip" onclick="svInviteLoad()">تحديث</button></div></div>
+    <div class="hp-card"><h3>المسجّلون برابطك <small>${(INV || []).length}</small></h3>${rows || '<div class="hp-note">لسه محدّش سجّل برابطك.</div>'}</div>`;
+}
+async function svInviteAccept(id){
+  try{ await db.collection('users').doc(id).update({ supervisorId: currentUid }); const u = (INV || []).find(x => x.id === id); if(u){ u.supervisorId = currentUid; if(Array.isArray(svMembers) && !svMembers.find(m => m.id === id)) svMembers.push(u); } createNotification(id, 'message', 'تم قبولك وربط حسابك بمشرفك.', 'v-helpers'); toast('اتربط.'); svShow('invite'); }catch(e){ toast('تعذّر: ' + (e.code || e.message), { type: 'err' }); }
+}
+SV_FN.invite = svInviteHtml;
+['expert', 'academic', 'office'].forEach(k => SUPT[k].splice(SUPT[k].length - 1, 0, ['invite', '🔗 رابط الدعوة']));
+/* 3) الوضع الليلي */
+function themeApply(t){ document.documentElement.dataset.theme = t === 'dark' ? 'dark' : 'light'; const m = document.querySelector('meta[name="theme-color"]'); if(m) m.content = t === 'dark' ? '#0b1226' : '#0b1530'; document.querySelectorAll('.theme-lbl').forEach(e => e.textContent = t === 'dark' ? 'الوضع النهاري' : 'الوضع الليلي'); }
+function themeToggle(){ const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; try{ localStorage.setItem('nd-theme', t); }catch(e){} themeApply(t); }
+(function(){
+  let t = null; try{ t = localStorage.getItem('nd-theme'); }catch(e){} if(!t && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark'; themeApply(t);
+  document.querySelectorAll('.nav-logout').forEach(b => b.insertAdjacentHTML('beforebegin', '<button class="nav-item" onclick="themeToggle()"><svg class="icon"><use href="#i-moon"></use></svg> <span class="theme-lbl">الوضع الليلي</span></button>'));
+  themeApply(document.documentElement.dataset.theme);
+})();
+/* 4) شاشة الترحيب */
+const WEL = {
+  student_teacher: [['أكمل ملفك الشخصي', 'v-profile'], ['جرّب مولد تحضير الدروس', 'v-lesson-planner'], ['سجّل حضورك الأكاديمي', 'att']],
+  non_edu_teacher: [['أكمل ملفك الشخصي', 'v-profile'], ['جرّب مولد تحضير الدروس', 'v-lesson-planner'], ['اسأل المجتمع', 'v-qa']],
+  supervisor: [['أدوات الإشراف', 'v-sup'], ['ابعت رابط الدعوة لأعضائك', 'invite'], ['فعّل الحضور الأكاديمي لهم', 'att']],
+  expert_supervisor: [['أدوات الإشراف', 'v-sup'], ['ابعت رابط الدعوة لأعضائك', 'invite'], ['فعّل الحضور الأكاديمي لهم', 'att']],
+  office: [['لوحة الإدارة', 'v-sup'], ['ابعت رابط الدعوة للمشرفين', 'invite'], ['فعّل الحضور الأكاديمي للمشرفين', 'att']]
+};
+function welGo(k){
+  document.getElementById('wel-ov').remove();
+  if(k === 'att') return attOpen();
+  if(k === 'invite'){ showView('v-sup', document.querySelector('#nav-sup .nav-item')); return setTimeout(() => svShow('invite'), 250); }
+  showView(k, document.querySelector('[data-views~="' + k + '"]'));
+}
+function welShow(){
+  const type = (userStatus && userStatus.accountType) || 'student_teacher', st = WEL[type]; if(!st || document.getElementById('wel-ov')) return;
+  const key = 'welcome_' + currentUid; try{ if(localStorage.getItem(key)) return; localStorage.setItem(key, '1'); }catch(e){ return; }
+  const o = document.createElement('div'); o.id = 'wel-ov'; o.className = 'wel-ov';
+  o.innerHTML = `<div class="wel-box"><h3>أهلًا بيك في نُدرس معًا</h3><p>ابدأ بالخطوات دي:</p>${st.map((x, i) => `<button class="wel-st" onclick="welGo('${x[1]}')"><b>${i + 1}</b><span>${x[0]}</span><svg class="icon"><use href="#i-arrow"></use></svg></button>`).join('')}<button class="wel-x" onclick="document.getElementById('wel-ov').remove()">لاحقًا</button></div>`;
+  document.body.appendChild(o);
+}
+const _boot13 = ndBootExtras; ndBootExtras = async function(){ const r = await _boot13.apply(this, arguments); try{ if(userStatus && (userStatus.status === 'active' || userStatus.approved === true)) setTimeout(welShow, 1800); }catch(e){} return r; };
+l3LoadContent(); l3Hash();
+
+/* ===== الدفعة 13: الصفحة الرئيسية الفخمة — قوائم منسدلة وتبويبات ===== */
+function l3CloseDd(){ document.querySelectorAll('.l3-dd.open').forEach(d => { d.classList.remove('open'); const b = d.querySelector('.l3-ddb, .l3-hb, .l3-btn'); if(b) b.setAttribute('aria-expanded', 'false'); }); }
+function l3Dd(btn, kind){
+  const dd = btn.closest('.l3-dd'), was = dd.classList.contains('open'); l3CloseDd();
+  if(!was){ dd.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); if(kind) l3Types(kind); }
+}
+document.addEventListener('click', e => { if(!e.target.closest('.l3-dd')) l3CloseDd(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') l3CloseDd(); });
+async function l3Types(kind){
+  const el = document.getElementById(kind === 'pricing' ? 'l3-dd-pricing' : 'l3-dd-' + kind); if(!el) return;
+  const pr = await loadPricing(), pricing = kind === 'pricing';
+  const row = key => { const t = ACCOUNT_TYPES[key], c = pr[key] || {}, fee = Number(c.fee) || 0, closed = t.paid && c.enabled === false;
+    const price = closed ? 'مغلق مؤقتًا' : (!t.paid ? 'مجاني' : (fee ? fee + ' جنيه' : 'مجاني'));
+    return `<button ${closed ? 'disabled' : `onclick="l3CloseDd();startSignup('${key}')"`}><span class="l3-i"><svg class="icon"><use href="#i-${t.icon && /^(book|cap|user|users|star|clipboard|award)$/.test(t.icon) ? t.icon : 'user'}"></use></svg></span><span><b>${t.label}</b><small>${t.desc || ''}</small></span><em class="${(!t.paid || !fee) && !closed ? 'free' : ''}">${price}</em></button>`; };
+  el.innerHTML = ['student_teacher', 'non_edu_teacher'].map(row).join('') + '<div class="l3-sep">مجاني — بدون اشتراك</div>' + ['supervisor', 'expert_supervisor', 'office'].map(row).join('') + (pricing ? '<div class="l3-foot2">الدفع مرة واحدة بدون تجديد.</div>' : '');
+}
+function l3Go(id){ l3CloseDd(); const el = document.getElementById(id); if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function l3Tool(t){
+  l3CloseDd(); document.querySelectorAll('.l3-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  document.querySelectorAll('.l3-tp').forEach(p => p.classList.toggle('on', p.dataset.t === t)); l3Go('l3-tools');
+}
+(function(){
+  const h = document.getElementById('l3-head'); if(!h) return;
+  window.addEventListener('scroll', () => h.classList.toggle('sc', window.scrollY > 8), { passive: true });
+  const els = document.querySelectorAll('.l3-rv'); if(!('IntersectionObserver' in window)){ els.forEach(e => e.classList.add('in')); return; }
+  const io = new IntersectionObserver(es => es.forEach(x => { if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } }), { threshold: .12 });
+  els.forEach(e => io.observe(e));
+})();
 </script>
 </body>
 </html>
