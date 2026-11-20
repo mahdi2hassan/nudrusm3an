@@ -1191,6 +1191,57 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
   .global-topbar input{min-height:42px;}
   .global-topbar .search-wrap{min-width:0;}
 }
+/* ===== الصفحة الرئيسية (تصميم بسيط) ===== */
+#screen-role.l2{display:block; flex-direction:column; align-items:stretch; justify-content:flex-start; padding:0; background:var(--paper); min-height:100vh; text-align:right;}
+.l2 .l2-in{width:100%; max-width:980px; margin:0 auto; padding-inline:20px;}
+.l2-head{background:var(--white); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:50;}
+.l2-bar{display:flex; align-items:center; gap:16px; min-height:64px;}
+.l2-bar .brand-mark{font-size:24px;}
+.l2-bar .land-menu{margin-inline-start:12px; flex:1;}
+.l2-act{display:flex; gap:8px; align-items:center;}
+.l2 .l2-chev{width:12px; height:12px; transform:rotate(-90deg); margin-inline-start:2px;}
+.l2-hero{text-align:center; padding:64px 0 44px;}
+.l2-tag{display:inline-block; font-size:12.5px; font-weight:800; color:var(--ink-soft); border:1px solid var(--line); background:var(--white); border-radius:99px; padding:5px 14px; margin-bottom:18px;}
+.l2-hero h1{font-size:clamp(30px,6vw,50px); line-height:1.35; color:var(--ink); font-weight:900;}
+.l2-hero h1 span{color:var(--gold);}
+.l2-lead{max-width:560px; margin:14px auto 26px; font-size:15.5px; line-height:1.9; color:var(--ink-soft);}
+.l2-cta{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+.l2-btn{display:inline-flex; align-items:center; gap:8px; font-size:15px; font-weight:800; padding:13px 28px; border-radius:12px; min-height:48px; border:1.5px solid var(--ink);}
+.l2-btn.pri{background:var(--ink); color:#fff;}
+.l2-btn.sec{background:var(--white); color:var(--ink);}
+.l2-btn:hover{transform:translateY(-1px);}
+.l2-btn .icon{width:18px; height:18px;}
+.l2-nid{display:flex; width:fit-content; margin-inline:auto; align-items:center; gap:6px; margin-top:14px; background:none; border:0; color:var(--ink-soft); font-size:13.5px; font-weight:700; text-decoration:underline; text-underline-offset:4px;}
+.l2-nid .icon{width:15px; height:15px;}
+.l2-note{margin-top:14px; font-size:13px; color:var(--ink-soft);}
+.l2-note b{color:var(--ink);}
+.l2-sec{padding:34px 0;}
+.l2-sec h2{font-size:22px; text-align:center; margin-bottom:22px; color:var(--ink);}
+.l2-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+.l2-f{display:flex; gap:12px; align-items:flex-start; background:var(--white); border:1px solid var(--line); border-radius:14px; padding:16px;}
+.l2-i{flex:none; width:40px; height:40px; border-radius:10px; background:var(--paper-dim); color:var(--ink); display:grid; place-items:center;}
+.l2-i .icon{width:20px; height:20px;}
+.l2-f h4{font-size:14.5px; color:var(--ink); margin-bottom:3px;}
+.l2-f p{font-size:12.5px; color:var(--ink-soft); line-height:1.7;}
+.l2-steps{display:flex; gap:12px; justify-content:center;}
+.l2-steps>div{flex:1; max-width:300px; display:flex; gap:10px; align-items:center; border-top:2px solid var(--line); padding-top:12px;}
+.l2-steps b{flex:none; width:30px; height:30px; border-radius:50%; background:var(--ink); color:#fff; display:grid; place-items:center; font-size:14px;}
+.l2-steps p{font-size:13.5px; color:var(--ink-soft); line-height:1.7;}
+.l2-foot{margin-top:24px; border-top:1px solid var(--line); background:var(--white); padding:22px 0; text-align:center; font-size:12.5px; color:var(--ink-soft); line-height:2;}
+.l2-foot a{color:var(--ink); font-weight:700;}
+@media(max-width:820px){ .l2-grid{grid-template-columns:repeat(2,1fr);} }
+@media(max-width:600px){
+  .l2-bar{flex-wrap:wrap; padding-block:8px; gap:8px;}
+  .l2-bar .land-menu{order:3; width:100%; margin:0; flex:none; overflow:visible;}
+  .l2-act{margin-inline-start:auto;}
+  .l2-act .land-btn:not(.solid){display:none;}
+  .l2-hero{padding:36px 0 28px;}
+  .l2-btn{width:100%; justify-content:center;}
+  .l2-grid{grid-template-columns:1fr;}
+  .l2-steps{flex-direction:column;}
+  .l2-steps>div{max-width:none;}
+}
+@media(max-width:600px){ .l2 .land-menu .dd-panel{position:fixed; top:118px; inset-inline:12px; width:auto;} }
 </style>
 </head>
 <body>
@@ -1264,85 +1315,83 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
 <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
 <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.6 21.6 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.6 21.6 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
 <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
 <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
 <symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
 <symbol id="i-check-double" viewBox="0 0 24 24"><polyline points="18 6 7 17 2 12"/><polyline points="22 10 13 19 11 17"/></symbol>
 </svg>
 
 <!-- ========== ROLE SELECT ========== -->
-<div id="screen-role">
-  <header class="land-nav">
-    <div class="brand-mark">نُدرس <span>معًا</span></div>
-    <nav class="land-menu">
-      <div class="dd"><button class="dd-btn" onclick="toggleLandDd(this)">المميزات ▾</button>
-        <div class="dd-panel">
-          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">التعلم والموارد<span class="dd-d">دورات ودروس ودفاتر تحضير جاهزة</span></span></button>
-          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">أدوات المعلم<span class="dd-d">تحضير، بنك أسئلة، اختبارات، شهادات</span></span></button>
-          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">مجتمع المعلمين<span class="dd-d">أسئلة، خبراء، مجموعات تخصص</span></span></button>
-          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">التربية العملية<span class="dd-d">سجل زيارات وتقرير جاهز للطباعة</span></span></button>
-          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">المشرف والإدارة<span class="dd-d">غرف صوت/فيديو، تكاليف، متابعة وتقارير</span></span></button>
-          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">دردشة بمرفقات<span class="dd-d">صور، ملفات، تسجيلات صوتية، روابط</span></span></button>
-          <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">نقاط وتحفيز<span class="dd-d">شارات، تحدي أسبوعي، لوحة متصدرين</span></span></button>
-        </div></div>
-      <div class="dd" data-kind="pricing"><button class="dd-btn" onclick="toggleLandDd(this)">الاشتراك ▾</button>
-        <div class="dd-panel" id="land-dd-pricing"><div class="dd-foot" style="border:0;">جاري التحميل...</div></div></div>
-    </nav>
-    <div class="land-nav-actions">
-      <button class="land-btn install-nav" onclick="installApp()"><svg class="icon"><use href="#i-star"></use></svg> ثبّت التطبيق</button>
-      <button class="land-btn solid" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
+<div id="screen-role" class="l2">
+  <header class="l2-head">
+    <div class="l2-in l2-bar">
+      <div class="brand-mark">نُدرس <span>معًا</span></div>
+      <nav class="land-menu">
+        <div class="dd"><button class="dd-btn" onclick="toggleLandDd(this)">المميزات <svg class="icon l2-chev"><use href="#i-chevron"></use></svg></button>
+          <div class="dd-panel">
+            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">التعلم والمكتبة<span class="dd-d">دورات ودروس وكتب ودفاتر تحضير جاهزة</span></span></button>
+            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">أدوات المعلم<span class="dd-d">تحضير، بنك أسئلة، اختبارات، شهادات</span></span></button>
+            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">مجتمع المعلمين<span class="dd-d">أسئلة، خبراء، مجموعات تخصص</span></span></button>
+            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">التربية العملية<span class="dd-d">سجل زيارات وتقرير جاهز للطباعة</span></span></button>
+            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">المشرف والإدارة<span class="dd-d">اجتماعات، تكاليف بملفات وروابط، متابعة وتقارير</span></span></button>
+            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">الحضور الأكاديمي<span class="dd-d">موقع + بصمة + حساب Google أو Microsoft</span></span></button>
+            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">دردشة<span class="dd-d">رسائل وروابط وملفات</span></span></button>
+            <button class="dd-item" onclick="landGoto('land-features')"><span class="dd-t">نقاط وتحفيز<span class="dd-d">شارات، تحدي أسبوعي، لوحة متصدرين</span></span></button>
+          </div></div>
+        <div class="dd" data-kind="pricing"><button class="dd-btn" onclick="toggleLandDd(this)">الاشتراك <svg class="icon l2-chev"><use href="#i-chevron"></use></svg></button>
+          <div class="dd-panel" id="land-dd-pricing"><div class="dd-foot" style="border:0;">جاري التحميل...</div></div></div>
+      </nav>
+      <div class="l2-act">
+        <button class="land-btn install-nav" onclick="installApp()"><svg class="icon"><use href="#i-star"></use></svg> ثبّت التطبيق</button>
+        <button class="land-btn solid" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
+      </div>
     </div>
   </header>
 
-  <section class="land-hero">
-    <span class="land-eyebrow">منصة المعلم وطالب المعلم</span>
-    <h1>نتعلم… نتطور… و<span>نُدرس معًا</span></h1>
-    <p class="lead">أدوات التحضير والاختبارات، مجتمع معلمين حقيقي، ومسار واضح من طالب معلم لمعلم خبير — كله في مكان واحد.</p>
-    <div class="land-roles">
-      <div class="land-role">
-        <div class="icon-circle"><svg class="icon"><use href="#i-sparkle"></use></svg></div>
-        <h3>إنشاء حساب جديد</h3>
-        <p>اختار نوع حسابك: طالب معلم، طالب جامعي، معلم غير تربوي، أو إشراف أكاديمي / إدارة.</p>
-        <button onclick="showAcctype()">إنشاء حساب</button>
+  <main class="l2-in">
+    <section class="l2-hero">
+      <span class="l2-tag">منصة المعلم وطالب المعلم</span>
+      <h1>نتعلم… نتطور… و<span>نُدرس معًا</span></h1>
+      <p class="l2-lead">أدوات التحضير والاختبارات، مجتمع معلمين حقيقي، ومتابعة أكاديمية — كله في مكان واحد وبدون تعقيد.</p>
+      <div class="l2-cta">
+        <button class="l2-btn pri" onclick="showAcctype()"><svg class="icon"><use href="#i-sparkle"></use></svg> إنشاء حساب</button>
+        <button class="l2-btn sec" onclick="showLogin()"><svg class="icon"><use href="#i-user"></use></svg> تسجيل الدخول</button>
       </div>
-      <div class="land-role alt">
-        <div class="icon-circle"><svg class="icon"><use href="#i-user"></use></svg></div>
-        <h3>عندي حساب بالفعل</h3>
-        <p>سجّل دخولك وكمّل من حيث وقفت — لكل الأنواع.</p>
-        <button onclick="showLogin()">تسجيل الدخول</button>
-        <button class="land-link" onclick="showNidScreen()">أو ادخل بالرقم القومي</button>
+      <button class="land-link l2-nid" onclick="showNidScreen()"><svg class="icon"><use href="#i-lock"></use></svg> الدخول بالرقم القومي</button>
+      <div class="l2-note">اشتراك <b>مرة واحدة</b> بدون تجديد — والمشرف والإدارة <b>مجانًا</b></div>
+    </section>
+
+    <section class="l2-sec" id="land-features">
+      <h2>كل اللي محتاجه في مكان واحد</h2>
+      <div class="l2-grid">
+        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-layers"></use></svg></span><div><h4>التعلم والمكتبة</h4><p>دورات ودروس وكتب ودفاتر تحضير جاهزة.</p></div></div>
+        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-edit"></use></svg></span><div><h4>أدوات المعلم</h4><p>تحضير الدروس، بنك الأسئلة، اختبارات وشهادات.</p></div></div>
+        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-users"></use></svg></span><div><h4>مجتمع المعلمين</h4><p>اسأل خبيرًا وانضم لمجموعة تخصصك.</p></div></div>
+        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-clipboard"></use></svg></span><div><h4>التربية العملية</h4><p>سجّل زياراتك واطبع تقريرًا جاهزًا لجامعتك.</p></div></div>
+        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-grad"></use></svg></span><div><h4>الإشراف والإدارة</h4><p>اجتماعات وتكاليف ومتابعة وتقارير.</p></div></div>
+        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-pin"></use></svg></span><div><h4>الحضور الأكاديمي</h4><p>تأكيد بالموقع والبصمة وحساب Google أو Microsoft.</p></div></div>
+        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-chat-circle"></use></svg></span><div><h4>دردشة</h4><p>رسائل وروابط وملفات بين الزملاء.</p></div></div>
+        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-award"></use></svg></span><div><h4>نقاط وتحفيز</h4><p>شارات وتحدي أسبوعي ولوحة متصدرين.</p></div></div>
+        <div class="l2-f"><span class="l2-i"><svg class="icon"><use href="#i-monitor"></use></svg></span><div><h4>سبورة إلكترونية</h4><p>اشرح واعرض لطلابك من أي مكان.</p></div></div>
       </div>
-    </div>
-    <div class="land-trial">اشتراك <b>مرة واحدة</b> بدون تجديد — والمشرف والإدارة <b>مجانًا</b></div>
-  </section>
+    </section>
 
-  <section class="land-section" id="land-features">
-    <h2>كل اللي محتاجه في مكان واحد</h2>
-    <div class="land-sub">أدوات عملية بدون تعقيد</div>
-    <div class="land-grid">
-      <div class="land-feat"><div class="ic"><svg class="icon"><use href="#i-layers"></use></svg></div><h4>التعلم والموارد</h4><p>دورات، دروس، ودفاتر تحضير جاهزة من زملاء.</p></div>
-      <div class="land-feat"><div class="ic gold"><svg class="icon"><use href="#i-edit"></use></svg></div><h4>أدوات المعلم</h4><p>تحضير الدروس، بنك الأسئلة، اختبارات وشهادات.</p></div>
-      <div class="land-feat"><div class="ic green"><svg class="icon"><use href="#i-users"></use></svg></div><h4>مجتمع المعلمين</h4><p>اسأل خبيرًا، شارك تجربتك، وانضم لمجموعة تخصصك.</p></div>
-      <div class="land-feat"><div class="ic"><svg class="icon"><use href="#i-clipboard"></use></svg></div><h4>التربية العملية</h4><p>سجّل زياراتك واطبع تقريرًا جاهزًا لجامعتك.</p></div>
-      <div class="land-feat"><div class="ic gold"><svg class="icon"><use href="#i-award"></use></svg></div><h4>نقاط وتحفيز</h4><p>نقاط، تحدي أسبوعي، ولوحة متصدرين.</p></div>
-      <div class="land-feat"><div class="ic green"><svg class="icon"><use href="#i-monitor"></use></svg></div><h4>سبورة إلكترونية</h4><p>اشرح واعرض لطلابك من أي مكان.</p></div>
-    </div>
-  </section>
+    <section class="l2-sec">
+      <h2>ابدأ في 3 خطوات</h2>
+      <div class="l2-steps">
+        <div><b>1</b><p>أنشئ حسابك واختار نوعه</p></div>
+        <div><b>2</b><p>ادفع الرسوم مرة واحدة وفعّل حسابك</p></div>
+        <div><b>3</b><p>استخدم الأدوات المفتوحة لنوع حسابك</p></div>
+      </div>
+    </section>
+  </main>
 
-  <section class="land-section">
-    <h2>ابدأ في 3 خطوات</h2>
-    <div class="land-sub">&nbsp;</div>
-    <div class="land-steps">
-      <div class="land-step"><div class="n">1</div><p>أنشئ حسابك واختار نوعه</p></div>
-      <div class="land-step"><div class="n">2</div><p>ادفع الرسوم مرة واحدة وفعّل حسابك</p></div>
-      <div class="land-step"><div class="n">3</div><p>استخدم الأدوات المفتوحة لنوع حسابك</p></div>
-    </div>
-  </section>
-
-  <footer class="land-foot">
-    جميع الحقوق محفوظة لمنصات بلس ومهدي حسن © <span id="role-footer-year"></span> — واتساب: <a href="https://wa.me/201007586279" target="_blank" rel="noopener">01007586279</a><br>
-    <a href="javascript:void(0)" onclick="openLegal('terms')">الشروط والأحكام</a> · <a href="javascript:void(0)" onclick="openLegal('privacy')">سياسة الخصوصية</a>
+  <footer class="l2-foot">
+    <div class="l2-in">جميع الحقوق محفوظة لمنصات بلس ومهدي حسن © <span id="role-footer-year"></span> — واتساب: <a href="https://wa.me/201007586279" target="_blank" rel="noopener">01007586279</a><br>
+    <a href="javascript:void(0)" onclick="openLegal('terms')">الشروط والأحكام</a> · <a href="javascript:void(0)" onclick="openLegal('privacy')">سياسة الخصوصية</a></div>
   </footer>
 </div>
+
 <script>
   (function(){
     var y = new Date().getFullYear();
@@ -1360,28 +1409,48 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
       <button id="legal-tab-privacy" onclick="showLegalTab('privacy')">سياسة الخصوصية</button>
     </div>
     <div class="legal-body" id="legal-terms">
+<p class="legal-date">آخر تحديث: نوفمبر 2026</p>
       <h4>1. طبيعة الخدمة</h4>
-      <p>"نُدرس معًا" منصة تعليمية تجمّع أدوات وموارد ومجتمع للمعلمين والطلاب المعلمين، ومزوّدة بميزات مدفوعة اختيارية (خطط الاشتراك) وميزات مجانية.</p>
-      <h4>2. الحساب والاشتراك</h4>
-      <ul><li>الحساب شخصي ومسؤوليتك الحفاظ على بيانات دخولك.</li><li>الاشتراكات المدفوعة تُفعَّل يدويًا بعد تأكيد الدفع (تحويل/إنستاباي) عبر واتساب، وتُحتسب المدة من وقت التفعيل الفعلي.</li><li>المدفوعات غير قابلة للاسترجاع بعد التفعيل، إلا في حالات الخطأ التقني من جانبنا.</li></ul>
-      <h4>3. المحتوى والمجتمع</h4>
-      <ul><li>يمنع نشر محتوى مسيء أو منتهك لحقوق الملكية أو مخالف لآداب المهنة.</li><li>إدارة المنصة لها الحق في حذف أي محتوى مخالف أو إيقاف أي حساب يسيء استخدام الخدمة.</li><li>الموارد التي يرفعها المستخدمون (دفاتر تحضير، أبحاث) تبقى ملكية فكرية لأصحابها، وبمشاركتها يمنح المستخدم المنصة حق عرضها لباقي الأعضاء.</li></ul>
-      <h4>4. نظام النقاط والمحفظة</h4>
-      <p>النقاط والرصيد داخل المنصة وسيلة تحفيزية للاستخدام داخل المنصة فقط (ترقية/تجديد الاشتراك)، ولا تُصرف نقدًا ولا تُستبدل بأي شكل خارج المنصة.</p>
-      <h4>5. التعديلات</h4>
-      <p>قد تُحدَّث هذه الشروط من وقت لآخر، وسيتم إعلام المستخدمين بأي تغييرات جوهرية.</p>
+      <p>"نُدرس معًا" منصة تعليمية تجمع أدوات وموارد ومجتمعًا للمعلمين وطلاب المعلمين، وتتضمن أدوات للإشراف الأكاديمي والإدارة، ونظامًا للحضور الأكاديمي. بعض الميزات مدفوعة وبعضها مجاني بحسب نوع الحساب.</p>
+      <h4>2. أنواع الحسابات والرسوم</h4>
+      <ul><li>حسابا "طالب معلم" و"معلم غير تربوي": اشتراك يُدفع مرة واحدة بدون تجديد، وقيمته تحددها إدارة المنصة وتظهر في صفحة الاشتراك.</li><li>حسابات "إشراف أكاديمي" و"إشراف معلم خبير" و"الإدارة": مجانية، وتُفعَّل أو تُربط بالحسابات الأخرى من إدارة المنصة.</li><li>تُفعَّل الاشتراكات المدفوعة يدويًا بعد تأكيد الدفع (تحويل / إنستاباي) عبر واتساب. والمدفوعات غير قابلة للاسترجاع بعد التفعيل، إلا في حالات الخطأ التقني من جانبنا.</li><li>لإدارة المنصة تعديل نوع الحساب أو حالته أو مدته (مثل فترات تجريبية أو منح مجانية) والميزات المتاحة لكل نوع.</li></ul>
+      <h4>3. الحساب وتسجيل الدخول</h4>
+      <ul><li>الحساب شخصي، وأنت مسؤول عن بيانات دخولك وعن كل نشاط يتم من خلاله.</li><li>يمكن الدخول بالبريد وكلمة المرور، أو بحساب Google / Microsoft، أو بالرقم القومي بعد تفعيله من إدارة المنصة. وفتح الحساب ببصمة الجهاز اختياري.</li><li>يجب أن تكون بياناتك صحيحة ومحدّثة.</li></ul>
+      <h4>4. المحتوى والمجتمع</h4>
+      <ul><li>يُمنع نشر محتوى مسيء أو منتهك لحقوق الملكية أو مخالف لآداب المهنة.</li><li>لإدارة المنصة حذف أي محتوى مخالف أو إيقاف أي حساب يسيء استخدام الخدمة.</li><li>ما ترفعه من موارد (دفاتر تحضير، أبحاث، أسئلة) يبقى ملكًا لك، وبمشاركته تمنح المنصة حق عرضه لباقي الأعضاء المسموح لهم.</li></ul>
+      <h4>5. الملفات والروابط</h4>
+      <ul><li>يمكن رفع صور وملفات PDF (في التكاليف والتسليمات والكتب ومحاضر الاجتماعات) أو إضافة رابط خارجي بدلًا منها. وتُخزَّن الملفات المرفوعة داخل قاعدة بيانات المنصة بحدود حجم تحددها الإدارة.</li><li>لا ترفع ملفات لا تملك حق نشرها أو تحتوي بيانات حساسة لا يلزم مشاركتها.</li><li>للإدارة وضع حدود يومية للاستخدام، وحذف الملفات المخالفة أو القديمة.</li></ul>
+      <h4>6. الإشراف والتربية العملية</h4>
+      <p>عند ربط حسابك بمشرف أو بإدارة، يطّلعان على نشاطك المرتبط بالإشراف: الزيارات والتقارير والتكاليف والتسليمات والاجتماعات والحضور ومؤشرات المتابعة. وهذا جزء أساسي من عمل هذه الحسابات.</p>
+      <h4>7. الحضور الأكاديمي</h4>
+      <ul><li>تسجيل الحضور يتم بالتحقق من الموقع وبصمة الجهاز وحساب Google أو Microsoft، بحسب إعدادات الإدارة. وتفعيله لحسابك يتم من إدارة المنصة أو من المشرف المرتبط بك، ويمكن إيقافه في أي وقت.</li><li>سجّل حضورك بنفسك وفي مكانك الفعلي. يُمنع التسجيل نيابة عن شخص آخر أو التلاعب بالموقع أو الجهاز أو الوقت.</li><li>تُعلَّم التسجيلات المشتبه فيها للمراجعة، وللمشرف تعديل الحضور يدويًا بسبب مكتوب، وقبول أعذار الغياب أو رفضها.</li><li>قد تُحتسب نسبة الحضور ويُنبَّه من تقل نسبته عن الحد المحدد.</li></ul>
+      <h4>8. النقاط والمحفظة</h4>
+      <p>النقاط والرصيد داخل المنصة وسيلة تحفيزية للاستخدام داخلها فقط (ترقية أو تجديد الاشتراك)، ولا تُصرف نقدًا ولا تُستبدل خارج المنصة.</p>
+      <h4>9. استمرارية الخدمة</h4>
+      <p>قد تتوقف بعض الميزات أو تتحدث من وقت لآخر، وقد تُفعَّل الصيانة بوضع القراءة فقط. ونعمل على تقليل أي انقطاع ولكن لا نضمن خدمة بلا توقف.</p>
+      <h4>10. التعديلات</h4>
+      <p>قد تُحدَّث هذه الشروط من وقت لآخر، وسيتم إعلام المستخدمين بأي تغييرات جوهرية. استمرارك في الاستخدام بعد التحديث يعني موافقتك عليه.</p>
     </div>
     <div class="legal-body" id="legal-privacy" style="display:none;">
+<p class="legal-date">آخر تحديث: نوفمبر 2026</p>
       <h4>1. البيانات التي نجمعها</h4>
-      <p>الاسم، البريد الإلكتروني، رقم الهاتف، بيانات النشاط على المنصة (المنشورات، دفاتر التحضير، سجل التربية العملية)، وفي حال استخدام تسجيل الدخول بجوجل: الاسم والبريد وصورة الحساب.</p>
-      <h4>2. كيف نستخدم بياناتك</h4>
-      <ul><li>تشغيل الحساب والميزات (المجتمع، المحادثات، الإشعارات).</li><li>التواصل بخصوص الاشتراك والدعم الفني عبر واتساب أو البريد.</li><li>تحسين المنصة وتحليل الاستخدام بشكل مجمّع.</li></ul>
-      <h4>3. مشاركة البيانات</h4>
-      <p>لا نبيع بياناتك لأي طرف ثالث. تُخزَّن البيانات على منصة Firebase (Google) وتخضع لسياسات الأمان الخاصة بها. رقم هاتفك يُستخدم فقط للتواصل الإداري.</p>
-      <h4>4. حقوقك</h4>
-      <p>يمكنك طلب تعديل بياناتك أو حذف حسابك بالكامل بالتواصل معنا عبر واتساب على الرقم الظاهر بأسفل الصفحة الرئيسية.</p>
-      <h4>5. ملفات تعريف الارتباط والتخزين المحلي</h4>
-      <p>نستخدم التخزين المحلي بالمتصفح لحفظ تفضيلات بسيطة (مثل إخفاء الجولة التعريفية) فقط، ولا نستخدمه للتتبع الإعلاني.</p>
+      <ul><li><b>بيانات الحساب:</b> الاسم والبريد الإلكتروني ورقم الهاتف ونوع الحساب والمشرف المرتبط بك. وعند الدخول بحساب Google أو Microsoft: الاسم والبريد.</li><li><b>نشاطك:</b> المنشورات والمحادثات ودفاتر التحضير والأبحاث والنقاط والتقدم في الدورات والتكاليف والتسليمات والملفات التي ترفعها.</li><li><b>الرقم القومي:</b> إن فعّلت حسابك به، نحفظ نسخة مشفّرة (Hash) وآخر 4 أرقام للمراجعة، ولا نعرض الرقم كاملًا.</li><li><b>آخر دخول وآخر ظهور:</b> لمتابعة النشاط وتذكير الحسابات غير النشطة.</li></ul>
+      <h4>2. بيانات الحضور الأكاديمي</h4>
+      <ul><li>عند تسجيل الحضور فقط: إحداثيات موقعك ودقتها والمسافة عن المكان، والوقت، ومعرّف تقني للجهاز، ومزوّد الحساب المستخدم في التأكيد (Google / Microsoft)، وهل تم التحقق بالبصمة.</li><li>لا نتتبع موقعك في الخلفية، ولا نقرأ موقعك إلا عندما تضغط على تسجيل الحضور.</li><li>نستخدم هذه البيانات لتأكيد الحضور وكشف التلاعب وإعداد التقارير. ويطّلع عليها المشرف المرتبط بك والإدارة وإدارة المنصة.</li></ul>
+      <h4>3. البصمة</h4>
+      <p>التحقق بالبصمة يتم على جهازك نفسه عبر قفل الشاشة (WebAuthn). ولا نستلم بصمتك ولا صورتها، ونحفظ فقط معرّفًا عامًا للاعتماد، وهو يُثبت أن جهازك فُتح، لا هوية صاحب البصمة.</p>
+      <h4>4. كيف نستخدم بياناتك</h4>
+      <ul><li>تشغيل الحساب والميزات (المجتمع والمحادثات والإشعارات والإشراف والحضور).</li><li>التواصل بخصوص الاشتراك والدعم الفني عبر واتساب أو البريد أو تذاكر الدعم.</li><li>إعداد التقارير والإحصاءات للمشرفين والإدارة، وتحسين المنصة بتحليل الاستخدام المجمّع.</li></ul>
+      <h4>5. من يطّلع على بياناتك</h4>
+      <ul><li>المشرف والإدارة المرتبطان بحسابك: نشاطك المرتبط بالإشراف والحضور.</li><li>إدارة المنصة: بيانات الحسابات وسجلات الحضور والاستخدام لأغراض التشغيل والدعم.</li><li>باقي الأعضاء: ملفك العام فقط، بحسب إعداد الخصوصية في ملفك.</li><li>لا نبيع بياناتك ولا نشاركها مع طرف ثالث لأغراض تسويقية.</li></ul>
+      <h4>6. الخدمات الخارجية</h4>
+      <p>تُخزَّن البيانات والملفات على Firebase (Google) وتخضع لسياسات الأمان الخاصة بها. ويُستخدم Google وMicrosoft لتسجيل الدخول، وقد تُحمَّل مكتبات من شبكات توصيل المحتوى (CDN) لعرض الخرائط ورموز QR وتصدير الملفات، وتُعرض الخرائط من OpenStreetMap.</p>
+      <h4>7. حقوقك</h4>
+      <p>يمكنك تنزيل بياناتك وطلب حذف حسابك من "مركز الخصوصية" في ملفك الشخصي، أو بالتواصل معنا عبر واتساب أو "تواصل معنا". ويتم النظر في ما يلزم الاحتفاظ به من سجلات أكاديمية (مثل الحضور) مع الجهة المشرفة.</p>
+      <h4>8. التخزين على جهازك</h4>
+      <p>نستخدم تخزين المتصفح لحفظ تفضيلاتك وجلسة الدخول وتذكيرات الحضور ونسخة مؤقتة تتيح العمل عند ضعف الاتصال. ولا نستخدمه للتتبع الإعلاني.</p>
+      <h4>9. الأمان</h4>
+      <p>نطبّق قواعد وصول تحدد من يقرأ ويكتب كل بيانات. ومع ذلك لا يوجد نظام آمن بالكامل، فاحرص على سرية كلمة مرورك وقفل جهازك.</p>
     </div>
   </div>
 </div>
@@ -2143,24 +2212,49 @@ input:focus,select:focus,textarea:focus{outline:none; box-shadow:var(--ring); bo
           <p style="font-size:13.5px; color:var(--ink-soft); line-height:1.9;">"نُدرس معًا" منصة تعليمية مصرية بتساعد المعلمين وطلاب المعلمين يطوّروا أدواتهم المهنية: تحضير الدروس، بنك الأسئلة، الاختبارات، الشهادات، والتواصل مع مجتمع تعليمي حقيقي، في مكان واحد وبطريقة بسيطة.</p>
         </div>
 
-        <div class="card-panel" style="margin-top:16px;">
-          <h3 style="margin-bottom:8px;">الشروط والأحكام</h3>
-          <p style="font-size:13px; color:var(--ink-soft); line-height:1.9;">
-            باستخدامك المنصة، إنت موافق على الآتي:<br>
-            • المحتوى اللي بتضيفه (دفاتر تحضير، أسئلة، منشورات) لازم يكون من عملك أو عندك حق نشره.<br>
-            • ممنوع أي محتوى مسيء أو مخالف للآداب العامة أو ينتهك حقوق ملكية فكرية لأي طرف تالت.<br>
-            • فريق الإدارة له الحق يحذف أي محتوى مخالف أو يوقف أي حساب بيخالف الشروط دي.<br>
-            • الاشتراكات المدفوعة غير قابلة للاسترداد إلا في حالات استثنائية بيقدّرها فريق الدعم.<br>
-            • المنصة ممكن تتحدّث أو تتوقف مزاياها من وقت للتاني بهدف التطوير.
-          </p>
-        </div>
+        <div class="card-panel legal-body" style="margin-top:16px;"><h3 style="margin-bottom:8px;">الشروط والأحكام</h3><p class="legal-date">آخر تحديث: نوفمبر 2026</p>
+      <h4>1. طبيعة الخدمة</h4>
+      <p>"نُدرس معًا" منصة تعليمية تجمع أدوات وموارد ومجتمعًا للمعلمين وطلاب المعلمين، وتتضمن أدوات للإشراف الأكاديمي والإدارة، ونظامًا للحضور الأكاديمي. بعض الميزات مدفوعة وبعضها مجاني بحسب نوع الحساب.</p>
+      <h4>2. أنواع الحسابات والرسوم</h4>
+      <ul><li>حسابا "طالب معلم" و"معلم غير تربوي": اشتراك يُدفع مرة واحدة بدون تجديد، وقيمته تحددها إدارة المنصة وتظهر في صفحة الاشتراك.</li><li>حسابات "إشراف أكاديمي" و"إشراف معلم خبير" و"الإدارة": مجانية، وتُفعَّل أو تُربط بالحسابات الأخرى من إدارة المنصة.</li><li>تُفعَّل الاشتراكات المدفوعة يدويًا بعد تأكيد الدفع (تحويل / إنستاباي) عبر واتساب. والمدفوعات غير قابلة للاسترجاع بعد التفعيل، إلا في حالات الخطأ التقني من جانبنا.</li><li>لإدارة المنصة تعديل نوع الحساب أو حالته أو مدته (مثل فترات تجريبية أو منح مجانية) والميزات المتاحة لكل نوع.</li></ul>
+      <h4>3. الحساب وتسجيل الدخول</h4>
+      <ul><li>الحساب شخصي، وأنت مسؤول عن بيانات دخولك وعن كل نشاط يتم من خلاله.</li><li>يمكن الدخول بالبريد وكلمة المرور، أو بحساب Google / Microsoft، أو بالرقم القومي بعد تفعيله من إدارة المنصة. وفتح الحساب ببصمة الجهاز اختياري.</li><li>يجب أن تكون بياناتك صحيحة ومحدّثة.</li></ul>
+      <h4>4. المحتوى والمجتمع</h4>
+      <ul><li>يُمنع نشر محتوى مسيء أو منتهك لحقوق الملكية أو مخالف لآداب المهنة.</li><li>لإدارة المنصة حذف أي محتوى مخالف أو إيقاف أي حساب يسيء استخدام الخدمة.</li><li>ما ترفعه من موارد (دفاتر تحضير، أبحاث، أسئلة) يبقى ملكًا لك، وبمشاركته تمنح المنصة حق عرضه لباقي الأعضاء المسموح لهم.</li></ul>
+      <h4>5. الملفات والروابط</h4>
+      <ul><li>يمكن رفع صور وملفات PDF (في التكاليف والتسليمات والكتب ومحاضر الاجتماعات) أو إضافة رابط خارجي بدلًا منها. وتُخزَّن الملفات المرفوعة داخل قاعدة بيانات المنصة بحدود حجم تحددها الإدارة.</li><li>لا ترفع ملفات لا تملك حق نشرها أو تحتوي بيانات حساسة لا يلزم مشاركتها.</li><li>للإدارة وضع حدود يومية للاستخدام، وحذف الملفات المخالفة أو القديمة.</li></ul>
+      <h4>6. الإشراف والتربية العملية</h4>
+      <p>عند ربط حسابك بمشرف أو بإدارة، يطّلعان على نشاطك المرتبط بالإشراف: الزيارات والتقارير والتكاليف والتسليمات والاجتماعات والحضور ومؤشرات المتابعة. وهذا جزء أساسي من عمل هذه الحسابات.</p>
+      <h4>7. الحضور الأكاديمي</h4>
+      <ul><li>تسجيل الحضور يتم بالتحقق من الموقع وبصمة الجهاز وحساب Google أو Microsoft، بحسب إعدادات الإدارة. وتفعيله لحسابك يتم من إدارة المنصة أو من المشرف المرتبط بك، ويمكن إيقافه في أي وقت.</li><li>سجّل حضورك بنفسك وفي مكانك الفعلي. يُمنع التسجيل نيابة عن شخص آخر أو التلاعب بالموقع أو الجهاز أو الوقت.</li><li>تُعلَّم التسجيلات المشتبه فيها للمراجعة، وللمشرف تعديل الحضور يدويًا بسبب مكتوب، وقبول أعذار الغياب أو رفضها.</li><li>قد تُحتسب نسبة الحضور ويُنبَّه من تقل نسبته عن الحد المحدد.</li></ul>
+      <h4>8. النقاط والمحفظة</h4>
+      <p>النقاط والرصيد داخل المنصة وسيلة تحفيزية للاستخدام داخلها فقط (ترقية أو تجديد الاشتراك)، ولا تُصرف نقدًا ولا تُستبدل خارج المنصة.</p>
+      <h4>9. استمرارية الخدمة</h4>
+      <p>قد تتوقف بعض الميزات أو تتحدث من وقت لآخر، وقد تُفعَّل الصيانة بوضع القراءة فقط. ونعمل على تقليل أي انقطاع ولكن لا نضمن خدمة بلا توقف.</p>
+      <h4>10. التعديلات</h4>
+      <p>قد تُحدَّث هذه الشروط من وقت لآخر، وسيتم إعلام المستخدمين بأي تغييرات جوهرية. استمرارك في الاستخدام بعد التحديث يعني موافقتك عليه.</p>
+</div>
 
-        <div class="card-panel" style="margin-top:16px;">
-          <h3 style="margin-bottom:8px;">سياسة الخصوصية</h3>
-          <p style="font-size:13px; color:var(--ink-soft); line-height:1.9;">
-            بنجمع بس البيانات اللازمة لتشغيل حسابك (الاسم، الإيميل، رقم الموبايل) وبيانات نشاطك على المنصة (تحضيراتك، نقاطك، تقدّمك في الدورات) عشان نقدّم لك الخدمة. مش بنبيع أو نشارك بياناتك مع أي طرف تالت لأغراض تسويقية. تقدر تطلب حذف حسابك وبياناتك في أي وقت من خلال "تواصل معنا".
-          </p>
-        </div>
+        <div class="card-panel legal-body" style="margin-top:16px;"><h3 style="margin-bottom:8px;">سياسة الخصوصية</h3><p class="legal-date">آخر تحديث: نوفمبر 2026</p>
+      <h4>1. البيانات التي نجمعها</h4>
+      <ul><li><b>بيانات الحساب:</b> الاسم والبريد الإلكتروني ورقم الهاتف ونوع الحساب والمشرف المرتبط بك. وعند الدخول بحساب Google أو Microsoft: الاسم والبريد.</li><li><b>نشاطك:</b> المنشورات والمحادثات ودفاتر التحضير والأبحاث والنقاط والتقدم في الدورات والتكاليف والتسليمات والملفات التي ترفعها.</li><li><b>الرقم القومي:</b> إن فعّلت حسابك به، نحفظ نسخة مشفّرة (Hash) وآخر 4 أرقام للمراجعة، ولا نعرض الرقم كاملًا.</li><li><b>آخر دخول وآخر ظهور:</b> لمتابعة النشاط وتذكير الحسابات غير النشطة.</li></ul>
+      <h4>2. بيانات الحضور الأكاديمي</h4>
+      <ul><li>عند تسجيل الحضور فقط: إحداثيات موقعك ودقتها والمسافة عن المكان، والوقت، ومعرّف تقني للجهاز، ومزوّد الحساب المستخدم في التأكيد (Google / Microsoft)، وهل تم التحقق بالبصمة.</li><li>لا نتتبع موقعك في الخلفية، ولا نقرأ موقعك إلا عندما تضغط على تسجيل الحضور.</li><li>نستخدم هذه البيانات لتأكيد الحضور وكشف التلاعب وإعداد التقارير. ويطّلع عليها المشرف المرتبط بك والإدارة وإدارة المنصة.</li></ul>
+      <h4>3. البصمة</h4>
+      <p>التحقق بالبصمة يتم على جهازك نفسه عبر قفل الشاشة (WebAuthn). ولا نستلم بصمتك ولا صورتها، ونحفظ فقط معرّفًا عامًا للاعتماد، وهو يُثبت أن جهازك فُتح، لا هوية صاحب البصمة.</p>
+      <h4>4. كيف نستخدم بياناتك</h4>
+      <ul><li>تشغيل الحساب والميزات (المجتمع والمحادثات والإشعارات والإشراف والحضور).</li><li>التواصل بخصوص الاشتراك والدعم الفني عبر واتساب أو البريد أو تذاكر الدعم.</li><li>إعداد التقارير والإحصاءات للمشرفين والإدارة، وتحسين المنصة بتحليل الاستخدام المجمّع.</li></ul>
+      <h4>5. من يطّلع على بياناتك</h4>
+      <ul><li>المشرف والإدارة المرتبطان بحسابك: نشاطك المرتبط بالإشراف والحضور.</li><li>إدارة المنصة: بيانات الحسابات وسجلات الحضور والاستخدام لأغراض التشغيل والدعم.</li><li>باقي الأعضاء: ملفك العام فقط، بحسب إعداد الخصوصية في ملفك.</li><li>لا نبيع بياناتك ولا نشاركها مع طرف ثالث لأغراض تسويقية.</li></ul>
+      <h4>6. الخدمات الخارجية</h4>
+      <p>تُخزَّن البيانات والملفات على Firebase (Google) وتخضع لسياسات الأمان الخاصة بها. ويُستخدم Google وMicrosoft لتسجيل الدخول، وقد تُحمَّل مكتبات من شبكات توصيل المحتوى (CDN) لعرض الخرائط ورموز QR وتصدير الملفات، وتُعرض الخرائط من OpenStreetMap.</p>
+      <h4>7. حقوقك</h4>
+      <p>يمكنك تنزيل بياناتك وطلب حذف حسابك من "مركز الخصوصية" في ملفك الشخصي، أو بالتواصل معنا عبر واتساب أو "تواصل معنا". ويتم النظر في ما يلزم الاحتفاظ به من سجلات أكاديمية (مثل الحضور) مع الجهة المشرفة.</p>
+      <h4>8. التخزين على جهازك</h4>
+      <p>نستخدم تخزين المتصفح لحفظ تفضيلاتك وجلسة الدخول وتذكيرات الحضور ونسخة مؤقتة تتيح العمل عند ضعف الاتصال. ولا نستخدمه للتتبع الإعلاني.</p>
+      <h4>9. الأمان</h4>
+      <p>نطبّق قواعد وصول تحدد من يقرأ ويكتب كل بيانات. ومع ذلك لا يوجد نظام آمن بالكامل، فاحرص على سرية كلمة مرورك وقفل جهازك.</p>
+</div>
 
         <div class="card-panel" style="margin-top:16px; text-align:center;">
           <p style="font-size:12.5px; color:var(--ink-soft);">جميع الحقوق محفوظة لمنصات بلس ومهدي حسن © <span id="about-footer-year"></span></p>
@@ -9290,6 +9384,14 @@ async function attTodayBoot(){
 }
 setInterval(() => { try{ if(currentUid){ attTodayRender(); attRemindTick(); } }catch(e){} }, 60000);
 const _attBoot11 = ndBootExtras; ndBootExtras = async function(){ const r = await _attBoot11.apply(this, arguments); setTimeout(attTodayBoot, 1200); return r; };
+
+/* ===== الدفعة 12: شاشة الشروط تفتح لوحدها وترجع للشاشة السابقة ===== */
+let _lgPrev = [];
+openLegal = function(tab){
+  _lgPrev = []; document.querySelectorAll('[id^="screen-"]').forEach(el => { if(el.id !== 'screen-legal' && getComputedStyle(el).display !== 'none'){ _lgPrev.push([el, el.style.display]); el.style.display = 'none'; } });
+  document.getElementById('screen-legal').style.display = 'flex'; showLegalTab(tab || 'terms'); window.scrollTo(0, 0);
+};
+closeLegal = function(){ document.getElementById('screen-legal').style.display = 'none'; _lgPrev.forEach(([el, d]) => { el.style.display = d || (el.id === 'screen-role' ? 'block' : ''); }); _lgPrev = []; window.scrollTo(0, 0); };
 </script>
 </body>
 </html>
