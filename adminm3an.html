@@ -273,6 +273,13 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
   .tab.active{background:linear-gradient(135deg,#ffb81c,#ff8a1f) !important; color:#1a0d00 !important; font-weight:900;} .tab.active .icon{color:#1a0d00 !important; opacity:1;}
 }
 @media (max-width:1023px){ .tab-group,.tab-search{display:none;} .sec-head{padding:12px 14px;} .sec-head h2{font-size:18px;} }
+
+@media(max-width:900px){
+ #amb button,#amb .amb-b{color:#f1f4ff !important;}
+ #amb button *,#amb .amb-b *{white-space:normal !important; overflow:visible !important; text-overflow:clip !important; line-height:1.25; font-size:11.5px; color:inherit;}
+ #amb button.on,#amb button.act,#amb button.sel,#amb .on{background:linear-gradient(135deg,#ffb81c,#ff8a1f) !important; color:#140b00 !important;}
+ .amb-it.act{background:linear-gradient(135deg,#ffb81c,#ff8a1f) !important; color:#140b00 !important;} .amb-it.act .icon{color:#140b00 !important;}
+}
 </style>
 </head>
 
@@ -395,6 +402,7 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
     <button class="tab" onclick="switchTab('perm', this)"><svg class="icon"><use href="#i-lock"></use></svg> صلاحيات المشتركين</button>
     <button class="tab" onclick="switchTab('control', this)"><svg class="icon"><use href="#i-star"></use></svg> التحكم الشامل</button>
     <button class="tab" onclick="switchTab('landing', this)"><svg class="icon"><use href="#i-layout"></use></svg> الصفحة الرئيسية</button>
+    <button class="tab" onclick="switchTab('theme', this)"><svg class="icon"><use href="#i-layout"></use></svg> الألوان والتباين</button>
     <button class="tab" onclick="switchTab('attend', this)"><svg class="icon"><use href="#i-check"></use></svg> الحضور الأكاديمي</button>
     <button class="tab" onclick="switchTab('books', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> الكتب</button>
     <button class="tab" onclick="switchTab('files', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> مخزن الملفات</button>
@@ -606,6 +614,35 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
     <div class="card"><h3>روابط التسجيل المباشرة</h3><p class="hint">انشرها لكل فئة — الرابط بيفتح صفحة التسجيل على النوع ده مباشرة.</p><div id="ln-links"></div></div>
     <div class="row"><button class="btn" onclick="lnSave()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الصفحة الرئيسية</button></div>
     <div class="status" id="ln-st"></div>
+  </div>
+
+  <div class="panel" id="panel-theme">
+    <div class="card">
+      <h2 style="margin-bottom:6px;">ألوان المنصة</h2>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:14px;">غيّر ألوان تطبيق المستخدمين بدون تعديل الكود. بتتطبق عند فتح التطبيق، وتشتغل مع الوضعين الفاتح والداكن.</p>
+      <div id="th-presets" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;">
+        <label>اللون الأساسي<input type="color" id="th-primary" value="#2563eb" style="height:44px;width:100%;"></label>
+        <label>الذهبي<input type="color" id="th-gold" value="#ffb81c" style="height:44px;width:100%;"></label>
+        <label>البرتقالي<input type="color" id="th-orange" value="#ff8a1f" style="height:44px;width:100%;"></label>
+      </div>
+      <div id="th-prev" style="margin-top:14px;padding:16px;border-radius:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#f4f6fb;border:1px solid #d9dfee;">
+        <span id="th-p1" style="padding:9px 16px;border-radius:10px;color:#fff;font-weight:800;">زر أساسي</span>
+        <span id="th-p2" style="padding:9px 16px;border-radius:10px;color:#140b00;font-weight:800;">زر مفعّل</span>
+        <span id="th-p3" style="font-weight:900;">نص بالأساسي</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+        <button class="btn" onclick="thSave()">💾 حفظ الألوان</button>
+        <button class="btn-secondary" onclick="thReset()">رجوع للألوان الافتراضية</button>
+      </div>
+      <div class="status" id="th-st"></div>
+    </div>
+    <div class="card">
+      <h2 style="margin-bottom:6px;">فاحص التباين</h2>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">يفحص الصفحة المفتوحة حاليًا ويعرض النصوص اللي تباينها أقل من الحد المقروء (4.5). اضغط على أي نتيجة وهتتحدد في الصفحة. لفحص تبويب تاني افتحه وارجع اضغط فحص.</p>
+      <button class="btn" onclick="ctScan()">🔎 افحص الصفحة الحالية</button>
+      <div id="ct-out" style="margin-top:12px;"></div>
+    </div>
   </div>
 
   <div class="panel" id="panel-control">
@@ -1066,6 +1103,7 @@ function switchTab(name, btn){
   if(name==='tickets'){ try{ loadTickets(); }catch(e){} }
   if(name==='bcast'){ try{ loadBroadcasts(); }catch(e){} }
   if(name==='landing'){ try{ initLanding(); }catch(e){} }
+  if(name==='theme'){ try{ initTheme(); }catch(e){} }
   try{ adminSecHead(name); }catch(e){}
 }
 
@@ -2567,6 +2605,39 @@ const ATT_MODE_LBL={all:'مفعّل للكل',delegated:'حسب التفويض',
 /* ===== الصفحة الرئيسية (landing) ===== */
 const LN_TYPES=[['student_teacher','طالب معلم'],['non_edu_teacher','معلم غير تربوي'],['supervisor','إشراف أكاديمي'],['expert_supervisor','إشراف معلم خبير'],['office','الإدارة']];
 let LN={};
+
+/* ===== ألوان المنصة + فاحص التباين ===== */
+const TH_PRE=[['أزرق وذهبي','#2563eb','#ffb81c','#ff8a1f'],['أخضر وذهبي','#0f9d6b','#ffb81c','#ff8a1f'],['بنفسجي وبرتقالي','#6d3be0','#ffb81c','#ff6a13'],['كحلي وبرتقالي','#1e3a8a','#ff9d1a','#ff6a13']];
+function thFill(t){ t=t||{}; const set=(i,v)=>{const e=document.getElementById(i); if(e) e.value=v;}; set('th-primary',t.primary||'#2563eb'); set('th-gold',t.gold||'#ffb81c'); set('th-orange',t.orange||'#ff8a1f'); thPrev(); }
+function thPrev(){ const P=document.getElementById('th-primary').value,G=document.getElementById('th-gold').value,O=document.getElementById('th-orange').value; const a=document.getElementById('th-p1'),b=document.getElementById('th-p2'),c=document.getElementById('th-p3'); if(!a) return; a.style.background=P; b.style.background='linear-gradient(135deg,'+G+','+O+')'; c.style.color=P; }
+async function initTheme(){
+  const pr=document.getElementById('th-presets'); if(pr && !pr.innerHTML){ pr.innerHTML=TH_PRE.map((p,i)=>'<button class="btn-secondary" onclick="thFill({primary:\''+p[1]+'\',gold:\''+p[2]+'\',orange:\''+p[3]+'\'})"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:'+p[1]+';margin-inline-end:6px;"></span>'+p[0]+'</button>').join(''); ['th-primary','th-gold','th-orange'].forEach(i=>document.getElementById(i).addEventListener('input',thPrev)); }
+  try{ const d=await db.collection('siteSettings').doc('theme').get(); thFill(d.exists?d.data():{}); }catch(e){ thFill({}); }
+}
+async function thSave(){ const st=document.getElementById('th-st'); const doc={primary:document.getElementById('th-primary').value,gold:document.getElementById('th-gold').value,orange:document.getElementById('th-orange').value}; try{ await db.collection('siteSettings').doc('theme').set(doc); try{audit('control','','','تحديث ألوان المنصة');}catch(e){} st.className='status ok'; st.textContent='✓ اتحفظت وبتظهر للمستخدمين عند فتح التطبيق'; }catch(e){ st.className='status err'; st.textContent='تعذر الحفظ: '+e.message; } }
+async function thReset(){ const st=document.getElementById('th-st'); try{ await db.collection('siteSettings').doc('theme').delete(); thFill({}); st.className='status ok'; st.textContent='✓ رجعت للألوان الافتراضية'; }catch(e){ st.className='status err'; st.textContent='تعذر: '+e.message; } }
+function ctRgb(c){ const m=(c||'').match(/rgba?\(([^)]+)\)/); if(!m) return null; const p=m[1].split(',').map(x=>parseFloat(x)); return {r:p[0],g:p[1],b:p[2],a:p.length>3?p[3]:1}; }
+function ctLum(c){ const f=v=>{v/=255; return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);}; return .2126*f(c.r)+.7152*f(c.g)+.0722*f(c.b); }
+function ctBg(el){ let bgs=[]; for(let e=el;e;e=e.parentElement){ const cs=getComputedStyle(e); if(cs.backgroundImage&&cs.backgroundImage!=='none') return null; const c=ctRgb(cs.backgroundColor); if(c&&c.a>0){ bgs.push(c); if(c.a>=.98) break; } } let base={r:255,g:255,b:255}; for(let i=bgs.length-1;i>=0;i--){ const c=bgs[i]; base={r:c.r*c.a+base.r*(1-c.a),g:c.g*c.a+base.g*(1-c.a),b:c.b*c.a+base.b*(1-c.a)}; } return base; }
+function ctScan(){
+  const out=document.getElementById('ct-out'); const bad=[]; let n=0;
+  document.querySelectorAll('body *').forEach(el=>{
+    if(el.closest('#ct-out')||!el.offsetParent&&getComputedStyle(el).position!=='fixed') return;
+    const own=[...el.childNodes].some(x=>x.nodeType===3&&x.textContent.trim()); if(!own) return;
+    const cs=getComputedStyle(el); if(cs.visibility==='hidden'||parseFloat(cs.opacity)===0) return;
+    const fg=ctRgb(cs.color), bg=ctBg(el); if(!fg||!bg) return; n++;
+    const a=fg.a<1?{r:fg.r*fg.a+bg.r*(1-fg.a),g:fg.g*fg.a+bg.g*(1-fg.a),b:fg.b*fg.a+bg.b*(1-fg.a)}:fg;
+    const L1=ctLum(a),L2=ctLum(bg); const r=(Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05);
+    const big=parseFloat(cs.fontSize)>=24||(parseFloat(cs.fontSize)>=18.6&&parseInt(cs.fontWeight)>=700);
+    if(r<(big?3:4.5)) bad.push({el,r});
+  });
+  window.__ctBad=bad.map(b=>b.el);
+  if(!bad.length){ out.innerHTML='<div class="status ok" style="display:block">✓ فُحص '+n+' عنصر نصي ولا توجد مشاكل تباين.</div>'; return; }
+  bad.sort((a,b)=>a.r-b.r);
+  out.innerHTML='<div class="status err" style="display:block">لقيت '+bad.length+' نص ضعيف التباين من '+n+' عنصر</div>'+bad.slice(0,60).map((b,i)=>'<div class="item" style="cursor:pointer" onclick="ctShow('+i+')"><span>'+(b.el.textContent.trim().slice(0,40).replace(/</g,'&lt;'))+'</span><b>'+b.r.toFixed(1)+':1</b></div>').join('');
+  window.__ctBad=bad.slice(0,60).map(b=>b.el);
+}
+function ctShow(i){ const e=(window.__ctBad||[])[i]; if(!e) return; e.scrollIntoView({block:'center',behavior:'smooth'}); const o=e.style.outline; e.style.outline='3px solid #ff3b30'; setTimeout(()=>{e.style.outline=o;},2500); }
 async function initLanding(){
   try{ const d=await db.collection('siteSettings').doc('landing').get(); LN=d.exists?d.data():{}; }catch(e){ LN={}; }
   const set=(i,v)=>{ const e=document.getElementById(i); if(e) e.value=v||''; };
@@ -2587,9 +2658,9 @@ async function lnSave(){ const g=i=>(document.getElementById(i).value||'').trim(
   try{ await db.collection('siteSettings').doc('landing').set(doc); LN=doc; audit('control','','','تحديث الصفحة الرئيسية'); st.className='status ok'; st.textContent='✓ اتحفظت وبتظهر دلوقتي في الصفحة الرئيسية.'; lnLinks(); }catch(e){ st.className='status err'; st.textContent='تعذّر: '+(e.code||e.message); } }
 
 /* ===== وضوح لوحة التحكم: مجموعات + بحث + عنوان القسم ===== */
-const ADM_GROUPS=[['المحتوى',['lessons','tips','videos','courses','notebooks','books','challenges']],['المجتمع والتحفيز',['community','wallet','referrals']],['الحسابات والاشتراكات',['users','accounts','acct','supervisors','perm','nid','logins']],['المتابعة والحضور',['attend','health','tickets','support','bcast','files']],['التقارير والسجلات',['analytics','activity','reports','audit']],['الإعدادات',['landing','control','settings']]];
-const ADM_ICON={lessons:'book',tips:'clipboard',videos:'video',courses:'grad',notebooks:'notebook',books:'book',challenges:'award',community:'users',wallet:'cash',referrals:'gift',users:'user',accounts:'card',acct:'refresh',supervisors:'cap',perm:'lock',nid:'key',logins:'history',attend:'pin',health:'bars',tickets:'inbox',support:'chat-circle',bcast:'bell',files:'folder',analytics:'bars',activity:'bars',reports:'file',audit:'history',landing:'layout',control:'settings',settings:'settings'};
-const ADM_DESC={lessons:'أضف وعدّل دروس "تعلم كيف" اللي بتظهر للمشتركين.',tips:'نصائح وموارد التربية العملية.',videos:'فيديوهات بحوث الفعل.',courses:'الدورات والدروس والاختبارات.',notebooks:'راجع دفاتر التحضير اللي نشرها الأعضاء.',books:'أضف كتب للمكتبة بملف أو رابط.',challenges:'تحدي الأسبوع والجوايز.',community:'راجع منشورات المجتمع واحذف المخالف.',wallet:'أرصدة الأعضاء وطلبات الشحن والصرف.',referrals:'الإحالات والمكافآت.',users:'كل المستخدمين: بحث وتفاصيل وتفعيل وإيقاف.',accounts:'أسعار أنواع الحسابات وفتح/غلق التسجيل لكل نوع.',acct:'غيّر نوع أي حساب وحالته ومشرفه وتاريخ انتهائه.',supervisors:'اعتماد المشرفين والإدارة وربط الأعضاء بهم.',perm:'تحكم في الميزات المتاحة لكل مشترك.',nid:'منح الدخول بالرقم القومي وإدارة المنح.',logins:'آخر تسجيل دخول وظهور لكل حساب.',attend:'مواقع الحضور وسجلاته وتصديره وتفعيله للحسابات.',health:'استهلاك الحدود اليومية والمشرفون غير النشطين.',tickets:'تذاكر الدعم من المستخدمين.',support:'رسائل الدعم الواردة.',bcast:'إرسال إعلانات مجدولة لفئات محددة.',files:'مخزن الملفات: الحجم والحذف القديم.',analytics:'إحصاءات الاستخدام.',activity:'آخر نشاط على المنصة.',reports:'تقارير شهرية قابلة للطباعة.',audit:'سجل كل إجراءات الأدمن مع الفلترة والتصدير.',landing:'نصوص الصفحة الرئيسية والأسئلة الشائعة وأرقام المنصة وروابط التسجيل.',control:'مفاتيح التحكم الشامل، الحدود، والصيانة.',settings:'إعدادات عامة.'};
+const ADM_GROUPS=[['المحتوى',['lessons','tips','videos','courses','notebooks','books','challenges']],['المجتمع والتحفيز',['community','wallet','referrals']],['الحسابات والاشتراكات',['users','accounts','acct','supervisors','perm','nid','logins']],['المتابعة والحضور',['attend','health','tickets','support','bcast','files']],['التقارير والسجلات',['analytics','activity','reports','audit']],['الإعدادات',['landing','theme','control','settings']]];
+const ADM_ICON={lessons:'book',tips:'clipboard',videos:'video',courses:'grad',notebooks:'notebook',books:'book',challenges:'award',community:'users',wallet:'cash',referrals:'gift',users:'user',accounts:'card',acct:'refresh',supervisors:'cap',perm:'lock',nid:'key',logins:'history',attend:'pin',health:'bars',tickets:'inbox',support:'chat-circle',bcast:'bell',files:'folder',analytics:'bars',activity:'bars',reports:'file',audit:'history',landing:'layout',theme:'layout',control:'settings',settings:'settings'};
+const ADM_DESC={lessons:'أضف وعدّل دروس "تعلم كيف" اللي بتظهر للمشتركين.',tips:'نصائح وموارد التربية العملية.',videos:'فيديوهات بحوث الفعل.',courses:'الدورات والدروس والاختبارات.',notebooks:'راجع دفاتر التحضير اللي نشرها الأعضاء.',books:'أضف كتب للمكتبة بملف أو رابط.',challenges:'تحدي الأسبوع والجوايز.',community:'راجع منشورات المجتمع واحذف المخالف.',wallet:'أرصدة الأعضاء وطلبات الشحن والصرف.',referrals:'الإحالات والمكافآت.',users:'كل المستخدمين: بحث وتفاصيل وتفعيل وإيقاف.',accounts:'أسعار أنواع الحسابات وفتح/غلق التسجيل لكل نوع.',acct:'غيّر نوع أي حساب وحالته ومشرفه وتاريخ انتهائه.',supervisors:'اعتماد المشرفين والإدارة وربط الأعضاء بهم.',perm:'تحكم في الميزات المتاحة لكل مشترك.',nid:'منح الدخول بالرقم القومي وإدارة المنح.',logins:'آخر تسجيل دخول وظهور لكل حساب.',attend:'مواقع الحضور وسجلاته وتصديره وتفعيله للحسابات.',health:'استهلاك الحدود اليومية والمشرفون غير النشطين.',tickets:'تذاكر الدعم من المستخدمين.',support:'رسائل الدعم الواردة.',bcast:'إرسال إعلانات مجدولة لفئات محددة.',files:'مخزن الملفات: الحجم والحذف القديم.',analytics:'إحصاءات الاستخدام.',activity:'آخر نشاط على المنصة.',reports:'تقارير شهرية قابلة للطباعة.',audit:'سجل كل إجراءات الأدمن مع الفلترة والتصدير.',theme:'ألوان المنصة بنقرة واحدة وفاحص تباين النصوص.',landing:'نصوص الصفحة الرئيسية والأسئلة الشائعة وأرقام المنصة وروابط التسجيل.',control:'مفاتيح التحكم الشامل، الحدود، والصيانة.',settings:'إعدادات عامة.'};
 function adminSecHead(name){ const b=document.querySelector('.tab.active'); const h=document.getElementById('sec-head'); if(!h||!b) return; h.innerHTML='<div class="sh-i">'+b.querySelector('svg').outerHTML+'</div><div><h2>'+b.textContent.trim()+'</h2><p>'+(ADM_DESC[name]||'')+'</p></div>'; }
 function adminUx(){
   const tabs=document.querySelector('.tabs'); if(!tabs||tabs.dataset.ux) return; tabs.dataset.ux='1';
