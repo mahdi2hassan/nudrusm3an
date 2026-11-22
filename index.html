@@ -1389,6 +1389,40 @@ html[data-contrast=high] button,html[data-contrast=high] .nav-item,html[data-con
 html[data-contrast=high] .sub,html[data-contrast=high] small,html[data-contrast=high] p{color:var(--ink) !important;}
 html[data-contrast=high] :focus-visible{outline:3px solid #ff8a1f;outline-offset:2px;}
 html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data-contrast=high] input,html[data-contrast=high] select,html[data-contrast=high] textarea{border-width:2px;border-color:var(--ink);}
+
+/* ===== batch15 ===== */
+#inst-banner{position:fixed;inset-inline:12px;bottom:calc(92px + env(safe-area-inset-bottom));z-index:9000;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:#101a3d;color:#fff;box-shadow:0 12px 34px rgba(0,0,0,.35);border:1.5px solid #ffb81c;}
+#inst-banner>div{flex:1;display:flex;flex-direction:column;gap:2px;font-size:13px;}#inst-banner span{font-size:11.5px;color:#cfd8f5;}
+#inst-banner .inst-go{background:linear-gradient(135deg,#ffb81c,#ff8a1f);color:#140b00;font-weight:900;border:0;border-radius:10px;padding:9px 16px;font:inherit;font-weight:900;cursor:pointer;}
+#inst-banner .inst-x{background:none;border:0;color:#cfd8f5;font-size:16px;cursor:pointer;padding:6px;}
+.wk-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:18px;border-inline-start:5px solid #ff8a1f;}
+.wk-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;color:var(--ink);}.wk-h small{color:var(--ink-soft);}
+.wk-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;}
+.wk-c{background:var(--paper-dim);border-radius:12px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;color:var(--ink);}
+.wk-c .icon{width:18px;height:18px;color:#ff8a1f;}.wk-c b{font-size:20px;}.wk-c span{font-size:11.5px;color:var(--ink-soft);}
+
+/* ===== batch16 ===== */
+.rm-card{background:var(--surface);border:1px solid var(--line);border-inline-start:5px solid #d92d20;border-radius:16px;padding:14px 16px;margin-bottom:18px;display:flex;flex-direction:column;gap:8px;color:var(--ink);}
+.rm-i{display:flex;justify-content:space-between;gap:8px;font-size:14px;}.rm-i em{font-style:normal;font-weight:800;color:var(--ink-soft);}.rm-i em.hot{color:#ff8a1f;}.rm-i em.bad{color:#d92d20;}
+.wc-r{display:grid;grid-template-columns:1.4fr 1fr auto;gap:10px;align-items:center;margin:7px 0;font-size:13.5px;color:var(--ink);}
+.wc-bar{height:8px;background:var(--paper-dim);border-radius:99px;overflow:hidden;}.wc-bar i{display:block;height:100%;background:linear-gradient(90deg,#ffb81c,#ff8a1f);border-radius:99px;}
+.fav-star{background:none;border:0;font-size:22px;color:#ffb81c;cursor:pointer;margin-inline-start:8px;vertical-align:middle;line-height:1;}.fav-star.on{color:#ff8a1f;}
+.fav-strip{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;}.fav-x{background:none;border:0;color:var(--ink-soft);cursor:pointer;font-size:13px;margin-inline-start:-6px;}
+
+/* ===== batch17 ===== */
+.wc-sk{margin:2px 0 10px;font-size:14px;color:var(--ink);}.wc-sk b{color:#ff8a1f;font-size:18px;}
+.bdg-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.bdg{border:1.5px dashed var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:4px;align-items:flex-start;opacity:.6;color:var(--ink);}
+.bdg .icon{width:24px;height:24px;color:var(--ink-soft);}.bdg b{font-size:14px;}.bdg small{font-size:11.5px;color:var(--ink-soft);}
+.bdg.on{opacity:1;border:1.5px solid #ff8a1f;background:linear-gradient(135deg,rgba(255,184,28,.14),rgba(255,138,31,.1));}.bdg.on .icon{color:#ff8a1f;}
+
+/* ===== مراجعة التباين الشاملة ===== */
+.fav-star{color:#c25f00;}
+html[data-theme=dark] .fav-star{color:#ffc94d;}
+html[data-theme=dark] .thc-tag,html[data-theme=dark] .expert-badge,html[data-theme=dark] .verified-badge{background:rgba(255,184,28,.2) !important;color:#ffd877 !important;}
+html[data-contrast=high] .thc-tag,html[data-contrast=high] .expert-badge{color:#000 !important;background:#ffd877 !important;}
+html[data-contrast=high][data-theme=dark] .thc-tag,html[data-contrast=high][data-theme=dark] .expert-badge{color:#fff !important;background:#7a4d00 !important;}
+html[data-theme=dark] .bdg.on b{color:#fff;}
 </style>
 </head>
 <body>
@@ -1540,7 +1574,7 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
           <div class="l3-step"><span class="l3-i"><svg class="icon"><use href="#i-user"></use></svg></span><div><b>حساب Google / Microsoft</b><small>تأكيد الهوية</small></div><span class="l3-dot"></span></div>
           <div class="l3-fake"><svg class="icon"><use href="#i-shield"></use></svg> تأكيد الحضور</div>
         </div>
-        <div class="l3-chip c1"><svg class="icon"><use href="#i-award"></use></svg> نقاط وشارات</div>
+        <div class="l3-chip c1"><svg class="icon"><use href="#i-award"></use></svg> تحدي أسبوعي</div>
         <div class="l3-chip c2"><svg class="icon"><use href="#i-file"></use></svg> تقرير PDF / Excel</div>
       </div>
     </div>
@@ -1587,7 +1621,7 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
         <div class="l3-tp" data-t="comm">
           <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-users"></use></svg></span><div><h4>خبراء ومجموعات</h4><p>اسأل خبيرًا وانضم لمجموعة تخصصك.</p></div></div>
           <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-chat-circle"></use></svg></span><div><h4>دردشة</h4><p>رسائل وروابط وملفات بين الزملاء.</p></div></div>
-          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-award"></use></svg></span><div><h4>نقاط وشارات</h4><p>تحدي أسبوعي ولوحة متصدرين.</p></div></div>
+          <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-award"></use></svg></span><div><h4>تحدٍّ أسبوعي</h4><p>تحديات أسبوعية وتقدّم واضح في نشاطك.</p></div></div>
           <div class="l3-f"><span class="l3-i"><svg class="icon"><use href="#i-bell"></use></svg></span><div><h4>إشعارات وتذكيرات</h4><p>مواعيدك وتنبيهاتك في مكان واحد.</p></div></div>
         </div>
       </div>
@@ -1690,9 +1724,7 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
       <p>عند ربط حسابك بمشرف أو بإدارة، يطّلعان على نشاطك المرتبط بالإشراف: الزيارات والتقارير والتكاليف والتسليمات والاجتماعات والحضور ومؤشرات المتابعة. وهذا جزء أساسي من عمل هذه الحسابات.</p>
       <h4>7. الحضور الأكاديمي</h4>
       <ul><li>تسجيل الحضور يتم بالتحقق من الموقع وبصمة الجهاز وحساب Google أو Microsoft، بحسب إعدادات الإدارة. وتفعيله لحسابك يتم من إدارة المنصة أو من المشرف المرتبط بك، ويمكن إيقافه في أي وقت.</li><li>سجّل حضورك بنفسك وفي مكانك الفعلي. يُمنع التسجيل نيابة عن شخص آخر أو التلاعب بالموقع أو الجهاز أو الوقت.</li><li>تُعلَّم التسجيلات المشتبه فيها للمراجعة، وللمشرف تعديل الحضور يدويًا بسبب مكتوب، وقبول أعذار الغياب أو رفضها.</li><li>قد تُحتسب نسبة الحضور ويُنبَّه من تقل نسبته عن الحد المحدد.</li></ul>
-      <h4>8. النقاط والمحفظة</h4>
-      <p>النقاط والرصيد داخل المنصة وسيلة تحفيزية للاستخدام داخلها فقط (ترقية أو تجديد الاشتراك)، ولا تُصرف نقدًا ولا تُستبدل خارج المنصة.</p>
-      <h4>9. استمرارية الخدمة</h4>
+      <h4>8. استمرارية الخدمة</h4>
       <p>قد تتوقف بعض الميزات أو تتحدث من وقت لآخر، وقد تُفعَّل الصيانة بوضع القراءة فقط. ونعمل على تقليل أي انقطاع ولكن لا نضمن خدمة بلا توقف.</p>
       <h4>10. التعديلات</h4>
       <p>قد تُحدَّث هذه الشروط من وقت لآخر، وسيتم إعلام المستخدمين بأي تغييرات جوهرية. استمرارك في الاستخدام بعد التحديث يعني موافقتك عليه.</p>
@@ -1700,7 +1732,7 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
     <div class="legal-body" id="legal-privacy" style="display:none;">
 <p class="legal-date">آخر تحديث: نوفمبر 2026</p>
       <h4>1. البيانات التي نجمعها</h4>
-      <ul><li><b>بيانات الحساب:</b> الاسم والبريد الإلكتروني ورقم الهاتف ونوع الحساب والمشرف المرتبط بك. وعند الدخول بحساب Google أو Microsoft: الاسم والبريد.</li><li><b>نشاطك:</b> المنشورات والمحادثات ودفاتر التحضير والأبحاث والنقاط والتقدم في الدورات والتكاليف والتسليمات والملفات التي ترفعها.</li><li><b>الرقم القومي:</b> إن فعّلت حسابك به، نحفظ نسخة مشفّرة (Hash) وآخر 4 أرقام للمراجعة، ولا نعرض الرقم كاملًا.</li><li><b>آخر دخول وآخر ظهور:</b> لمتابعة النشاط وتذكير الحسابات غير النشطة.</li></ul>
+      <ul><li><b>بيانات الحساب:</b> الاسم والبريد الإلكتروني ورقم الهاتف ونوع الحساب والمشرف المرتبط بك. وعند الدخول بحساب Google أو Microsoft: الاسم والبريد.</li><li><b>نشاطك:</b> المنشورات والمحادثات ودفاتر التحضير والأبحاث والتقدم في الدورات والتكاليف والتسليمات والملفات التي ترفعها.</li><li><b>الرقم القومي:</b> إن فعّلت حسابك به، نحفظ نسخة مشفّرة (Hash) وآخر 4 أرقام للمراجعة، ولا نعرض الرقم كاملًا.</li><li><b>آخر دخول وآخر ظهور:</b> لمتابعة النشاط وتذكير الحسابات غير النشطة.</li></ul>
       <h4>2. بيانات الحضور الأكاديمي</h4>
       <ul><li>عند تسجيل الحضور فقط: إحداثيات موقعك ودقتها والمسافة عن المكان، والوقت، ومعرّف تقني للجهاز، ومزوّد الحساب المستخدم في التأكيد (Google / Microsoft)، وهل تم التحقق بالبصمة.</li><li>لا نتتبع موقعك في الخلفية، ولا نقرأ موقعك إلا عندما تضغط على تسجيل الحضور.</li><li>نستخدم هذه البيانات لتأكيد الحضور وكشف التلاعب وإعداد التقارير. ويطّلع عليها المشرف المرتبط بك والإدارة وإدارة المنصة.</li></ul>
       <h4>3. البصمة</h4>
@@ -1902,7 +1934,7 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-t" data-views="t-community v-qa v-expert v-problems v-groups v-public-profile" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-chats-t" data-views="v-chats" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-t" style="display:none;">0</span></button>
-        <button class="nav-item" id="navi-growth-t" data-views="v-leaderboard v-challenge v-wallet v-career v-sim" onclick="showView('v-leaderboard', this)"><svg class="icon"><use href="#i-award"></use></svg> الإنجاز والتحفيز</button>
+        <button class="nav-item" id="navi-growth-t" data-views="v-challenge v-career v-sim" onclick="showView('v-challenge', this)"><svg class="icon"><use href="#i-award"></use></svg> الإنجاز والتحفيز</button>
         <button class="nav-item" id="navi-sup-t" style="display:none;" data-views="v-sup" onclick="showView('v-sup', this)"><svg class="icon"><use href="#i-cap"></use></svg> مشرفي وتكاليفي</button>
         <div class="nav-group-label">الحساب</div>
         <button class="nav-item" data-views="v-profile" onclick="showView('v-profile', this)"><svg class="icon"><use href="#i-user"></use></svg> ملفي الشخصي</button>
@@ -1921,7 +1953,7 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-s" data-views="t-community v-qa v-expert v-problems v-groups v-public-profile" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-chats-s" data-views="v-chats" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-s" style="display:none;">0</span></button>
-        <button class="nav-item" id="navi-growth-s" data-views="v-leaderboard v-challenge v-wallet v-career v-sim" onclick="showView('v-leaderboard', this)"><svg class="icon"><use href="#i-award"></use></svg> الإنجاز والتحفيز</button>
+        <button class="nav-item" id="navi-growth-s" data-views="v-challenge v-career v-sim" onclick="showView('v-challenge', this)"><svg class="icon"><use href="#i-award"></use></svg> الإنجاز والتحفيز</button>
         <button class="nav-item" id="navi-sup-s" style="display:none;" data-views="v-sup" onclick="showView('v-sup', this)"><svg class="icon"><use href="#i-cap"></use></svg> مشرفي وتكاليفي</button>
         <div class="nav-group-label">الحساب</div>
         <button class="nav-item" data-views="v-profile" onclick="showView('v-profile', this)"><svg class="icon"><use href="#i-user"></use></svg> ملفي الشخصي</button>
@@ -1996,8 +2028,6 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
         </div>
 
         <div class="stat-strip">
-          <div class="stat-tile gold"><div class="st-ic"><svg class="icon"><use href="#i-award"></use></svg></div><div><div class="st-num js-hs-points">—</div><div class="st-lbl">نقاطك</div></div></div>
-          <div class="stat-tile"><div class="st-ic"><svg class="icon"><use href="#i-star"></use></svg></div><div><div class="st-num js-hs-level" style="font-size:16px;">—</div><div class="st-lbl">مستواك</div></div></div>
           <div class="stat-tile green"><div class="st-ic"><svg class="icon"><use href="#i-chat-square"></use></svg></div><div><div class="st-num js-hs-posts">—</div><div class="st-lbl">منشوراتك</div></div></div>
           <div class="stat-tile"><div class="st-ic"><svg class="icon"><use href="#i-notebook"></use></svg></div><div><div class="st-num js-hs-nbs">—</div><div class="st-lbl">دفاترك</div></div></div>
         </div>
@@ -2031,8 +2061,6 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
         </div>
 
         <div class="stat-strip">
-          <div class="stat-tile gold"><div class="st-ic"><svg class="icon"><use href="#i-award"></use></svg></div><div><div class="st-num js-hs-points">—</div><div class="st-lbl">نقاطك</div></div></div>
-          <div class="stat-tile"><div class="st-ic"><svg class="icon"><use href="#i-star"></use></svg></div><div><div class="st-num js-hs-level" style="font-size:16px;">—</div><div class="st-lbl">مستواك</div></div></div>
           <div class="stat-tile green"><div class="st-ic"><svg class="icon"><use href="#i-chat-square"></use></svg></div><div><div class="st-num js-hs-posts">—</div><div class="st-lbl">منشوراتك</div></div></div>
           <div class="stat-tile"><div class="st-ic"><svg class="icon"><use href="#i-notebook"></use></svg></div><div><div class="st-num js-hs-nbs">—</div><div class="st-lbl">دفاترك</div></div></div>
         </div>
@@ -2173,6 +2201,7 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
         <div id="tools-hub-grid" class="tools-hub-grid"></div>
       </div>
 
+
       <!-- ========== أدوات مساعدة (مؤقت، درجات، حضور، جدول، بطاقات...) ========== -->
       <div class="view" id="v-helpers">
         <div class="topbar"><div><h1>أدوات مساعدة</h1><div class="sub">مؤقت، درجات، حضور، جدول، بطاقات مراجعة ومهام — بياناتك محفوظة وخاصة بيك</div></div></div>
@@ -2199,35 +2228,6 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
         <div class="topbar"><div><h1>أدوات الإشراف</h1><div class="sub">زيارات، خطط تطوير، متابعة، تقارير ومستندات بكود</div></div></div>
         <div class="hp-chips hp-tabs" id="sv-tabs"></div>
         <div id="sv-body"></div>
-      </div>
-
-      <!-- ========== لوحة المتصدرين ========== -->
-      <div class="view" id="v-leaderboard">
-        <div class="topbar"><div><h1>لوحة المتصدرين</h1><div class="sub">أكتر المعلمين نشاطًا وعطاءً للمجتمع (نقاط الأنشطة)</div></div></div>
-        <label style="display:flex; align-items:center; gap:8px; margin-bottom:14px; font-size:14px; font-weight:700;"><input type="checkbox" id="lb-optin" onchange="toggleLb(this.checked)"> أظهر اسمي ونقاطي في لوحة المتصدرين (اختياري)</label>
-        <button class="btn-secondary" style="margin-bottom:14px;" onclick="shareMyAchievement()">📤 شارك ترتيبك ونقاطك</button>
-        <div id="leaderboard-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
-      </div>
-
-      <!-- ========== المحفظة الإلكترونية ========== -->
-      <div class="view" id="v-wallet">
-        <div class="topbar"><div><h1>المحفظة</h1><div class="sub">استبدل نقاطك بمكافآت داخل المنصة</div></div></div>
-        <div class="card-panel" style="margin-bottom:20px; text-align:center;">
-          <div style="font-size:13px; color:var(--ink-soft); margin-bottom:4px;">رصيدك الحالي</div>
-          <div id="wallet-balance" style="font-size:34px; font-weight:900;">—</div>
-        </div>
-        <div class="section-title">استخدم رصيدك</div>
-        <div class="card-panel" style="max-width:none; margin-bottom:26px;">
-          <div class="field-row">
-            <div class="field"><label>الغرض</label><select id="wallet-purpose"><option value="upgrade">ترقية العضوية</option><option value="renew">تجديد الاشتراك</option></select></div>
-            <div class="field"><label>المبلغ (جنيه كامل)</label><input type="number" id="wallet-egp" min="1" step="1"></div>
-          </div>
-          <button class="btn-primary" onclick="requestRedeem()">اطلب الخصم من اشتراكي</button>
-          <div class="auth-status" id="wallet-status"></div>
-          <div class="hint">كل 750 نقطة = 1 جنيه. الرصيد بيُستخدم داخل المنصة بس (ترقية أو تجديد) ومينفعش يتحوّل لفلوس نقدية.</div>
-        </div>
-        <div class="section-title">طلبات الاستبدال بتاعتي</div>
-        <div id="wallet-redemptions-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
       </div>
 
       <div class="view" id="v-challenge">
@@ -2377,15 +2377,14 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
             <div class="profile-name" id="profile-name-display">—</div>
             <div class="profile-meta" id="profile-meta-display">—</div>
             <div class="profile-meta" id="profile-rating-display" style="margin-top:4px;">—</div>
-            <div class="profile-meta" id="profile-points-display" style="margin-top:4px;">—</div>
           </div>
           <div class="profile-stats" id="profile-stats"></div>
         </div>
 
         <div class="pf-grid">
 <div class="card-panel" id="referral-box" style="max-width:none; margin-bottom:22px;">
-          <div class="section-title" style="margin-top:0;">🎁 ادعُ زميلك واكسب نقاط</div>
-          <p style="font-size:13px; color:var(--ink-soft); margin-bottom:12px;">شارك رابطك، وكل زميل يسجّل حساب بيه هتكسب 30 نقطة (بعد اعتماد الأدمن).</p>
+          <div class="section-title" style="margin-top:0;">🎁 ادعُ زميلك للمنصة</div>
+          <p style="font-size:13px; color:var(--ink-soft); margin-bottom:12px;">شارك رابطك مع زملائك ليسجّلوا في المنصة.</p>
           <div class="field-row">
             <div class="field" style="flex:1;"><input type="text" id="referral-link" readonly onclick="this.select()"></div>
             <button class="btn-secondary" onclick="copyReferralLink()">نسخ</button>
@@ -2493,9 +2492,7 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
       <p>عند ربط حسابك بمشرف أو بإدارة، يطّلعان على نشاطك المرتبط بالإشراف: الزيارات والتقارير والتكاليف والتسليمات والاجتماعات والحضور ومؤشرات المتابعة. وهذا جزء أساسي من عمل هذه الحسابات.</p>
       <h4>7. الحضور الأكاديمي</h4>
       <ul><li>تسجيل الحضور يتم بالتحقق من الموقع وبصمة الجهاز وحساب Google أو Microsoft، بحسب إعدادات الإدارة. وتفعيله لحسابك يتم من إدارة المنصة أو من المشرف المرتبط بك، ويمكن إيقافه في أي وقت.</li><li>سجّل حضورك بنفسك وفي مكانك الفعلي. يُمنع التسجيل نيابة عن شخص آخر أو التلاعب بالموقع أو الجهاز أو الوقت.</li><li>تُعلَّم التسجيلات المشتبه فيها للمراجعة، وللمشرف تعديل الحضور يدويًا بسبب مكتوب، وقبول أعذار الغياب أو رفضها.</li><li>قد تُحتسب نسبة الحضور ويُنبَّه من تقل نسبته عن الحد المحدد.</li></ul>
-      <h4>8. النقاط والمحفظة</h4>
-      <p>النقاط والرصيد داخل المنصة وسيلة تحفيزية للاستخدام داخلها فقط (ترقية أو تجديد الاشتراك)، ولا تُصرف نقدًا ولا تُستبدل خارج المنصة.</p>
-      <h4>9. استمرارية الخدمة</h4>
+      <h4>8. استمرارية الخدمة</h4>
       <p>قد تتوقف بعض الميزات أو تتحدث من وقت لآخر، وقد تُفعَّل الصيانة بوضع القراءة فقط. ونعمل على تقليل أي انقطاع ولكن لا نضمن خدمة بلا توقف.</p>
       <h4>10. التعديلات</h4>
       <p>قد تُحدَّث هذه الشروط من وقت لآخر، وسيتم إعلام المستخدمين بأي تغييرات جوهرية. استمرارك في الاستخدام بعد التحديث يعني موافقتك عليه.</p>
@@ -2503,7 +2500,7 @@ html[data-contrast=high] .card-panel,html[data-contrast=high] .hp-chip,html[data
 
         <div class="card-panel legal-body" style="margin-top:16px;"><h3 style="margin-bottom:8px;">سياسة الخصوصية</h3><p class="legal-date">آخر تحديث: نوفمبر 2026</p>
       <h4>1. البيانات التي نجمعها</h4>
-      <ul><li><b>بيانات الحساب:</b> الاسم والبريد الإلكتروني ورقم الهاتف ونوع الحساب والمشرف المرتبط بك. وعند الدخول بحساب Google أو Microsoft: الاسم والبريد.</li><li><b>نشاطك:</b> المنشورات والمحادثات ودفاتر التحضير والأبحاث والنقاط والتقدم في الدورات والتكاليف والتسليمات والملفات التي ترفعها.</li><li><b>الرقم القومي:</b> إن فعّلت حسابك به، نحفظ نسخة مشفّرة (Hash) وآخر 4 أرقام للمراجعة، ولا نعرض الرقم كاملًا.</li><li><b>آخر دخول وآخر ظهور:</b> لمتابعة النشاط وتذكير الحسابات غير النشطة.</li></ul>
+      <ul><li><b>بيانات الحساب:</b> الاسم والبريد الإلكتروني ورقم الهاتف ونوع الحساب والمشرف المرتبط بك. وعند الدخول بحساب Google أو Microsoft: الاسم والبريد.</li><li><b>نشاطك:</b> المنشورات والمحادثات ودفاتر التحضير والأبحاث والتقدم في الدورات والتكاليف والتسليمات والملفات التي ترفعها.</li><li><b>الرقم القومي:</b> إن فعّلت حسابك به، نحفظ نسخة مشفّرة (Hash) وآخر 4 أرقام للمراجعة، ولا نعرض الرقم كاملًا.</li><li><b>آخر دخول وآخر ظهور:</b> لمتابعة النشاط وتذكير الحسابات غير النشطة.</li></ul>
       <h4>2. بيانات الحضور الأكاديمي</h4>
       <ul><li>عند تسجيل الحضور فقط: إحداثيات موقعك ودقتها والمسافة عن المكان، والوقت، ومعرّف تقني للجهاز، ومزوّد الحساب المستخدم في التأكيد (Google / Microsoft)، وهل تم التحقق بالبصمة.</li><li>لا نتتبع موقعك في الخلفية، ولا نقرأ موقعك إلا عندما تضغط على تسجيل الحضور.</li><li>نستخدم هذه البيانات لتأكيد الحضور وكشف التلاعب وإعداد التقارير. ويطّلع عليها المشرف المرتبط بك والإدارة وإدارة المنصة.</li></ul>
       <h4>3. البصمة</h4>
@@ -3272,8 +3269,6 @@ function showView(id, btn){
   if(id === 'v-sup-tools') supToolsOpen();
   if(id === 'v-prac-tools') pracToolsOpen();
   if(id === 't-dash' || id === 's-home') homeCardsRender();
-  if(id === 'v-leaderboard') loadLeaderboard();
-  if(id === 'v-wallet') loadWallet();
   if(id === 'v-profile') loadReferralBox();
   if(id === 'v-expert') renderKindView('expert');
   if(id === 'v-problems') renderKindView('problem');
@@ -3411,14 +3406,6 @@ function renderProfileView(){
       ratingEl.innerHTML = agg.count ? `${ic('star')} ${agg.avg.toFixed(1)} من 5 (${agg.count} تقييم)` : 'لسه مفيش تقييمات من المجتمع';
     });
   }
-  const pointsEl = document.getElementById('profile-points-display');
-  if(pointsEl && currentUid){
-    pointsEl.textContent = 'جاري حساب نقاطك...';
-    pointsAggFor(currentUid).then(total => {
-      const lvl = levelForPoints(total);
-      pointsEl.innerHTML = `${lvl.emoji} ${total} نقطة · مستوى "${escapeHtml(lvl.label)}"`;
-    });
-  }
 
   const myPosts = communityPostsCache.filter(({data:p}) => p.authorUid === currentUid).length;
   const myNotebooks = notebooksCache.filter(({data:n}) => n.ownerUid === currentUid).length;
@@ -3494,106 +3481,13 @@ function mathJaxTag(){
   return `<script>window.MathJax = { tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] } };<\/script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js" id="MathJax-script" async><\/script>`;
 }
-/* ================= نظام النقاط والشارات ================= */
-const POINTS = { courseComplete: 30, notebookPublish: 10, researchPublish: 15, communityPost: 2, acceptedAnswer: 8 };
-const LEVELS = [
-  { min: 0,   label: 'مبتدئ',        emoji: '🌱' },
-  { min: 50,  label: 'نشِط',         emoji: '⚡' },
-  { min: 150, label: 'متميز',        emoji: '🌟' },
-  { min: 350, label: 'نجم المجتمع',  emoji: '🏅' },
-];
-function levelForPoints(points){
-  let lvl = LEVELS[0];
-  for(const l of LEVELS){ if(points >= l.min) lvl = l; }
-  return lvl;
-}
-// مكافأة ذاتية — بيستخدمها المستخدم لنفسه بس على نشاط عمله هو (إكمال كورس، نشر مورد، منشور مجتمع)
-async function awardPoints(amount, reason, extra){
-  if(!currentUid) return;
-  try{
-    await db.collection('pointsLedger').add(Object.assign({
-      uid: currentUid, amount, reason, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }, extra || {}));
-  }catch(err){ console.warn('award points failed', err); }
-}
-// مكافأة "إجابة معتمدة" — بيمنحها صاحب السؤال لصاحب التعليق اللي اعتمده، والرول بيتحقق إن العلاقة صحيحة فعلًا
-async function awardAcceptedAnswerPoints(postId, commentId, commentAuthorUid){
-  if(!currentUid || !commentAuthorUid || commentAuthorUid === currentUid) return;
-  try{
-    await db.collection('pointsLedger').add({
-      uid: commentAuthorUid, amount: POINTS.acceptedAnswer, reason: 'acceptedAnswer',
-      postId, commentId, awardedBy: currentUid, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  }catch(err){ console.warn('award accepted-answer points failed', err); }
-}
-// مجموع نقاط أي مستخدم — بيتحسب من سجل النقاط مباشرة (زي نظام التقييمات بالظبط) عشان مانحتاجش نكتب على مستند مستخدم تاني
-async function pointsAggFor(uid){
-  try{
-    const snap = await db.collection('pointsLedger').where('uid','==', uid).limit(1000).get();
-    let total = 0;
-    snap.forEach(d => { const v = d.data().amount; if(typeof v === 'number') total += v; });
-    return total;
-  }catch(err){ console.warn(err); return 0; }
-}
-/* ---------- لوحة المتصدرين (اختيارية) ---------- */
-async function loadLeaderboard(){
-  const el = document.getElementById('leaderboard-list'), tg = document.getElementById('lb-optin'); if(!el || !currentUid) return;
-  el.innerHTML = '<div class="empty-state">جاري التحميل...</div>';
-  try{
-    const mine = await db.collection('leaderboard').doc(currentUid).get();
-    tg.checked = mine.exists;
-    if(mine.exists) await syncLb();
-    const snap = await db.collection('leaderboard').orderBy('points','desc').limit(20).get();
-    if(snap.empty){ el.innerHTML = '<div class="empty-state">لسه محدش فعّل ظهوره في اللوحة — كن أول واحد!</div>'; return; }
-    el.innerHTML = snap.docs.map((d,i) => { const r = d.data(), me = d.id === currentUid, lvl = levelForPoints(r.points||0);
-      return `<div class="content-item" style="${me?'background:var(--paper-dim);':''}"><div style="display:flex;align-items:center;gap:10px;"><div style="font-weight:900;min-width:22px;color:var(--ink-soft);">${i+1}</div><div class="mini-avatar">${r.photoURL?`<img src="${escapeAttr(r.photoURL)}" alt="">`:escapeHtml(initials(r.name))}</div><div><div class="ci-title">${escapeHtml(r.name||'مستخدم')}${me?' (انت)':''}${r.isExpert?' ⭐':''}</div><div style="font-size:11px;color:var(--ink-soft);">${lvl.emoji} ${escapeHtml(lvl.label)}</div></div></div><div style="font-weight:800;">${r.points||0} نقطة</div></div>`; }).join('');
-  }catch(err){ el.innerHTML = '<div class="empty-state">تعذّر تحميل اللوحة الآن.</div>'; console.warn(err); }
-}
-async function syncLb(){
-  const points = await pointsAggFor(currentUid);
-  await db.collection('leaderboard').doc(currentUid).set({ uid: currentUid, name: pendingUser.name||'مستخدم', photoURL: pendingUser.photoURL||'', isExpert: !!userStatus.isExpert, points, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-}
-async function toggleLb(on){
-  try{ if(on) await syncLb(); else await db.collection('leaderboard').doc(currentUid).delete(); }
-  catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
-  loadLeaderboard();
-}
-async function shareMyAchievement(){
-  try{
-    const points = await pointsAggFor(currentUid);
-    const lvl = levelForPoints(points);
-    const text = `أنا على منصة نُدرس معًا 🎓 وصلت لـ ${points} نقطة ومستوى "${lvl.label}" ${lvl.emoji}! انضم معايا: https://wa.me/201007586279`;
-    if(navigator.share){ navigator.share({ text }).catch(() => {}); }
-    else{ window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); }
-  }catch(e){ toast('حصل خطأ في المشاركة، حاول تاني.', {type:'err'}); }
-}
-/* ---------- المحفظة الإلكترونية (750 نقطة = 1 جنيه، للاستخدام داخل المنصة فقط) ---------- */
-const PTS_PER_EGP = 750;
-const RD_LABEL = { pending:'قيد المراجعة', approved:'اتطبّق على اشتراكك', rejected:'اترفض (النقاط رجعت لرصيدك)' };
-let walletAvail = 0;
-async function loadWallet(){
-  const balEl = document.getElementById('wallet-balance'), box = document.getElementById('wallet-redemptions-list'); if(!currentUid) return;
-  try{
-    const [pts, snap] = await Promise.all([pointsAggFor(currentUid), db.collection('walletRedemptions').where('uid','==',currentUid).get()]);
-    const list = snap.docs.map(d => d.data()).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
-    const used = list.filter(r => r.status !== 'rejected').reduce((s,r) => s + (r.points||0), 0);
-    walletAvail = Math.max(0, pts - used);
-    const egp = Math.floor(walletAvail / PTS_PER_EGP), inp = document.getElementById('wallet-egp');
-    inp.max = egp; inp.value = egp ? 1 : '';
-    balEl.innerHTML = `${(walletAvail/PTS_PER_EGP).toFixed(2)} ج.م<div style="font-size:12px;font-weight:600;color:var(--ink-soft);margin-top:4px;">${walletAvail} نقطة · كل ${PTS_PER_EGP} نقطة = 1 جنيه</div>`;
-    box.innerHTML = list.length ? list.map(r => `<div class="content-item"><div class="ci-title">${r.egp} ج.م — ${r.purpose==='renew'?'تجديد اشتراك':'ترقية عضوية'}</div><div style="font-size:12px;color:var(--ink-soft);">${RD_LABEL[r.status]||r.status}</div></div>`).join('') : '<div class="empty-state">لسه ماعملتش أي طلب.</div>';
-  }catch(err){ balEl.textContent = '—'; console.warn(err); }
-}
-async function requestRedeem(){
-  const st = document.getElementById('wallet-status');
-  const egp = parseInt(document.getElementById('wallet-egp').value, 10) || 0, points = egp * PTS_PER_EGP;
-  if(egp < 1 || points > walletAvail){ st.className = 'auth-status err'; st.textContent = 'رصيدك مش كفاية للمبلغ ده.'; return; }
-  try{
-    await db.collection('walletRedemptions').add({ uid: currentUid, name: pendingUser.name||'', egp, points, purpose: document.getElementById('wallet-purpose').value, status: 'pending', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    st.className = 'auth-status ok'; st.textContent = '✓ اتسجّل الطلب — هيتخصم من سعر اشتراكك لما الأدمن يفعّله.';
-    loadWallet();
-  }catch(err){ st.className = 'auth-status err'; st.textContent = 'حصل خطأ: ' + err.message; }
-}
+/* (نظام النقاط أُزيل) */
+const POINTS = {};
+async function awardPoints(){ }
+async function awardAcceptedAnswerPoints(){ }
+async function pointsAggFor(){ return 0; }
+function levelForPoints(){ return { emoji:'', label:'' }; }
+
 /* ---------- تحدي الأسبوع ---------- */
 let chId = null;
 async function loadChallenge(){
@@ -3620,7 +3514,7 @@ async function submitChallenge(){
   if(!title || !/^https?:\/\//i.test(link)){ st.className = 'auth-status err'; st.textContent = 'اكتب عنوان ورابط صحيح (يبدأ بـ https://).'; return; }
   try{
     await db.collection('challengeEntries').doc(chId + '_' + currentUid).set({ challengeId: chId, ownerUid: currentUid, ownerName: pendingUser.name||'مستخدم', title, link, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    awardPoints(5, 'challengeEntry'); toast('اتسجّلت مشاركتك (+5 نقاط).'); loadChallenge();
+    toast('اتسجّلت مشاركتك.'); loadChallenge();
   }catch(err){ st.className = 'auth-status err'; st.textContent = 'حصل خطأ: ' + err.message; }
 }
 async function voteEntry(entryId){
@@ -3633,14 +3527,14 @@ async function voteEntry(entryId){
 const CAREER = [
   { n:'طالب معلم', e:'🌱', req:[] },
   { n:'معلم متدرب', e:'📘', req:[['دورة مكتملة', m=>m.courses, 1], ['زيارة تربية عملية مسجّلة', m=>m.visits, 3]] },
-  { n:'معلم ممارس', e:'✏️', req:[['دفتر تحضير منشور', m=>m.notebooks, 2], ['منشورات في المجتمع', m=>m.posts, 5], ['نقطة نشاط', m=>m.points, 150]] },
-  { n:'معلم خبير', e:'⭐', req:[['دورات مكتملة', m=>m.courses, 3], ['نقطة نشاط', m=>m.points, 350], ['شارة معلم خبير (بتتمنح من الإدارة)', m=>m.expert?1:0, 1]] },
+  { n:'معلم ممارس', e:'✏️', req:[['دفتر تحضير منشور', m=>m.notebooks, 2], ['منشورات في المجتمع', m=>m.posts, 5]] },
+  { n:'معلم خبير', e:'⭐', req:[['دورات مكتملة', m=>m.courses, 3], ['شارة معلم خبير (بتتمنح من الإدارة)', m=>m.expert?1:0, 1]] },
 ];
 async function renderCareer(){
   const el = document.getElementById('career-content'); if(!el || !currentUid) return;
   let visits = 0;
   try{ visits = (await db.collection('practicalLog').where('ownerUid','==',currentUid).get()).size; }catch(e){}
-  const m = { visits, points: await pointsAggFor(currentUid), expert: userStatus.isExpert,
+  const m = { visits, expert: userStatus.isExpert,
     courses: coursesCache.filter(({id,data:c}) => (c.lessons||[]).length && (getCourseProgress(id).completedLessonIds||[]).length >= c.lessons.length).length,
     notebooks: notebooksCache.filter(({data:n}) => n.ownerUid === currentUid).length,
     posts: communityPostsCache.filter(({data:p}) => p.authorUid === currentUid).length };
@@ -4173,8 +4067,7 @@ async function addMyResearch(){
       ownerUid: currentUid, ownerName: pendingUser.name, createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     ['myres-title','myres-link','myres-problem','myres-hypothesis','myres-tools','myres-results','myres-recommendations'].forEach(id => { document.getElementById(id).value=''; });
-    status.className='auth-status ok'; status.textContent='✓ تمت الإضافة. (+'+POINTS.researchPublish+' نقطة)';
-    awardPoints(POINTS.researchPublish, 'researchPublish');
+    status.className='auth-status ok'; status.textContent='✓ تمت الإضافة.';
     loadMyResearch();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
@@ -4462,7 +4355,7 @@ async function toggleLessonComplete(courseId, lessonId){
     courseProgressCache[courseId] = { completedLessonIds: completed, completedAt: payload.completedAt };
     renderCourseDetail(courseId);
     renderCoursesGrid();
-    if(nowComplete && !wasComplete){ toast('🎓 مبروك، خلّصت الدورة! (+'+POINTS.courseComplete+' نقطة)'); awardPoints(POINTS.courseComplete, 'courseComplete', { courseId }); }
+    if(nowComplete && !wasComplete){ toast('🎓 مبروك، خلّصت الدورة!'); }
   }catch(err){ toast('تعذّر الحفظ الآن.'); console.warn(err); }
 }
 
@@ -5481,8 +5374,6 @@ async function openPublicProfile(uid){
       return;
     }
     const agg = await ratingAggFor(uid);
-    const totalPoints = await pointsAggFor(uid);
-    const lvl = levelForPoints(totalPoints);
     noteEl.textContent = p.role === 'teacher' ? 'معلم' : 'طالب معلم';
     bodyEl.innerHTML = `
       <div class="profile-head">
@@ -5491,7 +5382,6 @@ async function openPublicProfile(uid){
           <div class="profile-name">${escapeHtml(p.name||'مستخدم')}${p.isExpert ? ' <span class="expert-badge">⭐ معلم خبير</span>' : ''}${p.verified ? ' <span class="verified-badge" title="حساب موثّق">✓</span>' : ''}</div>
           <div class="profile-meta">${escapeHtml(p.specialization || 'مفيش تخصص مضاف')}</div>
           <div class="profile-meta" style="margin-top:4px;">${agg.count ? `${ic('star')} ${agg.avg.toFixed(1)} من 5 (${agg.count} تقييم)` : 'لسه مفيش تقييمات'}</div>
-          <div class="profile-meta" style="margin-top:4px;">${lvl.emoji} ${totalPoints} نقطة · مستوى "${escapeHtml(lvl.label)}"</div>
         </div>
       </div>
       <div class="card-panel" style="margin-top:16px;">
@@ -5693,8 +5583,7 @@ async function createPost(){
     document.getElementById('post-is-question').checked = false;
     removeComposerImage();
     status.className='auth-status ok'; status.textContent='✓ تم النشر.';
-    toast('تم نشر منشورك في المجتمع. (+'+POINTS.communityPost+' نقطة)');
-    awardPoints(POINTS.communityPost, 'communityPost');
+    toast('تم نشر منشورك في المجتمع.');
     loadCommunity();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; progress.textContent=''; }
   finally{ submitBtn.disabled = false; }
@@ -5862,8 +5751,7 @@ async function toggleAcceptedAnswer(postId, commentId, commentAuthorUid){
     cachedPost.data.acceptedCommentId = newValue;
     loadComments(postId);
     if(newValue){
-      toast('اتحددت الإجابة المعتمدة (+'+POINTS.acceptedAnswer+' نقطة لصاحبها).');
-      awardAcceptedAnswerPoints(postId, commentId, commentAuthorUid);
+      toast('اتحددت الإجابة المعتمدة.');
     }else{
       toast('اتشالت الإجابة المعتمدة.');
     }
@@ -5950,8 +5838,7 @@ async function addNotebook(){
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
     document.getElementById('nb-title').value=''; document.getElementById('nb-link').value='';
-    status.className='auth-status ok'; status.textContent = userStatus.isExpert ? '✓ تمت الإضافة. (+'+POINTS.notebookPublish+' نقطة)' : '✓ اتبعت لمراجعة معلم خبير — هيظهر في المكتبة بعد الاعتماد. (+'+POINTS.notebookPublish+' نقطة)';
-    awardPoints(POINTS.notebookPublish, 'notebookPublish');
+    status.className='auth-status ok'; status.textContent = userStatus.isExpert ? '✓ تمت الإضافة.' : '✓ اتبعت لمراجعة معلم خبير — هيظهر في المكتبة بعد الاعتماد.';
     loadNotebooks();
   }catch(err){ status.className='auth-status err'; status.textContent='حصل خطأ: '+err.message; }
 }
@@ -6125,7 +6012,7 @@ async function loadReferralBox(){
     const snap = await db.collection('referrals').where('referrerUid','==',currentUid).get();
     const total = snap.size, rewarded = snap.docs.filter(d => d.data().rewarded).length;
     const statEl = document.getElementById('referral-stats');
-    if(statEl) statEl.textContent = `${total} دعوة سجّلت حساب · ${rewarded} اتكافأ عليها (${rewarded * REFERRAL_POINTS} نقطة)`;
+    if(statEl) statEl.textContent = `${total} دعوة سجّلت حساب`;
   }catch(err){ console.warn(err); }
 }
 function copyReferralLink(){
@@ -6164,7 +6051,7 @@ const NAV_FAMILIES = {
     ['t-community','المجتمع','users'], ['v-qa','الأسئلة','help'], ['v-expert','اسأل خبيرًا','star'],
     ['v-problems','مشكلتي في الفصل','layers'], ['v-groups','مجموعات التخصص','users'] ] },
   growth: { also:[], tabs:[
-    ['v-leaderboard','لوحة المتصدرين','award'], ['v-challenge','تحدي الأسبوع','star'], ['v-wallet','المحفظة','cash'],
+    ['v-challenge','تحدي الأسبوع','star'],
     ['v-career','مساري كمعلم','grad'], ['v-sim','محاكاة المواقف','clipboard'] ] },
   training: { also:[], tabs:[
     ['s-practical','التربية العملية','clipboard','student'], ['v-prac-tools','أدوات التربية العملية','sparkle','student'], ['s-research','بحوث الفعل','video','student'],
@@ -6218,14 +6105,6 @@ async function renderHomeStats(){
   const setAll = (cls, v) => document.querySelectorAll(cls).forEach(el => el.textContent = v);
   setAll('.js-hs-posts', communityPostsCache.filter(({data:p}) => p.authorUid === currentUid).length);
   setAll('.js-hs-nbs', notebooksCache.filter(({data:n}) => n.ownerUid === currentUid).length);
-  try{
-    if(__hsCache.pts === null || Date.now() - __hsCache.t > 60000){
-      __hsCache = { t: Date.now(), pts: await pointsAggFor(currentUid) };
-    }
-    const lvl = levelForPoints(__hsCache.pts);
-    setAll('.js-hs-points', __hsCache.pts);
-    setAll('.js-hs-level', lvl.emoji + ' ' + lvl.label);
-  }catch(e){}
 }
 
 /* ================= الدردشة: نص وروابط فقط (صور/ملفات عبر روابط Drive أو أي رابط) — من غير رفع ولا تسجيل صوتي ================= */
@@ -6426,7 +6305,7 @@ function onAccountLoaded(){
 async function loadLimits(){ /* الرفع اتشال — الملفات بقت روابط فقط */ }
 (function(){
   const prev = showView;
-  const FREE_VIEWS = ['t-dash','s-home','v-sup','v-profile','s-contact','v-about-legal','v-upgrade','v-chats','v-public-profile'];
+  const FREE_VIEWS = ['t-dash','s-home','v-sup','v-profile','s-contact','v-about-legal','v-upgrade','v-chats','v-public-profile','v-notif-center'];
   showView = function(id, btn){
     if(!FREE_VIEWS.includes(id)){
       if(isAccountLocked()){ toast('حسابك لسه مش مفعّل — أكمل الدفع أو استنى الاعتماد وبعدين هتفتح كل الأدوات.', {type:'err', duration:4200}); id = ((ACCOUNT_TYPES[userStatus.accountType] || {}).role === 'teacher') ? 't-dash' : 's-home'; btn = null; }
@@ -7132,6 +7011,7 @@ async function nidSubmit(){
     nidTempGrant = !!grant.hasTemp;
     if(nidMode === 'login'){
       if(!grant.claimed){ nidMode = 'activate'; nidApplyMode(); st.className = 'auth-status ok'; st.textContent = nidTempGrant ? 'الرقم ده لسه ماتفعّلش — اكتب كلمة المرور المبدئية اللي أخدتها من الإدارة + اسمك وموبايلك وكلمة مرور جديدة.' : 'الرقم ده لسه ماتفعّلش — اكتب اسمك وموبايلك وكلمة مرور جديدة وكمّل.'; return; }
+      { const _lk = await nidRemoteLockLeft(hash); if(_lk > 0){ st.className = 'auth-status err'; st.textContent = 'محاولات كتير غلط على الرقم ده — جرّب بعد ' + _lk + ' دقيقة أو كلّم الإدارة.'; return; } }
       const cands = [grant.altEmail, synth].filter(Boolean);
       let cred = null, lastErr = null;
       for(const em of cands){ try{ cred = await auth.signInWithEmailAndPassword(em, pass); break; }catch(e){ lastErr = e; } }
@@ -8541,10 +8421,10 @@ const SV_CHALS = ['وثّق زيارة صفية كاملة بتقرير', 'اك�
 function svChalHtml(){
   const wk = ndWeek(), idx = (+wk.split('-W')[1] + +wk.slice(0, 4)) % SV_CHALS.length, C = hpO('chal'), done = !!C[wk], total = Object.keys(C).filter(k => C[k]).length;
   return `<div class="hp-card"><h3>🏆 تحدي الأسبوع <small>${wk}</small></h3><div class="hp-result" style="font-size:16px;">${hpE(SV_CHALS[idx])}</div>
-    <div class="hp-actions"><button class="btn-primary" ${done ? 'disabled' : ''} onclick="svChalDone('${wk}')">${done ? '✓ تم إنجازه' : 'أنجزت التحدي (+10 نقاط)'}</button></div>
+    <div class="hp-actions"><button class="btn-primary" ${done ? 'disabled' : ''} onclick="svChalDone('${wk}')">${done ? '✓ تم إنجازه' : 'أنجزت التحدي'}</button></div>
     <div class="hp-note">إجمالي التحديات اللي أنجزتها: <b>${total}</b></div></div>`;
 }
-async function svChalDone(wk){ const C = hpO('chal'); if(C[wk]) return; C[wk] = true; hpSave(); try{ await awardPoints(10, 'supChallenge', { week: wk }); }catch(e){} toast('🎉 برافو! +10 نقاط'); svShow('chal'); }
+async function svChalDone(wk){ const C = hpO('chal'); if(C[wk]) return; C[wk] = true; hpSave(); toast('🎉 برافو!'); svShow('chal'); }
 Object.assign(SV_FN, { chal: svChalHtml, survey: svSurveyHtml });
 SUPT.expert.splice(SUPT.expert.length - 1, 0, ['chal', '🏆 تحدي الأسبوع'], ['survey', '📊 استبيان']);
 SUPT.academic.splice(SUPT.academic.length - 1, 0, ['chal', '🏆 تحدي الأسبوع'], ['survey', '📊 استبيان']);
@@ -8691,16 +8571,13 @@ PT.prep.tabs.push(['tpl', '📚 قوالب تحضير جاهزة']); PT_FN.tpl =
 function hpFolioHtml(){
   const c = k => hpA(k).length, inbV = (typeof hpInbox !== 'undefined' && hpInbox ? hpInbox : []).filter(x => x.kind === 'visit').length;
   const rows = [['زيارات صفية', c('visits') + inbV], ['خطط تطوير', c('plans')], ['تقييمات ذاتية', c('selfs')], ['يوميات تدريب', c('journal')], ['ملاحظات زملاء', c('obs')], ['تحضيرات محفوظة', c('prepSaved')], ['محاضر', c('minutes')], ['تحديات منجزة', Object.keys(hpO('chal')).filter(k => hpO('chal')[k]).length], ['مهام منجزة', (HP.todos || []).filter(t => t.done).length]].filter(r => r[1]);
-  setTimeout(async () => { try{ const el = document.getElementById('fo-pts'); if(!el) return; const p = await pointsAggFor(currentUid), l = levelForPoints(p); el.innerHTML = `${l.emoji} ${p} نقطة · مستوى «${l.label}»`; el.dataset.v = el.textContent; }catch(e){} }, 50);
   return `<div class="hp-card"><h3>🗂️ ملف الإنجاز التلقائي</h3><div class="hp-note">بيتجمع لوحده من نشاطك. اضغط طباعة وهتحصل على ملف جاهز.</div>
-    <div class="hp-result" id="fo-pts">…</div>
     <div class="hp-grid hp-stats">${rows.map(r => `<div class="hp-mini"><b>${r[0]}</b>${r[1]}</div>`).join('') || '<div class="hp-note">لسه مفيش نشاط — ابدأ باستخدام الأدوات.</div>'}</div>
     <div class="hp-actions"><button class="btn-primary" onclick="hpFolioPrint()">🖨️ طباعة / PDF</button></div></div>`;
 }
 function hpFolioPrint(){
   const rows = [...document.querySelectorAll('#hp-body .hp-mini')].map(m => `<tr><td>${m.querySelector('b').textContent}</td><td>${m.lastChild.textContent}</td></tr>`).join('');
-  const ps = document.getElementById('fo-pts'); 
-  ptPrint('ملف الإنجاز', `<p>الاسم: <b>${hpE(pendingUser.name || '')}</b> — التاريخ: ${hpToday()}</p><p>${hpE((ps && ps.dataset.v) || '')}</p><table><tr><th>البند</th><th>العدد</th></tr>${rows}</table>`);
+  ptPrint('ملف الإنجاز', `<p>الاسم: <b>${hpE(pendingUser.name || '')}</b> — التاريخ: ${hpToday()}</p><table><tr><th>البند</th><th>العدد</th></tr>${rows}</table>`);
 }
 
 /* ----- 3) تنبيهات ذكية ----- */
@@ -9781,6 +9658,371 @@ function apprMount(){
 const _boot14 = ndBootExtras; ndBootExtras = async function(){ const r = await _boot14.apply(this, arguments); try{ apprMount(); }catch(e){} return r; };
 try{ siteThemeLoad(); }catch(e){}
 try{ if(document.readyState!=='loading') apprMount(); else document.addEventListener('DOMContentLoaded', apprMount); }catch(e){}
+/* ===== batch15: تثبيت التطبيق، بحث موحد، مركز إشعارات، تقرير أسبوعي، سجل أخطاء، قفل NID ===== */
+
+/* ---- سجل الأخطاء ---- */
+let ERRN = 0;
+function errLog(msg, src, line){
+  try{
+    if(ERRN >= 5 || !window.db) return; ERRN++;
+    msg = String(msg || '').slice(0, 300); if(/ResizeObserver|Script error|cancelled|network/i.test(msg)) return;
+    const key = 'err_' + msg.slice(0, 60); if(sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1');
+    db.collection('errorLogs').add({ msg, src: String(src || '').slice(-120), line: Number(line) || 0, page: String(location.hash || '').slice(0, 40) + ' ' + ((document.querySelector('.view.active') || {}).id || ''), ua: navigator.userAgent.slice(0, 100), uid: (typeof currentUid !== 'undefined' && currentUid) || '', ms: Date.now() }).catch(()=>{});
+  }catch(e){}
+}
+window.addEventListener('error', e => errLog(e.message, e.filename, e.lineno));
+window.addEventListener('unhandledrejection', e => errLog('Promise: ' + (e.reason && (e.reason.message || e.reason.code) || e.reason), '', 0));
+
+/* ---- قفل الرقم القومي على مستوى الخادم ---- */
+async function nidRemoteLockLeft(hash){
+  try{ const d = await db.collection('nidFails').doc(hash).get(); if(!d.exists) return 0; const o = d.data(); if((o.count || 0) >= 8 && Date.now() - (o.lastMs || 0) < 900000) return Math.ceil((900000 - (Date.now() - o.lastMs)) / 60000); }catch(e){}
+  return 0;
+}
+nidFailRemote = async function(hash){
+  try{
+    const ref = db.collection('nidFails').doc(hash), d = await ref.get(), now = Date.now();
+    if(!d.exists) await ref.set({ count: 1, lastMs: now });
+    else if(now - (d.data().lastMs || 0) > 900000) await ref.update({ count: 1, lastMs: now });
+    else await ref.update({ count: (d.data().count || 0) + 1, lastMs: now });
+  }catch(e){}
+};
+
+/* ---- تثبيت التطبيق ---- */
+let DEF_PROMPT = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); DEF_PROMPT = e; try{ apprRefresh(); instBanner(); }catch(x){} });
+window.addEventListener('appinstalled', () => { DEF_PROMPT = null; try{ localStorage.setItem('nd-inst', 'done'); }catch(e){} const b = document.getElementById('inst-banner'); if(b) b.remove(); try{ apprRefresh(); }catch(e){} });
+function ndIsStandalone(){ return (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true; }
+function ndIsIOS(){ return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+async function instNow(){
+  if(DEF_PROMPT){ DEF_PROMPT.prompt(); try{ await DEF_PROMPT.userChoice; }catch(e){} DEF_PROMPT = null; const b = document.getElementById('inst-banner'); if(b) b.remove(); try{ apprRefresh(); }catch(e){} return; }
+  toast(ndIsIOS() ? 'من متصفح سفاري: اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية».' : 'من قائمة المتصفح (⋮) اختار «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».', { duration: 7000 });
+}
+function instBanner(){
+  try{
+    if(ndIsStandalone() || localStorage.getItem('nd-inst') || document.getElementById('inst-banner') || !currentUid) return;
+    let f = +localStorage.getItem('nd-first') || 0; if(!f){ localStorage.setItem('nd-first', String(Date.now())); return; }
+    if(Date.now() - f < 2 * 864e5) return;
+    const snooze = +localStorage.getItem('nd-inst-snooze') || 0; if(Date.now() < snooze) return;
+    if(!DEF_PROMPT && !ndIsIOS()) return;
+    const b = document.createElement('div'); b.id = 'inst-banner';
+    b.innerHTML = '<div><b>ثبّت «نُدرس معًا» على موبايلك</b><span>يفتح أسرع ويشتغل زي أي تطبيق</span></div><button class="inst-go" onclick="instNow()">تثبيت</button><button class="inst-x" aria-label="لاحقًا" onclick="instSnooze()">✕</button>';
+    document.body.appendChild(b);
+  }catch(e){}
+}
+function instSnooze(){ try{ localStorage.setItem('nd-inst-snooze', String(Date.now() + 7 * 864e5)); }catch(e){} const b = document.getElementById('inst-banner'); if(b) b.remove(); }
+const _apprHtml15 = apprHtml;
+apprHtml = function(){ let h = _apprHtml15(); if(!ndIsStandalone() && (DEF_PROMPT || ndIsIOS())) h += '<div style="margin-top:12px"><button class="btn-secondary" onclick="instNow()">📲 ثبّت التطبيق على جهازك</button></div>'; return h; };
+
+/* ---- مساعدات للعروض الجديدة ---- */
+function nx15View(id){ let v = document.getElementById(id); if(v) return v; const p = document.getElementById('v-profile'); if(!p) return null; v = document.createElement('div'); v.className = 'view'; v.id = id; p.parentNode.appendChild(v); return v; }
+function nx15Time(ms){ try{ return new Date(ms).toLocaleString('ar-EG', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); }catch(e){ return ''; } }
+
+/* ---- مركز الإشعارات ---- */
+let NC = { list: [], f: 'all' };
+async function ncOpen(){
+  const v = nx15View('v-notif-center'); if(!v) return;
+  const dd = document.getElementById('notif-dropdown'); if(dd) dd.classList.remove('open');
+  showView('v-notif-center');
+  v.innerHTML = '<div class="topbar"><div><h1>مركز الإشعارات</h1><div class="sub">كل تنبيهاتك في مكان واحد</div></div></div><div id="nc-body"><div class="empty-state">جاري التحميل...</div></div>';
+  try{
+    const s = await db.collection('notifications').where('recipientUid', '==', currentUid).limit(100).get();
+    NC.list = s.docs.map(d => Object.assign({ id: d.id }, d.data())).sort((a, b) => ((b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0) - (a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0)));
+    ncRender();
+  }catch(e){ document.getElementById('nc-body').innerHTML = '<div class="empty-state">تعذر تحميل الإشعارات.</div>'; }
+}
+function ncRender(){
+  const b = document.getElementById('nc-body'); if(!b) return;
+  const un = NC.list.filter(n => !n.read).length, L = NC.list.filter(n => NC.f === 'all' || !n.read);
+  const tab = (k, t) => `<button class="appr-b ${NC.f === k ? 'on' : ''}" onclick="NC.f='${k}';ncRender()">${t}</button>`;
+  b.innerHTML = `<div class="appr-row" style="max-width:520px">${tab('all', 'الكل (' + NC.list.length + ')')}${tab('unread', 'غير المقروءة (' + un + ')')}</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn-secondary" onclick="ncReadAll()">تعليم الكل كمقروء</button><button class="btn-secondary" onclick="ncClearRead()">حذف المقروءة</button></div>
+  ${L.length ? L.map(n => `<div class="notif-item ${n.read ? '' : 'unread'}" style="border:1px solid var(--line);border-radius:12px;margin-bottom:8px" onclick="ncGo('${n.id}','${escapeAttr(n.viewId || '')}')"><div class="ni-icon">${ic(NOTIF_ICONS[n.type] || 'bell')}</div><div style="flex:1"><div class="ni-text">${escapeHtml(n.text || '')}</div><div class="ni-time">${nx15Time(n.createdAt && n.createdAt.toMillis ? n.createdAt.toMillis() : 0)}</div></div></div>`).join('') : '<div class="empty-state">مفيش إشعارات هنا.</div>'}`;
+}
+function ncGo(id, view){ const n = NC.list.find(x => x.id === id); if(n && !n.read){ n.read = true; db.collection('notifications').doc(id).update({ read: true }).catch(()=>{}); } if(view){ try{ showView(view); }catch(e){} } else ncRender(); }
+async function ncReadAll(){ try{ const b = db.batch(); NC.list.filter(n => !n.read).slice(0, 400).forEach(n => { n.read = true; b.update(db.collection('notifications').doc(n.id), { read: true }); }); await b.commit(); ncRender(); }catch(e){ toast('تعذر التحديث.'); } }
+async function ncClearRead(){ const r = NC.list.filter(n => n.read); if(!r.length) return toast('مفيش إشعارات مقروءة.'); if(!confirm('حذف ' + r.length + ' إشعار مقروء؟')) return; try{ for(let i = 0; i < r.length; i += 400){ const b = db.batch(); r.slice(i, i + 400).forEach(n => b.delete(db.collection('notifications').doc(n.id))); await b.commit(); } NC.list = NC.list.filter(n => !n.read); ncRender(); }catch(e){ toast('تعذر الحذف.'); } }
+function ncMount(){ const h = document.querySelector('#notif-dropdown .notif-head'); if(!h || document.getElementById('nc-all')) return; const a = document.createElement('div'); a.id = 'nc-all'; a.style.cssText = 'padding:10px 14px;text-align:center;border-top:1px solid var(--line)'; a.innerHTML = '<button class="linklike" style="font-weight:800" onclick="ncOpen()">عرض كل الإشعارات ←</button>'; document.getElementById('notif-dropdown').appendChild(a); }
+
+/* ---- بحث موحد (يضيف الصفحات والأدوات المتاحة للحساب) ---- */
+const _rgs15 = runGlobalSearch;
+runGlobalSearch = function(q){
+  _rgs15(q);
+  try{
+    const query = (q || '').trim().toLowerCase(); if(!query) return;
+    const dd = document.getElementById('search-dropdown'); if(!dd) return;
+    const seen = {}, items = [];
+    document.querySelectorAll('.sidebar .nav-item').forEach(b => {
+      if(b.offsetParent === null && !b.closest('.nav-group-body, .nav-grp')) { /* قد يكون داخل قائمة مطوية */ }
+      const t = (b.textContent || '').trim(), oc = b.getAttribute('onclick') || '', m = oc.match(/showView\('([^']+)'/);
+      if(!m || !t || seen[m[1]] || !t.toLowerCase().includes(query)) return; seen[m[1]] = 1; items.push({ t, v: m[1] });
+    });
+    if(!items.length) return;
+    const empty = dd.querySelector('.empty-state'); if(empty) dd.innerHTML = '';
+    dd.insertAdjacentHTML('afterbegin', '<div class="search-group-label">الصفحات والأدوات</div>' + items.slice(0, 6).map(it => `<div class="search-result" onclick="showView('${it.v}');closeGlobalSearch();"><svg class="icon"><use href="#i-arrow"></use></svg><div><div class="search-result-title">${escapeHtml(it.t)}</div></div></div>`).join(''));
+    dd.classList.add('open');
+  }catch(e){}
+};
+
+/* ---- ملخّص أسبوعك (يتحمّل عند الضغط، من نفس بيانات التحديات المخزّنة) ---- */
+function wkHtml(c){
+  const k = (n, l, i) => `<div class="wk-c"><svg class="icon"><use href="#i-${i}"></use></svg><b>${n}</b><span>${l}</span></div>`;
+  return `<div class="wk-g">${k(c.att, 'حضور مؤكَّد', 'pin')}${k(c.quiz, 'اختبار', 'edit')}${k(c.post, 'منشور', 'users')}${k(c.sub, 'تسليم', 'clipboard')}</div>`;
+}
+async function wkToggle(id){
+  const box = document.getElementById('wkb-' + id); if(!box) return;
+  if(box.dataset.open === '1'){ box.dataset.open = '0'; box.innerHTML = ''; return; }
+  box.dataset.open = '1'; box.innerHTML = '<div class="hint">جاري التحميل...</div>';
+  try{ const H = await histLoad(); box.innerHTML = wkHtml(H.cur || { att: 0, quiz: 0, post: 0, sub: 0 }); }catch(e){ box.innerHTML = '<div class="hint">تعذر التحميل.</div>'; }
+}
+function wkBoot(){
+  try{
+    if(!currentUid) return;
+    ['t-dash', 's-home'].forEach(id => { const v = document.getElementById(id); if(!v) return; let c = document.getElementById('wk-' + id);
+      if(!c){ c = document.createElement('div'); c.id = 'wk-' + id; c.className = 'wk-card'; const tb = v.querySelector('.topbar'); if(tb) tb.insertAdjacentElement('afterend', c); else v.prepend(c); }
+      c.innerHTML = `<div class="wk-h" style="cursor:pointer" onclick="wkToggle('${id}')"><b>ملخّص أسبوعك</b><small>اضغط للعرض ▾</small></div><div id="wkb-${id}"></div>`; });
+  }catch(e){}
+}
+const _boot15 = ndBootExtras; ndBootExtras = async function(){ const r = await _boot15.apply(this, arguments); try{ ncMount(); wkBoot(); instBanner(); }catch(e){} return r; };
+/* ===== batch16: تقرير المشرف الأسبوعي، تذكير التكاليف، تحديات أسبوعية، المفضلة ===== */
+function b16Week(){ const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 1) % 7)); return d.getTime(); } /* بداية الأسبوع: السبت */
+function b16Esc(s){ return escapeHtml(String(s == null ? '' : s)); }
+
+/* ---------- 4) تقرير المشرف (أسبوعي / شهري) + ملاحظات خاصة + تنبيه التواصل ---------- */
+let WKS = null, WKD = 7;
+async function wksLoad(){
+  WKS = { loading: true };
+  const q = async f => { try{ return await f(); }catch(e){ return null; } };
+  const [mem, logs, as, subs, nts] = await Promise.all([
+    q(() => db.collection('users').where('supervisorId', '==', currentUid).get()),
+    q(() => db.collection('attendanceLogs').where('supervisorId', '==', currentUid).limit(2000).get()),
+    q(() => db.collection('assignments').where('ownerUid', '==', currentUid).get()),
+    q(() => db.collection('submissions').where('ownerUid', '==', currentUid).get()),
+    q(() => db.collection('supNotes').where('ownerUid', '==', currentUid).limit(500).get())
+  ]);
+  const now = Date.now(), since = now - WKD * 864e5;
+  const M = (mem ? mem.docs : []).map(d => Object.assign({ id: d.id }, d.data()));
+  const A = (as ? as.docs : []).map(d => Object.assign({ id: d.id }, d.data()));
+  const S = (subs ? subs.docs : []).map(d => d.data()), L = (logs ? logs.docs : []).map(d => d.data());
+  const N = {}; (nts ? nts.docs : []).forEach(d => { const x = Object.assign({ id: d.id }, d.data()); (N[x.memberUid] = N[x.memberUid] || []).push(x); });
+  const rows = M.map(m => {
+    const all = L.filter(x => x.uid === m.id), lg = all.filter(x => (x.ms || 0) >= since), att = lg.length, late = lg.filter(x => x.status === 'late').length;
+    const due = A.filter(a => a.dueMs && a.dueMs <= now && (!a.groupId || ((typeof supGroups !== 'undefined' ? supGroups : []).find(g => g.id === a.groupId) || { members: [] }).members.includes(m.id)));
+    const mine = S.filter(x => x.studentUid === m.id), done = due.filter(a => mine.some(x => x.assignmentId === a.id)).length;
+    const weekSub = mine.filter(x => (x.submittedMs || 0) >= since).length, overdue = due.length - done;
+    const last = Math.max(0, ...all.map(x => x.ms || 0), ...mine.map(x => x.submittedMs || 0));
+    const quiet = att === 0 && weekSub === 0, idle = last < now - 14 * 864e5;
+    const notes = (N[m.id] || []).sort((p, q) => (q.ms || 0) - (p.ms || 0));
+    return { id: m.id, name: m.name || m.email || m.id, att, late, due: due.length, done, overdue, weekSub, quiet, idle, last, notes, score: overdue * 2 + late + (quiet ? 3 : 0) + (idle ? 4 : 0) };
+  }).sort((a, b) => b.score - a.score);
+  WKS = { rows, days: WKD, at: now, tot: { n: rows.length, att: rows.reduce((s, r) => s + r.att, 0), late: rows.reduce((s, r) => s + r.late, 0), sub: rows.reduce((s, r) => s + r.weekSub, 0), over: rows.filter(r => r.overdue > 0).length, quiet: rows.filter(r => r.quiet).length, idle: rows.filter(r => r.idle).length } };
+  if(typeof svTab !== 'undefined' && svTab === 'wkrep') svShow('wkrep');
+}
+function wksPeriod(d){ WKD = d; WKS = null; svShow('wkrep'); }
+function svWkHtml(){
+  if(WKS === null) wksLoad();
+  if(!WKS || WKS.loading) return '<div class="hp-card"><div class="hp-note">جاري تجهيز التقرير...</div></div>';
+  const t = WKS.tot, c = (n, l) => `<div class="wk-c"><b>${n}</b><span>${l}</span></div>`, pl = WKS.days === 30 ? 'آخر 30 يومًا' : 'آخر 7 أيام';
+  const idle = WKS.rows.filter(r => r.idle);
+  const rows = WKS.rows.map(r => `<div class="hp-trow"><span><b>${b16Esc(r.name)}</b> ${r.quiet ? '<small style="color:#d92d20">لا نشاط في الفترة</small>' : ''}</span><span>حضور ${r.att}${r.late ? ' (' + r.late + ' متأخر)' : ''} · تسليم ${r.done}/${r.due}${r.overdue ? ' <b style="color:#d92d20">متأخر ' + r.overdue + '</b>' : ''} <button class="fav-x" title="ملاحظاتي الخاصة" onclick="wksNote('${r.id}')">📝${r.notes.length ? ' ' + r.notes.length : ''}</button></span></div>`).join('');
+  const idleBox = idle.length ? `<div class="hp-card" style="border-inline-start:5px solid #ff8a1f"><h3>يحتاجون تواصلًا <small>بدون نشاط 14 يومًا فأكثر</small></h3>${idle.slice(0, 12).map(r => `<div class="hp-trow"><span><b>${b16Esc(r.name)}</b> <small>${r.last ? 'آخر نشاط ' + nx15Time(r.last) : 'لم يسجَّل نشاط'}</small></span><button class="hp-chip on" onclick="wksContact('${r.id}')">أرسل رسالة</button></div>`).join('')}</div>` : '';
+  return `<div class="hp-card"><h3>تقرير المتابعة <small>${pl}</small></h3>
+  <div class="hp-actions" style="margin-bottom:10px"><button class="hp-chip ${WKS.days === 7 ? 'on' : ''}" onclick="wksPeriod(7)">أسبوعي</button><button class="hp-chip ${WKS.days === 30 ? 'on' : ''}" onclick="wksPeriod(30)">شهري</button></div>
+  <div class="wk-g">${c(t.n, 'عضو')}${c(t.att, 'حضور مؤكَّد')}${c(t.late, 'حالة تأخير')}${c(t.sub, 'تسليم جديد')}${c(t.over, 'عليه تكاليف متأخرة')}${c(t.quiet, 'بدون نشاط')}${c(t.idle, 'يحتاج تواصلًا')}</div>
+  <div class="hp-actions" style="margin-top:12px"><button class="hp-chip on" onclick="wksPrint()">طباعة / PDF</button><button class="hp-chip" onclick="wksNotify()">إرسال ملخص لكل عضو</button><button class="hp-chip" onclick="WKS=null;svShow('wkrep')">تحديث</button></div></div>
+  ${idleBox}
+  <div class="hp-card"><h3>الأعضاء (الأحوج للمتابعة أولًا)</h3>${rows || '<div class="hp-note">لا يوجد أعضاء تابعين لك بعد.</div>'}</div>`;
+}
+function wksPrint(){
+  if(!WKS || !WKS.rows) return; const w = window.open('', '_blank'); if(!w) return toast('اسمح بالنوافذ المنبثقة للطباعة.');
+  const t = WKS.tot, nm = (pendingUser && pendingUser.name) || '', mon = WKS.days === 30;
+  w.document.write(`<!doctype html><html dir="rtl" lang="ar"><meta charset="utf-8"><title>${mon ? 'تقرير شهري' : 'تقرير أسبوعي'}</title><style>body{font-family:Tahoma,Arial;padding:24px;color:#111}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}th,td{border:1px solid #999;padding:6px 8px;text-align:right}th{background:#eee}.s{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}.s div{border:1px solid #999;border-radius:8px;padding:8px 14px}.bad{color:#b00020;font-weight:700}</style><h1>تقرير المتابعة ${mon ? 'الشهري' : 'الأسبوعي'} — ${b16Esc(nm)}</h1><div>${new Date().toLocaleDateString('ar-EG', { dateStyle: 'full' })} · ${mon ? 'آخر 30 يومًا' : 'آخر 7 أيام'}</div>
+  <div class="s"><div>الأعضاء: <b>${t.n}</b></div><div>حضور: <b>${t.att}</b></div><div>تأخير: <b>${t.late}</b></div><div>تسليمات جديدة: <b>${t.sub}</b></div><div>تكاليف متأخرة (أعضاء): <b>${t.over}</b></div><div>بدون نشاط: <b>${t.quiet}</b></div><div>يحتاج تواصلًا: <b>${t.idle}</b></div></div>
+  <table><tr><th>العضو</th><th>حضور</th><th>تأخير</th><th>تسليم</th><th>متأخر</th><th>ملاحظة</th></tr>${WKS.rows.map(r => `<tr><td>${b16Esc(r.name)}</td><td>${r.att}</td><td>${r.late}</td><td>${r.done}/${r.due}</td><td class="${r.overdue ? 'bad' : ''}">${r.overdue}</td><td>${r.idle ? 'يحتاج تواصلًا' : r.quiet ? 'لا نشاط' : ''}</td></tr>`).join('')}</table><script>setTimeout(()=>print(),400)<\/script></html>`);
+  w.document.close();
+}
+async function wksNotify(){
+  if(!WKS || !WKS.rows || !WKS.rows.length) return;
+  const wk = 'wksn_' + currentUid + '_' + b16Week(); try{ if(localStorage.getItem(wk) && !confirm('أرسلت ملخص هذا الأسبوع قبل كده. إرسال مرة تانية؟')) return; }catch(e){}
+  let n = 0;
+  WKS.rows.forEach(r => { const msg = r.quiet ? 'لم نلاحظ أي نشاط لك في الفترة الأخيرة — لو محتاج مساعدة كلّم مشرفك.' : `ملخّص المتابعة: حضور ${r.att}${r.late ? ' (متأخر ' + r.late + ')' : ''}، تسليم ${r.done}/${r.due}${r.overdue ? '، عليك ' + r.overdue + ' تكليف متأخر' : ''}.`; createNotification(r.id, 'message', msg, r.overdue ? 'v-sup' : null); n++; });
+  try{ localStorage.setItem(wk, '1'); }catch(e){} toast('اتبعت الملخص لـ ' + n + ' عضو.');
+}
+function wksContact(id){
+  const r = (WKS && WKS.rows || []).find(x => x.id === id); if(!r) return;
+  const msg = prompt('نص الرسالة لـ ' + r.name, 'وحشتنا مشاركتك! لاحظنا غيابك الفترة اللي فاتت — لو فيه أي صعوبة كلّمني وهنساعدك.'); if(!msg) return;
+  createNotification(id, 'message', msg, null); toast('اتبعتت الرسالة.');
+}
+function wksNote(id){
+  const r = (WKS && WKS.rows || []).find(x => x.id === id); if(!r) return;
+  let ov = document.getElementById('wks-note'); if(ov) ov.remove();
+  ov = document.createElement('div'); ov.id = 'wks-note'; ov.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px';
+  const draw = () => { ov.innerHTML = `<div class="card-panel" style="max-width:480px;width:100%;max-height:85vh;overflow:auto"><div style="display:flex;justify-content:space-between;align-items:center"><b>ملاحظاتي الخاصة عن ${b16Esc(r.name)}</b><button class="fav-x" onclick="document.getElementById('wks-note').remove()">✕</button></div><div class="hint" style="margin:6px 0 10px">لا يراها أحد غيرك، ولا تظهر للعضو.</div>${r.notes.length ? r.notes.map(n => `<div class="hp-trow"><span>${b16Esc(n.text)}<br><small>${nx15Time(n.ms)}</small></span><button class="fav-x" onclick="wksNoteDel('${n.id}','${id}')">حذف</button></div>`).join('') : '<div class="hp-note">لا توجد ملاحظات بعد.</div>'}<textarea id="wks-note-t" rows="3" style="width:100%;margin-top:10px" placeholder="اكتب ملاحظة..."></textarea><button class="btn-primary" style="margin-top:8px" onclick="wksNoteAdd('${id}')">حفظ الملاحظة</button></div>`; };
+  r._draw = draw; draw(); ov.onclick = e => { if(e.target === ov) ov.remove(); }; document.body.appendChild(ov);
+}
+async function wksNoteAdd(id){ const r = WKS.rows.find(x => x.id === id), t = (document.getElementById('wks-note-t').value || '').trim(); if(!t) return; try{ const doc = { ownerUid: currentUid, memberUid: id, text: t.slice(0, 1000), ms: Date.now() }; const ref = await db.collection('supNotes').add(doc); r.notes.unshift(Object.assign({ id: ref.id }, doc)); r._draw(); svShow('wkrep'); wksNote(id); }catch(e){ toast('تعذر حفظ الملاحظة.'); } }
+async function wksNoteDel(nid, id){ const r = WKS.rows.find(x => x.id === id); try{ await db.collection('supNotes').doc(nid).delete(); r.notes = r.notes.filter(n => n.id !== nid); svShow('wkrep'); wksNote(id); }catch(e){ toast('تعذر الحذف.'); } }
+SV_FN.wkrep = svWkHtml;
+['expert', 'academic', 'office'].forEach(k => { if(!SUPT[k].some(x => x[0] === 'wkrep')) SUPT[k].splice(SUPT[k].length - 1, 0, ['wkrep', '📅 تقرير أسبوعي / شهري']); });
+function wksNudge(){ try{ if(!supIsStaff() || !currentUid) return; const k = 'wks_nudge_' + b16Week(); if(localStorage.getItem(k)) return; localStorage.setItem(k, '1'); setTimeout(() => toast('تقرير هذا الأسبوع جاهز: أدوات الإشراف ← «تقرير أسبوعي / شهري».', { duration: 7000 }), 3500); }catch(e){} }
+
+/* ---------- 5) تذكير ذكي بالتكاليف ---------- */
+let RM = { items: [], at: 0 };
+async function rmLoad(){
+  try{
+    if(!currentUid || !userStatus || supIsStaff() || !userStatus.supervisorId) return;
+    if(Date.now() - RM.at < 900000) return; RM.at = Date.now();
+    const rk = 'nd-rm-' + currentUid; try{ const c = JSON.parse(localStorage.getItem(rk) || 'null'); if(c && Date.now() - c.at < 900000){ RM.items = c.items; return; } }catch(e){}
+    const [a, s] = await Promise.all([db.collection('assignments').where('ownerUid', '==', userStatus.supervisorId).get(), db.collection('submissions').where('studentUid', '==', currentUid).get()]);
+    const done = {}; s.forEach(d => { const x = d.data(); if(x.status === 'submitted' || x.submittedMs || x.text || x.file || x.fileUrl) done[x.assignmentId] = 1; });
+    const grp = (typeof myGroupIds !== 'undefined' && myGroupIds) || [];
+    RM.items = a.docs.map(d => Object.assign({ id: d.id }, d.data())).filter(x => x.dueMs && !done[x.id] && (!x.groupId || grp.includes(x.groupId))).sort((p, q) => p.dueMs - q.dueMs);
+    try{ localStorage.setItem(rk, JSON.stringify({ at: Date.now(), items: RM.items.map(x => ({ id: x.id, title: x.title, dueMs: x.dueMs })) })); }catch(e){}
+  }catch(e){}
+}
+function rmLeft(ms){ const m = Math.round(ms / 60000); if(m < 60) return m + ' دقيقة'; const h = Math.round(m / 60); return h < 48 ? h + ' ساعة' : Math.round(h / 24) + ' يوم'; }
+async function rmTick(){
+  try{
+    await rmLoad(); const now = Date.now(), soon = RM.items.filter(x => x.dueMs - now < 864e5 * 2);
+    ['t-dash', 's-home'].forEach(id => { const v = document.getElementById(id); if(!v) return; let c = document.getElementById('rm-' + id);
+      if(!soon.length){ if(c) c.remove(); return; }
+      if(!c){ c = document.createElement('div'); c.id = 'rm-' + id; c.className = 'rm-card'; const tb = v.querySelector('.topbar'); if(tb) tb.insertAdjacentElement('afterend', c); else v.prepend(c); }
+      c.innerHTML = '<b>تكاليف على وشك الموعد</b>' + soon.slice(0, 3).map(x => { const l = x.dueMs - now; return `<div class="rm-i"><span>${b16Esc(x.title)}</span><em class="${l < 0 ? 'bad' : l < 72e5 ? 'hot' : ''}">${l < 0 ? 'متأخر ' + rmLeft(-l) : 'باقي ' + rmLeft(l)}</em></div>`; }).join('') + '<button class="btn-primary" onclick="rmGo()">سلّم الآن</button>'; });
+    RM.items.forEach(x => { const l = x.dueMs - now; const tag = l < 0 ? null : l <= 72e5 ? 'h2' : l <= 864e5 ? 'd1' : null; if(!tag) return; const k = 'rm_' + x.id + '_' + tag; try{ if(localStorage.getItem(k)) return; localStorage.setItem(k, '1'); }catch(e){}
+      const txt = 'تذكير: تكليف «' + (x.title || '') + '» باقي عليه ' + rmLeft(l) + '.'; toast(txt, { duration: 9000 });
+      try{ if(window.Notification && Notification.permission === 'granted' && document.hidden) new Notification('نُدرس معًا', { body: txt, icon: 'icons/icon-192.png' }); }catch(e){} });
+  }catch(e){}
+}
+function rmGo(){ showView('v-sup'); setTimeout(() => { try{ setSupTab('tasks'); }catch(e){} }, 120); }
+
+/* ---------- 6) تحديات الأسبوع (بدون نقاط) ---------- */
+async function wcBuild(){
+  const H = await histLoad(), c = H.cur || { att: 0, quiz: 0, post: 0, sub: 0 }, staff = supIsStaff();
+  const L = [['att', 'أكّد حضورك 3 مرات', c.att, 3], ['quiz', 'أنجز اختبارين', c.quiz, 2], ['post', 'شارك منشورًا في المجتمع', c.post, 1]];
+  if(!staff && userStatus && userStatus.supervisorId) L.push(['sub', 'سلّم تكليفًا لمشرفك', c.sub, 1]);
+  return L.map(([k, t, n, g]) => ({ k, t, n, g, ok: n >= g }));
+}
+async function wcBoot(){
+  try{
+    if(!currentUid) return; const L = await wcBuild(); let H = null; try{ H = await histLoad(); }catch(e){}
+    ['t-dash', 's-home'].forEach(vid => { const v = document.getElementById(vid); if(!v) return; let c = document.getElementById('wc-' + vid); if(!c){ c = document.createElement('div'); c.id = 'wc-' + vid; c.className = 'wk-card'; const after = document.getElementById('wk-' + vid) || v.querySelector('.topbar'); if(after) after.insertAdjacentElement('afterend', c); else v.prepend(c); }
+      const done = L.filter(x => x.ok).length;
+      c.innerHTML = `<div class="wk-h"><b>تحديات الأسبوع</b><small>${done}/${L.length}</small></div>` + (H ? `<div class="wc-sk">🔥 سلسلتك: <b>${H.chal}</b> أسبوع متواصل${H.chal ? '' : ' — ابدأ بتحدٍّ واحد هذا الأسبوع'}</div>` : '') + L.map(x => `<div class="wc-r"><span>${x.ok ? '✅' : '⬜'} ${b16Esc(x.t)}</span><div class="wc-bar"><i style="width:${Math.min(100, Math.round(x.n / x.g * 100))}%"></i></div><small>${Math.min(x.n, x.g)}/${x.g}</small></div>`).join(''); });
+  }catch(e){}
+}
+
+/* ---------- 7) المفضلة ---------- */
+let FAVS = null;
+function favGet(){ if(FAVS) return FAVS; try{ FAVS = JSON.parse(localStorage.getItem('nd-favs-' + currentUid) || '[]'); }catch(e){ FAVS = []; } return FAVS; }
+function favPut(){ try{ localStorage.setItem('nd-favs-' + currentUid, JSON.stringify(FAVS || [])); }catch(e){} }
+function favHas(v){ return favGet().some(f => f.v === v); }
+function favToggle(v, t){ const L = favGet(), i = L.findIndex(f => f.v === v); if(i >= 0) L.splice(i, 1); else L.push({ v, t }); favPut(); favUi(); toast(i >= 0 ? 'اتشالت من المفضلة.' : 'اتضافت للمفضلة ⭐'); }
+function favUi(){
+  document.querySelectorAll('.fav-star').forEach(b => { const on = favHas(b.dataset.v); b.classList.toggle('on', on); b.textContent = on ? '★' : '☆'; b.title = on ? 'إزالة من المفضلة' : 'إضافة للمفضلة'; });
+  ['t-dash', 's-home'].forEach(vid => { const v = document.getElementById(vid); if(!v) return; let c = document.getElementById('fav-' + vid); const L = favGet(); if(!L.length){ if(c) c.remove(); return; }
+    if(!c){ c = document.createElement('div'); c.id = 'fav-' + vid; c.className = 'wk-card'; const tb = v.querySelector('.topbar'); if(tb) tb.insertAdjacentElement('afterend', c); else v.prepend(c); }
+    c.innerHTML = '<div class="wk-h"><b>⭐ مفضلتي</b></div><div class="fav-strip">' + L.map(f => `<button class="hp-chip" onclick="showView('${f.v}')">${b16Esc(f.t)}</button>`).join('') + '</div>'; });
+  const sv = document.getElementById('v-saved'); if(sv){ let s = document.getElementById('fav-saved'); const L = favGet();
+    if(!s){ s = document.createElement('div'); s.id = 'fav-saved'; s.style.marginBottom = '18px'; const lst = document.getElementById('saved-list'); if(lst) lst.insertAdjacentElement('beforebegin', s); }
+    s.innerHTML = L.length ? '<div class="section-title" style="margin-top:0">⭐ صفحاتي وأدواتي المفضلة</div><div class="fav-strip">' + L.map(f => `<button class="hp-chip" onclick="showView('${f.v}')">${b16Esc(f.t)}</button><button class="fav-x" title="إزالة" onclick="favToggle('${f.v}','')">✕</button>`).join('') + '</div><div class="section-title">🔖 المحفوظات</div>' : ''; }
+}
+function favInject(){
+  const v = document.querySelector('.view.active'); if(!v || !v.id || ['v-saved'].includes(v.id)) return;
+  const h = v.querySelector('.topbar h1'); if(!h || h.querySelector('.fav-star')) return;
+  const b = document.createElement('button'); b.className = 'fav-star'; b.dataset.v = v.id; b.onclick = e => { e.stopPropagation(); favToggle(v.id, h.childNodes[0] ? h.childNodes[0].textContent.trim() || h.textContent.trim() : h.textContent.trim()); }; h.appendChild(b); favUi();
+}
+const _sv16 = showView; showView = function(){ const r = _sv16.apply(this, arguments); try{ setTimeout(favInject, 60); }catch(e){} return r; };
+const _flm16 = findLibraryItemMeta; findLibraryItemMeta = function(type, id){ if(type === 'book'){ const b = (typeof booksCache !== 'undefined' ? booksCache : []).find(x => x.id === id); return b ? { title: b.title || '', sub: b.author || '', link: b.url || '' } : null; } return _flm16.apply(this, arguments); };
+function lessonBmDecorate(){
+  const el = document.getElementById('learn-list'); if(!el || typeof lessonsCache === 'undefined') return;
+  el.querySelectorAll('.content-item').forEach(it => { if(it.querySelector('.bookmark-btn')) return; const t = (it.querySelector('.ci-title') || {}).textContent; const l = lessonsCache.find(x => (x.data.title || '') === (t || '').trim()); if(!l) return;
+    const b = document.createElement('button'); b.className = 'bookmark-btn ' + (isBookmarked('lesson', l.id) ? 'saved' : ''); b.innerHTML = '<svg class="icon"><use href="#i-bookmark"></use></svg>'; b.onclick = () => toggleBookmark('lesson', l.id).then(() => lessonBmDecorate()); it.appendChild(b); });
+}
+try{ const lo = new MutationObserver(() => lessonBmDecorate()); document.addEventListener('DOMContentLoaded', () => { const e = document.getElementById('learn-list'); if(e) lo.observe(e, { childList: true }); }); if(document.readyState !== 'loading'){ const e = document.getElementById('learn-list'); if(e) lo.observe(e, { childList: true }); } }catch(e){}
+
+const _boot16 = ndBootExtras; ndBootExtras = async function(){ const r = await _boot16.apply(this, arguments); try{ FAVS = null; favUi(); rmTick(); wcBoot(); wksNudge(); setInterval(rmTick, 900000); }catch(e){} return r; };
+/* ===== batch17: سلسلة التحديات + شارات الإنجاز + عدّاد الاستهلاك ===== */
+
+/* ---- تاريخ النشاط (للسلاسل والشارات) ---- */
+let HIST = null;
+async function histLoad(force){
+  const TTL = 900000, ck = 'nd-hist-' + currentUid;
+  if(HIST && !force && Date.now() - HIST.at < TTL) return HIST;
+  if(!force){ try{ const c = JSON.parse(localStorage.getItem(ck) || 'null'); if(c && Date.now() - c.at < TTL){ HIST = c; return HIST; } }catch(e){} }
+  const q = async f => { try{ return await f(); }catch(e){ return null; } };
+  const [al, qa, po, sb, rs] = await Promise.all([
+    q(() => db.collection('attendanceLogs').where('uid', '==', currentUid).limit(150).get()),
+    q(() => db.collection('quizAttempts').where('userUid', '==', currentUid).limit(100).get()),
+    q(() => db.collection('communityPosts').where('authorUid', '==', currentUid).limit(100).get()),
+    q(() => db.collection('submissions').where('studentUid', '==', currentUid).limit(100).get()),
+    q(() => db.collection('research').where('ownerUid', '==', currentUid).limit(20).get())
+  ]);
+  const W0 = b16Week(), WK = 7 * 864e5, wi = t => Math.floor((t - W0) / WK);
+  const ms = x => (x.createdAt && x.createdAt.toMillis) ? x.createdAt.toMillis() : (x.ms || x.submittedMs || 0);
+  const B = {}; const add = (s, k) => { if(s) s.forEach(d => { const t = ms(d.data()); if(!t) return; const w = wi(t); (B[w] = B[w] || { att: 0, quiz: 0, post: 0, sub: 0 })[k]++; }); };
+  add(al, 'att'); add(qa, 'quiz'); add(po, 'post'); add(sb, 'sub');
+  const okC = w => { const b = B[w]; return !!b && (b.att >= 3 || b.quiz >= 2 || b.post >= 1 || b.sub >= 1); };
+  const okA = w => { const b = B[w]; return !!b && b.att >= 1; };
+  const run = f => { let w = 0; if(!f(0)) w = -1; let n = 0; while(f(w)){ n++; w--; if(n > 200) break; } return n; };
+  const maxRun = f => { const ks = Object.keys(B).map(Number); if(!ks.length) return 0; let best = 0, cur = 0; for(let w = Math.min(...ks); w <= 0; w++){ cur = f(w) ? cur + 1 : 0; best = Math.max(best, cur); } return best; };
+  HIST = { at: Date.now(), cur: B[0] || { att: 0, quiz: 0, post: 0, sub: 0 }, chal: run(okC), attRun: run(okA), attMax: maxRun(okA), chalMax: maxRun(okC), posts: po ? po.size : 0, research: rs ? rs.size : 0, att: al ? al.size : 0 };
+  try{ localStorage.setItem(ck, JSON.stringify(HIST)); }catch(e){}
+  return HIST;
+}
+
+/* ---- شارات الإنجاز (بدون نقاط) ---- */
+async function bdgBuild(){
+  const H = await histLoad().catch(() => ({ chal: 0, attMax: 0, posts: 0, research: 0, att: 0, chalMax: 0 }));
+  const courses = (typeof coursesCache !== 'undefined' ? coursesCache : []).filter(({ id, data: c }) => (c.lessons || []).length && (getCourseProgress(id).completedLessonIds || []).length >= c.lessons.length).length;
+  const nbs = (typeof notebooksCache !== 'undefined' ? notebooksCache : []).filter(({ data: n }) => n.ownerUid === currentUid).length;
+  const us = userStatus || {};
+  return [
+    ['c1', 'أول دورة مكتملة', 'خلّصت دورة كاملة', courses >= 1, 'grad'],
+    ['c3', 'متعلّم مثابر', '3 دورات مكتملة', courses >= 3, 'book'],
+    ['a4', 'حضور متواصل', '4 أسابيع حضور متواصلة', H.attMax >= 4, 'pin'],
+    ['r1', 'باحث', 'نشرت أول بحث', H.research >= 1, 'edit'],
+    ['n1', 'مُعِدّ', 'نشرت أول دفتر تحضير', nbs >= 1, 'notebook'],
+    ['p1', 'مشارك', 'أول منشور في المجتمع', H.posts >= 1, 'users'],
+    ['p10', 'صوت في المجتمع', '10 منشورات', H.posts >= 10, 'star'],
+    ['s4', 'منجز الأسبوع', '4 أسابيع تحديات متواصلة', H.chalMax >= 4, 'award'],
+    ['ex', 'معلم خبير', 'تمنحه الإدارة', !!us.isExpert, 'star'],
+    ['vf', 'حساب موثّق', 'توثّقه الإدارة', !!us.verified, 'shield']
+  ].map(([k, t, d, ok, ic2]) => ({ k, t, d, ok, ic2 }));
+}
+async function bdgRender(){
+  const v = document.getElementById('v-profile'); if(!v || !currentUid) return;
+  let c = document.getElementById('badges-card');
+  if(!c){ c = document.createElement('div'); c.id = 'badges-card'; c.className = 'card-panel'; c.style.cssText = 'max-width:none;margin-bottom:22px;'; const a = document.getElementById('appearance-card'); if(a) a.insertAdjacentElement('afterend', c); else v.prepend(c); }
+  const L = await bdgBuild(), n = L.filter(x => x.ok).length;
+  c.innerHTML = `<div class="section-title" style="margin-top:0">شارات إنجازك <small style="font-weight:600;color:var(--ink-soft)">${n}/${L.length}</small></div><div class="bdg-g">${L.map(x => `<div class="bdg ${x.ok ? 'on' : ''}" title="${b16Esc(x.d)}"><svg class="icon"><use href="#i-${x.ic2}"></use></svg><b>${b16Esc(x.t)}</b><small>${x.ok ? '✓ ' : '🔒 '}${b16Esc(x.d)}</small></div>`).join('')}</div>`;
+}
+const _showViewB17 = showView; showView = function(id){ const r = _showViewB17.apply(this, arguments); try{ if(id === 'v-profile') setTimeout(bdgRender, 150); }catch(e){} return r; };
+
+/* ---- عدّاد الاستهلاك (تقديري) ---- */
+const UM = { r: 0, w: 0, busy: false, shard: Math.floor(Math.random() * 10) };
+function umDay(){ try{ return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }); }catch(e){ return new Date().toISOString().slice(0, 10); } }
+(function(){
+  try{
+    const F = firebase.firestore, wrap = (proto, name, fn) => { if(!proto || !proto[name]) return; const o = proto[name]; proto[name] = function(){ try{ fn.apply(this, arguments); }catch(e){} return o.apply(this, arguments); }; };
+    const wrapRead = (proto, name) => { if(!proto || !proto[name]) return; const o = proto[name]; proto[name] = function(){ const p = o.apply(this, arguments); if(p && p.then) p.then(s => { if(!UM.busy) UM.r += Math.max(1, s && s.size != null ? s.size : 1); }).catch(() => {}); return p; }; };
+    wrapRead(F.Query.prototype, 'get'); wrapRead(F.DocumentReference.prototype, 'get');
+    const wrapSnap = proto => { if(!proto || !proto.onSnapshot) return; const o = proto.onSnapshot; proto.onSnapshot = function(){ const a = [...arguments]; const i = a.findIndex(x => typeof x === 'function'); if(i >= 0){ const f = a[i]; a[i] = function(s){ try{ UM.r += Math.max(1, s && s.docChanges ? s.docChanges().length : 1); }catch(e){} return f.apply(this, arguments); }; } else if(a[0] && typeof a[0].next === 'function'){ const ob = a[0], nx = ob.next; a[0] = Object.assign({}, ob, { next: function(s){ try{ UM.r += Math.max(1, s && s.docChanges ? s.docChanges().length : 1); }catch(e){} return nx.apply(this, arguments); } }); } return o.apply(this, a); }; };
+    wrapSnap(F.Query.prototype); wrapSnap(F.DocumentReference.prototype);
+    const cw = () => { if(!UM.busy) UM.w++; };
+    ['set', 'update', 'delete'].forEach(n => wrap(F.DocumentReference.prototype, n, cw)); wrap(F.CollectionReference.prototype, 'add', cw);
+    try{ const WB = Object.getPrototypeOf(firebase.firestore().batch()); ['set', 'update', 'delete'].forEach(n => wrap(WB, n, cw)); }catch(e){}
+  }catch(e){}
+})();
+async function umFlush(){
+  try{
+    if(UM.busy || !window.db || !currentUid || (!UM.r && !UM.w)) return;
+    const r = Math.min(UM.r, 4500), w = Math.min(UM.w, 1800); UM.r -= r; UM.w -= w; UM.busy = true;
+    try{ const inc = firebase.firestore.FieldValue.increment; await db.collection('usageMeter').doc(umDay() + '_' + UM.shard).set({ day: umDay(), reads: inc(r), writes: inc(w), ms: Date.now() }, { merge: true }); }
+    catch(e){ UM.r += r; UM.w += w; }
+    UM.busy = false;
+  }catch(e){ UM.busy = false; }
+}
+setInterval(umFlush, 300000);
+document.addEventListener('visibilitychange', () => { if(document.hidden) umFlush(); });
 
 /* ===== الدفعة 13: الصفحة الرئيسية الفخمة — قوائم منسدلة وتبويبات ===== */
 function l3CloseDd(){ document.querySelectorAll('.l3-dd.open').forEach(d => { d.classList.remove('open'); const b = d.querySelector('.l3-ddb, .l3-hb, .l3-btn'); if(b) b.setAttribute('aria-expanded', 'false'); }); }

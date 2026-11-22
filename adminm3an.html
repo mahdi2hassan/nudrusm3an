@@ -394,8 +394,7 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
     <button class="tab" onclick="switchTab('courses', this)"><svg class="icon"><use href="#i-grad"></use></svg> الدورات</button>
     <button class="tab" onclick="switchTab('community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
     <button class="tab" onclick="switchTab('notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر التحضير</button>
-    <button class="tab" onclick="switchTab('wallet', this)"><svg class="icon"><use href="#i-check"></use></svg> المحفظة</button>
-    <button class="tab" onclick="switchTab('referrals', this)"><svg class="icon"><use href="#i-users"></use></svg> الإحالات</button>
+    <button class="tab" onclick="switchTab('referrals', this)"><svg class="icon"><use href="#i-users"></use></svg> الدعوات</button>
     <button class="tab" onclick="switchTab('challenges', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
     <button class="tab" onclick="switchTab('accounts', this)"><svg class="icon"><use href="#i-card"></use></svg> الحسابات والأسعار</button>
     <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
@@ -403,6 +402,9 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
     <button class="tab" onclick="switchTab('control', this)"><svg class="icon"><use href="#i-star"></use></svg> التحكم الشامل</button>
     <button class="tab" onclick="switchTab('landing', this)"><svg class="icon"><use href="#i-layout"></use></svg> الصفحة الرئيسية</button>
     <button class="tab" onclick="switchTab('theme', this)"><svg class="icon"><use href="#i-layout"></use></svg> الألوان والتباين</button>
+    <button class="tab" onclick="switchTab('attention', this)"><svg class="icon"><use href="#i-bell"></use></svg> يحتاج انتباهك</button>
+    <button class="tab" onclick="switchTab('errors', this)"><svg class="icon"><use href="#i-bars"></use></svg> سجل الأخطاء</button>
+    <button class="tab" onclick="switchTab('usage', this)"><svg class="icon"><use href="#i-bars"></use></svg> الاستهلاك</button>
     <button class="tab" onclick="switchTab('attend', this)"><svg class="icon"><use href="#i-check"></use></svg> الحضور الأكاديمي</button>
     <button class="tab" onclick="switchTab('books', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> الكتب</button>
     <button class="tab" onclick="switchTab('files', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> مخزن الملفات</button>
@@ -482,13 +484,8 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
     <div id="notebooks-mod-list"></div>
   </div>
 
-  <div class="panel" id="panel-wallet">
-    <div class="d" style="margin-bottom:10px;">طلبات خصم الرصيد من اشتراك المستخدم (750 نقطة = 1 جنيه). اخصم المبلغ عند تفعيل الاشتراك يدويًا ثم اضغط "اتطبّق".</div>
-    <div id="wallet-admin-list"></div>
-  </div>
-
   <div class="panel" id="panel-referrals">
-    <div class="d" style="margin-bottom:10px;">إحالات جديدة سجّلت حساب عن طريق رابط دعوة زميل — امنح المُحيل نقاطه بعد التأكد.</div>
+    <div class="d" style="margin-bottom:10px;">حسابات سجّلت عن طريق رابط دعوة زميل (بدون مكافآت نقاط).</div>
     <div id="referrals-admin-list"></div>
   </div>
 
@@ -642,6 +639,41 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
       <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">يفحص الصفحة المفتوحة حاليًا ويعرض النصوص اللي تباينها أقل من الحد المقروء (4.5). اضغط على أي نتيجة وهتتحدد في الصفحة. لفحص تبويب تاني افتحه وارجع اضغط فحص.</p>
       <button class="btn" onclick="ctScan()">🔎 افحص الصفحة الحالية</button>
       <div id="ct-out" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-attention">
+    <div class="card">
+      <h2 style="margin-bottom:6px;">يحتاج انتباهك اليوم</h2>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">ملخّص سريع لأهم اللي محتاج إجراء منك. اضغط على أي كارت للذهاب له.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;"><button class="btn" onclick="initAttention(true)">🔄 تحديث</button><button class="btn-secondary" onclick="exportBackupFull()">💾 نسخة احتياطية كاملة</button></div>
+      <div class="status" id="at-st"></div>
+      <div id="at-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px;"></div>
+    </div>
+  </div>
+  <div class="panel" id="panel-errors">
+    <div class="card">
+      <h2 style="margin-bottom:6px;">سجل أخطاء التطبيق</h2>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">أخطاء برمجية حصلت عند المستخدمين (بتتسجل تلقائيًا، حد أقصى 5 لكل جلسة). متجمّعة حسب نص الخطأ.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;"><button class="btn" onclick="loadErrors()">🔄 تحديث</button><button class="btn-secondary" onclick="clearErrors()">🗑 مسح السجل</button></div>
+      <div class="status" id="er-st"></div>
+      <div id="er-list"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-usage">
+    <div class="card">
+      <h2 style="margin-bottom:6px;">استهلاك الخطة المجانية (تقديري)</h2>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">حدود Firebase المجانية اليومية: 50,000 قراءة و20,000 كتابة (تتصفّر منتصف الليل بتوقيت المحيط الهادئ). الأرقام هنا مجمّعة من تطبيق المستخدمين فقط، ولا تشمل لوحة الأدمن ولا قراءات القواعد، فاعتبر الحد الفعلي أقل بحوالي 30%.</p>
+      <button class="btn" onclick="loadUsage()">🔄 تحديث</button>
+      <div class="status" id="us-st"></div>
+      <div id="us-body" style="margin-top:12px;"></div>
+    </div>
+    <div class="card">
+      <h2 style="margin-bottom:6px;">تنظيف بيانات النقاط القديمة</h2>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:12px;">نظام النقاط أُزيل. هذا الزر يحذف نهائيًا مجموعتي <b>pointsLedger</b> و<b>walletRedemptions</b> القديمتين لتخفيف النسخ الاحتياطي والقراءات. لا يمكن التراجع.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-secondary" onclick="cleanCount()">عدّ المستندات</button><button class="btn" style="background:#d92d20" onclick="cleanPoints()">🗑 حذف نهائي</button></div>
+      <div class="status" id="cl-st"></div>
     </div>
   </div>
 
@@ -1051,7 +1083,6 @@ document.getElementById('gate').style.display = 'none';
   loadAnalytics();
   loadCommunityMod();
   loadNotebooksMod();
-  loadWalletAdmin();
   loadReferralsAdmin();
   loadChallengesAdmin();
   subscribeAdminConvList();
@@ -1104,6 +1135,9 @@ function switchTab(name, btn){
   if(name==='bcast'){ try{ loadBroadcasts(); }catch(e){} }
   if(name==='landing'){ try{ initLanding(); }catch(e){} }
   if(name==='theme'){ try{ initTheme(); }catch(e){} }
+  if(name==='attention'){ try{ initAttention(); }catch(e){} }
+  if(name==='errors'){ try{ loadErrors(); }catch(e){} }
+  if(name==='usage'){ try{ loadUsage(); }catch(e){} }
   try{ adminSecHead(name); }catch(e){}
 }
 
@@ -1544,7 +1578,7 @@ const FEATURE_FLAG_ITEMS = [
   ['v-questions','بنك الأسئلة (معلم)'], ['v-quizzes','مصنع الاختبارات (معلم)'], ['exam-easy','امتحانك بسهولة'],
   ['v-certificates','مولد الشهادات (معلم)'], ['v-prep-room','غرفة التحضير الجماعي (معلم)'], ['v-tools-hub','مركز الأدوات (معلم)'],
   ['boardplus','سبورة إلكترونية'], ['v-saved','المحفوظات'], ['t-community','المجتمع'],
-  ['v-leaderboard','لوحة المتصدرين'], ['v-wallet','المحفظة'], ['v-challenge','تحدي الأسبوع'],
+  ['v-challenge','تحدي الأسبوع'],
   ['v-career','مساري كمعلم'], ['v-sim','محاكاة المواقف الصفية'], ['v-qa','الأسئلة'],
   ['v-groups','مجموعات التخصص'], ['v-expert','اسأل معلماً خبيراً'], ['v-problems','مشكلتي في الفصل'],
   ['v-chats','الدردشات'], ['v-take-quiz-list','اختبارات متاحة (طالب معلم)'], ['s-practical','التربية العملية (طالب معلم)'],
@@ -1724,35 +1758,13 @@ async function deleteReportedPost(reportId, postId){
 async function loadReferralsAdmin(){
   const el = document.getElementById('referrals-admin-list'); if(!el) return;
   try{
-    const snap = await db.collection('referrals').where('rewarded','==',false).get();
-    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">مفيش إحالات معلّقة.</div></div>'; return; }
-    const rows = [];
-    for(const d of snap.docs){ const r = d.data(); rows.push({id:d.id, ...r}); }
-    el.innerHTML = rows.map(r => `<div class="item"><div><div class="t">${escapeHtml(r.newName||'مستخدم')}</div><div class="d">دعوة من: ${escapeHtml(r.referrerUid)}</div></div><div class="actions"><button class="edit-btn" onclick="rewardReferral('${r.id}','${r.referrerUid}')">${ic('check')} امنح ${REFERRAL_POINTS_ADMIN} نقطة</button></div></div>`).join('');
+    const snap = await db.collection('referrals').limit(200).get();
+    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">لا توجد دعوات مسجّلة بعد.</div></div>'; return; }
+    el.innerHTML = snap.docs.map(d => ({id:d.id, ...d.data()})).map(r => `<div class="item"><div><div class="t">${escapeHtml(r.newName||'مستخدم')}</div><div class="d">دعوة من: ${escapeHtml(r.referrerUid||'')}</div></div></div>`).join('');
   }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
-}
-const REFERRAL_POINTS_ADMIN = 30;
-async function rewardReferral(id, referrerUid){
-  try{
-    await db.collection('pointsLedger').add({ uid: referrerUid, amount: REFERRAL_POINTS_ADMIN, reason: 'referral', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    await db.collection('referrals').doc(id).update({ rewarded: true });
-    toast('اتمنحت النقاط.'); loadReferralsAdmin();
-  }catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
 }
 
-/* ================= المحفظة + تحدي الأسبوع ================= */
-async function loadWalletAdmin(){
-  const el = document.getElementById('wallet-admin-list'); if(!el) return;
-  try{
-    const snap = await db.collection('walletRedemptions').where('status','==','pending').get();
-    if(snap.empty){ el.innerHTML = '<div class="item"><div class="d">مفيش طلبات استبدال معلّقة.</div></div>'; return; }
-    el.innerHTML = snap.docs.map(d => { const r = d.data(); return `<div class="item" style="flex-direction:column; align-items:stretch;"><div class="t">${escapeHtml(r.name||'مستخدم')} — ${r.egp} ج.م (${r.points} نقطة)</div><div class="d">${r.purpose==='renew'?'تجديد اشتراك':'ترقية عضوية'}</div><div class="actions" style="margin-top:8px;"><button class="edit-btn" onclick="setRedeem('${d.id}','approved')">${ic('check')} اتطبّق</button><button class="del" onclick="setRedeem('${d.id}','rejected')">${ic('trash')} ارفض وارجّع النقاط</button></div></div>`; }).join('');
-  }catch(err){ el.innerHTML = '<div class="item"><div class="d">تعذّر التحميل: '+escapeHtml(err.message)+'</div></div>'; }
-}
-async function setRedeem(id, status){
-  try{ await db.collection('walletRedemptions').doc(id).update({ status }); toast('تم.'); loadWalletAdmin(); }
-  catch(e){ toast('حصل خطأ: '+e.message, {type:'err'}); }
-}
+/* ================= تحدي الأسبوع ================= */
 async function loadChallengesAdmin(){
   const el = document.getElementById('challenges-list'); if(!el) return;
   try{
@@ -2638,6 +2650,89 @@ function ctScan(){
   window.__ctBad=bad.slice(0,60).map(b=>b.el);
 }
 function ctShow(i){ const e=(window.__ctBad||[])[i]; if(!e) return; e.scrollIntoView({block:'center',behavior:'smooth'}); const o=e.style.outline; e.style.outline='3px solid #ff3b30'; setTimeout(()=>{e.style.outline=o;},2500); }
+
+/* ===== يحتاج انتباهك + سجل الأخطاء + نسخة كاملة ===== */
+function goTab(name){ const b=[...document.querySelectorAll('.tab')].find(t=>(t.getAttribute('onclick')||'').includes("switchTab('"+name+"'")); if(b) b.click(); }
+async function initAttention(force){
+  const g=document.getElementById('at-grid'), st=document.getElementById('at-st');
+  if(!force){ try{ const c=JSON.parse(sessionStorage.getItem('adm-att')||'null'); if(c&&Date.now()-c.at<600000){ g.innerHTML=c.html; st.className=c.cls; st.textContent=c.txt+' · (محفوظ منذ '+Math.round((Date.now()-c.at)/60000)+' د — اضغط تحديث لإعادة الفحص)'; return; } }catch(e){} }
+  g.innerHTML=''; st.className='status'; st.textContent='جاري الفحص...';
+  const cnt=async f=>{ try{ return await f(); }catch(e){ return null; } };
+  const now=Date.now(), DAY=864e5;
+  let [pend,tk,rp,qb,gr,sup,pres,er,nf,us]=await Promise.all([
+    cnt(()=>db.collection('users').where('status','==','pending').limit(500).get()),
+    cnt(()=>db.collection('tickets').where('status','==','open').limit(300).get()),
+    cnt(()=>db.collection('reports').where('status','==','open').limit(300).get()),
+    cnt(()=>db.collection('qbank').where('status','==','pending').limit(300).get()),
+    cnt(()=>db.collection('idGrants').where('expiresMs','>',Date.now()).where('expiresMs','<',Date.now()+7*864e5).limit(300).get()),
+    cnt(()=>db.collection('users').where('role','==','supervisor').limit(500).get()),
+    Promise.resolve(null),
+    cnt(()=>db.collection('errorLogs').where('ms','>',Date.now()-864e5).limit(100).get()),
+    cnt(()=>db.collection('nidFails').where('count','>=',8).limit(50).get()),
+    cnt(()=>usageToday())
+  ]);
+  let expiring=gr?gr.size:0;
+  let idle=0; if(sup){ const ids=sup.docs.slice(0,60).map(d=>d.id); const ps=await Promise.all(ids.map(i=>cnt(()=>db.collection('presence').doc(i).get()))); ps.forEach(p=>{ const t=p&&p.exists?(p.data().lastSeenMs||0):0; if(now-t>14*DAY) idle++; }); pres=true; }
+  let errs=er?er.size:0;
+  let locked=0; if(nf) nf.forEach(d=>{ const x=d.data(); if(now-(x.lastMs||0)<900000) locked++; });
+  const lb=+localStorage.getItem('adm-last-backup')||0, bd=lb?Math.floor((now-lb)/DAY):null;
+  const C=[
+    ['حسابات بانتظار التفعيل',pend&&pend.size,'accounts','warn'],
+    ['تذاكر دعم مفتوحة',tk&&tk.size,'tickets','warn'],
+    ['بلاغات مفتوحة',rp&&rp.size,'reports','warn'],
+    ['أسئلة بانتظار الاعتماد',qb&&qb.size,'community','warn'],
+    ['أرقام قومية تنتهي خلال 7 أيام',gr?expiring:null,'nid','warn'],
+    ['مشرفون غير نشطين +14 يوم',sup?idle:null,'health','warn'],
+    ['أخطاء برمجية آخر 24 ساعة',er?errs:null,'errors','err'],
+    ['أرقام قومية مقفولة الآن',nf?locked:null,'nid','warn'],
+    ['استهلاك اليوم من الحد المجاني (%)',us?Math.round(Math.max(us.r/50000,us.w/20000)*100):null,'usage','usg'],
+    [bd===null?'لم تُؤخذ نسخة احتياطية بعد':'آخر نسخة احتياطية منذ '+bd+' يوم',bd===null||bd>=30?1:0,null,'bk']
+  ];
+  g.innerHTML=C.map(([t,n,tab,k])=>{ const bad=n===null?false:(k==='usg'?n>=70:n>0), col=bad?(k==='err'?'#d92d20':'#ff8a1f'):'#16a36a'; const val=n===null?'—':(k==='bk'?(n?'!':'✓'):(k==='usg'?n+'%':n)); return `<div class="item" style="flex-direction:column;align-items:flex-start;gap:6px;border-inline-start:5px solid ${col};cursor:${tab||k==='bk'?'pointer':'default'}" ${tab?`onclick="goTab('${tab}')"`:k==='bk'?'onclick="exportBackupFull()"':''}><b style="font-size:26px;color:${col}">${val}</b><span style="font-size:13px">${t}</span></div>`; }).join('');
+  const total=C.filter(c=>c[3]!=='bk'&&(c[3]==='usg'?c[1]>=70:c[1]>0)).length+(bd===null||bd>=30?1:0);
+  st.className='status '+(total?'err':'ok'); st.textContent=total?('فيه '+total+' بند محتاج متابعة'):'✓ كل شيء تمام';
+  try{ sessionStorage.setItem('adm-att',JSON.stringify({at:Date.now(),html:g.innerHTML,cls:st.className,txt:st.textContent})); }catch(e){}
+}
+async function exportBackupFull(){
+  const st=document.getElementById('at-st')||document.getElementById('bk-status'); st.className='status'; st.textContent='جاري تجميع النسخة الكاملة (قد تستغرق دقيقة)...';
+  const COLS=['users','siteSettings','idGrants','publicProfiles','courses','books','challenges','communityPosts','prepNotebooks','qbank','coupons','broadcasts','tickets','reports','referrals','attSites','attSessions','attAccess','attExcuses','attendanceLogs','practicumShares','statsDaily','auditLog','admins'];
+  const out={app:'nudrus',version:2,full:true,at:new Date().toISOString(),data:{}}; const meta={};
+  for(const c of COLS){ try{ const s=await db.collection(c).limit(c==='attendanceLogs'||c==='auditLog'?5000:3000).get(); out.data[c]={}; s.forEach(d=>out.data[c][d.id]=d.data()); meta[c]=s.size; }catch(e){ meta[c]='×'; } }
+  out.counts=meta;
+  const blob=new Blob([JSON.stringify(out)],{type:'application/json'}), a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='nudrus-full-backup-'+out.at.slice(0,10)+'.json'; a.click();
+  try{ localStorage.setItem('adm-last-backup',String(Date.now())); }catch(e){} try{ audit('backup','','','نسخة احتياطية كاملة'); }catch(e){}
+  const n=Object.values(meta).filter(x=>typeof x==='number').reduce((a,b)=>a+b,0), bad=Object.entries(meta).filter(([k,v])=>v==='×').map(x=>x[0]);
+  st.className='status ok'; st.textContent='✓ تم تصدير '+n+' مستند'+(bad.length?' — تعذّر: '+bad.join('، '):'')+'. احفظ الملف في مكان آمن (جوجل درايف مثلًا).';
+  try{ if(document.getElementById('panel-attention').classList.contains('active')) initAttention(true); }catch(e){}
+}
+async function loadErrors(){
+  const st=document.getElementById('er-st'), L=document.getElementById('er-list'); st.className='status'; st.textContent='جاري التحميل...';
+  try{ const s=await db.collection('errorLogs').orderBy('ms','desc').limit(300).get(); const G={}; s.forEach(d=>{ const x=d.data(), k=x.msg; (G[k]=G[k]||{msg:k,n:0,last:0,page:x.page,ua:x.ua,src:x.src,line:x.line}).n++; G[k].last=Math.max(G[k].last,x.ms||0); });
+    const A=Object.values(G).sort((a,b)=>b.n-a.n); st.className='status ok'; st.textContent='✓ '+s.size+' سجل، '+A.length+' نوع خطأ';
+    L.innerHTML=A.length?A.map(g=>`<div class="item" style="flex-direction:column;align-items:flex-start;gap:4px"><div><b style="color:#d92d20">×${g.n}</b> <span dir="ltr" style="font-size:13px">${escapeHtml(g.msg)}</span></div><small style="color:var(--ink-soft)">${escapeHtml(g.page||'')} · ${escapeHtml((g.src||'').split('/').pop())}:${g.line||0} · ${new Date(g.last).toLocaleString('ar-EG')}</small></div>`).join(''):'<div class="empty-state">مفيش أخطاء مسجّلة 🎉</div>';
+  }catch(e){ st.className='status err'; st.textContent='تعذّر التحميل: '+(e.message||e.code); }
+}
+async function clearErrors(){ if(!confirm('مسح كل سجل الأخطاء؟')) return; try{ const s=await db.collection('errorLogs').limit(400).get(); const b=db.batch(); s.forEach(d=>b.delete(d.ref)); await b.commit(); loadErrors(); }catch(e){ toast('تعذّر المسح.'); } }
+
+/* ===== الاستهلاك + تنظيف النقاط ===== */
+function usPct(n,max){ const p=Math.min(100,Math.round(n/max*100)), c=p>=90?'#d92d20':p>=70?'#ff8a1f':'#16a36a'; return '<div style="background:var(--paper-dim,#eee);border-radius:99px;height:12px;overflow:hidden;margin:6px 0"><div style="width:'+p+'%;height:100%;background:'+c+'"></div></div><b style="color:'+c+'">'+n.toLocaleString('ar-EG')+'</b> / '+max.toLocaleString('ar-EG')+' ('+p+'%)'; }
+async function usageToday(){ const day=new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'}); const s=await db.collection('usageMeter').where('day','==',day).get(); let r=0,w=0; s.forEach(d=>{ const x=d.data(); r+=x.reads||0; w+=x.writes||0; }); return {day,r,w}; }
+async function loadUsage(){
+  const st=document.getElementById('us-st'), b=document.getElementById('us-body'); st.className='status'; st.textContent='جاري الحساب...';
+  try{
+    const t=await usageToday(); const days={}; const from=new Date(Date.now()-6*864e5).toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});
+    const s=await db.collection('usageMeter').where('day','>=',from).get(); s.forEach(d=>{ const x=d.data(); const o=days[x.day]=days[x.day]||{r:0,w:0}; o.r+=x.reads||0; o.w+=x.writes||0; });
+    const worst=Math.max(t.r/50000,t.w/20000); st.className='status '+(worst>=.9?'err':worst>=.7?'err':'ok'); st.textContent=worst>=.9?'⚠️ قريب جدًا من الحد اليومي — خفّف الاستخدام أو فكّر في الترقية':worst>=.7?'⚠️ تخطّيت 70% من الحد اليومي':'✓ الاستهلاك في المستوى الآمن';
+    b.innerHTML='<div class="item" style="flex-direction:column;align-items:stretch"><div>القراءات اليوم</div>'+usPct(t.r,50000)+'</div><div class="item" style="flex-direction:column;align-items:stretch"><div>الكتابات اليوم</div>'+usPct(t.w,20000)+'</div><h3 style="margin:14px 0 6px">آخر 7 أيام</h3>'+Object.keys(days).sort().reverse().map(d=>'<div class="item"><span>'+d+'</span><span>قراءات <b>'+days[d].r.toLocaleString('ar-EG')+'</b> · كتابات <b>'+days[d].w.toLocaleString('ar-EG')+'</b></span></div>').join('');
+  }catch(e){ st.className='status err'; st.textContent='تعذّر التحميل: '+(e.message||e.code)+' — تأكد من نشر القواعد الجديدة.'; }
+}
+async function cleanCount(){ const st=document.getElementById('cl-st'); st.className='status'; try{ const a=await db.collection('pointsLedger').limit(1000).get(), b=await db.collection('walletRedemptions').limit(1000).get(); st.textContent='pointsLedger: '+a.size+(a.size===1000?'+':'')+' · walletRedemptions: '+b.size+(b.size===1000?'+':''); }catch(e){ st.className='status err'; st.textContent='تعذّر: '+e.message; } }
+async function cleanPoints(){
+  if(!confirm('حذف نهائي لكل بيانات النقاط والمحفظة القديمة؟')) return; const st=document.getElementById('cl-st'); st.className='status'; let n=0;
+  try{ for(const c of ['pointsLedger','walletRedemptions']){ for(let i=0;i<60;i++){ const s=await db.collection(c).limit(400).get(); if(s.empty) break; const b=db.batch(); s.forEach(d=>b.delete(d.ref)); await b.commit(); n+=s.size; st.textContent='تم حذف '+n+'...'; } }
+    st.className='status ok'; st.textContent='✓ تم حذف '+n+' مستند.'; try{audit('control','','','تنظيف بيانات النقاط القديمة');}catch(e){} }
+  catch(e){ st.className='status err'; st.textContent='تعذّر الحذف: '+e.message+' — انشر القواعد الجديدة أولًا.'; }
+}
 async function initLanding(){
   try{ const d=await db.collection('siteSettings').doc('landing').get(); LN=d.exists?d.data():{}; }catch(e){ LN={}; }
   const set=(i,v)=>{ const e=document.getElementById(i); if(e) e.value=v||''; };
@@ -2658,9 +2753,9 @@ async function lnSave(){ const g=i=>(document.getElementById(i).value||'').trim(
   try{ await db.collection('siteSettings').doc('landing').set(doc); LN=doc; audit('control','','','تحديث الصفحة الرئيسية'); st.className='status ok'; st.textContent='✓ اتحفظت وبتظهر دلوقتي في الصفحة الرئيسية.'; lnLinks(); }catch(e){ st.className='status err'; st.textContent='تعذّر: '+(e.code||e.message); } }
 
 /* ===== وضوح لوحة التحكم: مجموعات + بحث + عنوان القسم ===== */
-const ADM_GROUPS=[['المحتوى',['lessons','tips','videos','courses','notebooks','books','challenges']],['المجتمع والتحفيز',['community','wallet','referrals']],['الحسابات والاشتراكات',['users','accounts','acct','supervisors','perm','nid','logins']],['المتابعة والحضور',['attend','health','tickets','support','bcast','files']],['التقارير والسجلات',['analytics','activity','reports','audit']],['الإعدادات',['landing','theme','control','settings']]];
-const ADM_ICON={lessons:'book',tips:'clipboard',videos:'video',courses:'grad',notebooks:'notebook',books:'book',challenges:'award',community:'users',wallet:'cash',referrals:'gift',users:'user',accounts:'card',acct:'refresh',supervisors:'cap',perm:'lock',nid:'key',logins:'history',attend:'pin',health:'bars',tickets:'inbox',support:'chat-circle',bcast:'bell',files:'folder',analytics:'bars',activity:'bars',reports:'file',audit:'history',landing:'layout',theme:'layout',control:'settings',settings:'settings'};
-const ADM_DESC={lessons:'أضف وعدّل دروس "تعلم كيف" اللي بتظهر للمشتركين.',tips:'نصائح وموارد التربية العملية.',videos:'فيديوهات بحوث الفعل.',courses:'الدورات والدروس والاختبارات.',notebooks:'راجع دفاتر التحضير اللي نشرها الأعضاء.',books:'أضف كتب للمكتبة بملف أو رابط.',challenges:'تحدي الأسبوع والجوايز.',community:'راجع منشورات المجتمع واحذف المخالف.',wallet:'أرصدة الأعضاء وطلبات الشحن والصرف.',referrals:'الإحالات والمكافآت.',users:'كل المستخدمين: بحث وتفاصيل وتفعيل وإيقاف.',accounts:'أسعار أنواع الحسابات وفتح/غلق التسجيل لكل نوع.',acct:'غيّر نوع أي حساب وحالته ومشرفه وتاريخ انتهائه.',supervisors:'اعتماد المشرفين والإدارة وربط الأعضاء بهم.',perm:'تحكم في الميزات المتاحة لكل مشترك.',nid:'منح الدخول بالرقم القومي وإدارة المنح.',logins:'آخر تسجيل دخول وظهور لكل حساب.',attend:'مواقع الحضور وسجلاته وتصديره وتفعيله للحسابات.',health:'استهلاك الحدود اليومية والمشرفون غير النشطين.',tickets:'تذاكر الدعم من المستخدمين.',support:'رسائل الدعم الواردة.',bcast:'إرسال إعلانات مجدولة لفئات محددة.',files:'مخزن الملفات: الحجم والحذف القديم.',analytics:'إحصاءات الاستخدام.',activity:'آخر نشاط على المنصة.',reports:'تقارير شهرية قابلة للطباعة.',audit:'سجل كل إجراءات الأدمن مع الفلترة والتصدير.',theme:'ألوان المنصة بنقرة واحدة وفاحص تباين النصوص.',landing:'نصوص الصفحة الرئيسية والأسئلة الشائعة وأرقام المنصة وروابط التسجيل.',control:'مفاتيح التحكم الشامل، الحدود، والصيانة.',settings:'إعدادات عامة.'};
+const ADM_GROUPS=[['اليوم',['attention']],['المحتوى',['lessons','tips','videos','courses','notebooks','books','challenges']],['المجتمع والدعوات',['community','referrals']],['الحسابات والاشتراكات',['users','accounts','acct','supervisors','perm','nid','logins']],['المتابعة والحضور',['attend','health','tickets','support','bcast','files']],['التقارير والسجلات',['analytics','activity','reports','audit','errors','usage']],['الإعدادات',['landing','theme','control','settings']]];
+const ADM_ICON={lessons:'book',tips:'clipboard',videos:'video',courses:'grad',notebooks:'notebook',books:'book',challenges:'award',community:'users',referrals:'gift',users:'user',accounts:'card',acct:'refresh',supervisors:'cap',perm:'lock',nid:'key',logins:'history',attend:'pin',health:'bars',tickets:'inbox',support:'chat-circle',bcast:'bell',files:'folder',analytics:'bars',activity:'bars',reports:'file',audit:'history',landing:'layout',attention:'bell',errors:'bars',usage:'bars',theme:'layout',control:'settings',settings:'settings'};
+const ADM_DESC={lessons:'أضف وعدّل دروس "تعلم كيف" اللي بتظهر للمشتركين.',tips:'نصائح وموارد التربية العملية.',videos:'فيديوهات بحوث الفعل.',courses:'الدورات والدروس والاختبارات.',notebooks:'راجع دفاتر التحضير اللي نشرها الأعضاء.',books:'أضف كتب للمكتبة بملف أو رابط.',challenges:'تحدي الأسبوع والجوايز.',community:'راجع منشورات المجتمع واحذف المخالف.',referrals:'الحسابات المسجّلة عن طريق روابط الدعوة.',users:'كل المستخدمين: بحث وتفاصيل وتفعيل وإيقاف.',accounts:'أسعار أنواع الحسابات وفتح/غلق التسجيل لكل نوع.',acct:'غيّر نوع أي حساب وحالته ومشرفه وتاريخ انتهائه.',supervisors:'اعتماد المشرفين والإدارة وربط الأعضاء بهم.',perm:'تحكم في الميزات المتاحة لكل مشترك.',nid:'منح الدخول بالرقم القومي وإدارة المنح.',logins:'آخر تسجيل دخول وظهور لكل حساب.',attend:'مواقع الحضور وسجلاته وتصديره وتفعيله للحسابات.',health:'استهلاك الحدود اليومية والمشرفون غير النشطين.',tickets:'تذاكر الدعم من المستخدمين.',support:'رسائل الدعم الواردة.',bcast:'إرسال إعلانات مجدولة لفئات محددة.',files:'مخزن الملفات: الحجم والحذف القديم.',analytics:'إحصاءات الاستخدام.',activity:'آخر نشاط على المنصة.',reports:'تقارير شهرية قابلة للطباعة.',audit:'سجل كل إجراءات الأدمن مع الفلترة والتصدير.',attention:'أهم ما يحتاج إجراءً منك اليوم + نسخة احتياطية كاملة.',errors:'أخطاء برمجية حصلت عند المستخدمين.',usage:'تقدير الاستهلاك اليومي مقابل حدود الخطة المجانية + تنظيف بيانات النقاط.',theme:'ألوان المنصة بنقرة واحدة وفاحص تباين النصوص.',landing:'نصوص الصفحة الرئيسية والأسئلة الشائعة وأرقام المنصة وروابط التسجيل.',control:'مفاتيح التحكم الشامل، الحدود، والصيانة.',settings:'إعدادات عامة.'};
 function adminSecHead(name){ const b=document.querySelector('.tab.active'); const h=document.getElementById('sec-head'); if(!h||!b) return; h.innerHTML='<div class="sh-i">'+b.querySelector('svg').outerHTML+'</div><div><h2>'+b.textContent.trim()+'</h2><p>'+(ADM_DESC[name]||'')+'</p></div>'; }
 function adminUx(){
   const tabs=document.querySelector('.tabs'); if(!tabs||tabs.dataset.ux) return; tabs.dataset.ux='1';
@@ -2911,13 +3006,13 @@ async function loadHealth(){
   try{ await db.collection('siteSettings').doc('control').get(); rows.push(['الاتصال بـ Firestore','✅ سليم ('+Math.round(performance.now()-t0)+' ms)']); }catch(e){ rows.push(['الاتصال بـ Firestore','❌ '+(e.code||e.message)]); }
   const U=ALL_USERS.filter(u=>u.role!=='admin'), now=Date.now();
   const cnt={}; 
-  for(const c of ['conversations','sharedDocs','qbank','surveys','reports','pointsLedger']){ try{ const q=await db.collection(c).limit(500).get(); cnt[c]=q.size+(q.size===500?'+':''); }catch(e){ cnt[c]='⚠️ لا صلاحية'; } }
+  for(const c of ['conversations','sharedDocs','qbank','surveys','reports']){ try{ const q=await db.collection(c).limit(500).get(); cnt[c]=q.size+(q.size===500?'+':''); }catch(e){ cnt[c]='⚠️ لا صلاحية'; } }
   try{ const q=await db.collection('qbank').where('status','==','pending').get(); cnt['qbankPending']=q.size; }catch(e){}
   const warn=[['حسابات بانتظار الموافقة',U.filter(u=>u.status==='pending'||u.approved===false).length],['حسابات منتهية/مقفولة',U.filter(u=>['expired','revoked','suspended'].includes(u.status)).length],['حسابات من غير نوع',U.filter(u=>!u.accountType).length],['أسئلة بانتظار مراجعة الخبراء',cnt.qbankPending||0]];
   const ctl=CTL||{}, off=CTL_SWITCHES.filter(x=>ctl[x[0]]===false).map(x=>x[1]);
   body.innerHTML=`<div class="card"><h3 style="margin-bottom:8px;">الفحص</h3>${rows.map(r=>`<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line);"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}<div style="display:flex; justify-content:space-between; padding:8px 0;"><span>وضع القراءة فقط</span><b>${ctl.readOnly===true?'🔒 مفعّل':'مقفول (طبيعي)'}</b></div></div>
   <div class="card"><h3 style="margin-bottom:8px;">محتاج متابعة</h3>${warn.map(r=>`<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line);"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div>
-  <div class="card"><h3 style="margin-bottom:8px;">أحجام المجموعات (حتى 500)</h3>${['conversations','sharedDocs','qbank','surveys','reports','pointsLedger'].map(c=>`<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line);"><span>${c}</span><b>${cnt[c]}</b></div>`).join('')}</div>
+  <div class="card"><h3 style="margin-bottom:8px;">أحجام المجموعات (حتى 500)</h3>${['conversations','sharedDocs','qbank','surveys','reports'].map(c=>`<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line);"><span>${c}</span><b>${cnt[c]}</b></div>`).join('')}</div>
   <div class="card"><h3 style="margin-bottom:8px;">ميزات موقوفة من التحكم الشامل</h3>${off.length?off.map(x=>`<span class="chip" style="display:inline-block; margin:3px; padding:5px 12px; background:#fff1d6; border-radius:99px; font-size:13px;">${escapeHtml(x)}</span>`).join(''):'<div style="color:var(--ink-soft)">كل الميزات شغالة.</div>'}</div>`;
   try{
     const day=new Date().toISOString().slice(0,10), us=await db.collection('usageDaily').where('day','==',day).get(), Q=(CTL&&CTL.quotas)||{}, over=[];
