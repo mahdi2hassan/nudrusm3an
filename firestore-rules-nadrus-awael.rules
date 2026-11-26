@@ -85,9 +85,18 @@ service cloud.firestore {
         isOwner(uid)
         && !request.resource.data.diff(resource.data).affectedKeys()
               .hasAny(['accountType', 'approved', 'supervisorId', 'role', 'isExpert', 'verified', 'nidHash', 'nidLast4', 'grantExpiresMs', 'featureOverrides', 'planExpiresMs', 'paidMs', 'confirmedBy'])
+        // plan can't be changed by the owner except: from a non-paid plan, or together with a pending_payment request
+        && (
+          request.resource.data.get('plan', null) == resource.data.get('plan', null)
+          || (resource.data.get('plan', 'free') in ['free', 'onetime'] && request.resource.data.get('plan', 'free') in ['free', 'onetime'])
+          || request.resource.data.status == 'pending_payment'
+        )
         && (
           request.resource.data.status == resource.data.status
-          || !('accountType' in resource.data)
+          || (!('accountType' in resource.data)
+              && (request.resource.data.status == 'pending_payment'
+                  || (request.resource.data.get('plan', '') == 'free' && request.resource.data.status == 'active'
+                      && resource.data.get('plan', 'free') in ['free', 'onetime'])))
           || (resource.data.status == 'awaiting_fee' && request.resource.data.status == 'pending_payment')
           || (resource.data.status == 'awaiting_fee' && request.resource.data.status == 'active'
               && get(/databases/$(database)/documents/siteSettings/pricing).data[resource.data.accountType].fee == 0)
