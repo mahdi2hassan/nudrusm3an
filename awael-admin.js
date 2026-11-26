@@ -96,6 +96,7 @@
     const el = $('aw-content');
     el.innerHTML = SECS.length ? SECS.map(s => '<details class="card" data-id="' + E(s.id) + '" style="margin:8px 0;padding:10px;"><summary><b>' + E(s.icon || '') + ' ' + E(s.title) + '</b> <small>(' + (s.items || []).filter(x => x.t !== 'label').length + ' رابط)' + (s.hidden ? ' · مخفي' : '') + '</small></summary>' +
       '<div class="field"><label>الاسم</label><input class="aw-sin" data-k="title" value="' + E(s.title) + '"></div><div class="field"><label>أيقونة (إيموجي)</label><input class="aw-sin" data-k="icon" value="' + E(s.icon || '') + '"></div><div class="field"><label>سطر تحت الاسم</label><input class="aw-sin" data-k="sub" value="' + E(s.sub || '') + '"></div><div class="field"><label>ملاحظة أعلى القسم</label><input class="aw-sin" data-k="note" value="' + E(s.note || '') + '"></div><div class="field"><label>الترتيب</label><input type="number" class="aw-sin" data-k="order" value="' + E(s.order || 0) + '"></div>' +
+      '<div class="field"><label>المجموعة (في الشريط السفلي)</label><select class="aw-sin" data-k="group">' + [['services','الخدمات'],['univ','الجامعة'],['research','البحث'],['egypt','كل الجامعات'],['other','أخرى']].map(o => '<option value="' + o[0] + '"' + ((s.group || 'other') === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
       '<label><input type="checkbox" class="aw-sin" data-k="hidden" ' + (s.hidden ? 'checked' : '') + ' style="width:auto"> مخفي</label>' +
       '<div class="aw-items">' + (s.items || []).map(itemRow).join('') + '</div>' +
       '<button class="save-btn" onclick="awaelItemAdd(this,\'link\')">+ رابط</button> <button class="save-btn" onclick="awaelItemAdd(this,\'label\')">+ عنوان فرعي</button> <button class="btn" onclick="awaelSaveSection(\'' + E(s.id) + '\')">حفظ القسم</button> <button class="save-btn" onclick="awaelDelSection(\'' + E(s.id) + '\')">حذف القسم</button></details>').join('') : '<div class="empty">مفيش محتوى. استورد المحتوى الأولي أو أضف قسم.</div>';
@@ -112,7 +113,7 @@
       items.push(o);
     });
     if(bad){ toast(bad, { type:'err' }); return; }
-    try{ await db.collection('awaelContent').doc(id).set({ title: g.title.trim(), icon: g.icon.trim(), sub: g.sub.trim(), note: g.note.trim(), order: Number(g.order) || 0, hidden: !!g.hidden, items, updatedMs: Date.now() }); audit('awael_content', '', g.title, 'حفظ قسم'); toast('اتحفظ القسم.'); loadContent(); }
+    try{ await db.collection('awaelContent').doc(id).set({ title: g.title.trim(), icon: g.icon.trim(), sub: g.sub.trim(), note: g.note.trim(), order: Number(g.order) || 0, hidden: !!g.hidden, group: g.group || 'other', items, updatedMs: Date.now() }); audit('awael_content', '', g.title, 'حفظ قسم'); toast('اتحفظ القسم.'); loadContent(); }
     catch(e){ toast('حصل خطأ: ' + e.message, { type:'err' }); }
   };
   window.awaelDelSection = async function(id){
@@ -131,7 +132,7 @@
     try{
       const r = await fetch('awael-seed.json', { cache:'no-store' }); if(!r.ok) throw new Error('الملف مش موجود');
       const seed = await r.json(); let n = 0;
-      for(const s of seed.sections){ await db.collection('awaelContent').doc(slug(s.id)).set({ title:s.title, icon:s.icon || '', sub:s.sub || '', note:s.note || '', order:s.order || 0, hidden:false, items:s.items || [], updatedMs: Date.now() }); n++; }
+      for(const s of seed.sections){ await db.collection('awaelContent').doc(slug(s.id)).set({ title:s.title, icon:s.icon || '', sub:s.sub || '', note:s.note || '', order:s.order || 0, hidden:false, group:s.group || 'other', items:s.items || [], updatedMs: Date.now() }); n++; }
       audit('awael_content', '', '', 'استيراد ' + n + ' قسم'); toast('اتستورد ' + n + ' قسم.'); loadContent();
     }catch(e){ toast('حصل خطأ: ' + e.message, { type:'err' }); }
   };
