@@ -10023,6 +10023,21 @@ html[data-theme=dark] .global-topbar{background:rgba(20,36,77,.55);border-color:
   .global-topbar{margin:0 0 14px !important;top:6px}
   body.has-mbnav .main,body.has-mbnav #screen-app{padding-bottom:0 !important}
 }
+
+/* ===== نسخة مصغّرة بأيقونات ===== */
+.sidebar{width:84px !important;padding:14px 8px !important;align-items:stretch;overflow-y:auto}
+.sidebar .brand-mark{font-size:15px !important;text-align:center;padding:0 !important;margin:2px 0 8px !important;white-space:nowrap}
+.sidebar .role-pill,.sidebar .sidebar-legal,.sidebar #sidebar-status,.sidebar #streak-badge,.sidebar .nav-group-label{display:none !important}
+.sidebar .nav-group-body{display:flex !important;flex-direction:column;gap:2px}
+.sidebar .nav-item{flex-direction:column !important;justify-content:center;gap:4px !important;padding:9px 3px !important;font-size:10px !important;line-height:1.25;text-align:center;border-radius:14px !important;width:100%;box-sizing:border-box;position:relative;margin:0 !important}
+.sidebar .nav-item .icon{width:22px !important;height:22px !important;margin:0 !important}
+.sidebar .nav-item .nav-badge{position:absolute;top:4px;inset-inline-end:8px}
+.sidebar #nav-teacher,.sidebar #nav-student,.sidebar #nav-sup{display:flex;flex-direction:column;gap:2px}
+.sidebar #nav-teacher[style*="display: none"],.sidebar #nav-student[style*="display: none"],.sidebar #nav-sup[style*="display: none"]{display:none !important}
+.sidebar .sidebar-wa-link{font-size:0 !important;justify-content:center;padding:10px 0 !important;margin:6px 0 !important}
+.sidebar .sidebar-wa-link .icon{width:22px;height:22px}
+.sidebar .sidebar-foot{padding-top:8px !important}
+@media (min-width:1024px){.shell{padding-left:112px !important}}
 </style>
 <script src="awael-section.js"></script>
 <script>
