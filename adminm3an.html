@@ -506,6 +506,9 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
       <div id="acc-pricing" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin-bottom:14px;"></div>
       <button class="btn" onclick="saveAccountPricing()"><svg class="icon"><use href="#i-check"></use></svg> حفظ الرسوم</button>
       <div class="status" id="acc-pricing-status"></div>
+      <div class="card" style="margin-top:14px;"><h3>خطط الاشتراك (الأسعار والمدد)</h3><p style="font-size:12.5px;color:var(--muted);">للحسابات القديمة وصفحة "طوّر خطتك". بعد تأكيد الدفع بتتحسب المدة من يوم التأكيد.</p>
+        <div id="plans-edit" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px;"></div>
+        <button class="save-btn" onclick="savePlansConfig()" style="margin-top:10px;">حفظ الخطط</button><div class="status" id="plans-edit-status"></div></div>
     </div>
     <div class="card" style="margin-top:16px;">
       <h3 style="margin-bottom:6px;">🔓 الميزات المفتوحة لكل نوع حساب</h3>
@@ -1979,7 +1982,20 @@ function accLabel(u){ return ACC_TYPES[u.accountType] || (u.role === 'teacher' ?
 const SUP_TYPES = ['supervisor','expert_supervisor'];
 function isStaffUser(u){ return SUP_TYPES.includes(u.accountType) || u.accountType === 'office'; }
 
+const PLAN_DEFS = { sub1:['اشتراك شهري',100,30], sub2:['اشتراك 3 شهور',150,90], sub3:['اشتراك 6 شهور',300,180], pro:['اشتراك مرة واحدة',1275,0] };
+async function loadPlansEdit(){
+  let c = {}; try{ const d = await db.collection('siteSettings').doc('plans').get(); c = d.exists ? d.data() : {}; }catch(e){ console.warn(e); }
+  document.getElementById('plans-edit').innerHTML = Object.keys(PLAN_DEFS).map(k => { const o = c[k] || {}, df = PLAN_DEFS[k];
+    return `<div class="card" style="margin:0; padding:14px;"><div class="field"><label>الاسم</label><input id="pl-name-${k}" value="${escapeHtml(o.name || df[0])}"></div><div class="field"><label>السعر (جنيه)</label><input type="number" min="0" id="pl-price-${k}" value="${o.price != null ? o.price : df[1]}"></div>${k === 'pro' ? '<div style="font-size:12px;">مدى الحياة بدون تجديد</div>' : `<div class="field"><label>المدة (أيام)</label><input type="number" min="1" id="pl-days-${k}" value="${o.days != null ? o.days : df[2]}"></div>`}<label style="display:flex;gap:8px;font-size:12.5px;font-weight:700;"><input type="checkbox" id="pl-on-${k}" style="width:auto;" ${o.enabled === false ? '' : 'checked'}> متاحة للاشتراك</label></div>`; }).join('');
+}
+async function savePlansConfig(){
+  const st = document.getElementById('plans-edit-status'); const data = { updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+  Object.keys(PLAN_DEFS).forEach(k => { data[k] = { name: document.getElementById('pl-name-'+k).value.trim().slice(0,60) || PLAN_DEFS[k][0], price: Math.max(0, Number(document.getElementById('pl-price-'+k).value) || 0), enabled: document.getElementById('pl-on-'+k).checked }; if(k !== 'pro') data[k].days = Math.max(1, Math.round(Number(document.getElementById('pl-days-'+k).value) || PLAN_DEFS[k][2])); });
+  try{ await db.collection('siteSettings').doc('plans').set(data); audit('plans', '', '', 'تعديل خطط الاشتراك'); st.className = 'status ok'; st.textContent = 'اتحفظت الخطط.'; }
+  catch(err){ st.className = 'status err'; st.textContent = 'حصل خطأ: ' + err.message; }
+}
 async function loadAccountsAdmin(){
+  loadPlansEdit();
   let pricing = {}, access = {};
   try{ const p = await db.collection('siteSettings').doc('pricing').get(); pricing = p.exists ? p.data() : {}; }catch(e){ console.warn(e); }
   try{ const a = await db.collection('siteSettings').doc('accessByType').get(); access = a.exists ? a.data() : {}; }catch(e){ console.warn(e); }
@@ -2159,7 +2175,13 @@ async function confirmPayment(uid){
   try{
     const d = (await db.collection('users').doc(uid).get()).data() || {};
     if(!confirm('تأكيد استلام رسوم ' + (d.feeAmount != null ? d.feeAmount + ' جنيه ' : '') + 'من ' + (d.name || d.email) + ' وتفعيل حسابه؟')) return;
-    await db.collection('users').doc(uid).update({ status: 'active', plan: 'onetime', paidMs: Date.now(), confirmedBy: (auth.currentUser && auth.currentUser.email) || '' });
+    const planKeys = ['sub1','sub2','sub3','pro']; let upd = { status: 'active', plan: 'onetime', paidMs: Date.now(), confirmedBy: (auth.currentUser && auth.currentUser.email) || '' };
+    if(planKeys.includes(d.plan)){
+      let days = { sub1:30, sub2:90, sub3:180 }[d.plan] || null;
+      try{ const pc = await db.collection('siteSettings').doc('plans').get(); const o = pc.exists ? (pc.data()[d.plan] || {}) : {}; if(d.plan !== 'pro' && Number(o.days) > 0) days = Math.round(Number(o.days)); }catch(e){ console.warn(e); }
+      upd = { status: 'active', plan: d.plan, paidMs: Date.now(), planExpiresMs: days ? Date.now() + days*86400000 : 0, confirmedBy: upd.confirmedBy };
+    }
+    await db.collection('users').doc(uid).update(upd);
     if(d.couponCode){ try{ await db.collection('coupons').doc(d.couponCode).update({ used: firebase.firestore.FieldValue.increment(1) }); }catch(e){ console.warn(e); } }
     db.collection('notifications').add({ recipientUid: uid, type: 'plan', text: '✓ تم تأكيد دفعك وتفعيل حسابك — أهلًا بيك!', viewId: null, read: false, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).catch(()=>{});
     audit('confirm_payment', uid, d.name || d.email, 'رسوم ' + (d.feeAmount != null ? d.feeAmount : '?') + (d.couponCode ? ' — كوبون ' + d.couponCode : ''));

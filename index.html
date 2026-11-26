@@ -2808,12 +2808,26 @@ const WHATSAPP_NUMBER = '201153652279'; // نفس رقم الكاش
 
 const PLANS = {
   free: { name:'الفترة التجريبية المجانية', price:0,    duration:'20 يوم', durationDays:20, paid:false },
-  sub1: { name:'الاشتراك الأول',            price:100,  duration:'20 يوم', durationDays:20, paid:true },
-  sub2: { name:'الاشتراك الثاني',           price:150,  duration:'45 يوم', durationDays:45, paid:true },
-  sub3: { name:'الاشتراك الثالث',           price:300,  duration:'95 يوم', durationDays:95, paid:true },
+  sub1: { name:'اشتراك شهري',                price:100,  duration:'30 يوم', durationDays:30, paid:true },
+  sub2: { name:'اشتراك 3 شهور',              price:150,  duration:'90 يوم', durationDays:90, paid:true },
+  sub3: { name:'اشتراك 6 شهور',              price:300,  duration:'180 يوم', durationDays:180, paid:true },
   onetime: { name:'رسوم الاشتراك (مرة واحدة)', price:0, duration:'مدى الحياة', durationDays:null, paid:true },
-  pro:  { name:'الاشتراك البرو',            price:1275, duration:'مدى الحياة', durationDays:null, paid:true },
+  pro:  { name:'اشتراك مرة واحدة',          price:1275, duration:'مدى الحياة', durationDays:null, paid:true },
 };
+const PLAN_KEYS = ['sub1','sub2','sub3','pro'];
+/* الأسعار والمدد تُدار من لوحة الأدمن (siteSettings/plans) وتغطي القيم الافتراضية أعلاه */
+function applyPlansConfig(c){
+  if(!c) return;
+  PLAN_KEYS.forEach(k => { const o = c[k]; if(!o) return; const p = PLANS[k];
+    if(typeof o.name === 'string' && o.name.trim()) p.name = o.name.trim().slice(0, 60);
+    if(o.price != null && Number(o.price) >= 0) p.price = Number(o.price);
+    if(k !== 'pro' && Number(o.days) > 0){ p.durationDays = Math.round(Number(o.days)); p.duration = p.durationDays + ' يوم'; }
+    p.disabled = o.enabled === false; });
+}
+async function loadPlansConfig(){
+  try{ const d = await db.collection('siteSettings').doc('plans').get(); if(d.exists) applyPlansConfig(d.data()); }catch(e){ console.warn(e); }
+  try{ renderPlansGrid(); }catch(e){}
+}
 
 let pendingRole = null;
 let pendingUser = { name:'', email:'', phone:'' };
@@ -2824,7 +2838,7 @@ let userStatus = { plan:'free', status:'active', isExpert:false, verified:false 
 
 function renderPlansGrid(){
   const grid = document.getElementById('plans-grid');
-  grid.innerHTML = Object.keys(PLANS).filter(k => k !== 'onetime').map(key => {
+  grid.innerHTML = Object.keys(PLANS).filter(k => k !== 'onetime' && !PLANS[k].disabled).map(key => {
     const p = PLANS[key];
     const featured = key === 'sub2';
     return `<div class="plan-card ${featured?'featured':''}">
@@ -2837,6 +2851,7 @@ function renderPlansGrid(){
   }).join('');
 }
 renderPlansGrid();
+loadPlansConfig();
 
 function friendlyAuthError(err){
   const code = err && err.code;
@@ -3063,6 +3078,7 @@ async function sendEmailJS(templateId, extraParams){
 
 function selectPlan(planKey){
   const plan = PLANS[planKey];
+  if(!plan || plan.disabled){ toast('الخطة دي مش متاحة حاليًا.', {type:'err'}); return; }
   selectedPlanKey = planKey;
   if(plan.price === 0){ finalizeFreePlan(); return; }
   document.getElementById('pay-plan-title').textContent = 'تأكيد اشتراك: ' + plan.name;
@@ -3135,7 +3151,7 @@ async function loadUserStatus(){
   try{
     const doc = await db.collection('users').doc(currentUid).get();
     const d = doc.data();
-    pendingType = d.accountType || pendingType; userStatus = { accountType: d.accountType || null, approved: d.approved === true, supervisorId: d.supervisorId || null, feeAmount: d.feeAmount || 0, nidHash: d.nidHash || null, grantExpiresMs: d.grantExpiresMs || 0, plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt, isExpert: !!d.isExpert, verified: !!d.verified };
+    pendingType = d.accountType || pendingType; userStatus = { accountType: d.accountType || null, approved: d.approved === true, supervisorId: d.supervisorId || null, feeAmount: d.feeAmount || 0, nidHash: d.nidHash || null, grantExpiresMs: d.grantExpiresMs || 0, plan: d.plan, status: d.status, trialEndsAt: d.trialEndsAt, planExpiresMs: d.planExpiresMs || 0, isExpert: !!d.isExpert, verified: !!d.verified };
     pendingUser.photoURL = '';
     pendingUser.specialization = d.specialization || '';
     pendingUser.bio = d.bio || '';
@@ -3159,6 +3175,10 @@ function renderStatusUI(){
     sidebarEl.innerHTML = 'خطتك: ' + plan.name + '<span class="status-badge pending">قيد المراجعة</span>';
     banner.className = 'top-banner pending'; banner.style.display='block';
     banner.textContent = '⏳ حسابك قيد المراجعة — هيتفعل بعد تأكيد التحويل من فريقنا.';
+  }else if(planExpired()){
+    sidebarEl.innerHTML = 'خطتك: ' + plan.name + '<span class="status-badge pending">انتهت</span>';
+    banner.className = 'top-banner pending'; banner.style.display='block';
+    banner.textContent = '⏳ انتهت مدة اشتراكك — جدّد من "طوّر خطتك" عشان يرجع الوصول.';
   }else if(userStatus.plan === 'free'){
     const daysLeft = userStatus.trialEndsAt ? Math.max(0, Math.ceil((userStatus.trialEndsAt - Date.now())/(24*60*60*1000))) : 20;
     sidebarEl.innerHTML = 'خطتك: تجربة مجانية<span class="status-badge free">' + daysLeft + ' يوم متبقي</span>';
@@ -6213,7 +6233,9 @@ function renderTypedStatusUI(){
   }
   return true;
 }
+function planExpired(){ return PLAN_KEYS.includes(userStatus.plan) && userStatus.plan !== 'pro' && userStatus.status === 'active' && userStatus.planExpiresMs && userStatus.planExpiresMs < Date.now(); }
 function isAccountLocked(){
+  if(planExpired()) return true;
   const t = ACCOUNT_TYPES[userStatus.accountType]; if(!t) return false;
   if(grantExpired()) return true;
   return t.paid ? (userStatus.status === 'awaiting_fee' || userStatus.status === 'pending_payment') : userStatus.status === 'pending_approval';

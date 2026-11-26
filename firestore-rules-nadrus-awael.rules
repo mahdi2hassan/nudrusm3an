@@ -84,7 +84,7 @@ service cloud.firestore {
       allow update: if isAdmin() || (
         isOwner(uid)
         && !request.resource.data.diff(resource.data).affectedKeys()
-              .hasAny(['accountType', 'approved', 'supervisorId', 'role', 'isExpert', 'verified', 'nidHash', 'nidLast4', 'grantExpiresMs', 'featureOverrides'])
+              .hasAny(['accountType', 'approved', 'supervisorId', 'role', 'isExpert', 'verified', 'nidHash', 'nidLast4', 'grantExpiresMs', 'featureOverrides', 'planExpiresMs', 'paidMs', 'confirmedBy'])
         && (
           request.resource.data.status == resource.data.status
           || !('accountType' in resource.data)
