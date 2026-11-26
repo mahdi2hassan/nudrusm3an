@@ -1,0 +1,1317 @@
+{
+ "version": 1,
+ "sections": [
+  {
+   "id": "student",
+   "order": 1,
+   "title": "خدمات الطالب",
+   "sub": "",
+   "icon": "📋",
+   "note": "",
+   "items": [
+    {
+     "t": "link",
+     "icon": "🚪",
+     "title": "البوابة الرئيسية MIS",
+     "desc": "mis.bsu.edu.eg/umisswf",
+     "url": "https://www.mis.bsu.edu.eg/umisswf/"
+    },
+    {
+     "t": "link",
+     "icon": "📋",
+     "title": "بيان المقررات",
+     "desc": "قائمة المواد المسجلة",
+     "url": "https://www.mis.bsu.edu.eg/umisswf/Registration/ED/STUDENTSUBJECTS.ASPX"
+    },
+    {
+     "t": "link",
+     "icon": "✏️",
+     "title": "تسجيل المواد",
+     "desc": "اختيار مواد الفصل",
+     "url": "https://www.mis.bsu.edu.eg/umisswf/Registration/ED/OR_RecordStudentPrimarySubjectsCredit.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "📚",
+     "title": "السجل الدراسي",
+     "desc": "تاريخ المواد والدرجات",
+     "url": "https://www.mis.bsu.edu.eg/umisswf/Registration/ED/OR_REG_COURSE_GROUP.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "🪪",
+     "title": "بطاقة التسجيل",
+     "desc": "بيانات الطالب الرسمية",
+     "url": "https://www.mis.bsu.edu.eg/umisswf/Registration/ED/OR_RS_ST_223.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "💰",
+     "title": "المصروفات الدراسية",
+     "desc": "كشف الرسوم المستحقة",
+     "url": "https://www.mis.bsu.edu.eg/umisswf/Registration/ED/OR_Stud_EXPENSES.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "🌐",
+     "title": "بوابة الخدمات الطلابية NPS",
+     "desc": "nps.bsu.edu.eg/portal",
+     "url": "https://nps.bsu.edu.eg/portal/"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "نماذج مشروعات التخرج",
+     "desc": "أمثلة ومشاريع سابقة",
+     "url": "http://www.bsu.edu.eg/ShowGraduationProjects.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "📖",
+     "title": "المقررات الدراسية",
+     "desc": "دليل المواد والمناهج",
+     "url": "http://www.bsu.edu.eg/Subjects.aspx?cat_id=1"
+    },
+    {
+     "t": "link",
+     "icon": "♿",
+     "title": "خدمة ذوي الاحتياجات الخاصة",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=440"
+    },
+    {
+     "t": "link",
+     "icon": "🌍",
+     "title": "إدارة الطلاب الوافدين",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=53"
+    }
+   ]
+  },
+  {
+   "id": "results",
+   "order": 2,
+   "title": "النتائج والاستعلامات",
+   "sub": "misapp.bsu.edu.eg/results",
+   "icon": "🏆",
+   "note": "",
+   "items": [
+    {
+     "t": "link",
+     "icon": "🏆",
+     "title": "نتائج الطلاب — الجديد",
+     "desc": "misapp.bsu.edu.eg/results",
+     "url": "https://www.misapp.bsu.edu.eg/results/"
+    },
+    {
+     "t": "link",
+     "icon": "📊",
+     "title": "بوابة النتائج الرسمية",
+     "desc": "",
+     "url": "http://www.results.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "📈",
+     "title": "نتائج 2026",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/MisBsuResults2026/"
+    },
+    {
+     "t": "link",
+     "icon": "🩺",
+     "title": "نتائج كلية الطب",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/MedResults2026/"
+    },
+    {
+     "t": "link",
+     "icon": "🔢",
+     "title": "أرقام الجلوس",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/SetNo.aspx?cat_id=1"
+    },
+    {
+     "t": "link",
+     "icon": "👨‍🎓",
+     "title": "بوابة الخريجين — بالكلية",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/GraduationsData.aspx?cat_id=1"
+    },
+    {
+     "t": "link",
+     "icon": "🔍",
+     "title": "بحث عن خريج بالاسم",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Graduations_Search.aspx?cat_id=1"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "نتائج الدراسات العليا",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=6"
+    },
+    {
+     "t": "link",
+     "icon": "✅",
+     "title": "المقبولون في اختبار القدرات",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Content.aspx?section_id=6252&cat_id=1"
+    },
+    {
+     "t": "link",
+     "icon": "🏅",
+     "title": "خدمات الخريجين",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Graduate_Services.aspx"
+    }
+   ]
+  },
+  {
+   "id": "financial",
+   "order": 3,
+   "title": "المدفوعات والرسوم",
+   "sub": "سداد إلكتروني فيزا/فوري",
+   "icon": "💳",
+   "note": "",
+   "items": [
+    {
+     "t": "link",
+     "icon": "💳",
+     "title": "سداد مصروفات الجامعة",
+     "desc": "الرسوم الدراسية أونلاين",
+     "url": "http://www.payment.bsu.edu.eg/services/universityOut.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "🏦",
+     "title": "بوابة التحصيل الإلكتروني",
+     "desc": "مدفوعات المكتبات، طوابع، مؤتمرات",
+     "url": "https://www.payment.bsu.edu.eg/services/"
+    },
+    {
+     "t": "link",
+     "icon": "🦷",
+     "title": "مدفوعات كلية طب الأسنان",
+     "desc": "",
+     "url": "https://www.payment.bsu.edu.eg/services/"
+    },
+    {
+     "t": "link",
+     "icon": "📚",
+     "title": "مدفوعات المكتبات",
+     "desc": "",
+     "url": "https://www.payment.bsu.edu.eg/services/"
+    },
+    {
+     "t": "link",
+     "icon": "🌍",
+     "title": "طلاب وافدون",
+     "desc": "رسوم الطلاب الأجانب",
+     "url": "https://www.payment.bsu.edu.eg/services/"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "اشتراكات مؤتمرات وأخلاقيات البحث",
+     "desc": "",
+     "url": "https://www.payment.bsu.edu.eg/services/"
+    },
+    {
+     "t": "link",
+     "icon": "🔬",
+     "title": "معمل ميكانيكا التربة — كلية الهندسة",
+     "desc": "",
+     "url": "https://www.payment.bsu.edu.eg/services/"
+    },
+    {
+     "t": "link",
+     "icon": "🏥",
+     "title": "مركز التدريب والاستشارات — كلية التربية",
+     "desc": "",
+     "url": "https://www.payment.bsu.edu.eg/services/"
+    },
+    {
+     "t": "link",
+     "icon": "💰",
+     "title": "كشف المصروفات — MIS",
+     "desc": "بعد تسجيل الدخول",
+     "url": "https://www.mis.bsu.edu.eg/umisswf/Registration/ED/OR_Stud_EXPENSES.aspx"
+    }
+   ]
+  },
+  {
+   "id": "digital",
+   "order": 4,
+   "title": "الخدمات الرقمية",
+   "sub": "استعلام عن البريد الرسمي",
+   "icon": "⚡",
+   "note": "",
+   "items": [
+    {
+     "t": "label",
+     "title": "البريد الإلكتروني"
+    },
+    {
+     "t": "link",
+     "icon": "📧",
+     "title": "اعرف إيميلك الجامعي",
+     "desc": "استعلام عن البريد الرسمي",
+     "url": "http://www.email.bsu.edu.eg/_BSU_Std.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "📬",
+     "title": "بريد Outlook — Office 365",
+     "desc": "",
+     "url": "https://outlook.office365.com/"
+    },
+    {
+     "t": "label",
+     "title": "المنصات التعليمية"
+    },
+    {
+     "t": "link",
+     "icon": "📗",
+     "title": "منصة الكتاب الإلكتروني الجديدة",
+     "desc": "beinbsu — 2026",
+     "url": "https://www.beinbsu.bsu.edu.eg/"
+    },
+    {
+     "t": "link",
+     "icon": "📘",
+     "title": "منصة الكتاب الإلكتروني",
+     "desc": "",
+     "url": "https://www.ebook.bsu.edu.eg/"
+    },
+    {
+     "t": "link",
+     "icon": "🎯",
+     "title": "منصة إجادة",
+     "desc": "",
+     "url": "https://ejada.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "💡",
+     "title": "منصة فكرة — ريادة الأعمال",
+     "desc": "",
+     "url": "https://fekra.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🖥️",
+     "title": "خدمات MIS 2026",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/res2026/"
+    },
+    {
+     "t": "link",
+     "icon": "💻",
+     "title": "مركز التعليم الإلكتروني",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=295"
+    },
+    {
+     "t": "label",
+     "title": "المكتبة والبحث"
+    },
+    {
+     "t": "link",
+     "icon": "📚",
+     "title": "المكتبة الرقمية",
+     "desc": "",
+     "url": "http://www.digitalibrary.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🔬",
+     "title": "بنك المعرفة المصري",
+     "desc": "",
+     "url": "https://www.ekb.eg/ar/home"
+    },
+    {
+     "t": "link",
+     "icon": "🗂️",
+     "title": "قواعد البيانات العالمية — EULC",
+     "desc": "",
+     "url": "http://db5.eulc.edu.eg/eulc_v5/libraries/start.aspx?fn=portal"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "أبحاث الجامعة على Google Scholar",
+     "desc": "",
+     "url": "https://scholar.google.com.eg/citations?hl=en&view_op=search_authors&mauthors=beni+suef"
+    }
+   ]
+  },
+  {
+   "id": "affairs",
+   "order": 5,
+   "title": "شئون الطلاب",
+   "sub": "نماذج وطلبات رسمية",
+   "icon": "📄",
+   "note": "",
+   "items": [
+    {
+     "t": "label",
+     "title": "نماذج PDF — اضغط للتحميل"
+    },
+    {
+     "t": "link",
+     "icon": "🩺",
+     "title": "طلب كشف طبي",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/توقيع الكشف الطب.pdf"
+    },
+    {
+     "t": "link",
+     "icon": "🔄",
+     "title": "طلب تحويل",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/طلب تحويل.pdf"
+    },
+    {
+     "t": "link",
+     "icon": "📋",
+     "title": "بيان حالة الطالب",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/بيان حاله الطالب.pdf"
+    },
+    {
+     "t": "link",
+     "icon": "✅",
+     "title": "إثبات قيد",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/اثبات قيد للطالب.pdf"
+    },
+    {
+     "t": "link",
+     "icon": "📝",
+     "title": "إخلاء طرف",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/اخلاء طرف للطالب.pdf"
+    },
+    {
+     "t": "link",
+     "icon": "🙋",
+     "title": "اعتذار عن امتحان",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/اعتذار عن امتحان.pdf"
+    },
+    {
+     "t": "link",
+     "icon": "📊",
+     "title": "التماس إعادة رصد درجات",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/التماس اعاده رصد درجات.pdf"
+    },
+    {
+     "t": "link",
+     "icon": "🪖",
+     "title": "تأجيل تجنيد",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/تأجيل تجنيد.pdf"
+    },
+    {
+     "t": "link",
+     "icon": "🏠",
+     "title": "التقديم للمدينة الجامعية",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/استمارة التقديم للمدينه الجامعيه.pdf"
+    },
+    {
+     "t": "label",
+     "title": "روابط شئون الطلاب"
+    },
+    {
+     "t": "link",
+     "icon": "🏛️",
+     "title": "موقع شئون التعليم والطلاب",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=7"
+    },
+    {
+     "t": "link",
+     "icon": "🏘️",
+     "title": "المدن الجامعية",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=286"
+    },
+    {
+     "t": "link",
+     "icon": "🏅",
+     "title": "رعاية الشباب — الأنشطة الطلابية",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=277"
+    },
+    {
+     "t": "link",
+     "icon": "💬",
+     "title": "منتدى الطلاب",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=284"
+    },
+    {
+     "t": "link",
+     "icon": "📣",
+     "title": "شكاوى ومقترحات",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/AddComplaint.aspx?cat_id=1"
+    },
+    {
+     "t": "link",
+     "icon": "📃",
+     "title": "إفادة من الجامعة",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/AddDoctorStatement.aspx?cat_id=1"
+    },
+    {
+     "t": "link",
+     "icon": "🛠️",
+     "title": "إبلاغ عن مشكلة تقنية",
+     "desc": "",
+     "url": "https://forms.gle/C67Wj8yAJTkE5agx7/"
+    }
+   ]
+  },
+  {
+   "id": "military",
+   "order": 6,
+   "title": "التربية العسكرية",
+   "sub": "military.bsu.edu.eg",
+   "icon": "🪖",
+   "note": "",
+   "items": [
+    {
+     "t": "link",
+     "icon": "🪖",
+     "title": "بوابة التربية العسكرية",
+     "desc": "military.bsu.edu.eg",
+     "url": "https://military.bsu.edu.eg/"
+    },
+    {
+     "t": "link",
+     "icon": "🏛️",
+     "title": "قسم التربية العسكرية",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=283"
+    },
+    {
+     "t": "link",
+     "icon": "💳",
+     "title": "سداد رسوم التربية العسكرية",
+     "desc": "",
+     "url": "http://www.payment.bsu.edu.eg/services/universityOut.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "📝",
+     "title": "استمارة تأجيل التجنيد",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/تأجيل تجنيد.pdf"
+    }
+   ]
+  },
+  {
+   "id": "research",
+   "order": 7,
+   "title": "البحث العلمي",
+   "sub": "BJBAS — دولية محكمة",
+   "icon": "🔬",
+   "note": "",
+   "items": [
+    {
+     "t": "label",
+     "title": "المجلات العلمية"
+    },
+    {
+     "t": "link",
+     "icon": "📰",
+     "title": "مجلة جامعة بني سويف — Elsevier",
+     "desc": "BJBAS — دولية محكمة",
+     "url": "http://ees.elsevier.com/bjbas"
+    },
+    {
+     "t": "link",
+     "icon": "📖",
+     "title": "المجلة الدولية للعلوم الإنسانية",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/bsujournals/BIJHSS.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "🐾",
+     "title": "مجلة كلية الطب البيطري",
+     "desc": "",
+     "url": "http://jvmr.journals.ekb.eg"
+    },
+    {
+     "t": "link",
+     "icon": "💻",
+     "title": "مجلة التعليم عن بُعد",
+     "desc": "",
+     "url": "http://jdlol.journals.ekb.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🌾",
+     "title": "مجلة كلية الزراعة",
+     "desc": "",
+     "url": "http://sjas.journals.ekb.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎨",
+     "title": "مجلة كلية الآداب",
+     "desc": "",
+     "url": "http://jfabsu.journals.ekb.eg"
+    },
+    {
+     "t": "label",
+     "title": "النشر والأبحاث"
+    },
+    {
+     "t": "link",
+     "icon": "🔭",
+     "title": "بوابة الأبحاث العلمية",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/ResearchesPortal.aspx?cat_id=1"
+    },
+    {
+     "t": "link",
+     "icon": "🏆",
+     "title": "مكافأة النشر الدولي",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/frmScientificRegistration.aspx?cat_id=346"
+    },
+    {
+     "t": "link",
+     "icon": "⚖️",
+     "title": "لجنة أخلاقيات البحث IRB",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=52"
+    },
+    {
+     "t": "link",
+     "icon": "📝",
+     "title": "تسجيل الحاصلين على ماجستير/دكتوراه",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/FrmStudentRegister.aspx"
+    }
+   ]
+  },
+  {
+   "id": "mis-egypt",
+   "order": 8,
+   "title": "خدمات كل جامعات مصر",
+   "sub": "حكومية · أهلية · خاصة",
+   "icon": "🌍",
+   "note": "",
+   "items": [
+    {
+     "t": "label",
+     "title": "الصعيد الأوسط"
+    },
+    {
+     "t": "link",
+     "icon": "🏛️",
+     "title": "جامعة بني سويف",
+     "desc": "mis.bsu.edu.eg",
+     "url": "https://www.mis.bsu.edu.eg/umisswf/Registration/ed_login.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة جنوب الوادي",
+     "desc": "",
+     "url": "http://mispg.svu.edu.eg/svu/UI/LoginPage.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة المنيا",
+     "desc": "",
+     "url": "https://www.minia.edu.eg/minia/results2.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة أسيوط",
+     "desc": "",
+     "url": "http://www.aun.edu.eg/main/"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة سوهاج",
+     "desc": "",
+     "url": "https://www.sohag-univ.edu.eg/ar/"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة الفيوم",
+     "desc": "",
+     "url": "https://www.fayoum.edu.eg/"
+    },
+    {
+     "t": "label",
+     "title": "القاهرة الكبرى"
+    },
+    {
+     "t": "link",
+     "icon": "🏛️",
+     "title": "جامعة القاهرة",
+     "desc": "",
+     "url": "https://cu.edu.eg/Home"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة عين شمس — UMS",
+     "desc": "",
+     "url": "https://ums.asu.edu.eg/App/Login_Form"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة حلوان",
+     "desc": "",
+     "url": "https://www.helwan.edu.eg/"
+    },
+    {
+     "t": "label",
+     "title": "الدلتا والشمال"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة المنصورة",
+     "desc": "",
+     "url": "https://www.mans.edu.eg/ar"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة الإسكندرية — MIS",
+     "desc": "",
+     "url": "http://mis.alexu.edu.eg/umisapp/ui/loginpage.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة كفر الشيخ — MIS",
+     "desc": "",
+     "url": "https://mis.kfs.edu.eg/last_year/account/login"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة الزقازيق",
+     "desc": "",
+     "url": "https://www.zu.edu.eg/ar-EG/Pages/default.aspx"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة طنطا",
+     "desc": "",
+     "url": "https://www.tanta.edu.eg/ar/"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة دمنهور",
+     "desc": "",
+     "url": "https://www.dmu.edu.eg/"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة المنوفية",
+     "desc": "",
+     "url": "https://www.menofia.edu.eg/"
+    },
+    {
+     "t": "label",
+     "title": "قناة السويس والجنوب"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة قناة السويس",
+     "desc": "",
+     "url": "https://www.suezcanal.edu.eg/ar/"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة بورسعيد — MIS",
+     "desc": "",
+     "url": "https://mis.bie.edu.eg/student"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة الأقصر",
+     "desc": "",
+     "url": "https://www.luxor-univ.edu.eg/"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة أسوان",
+     "desc": "",
+     "url": "https://www.asu.edu.eg/"
+    },
+    {
+     "t": "label",
+     "title": "جامعات أهلية وخاصة"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "الجامعة الأمريكية بالقاهرة — AUC",
+     "desc": "",
+     "url": "https://www.aucegypt.edu"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "الجامعة الألمانية بالقاهرة — GUC",
+     "desc": "",
+     "url": "https://www.guc.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "الجامعة البريطانية في مصر — BUE",
+     "desc": "",
+     "url": "https://www.bue.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "جامعة 6 أكتوبر — O6U",
+     "desc": "",
+     "url": "https://www.o6u.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "جامعة المستقبل — FUE",
+     "desc": "",
+     "url": "https://www.fue.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "جامعة مصر للعلوم والتكنولوجيا — MUST",
+     "desc": "",
+     "url": "https://www.must.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "جامعة النهضة ببني سويف — NUB",
+     "desc": "",
+     "url": "https://nub.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "جامعة بدر بالقاهرة — BUC",
+     "desc": "",
+     "url": "https://www.buc.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "جامعة الأهرام الكندية — ACU",
+     "desc": "",
+     "url": "https://www.acu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "جامعة بني سويف الأهلية",
+     "desc": "",
+     "url": "https://sis-bsnu.bsu.edu.eg/DefaultApplicantNew.aspx"
+    }
+   ]
+  },
+  {
+   "id": "reg",
+   "order": 9,
+   "title": "بوابات تسجيل الكليات",
+   "sub": "",
+   "icon": "🏛️",
+   "note": "",
+   "items": [
+    {
+     "t": "link",
+     "icon": "🎓",
+     "title": "الدراسات العليا",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/commreg/"
+    },
+    {
+     "t": "link",
+     "icon": "💊",
+     "title": "كلية الصيدلة",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/pharmreg/"
+    },
+    {
+     "t": "link",
+     "icon": "🏥",
+     "title": "كلية التمريض",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/nursereg/"
+    },
+    {
+     "t": "link",
+     "icon": "⚽",
+     "title": "كلية التربية الرياضية",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/sportreg/"
+    },
+    {
+     "t": "link",
+     "icon": "🐾",
+     "title": "كلية الطب البيطري",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/vetreg/"
+    },
+    {
+     "t": "link",
+     "icon": "🔬",
+     "title": "كلية العلوم المتقدمة PSAS",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/psasreg/"
+    },
+    {
+     "t": "link",
+     "icon": "⚗️",
+     "title": "كلية العلوم",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/regsc/"
+    },
+    {
+     "t": "link",
+     "icon": "💻",
+     "title": "كلية الحاسبات والذكاء الاصطناعي",
+     "desc": "",
+     "url": "https://misapp.bsu.edu.eg/FCIS/"
+    },
+    {
+     "t": "link",
+     "icon": "🏫",
+     "title": "جامعة بني سويف الأهلية",
+     "desc": "",
+     "url": "https://sis-bsnu.bsu.edu.eg/DefaultApplicantNew.aspx"
+    }
+   ]
+  },
+  {
+   "id": "faculties",
+   "order": 10,
+   "title": "مواقع الكليات والمعاهد",
+   "sub": "",
+   "icon": "🏫",
+   "note": "",
+   "items": [
+    {
+     "t": "label",
+     "title": "الكليات العملية"
+    },
+    {
+     "t": "link",
+     "icon": "🏥",
+     "title": "كلية الطب البشري",
+     "desc": "",
+     "url": "http://www.med.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "⚙️",
+     "title": "كلية الهندسة",
+     "desc": "",
+     "url": "http://www.eng.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🔬",
+     "title": "كلية العلوم",
+     "desc": "",
+     "url": "http://www.science.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "💻",
+     "title": "كلية الحاسبات والذكاء الاصطناعي",
+     "desc": "",
+     "url": "http://www.fci.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "💊",
+     "title": "كلية الصيدلة",
+     "desc": "",
+     "url": "http://www.pharm.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "💉",
+     "title": "كلية التمريض",
+     "desc": "",
+     "url": "http://www.nursing.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🐾",
+     "title": "كلية الطب البيطري",
+     "desc": "",
+     "url": "http://www.vet.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🌾",
+     "title": "كلية الزراعة",
+     "desc": "",
+     "url": "http://www.agri.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🦴",
+     "title": "كلية العلاج الطبيعي",
+     "desc": "",
+     "url": "http://www.physth.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🦷",
+     "title": "كلية طب الأسنان",
+     "desc": "",
+     "url": "https://dent.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🩻",
+     "title": "كلية تكنولوجيا العلوم الصحية",
+     "desc": "",
+     "url": "http://www.healthsc.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🚀",
+     "title": "كلية علوم الملاحة والفضاء",
+     "desc": "",
+     "url": "https://www.spacescien.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🔧",
+     "title": "كلية التكنولوجيا والتعليم",
+     "desc": "",
+     "url": "http://www.techedu.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎨",
+     "title": "كلية الفنون التطبيقية",
+     "desc": "",
+     "url": "http://www.apparts.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🌍",
+     "title": "كلية علوم الأرض",
+     "desc": "",
+     "url": "http://www.earthsc.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "♿",
+     "title": "كلية علوم ذوي الاحتياجات الخاصة",
+     "desc": "",
+     "url": "http://www.specialneed.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🏛️",
+     "title": "كلية الدراسات العليا للعلوم المتقدمة",
+     "desc": "",
+     "url": "http://www.psas.bsu.edu.eg"
+    },
+    {
+     "t": "label",
+     "title": "الكليات النظرية"
+    },
+    {
+     "t": "link",
+     "icon": "💼",
+     "title": "كلية التجارة",
+     "desc": "",
+     "url": "http://www.comm.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "⚖️",
+     "title": "كلية الحقوق",
+     "desc": "",
+     "url": "http://www.law.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "📖",
+     "title": "كلية التربية",
+     "desc": "",
+     "url": "http://www.edu.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🎨",
+     "title": "كلية الآداب",
+     "desc": "",
+     "url": "http://www.arts.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🌐",
+     "title": "كلية الألسن",
+     "desc": "",
+     "url": "http://www.alsun.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "📺",
+     "title": "كلية الإعلام",
+     "desc": "",
+     "url": "http://www.media.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "⚽",
+     "title": "كلية التربية الرياضية",
+     "desc": "",
+     "url": "http://www.sport.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "📊",
+     "title": "كلية السياسة والاقتصاد",
+     "desc": "",
+     "url": "http://www.economic.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🧒",
+     "title": "كلية التربية للطفولة المبكرة",
+     "desc": "",
+     "url": "http://www.kinder.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🤝",
+     "title": "كلية الخدمة الاجتماعية",
+     "desc": "",
+     "url": "http://www.socialwork.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🏨",
+     "title": "كلية السياحة والفنادق",
+     "desc": "",
+     "url": "http://www.tourism.bsu.edu.eg"
+    },
+    {
+     "t": "label",
+     "title": "المعاهد البحثية"
+    },
+    {
+     "t": "link",
+     "icon": "🧓",
+     "title": "معهد دراسات علوم المسنين",
+     "desc": "",
+     "url": "https://www.olderinst.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "💡",
+     "title": "معهد أبحاث الليزر LIRA",
+     "desc": "",
+     "url": "http://www.laserinst.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🌿",
+     "title": "معهد النباتات الطبية والعطرية",
+     "desc": "",
+     "url": "https://www.medplants.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "📦",
+     "title": "معهد المشروعات الصغيرة والمتوسطة",
+     "desc": "",
+     "url": "http://www.projectsinst.bsu.edu.eg"
+    }
+   ]
+  },
+  {
+   "id": "centers",
+   "order": 11,
+   "title": "المراكز والوحدات",
+   "sub": "",
+   "icon": "🏢",
+   "note": "",
+   "items": [
+    {
+     "t": "label",
+     "title": "المراكز الأكاديمية"
+    },
+    {
+     "t": "link",
+     "icon": "✅",
+     "title": "مركز ضمان الجودة والاعتماد",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=374"
+    },
+    {
+     "t": "link",
+     "icon": "🌐",
+     "title": "مركز اللغات والترجمة",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=312"
+    },
+    {
+     "t": "link",
+     "icon": "📡",
+     "title": "مركز التعلم المدمج",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=313"
+    },
+    {
+     "t": "link",
+     "icon": "📏",
+     "title": "مركز القياس والتقويم",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=288"
+    },
+    {
+     "t": "link",
+     "icon": "👥",
+     "title": "مركز تنمية الموارد البشرية",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=276"
+    },
+    {
+     "t": "link",
+     "icon": "📈",
+     "title": "مركز تطوير الأداء الجامعي",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=382"
+    },
+    {
+     "t": "link",
+     "icon": "🏨",
+     "title": "مركز وفندق المؤتمرات",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=298"
+    },
+    {
+     "t": "link",
+     "icon": "🛡️",
+     "title": "مركز مكافحة الفساد",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=27"
+    },
+    {
+     "t": "link",
+     "icon": "🌐",
+     "title": "مركز شبكة المعلومات",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=294"
+    },
+    {
+     "t": "link",
+     "icon": "💻",
+     "title": "مركز التدريب على تكنولوجيا المعلومات",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=296"
+    },
+    {
+     "t": "link",
+     "icon": "🏥",
+     "title": "المستشفى الجامعي",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=51"
+    },
+    {
+     "t": "label",
+     "title": "الوحدات التخصصية"
+    },
+    {
+     "t": "link",
+     "icon": "👨‍🎓",
+     "title": "وحدة متابعة الخريجين",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=454"
+    },
+    {
+     "t": "link",
+     "icon": "⚙️",
+     "title": "وحدة تصميم وتطوير البرمجيات",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=345"
+    },
+    {
+     "t": "link",
+     "icon": "🌍",
+     "title": "وحدة التعاون الدولي",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=28"
+    },
+    {
+     "t": "link",
+     "icon": "🔬",
+     "title": "مكتب نقل وتسويق التكنولوجيا",
+     "desc": "",
+     "url": "http://www.tico.bsu.edu.eg"
+    },
+    {
+     "t": "link",
+     "icon": "🦺",
+     "title": "إدارة السلامة والصحة المهنية",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=340"
+    },
+    {
+     "t": "link",
+     "icon": "🌱",
+     "title": "الإدارة العامة للمشروعات البيئية",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg//Sector_Home.aspx?cat_id=411"
+    },
+    {
+     "t": "link",
+     "icon": "🤝",
+     "title": "وحدة مناهضة العنف ضد المرأة",
+     "desc": "",
+     "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=447"
+    },
+    {
+     "t": "link",
+     "icon": "♿",
+     "title": "وحدة متحدي الإعاقة",
+     "desc": "",
+     "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=289"
+    }
+   ]
+  }
+ ]
+}

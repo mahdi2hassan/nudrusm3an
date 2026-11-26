@@ -396,6 +396,7 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
     <button class="tab" onclick="switchTab('notebooks', this)"><svg class="icon"><use href="#i-notebook"></use></svg> دفاتر التحضير</button>
     <button class="tab" onclick="switchTab('referrals', this)"><svg class="icon"><use href="#i-users"></use></svg> الدعوات</button>
     <button class="tab" onclick="switchTab('challenges', this)"><svg class="icon"><use href="#i-star"></use></svg> تحدي الأسبوع</button>
+    <button class="tab" onclick="switchTab('awael', this)"><svg class="icon"><use href="#i-cap"></use></svg> الخدمات الجامعية</button>
     <button class="tab" onclick="switchTab('accounts', this)"><svg class="icon"><use href="#i-card"></use></svg> الحسابات والأسعار</button>
     <button class="tab" onclick="switchTab('supervisors', this)"><svg class="icon"><use href="#i-cap"></use></svg> المشرفون والإدارة</button>
     <button class="tab" onclick="switchTab('perm', this)"><svg class="icon"><use href="#i-lock"></use></svg> صلاحيات المشتركين</button>
@@ -528,6 +529,26 @@ table{border-collapse:collapse; width:100%;} th{background:#eef1f9; color:var(--
       <div class="status" id="coupon-adm-status"></div>
       <div id="coupon-list" style="margin-top:12px;"></div>
     </div>
+  </div>
+
+  <div class="panel" id="panel-awael">
+    <div class="card"><h3 style="margin-bottom:6px;">🎓 إعدادات الخدمات الجامعية (اشتراك مستقل)</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px;">
+        <div class="field"><label>السعر (جنيه)</label><input type="number" min="0" id="aw-price"></div>
+        <div class="field"><label>المدة (يوم)</label><input type="number" min="1" max="365" id="aw-days" value="28"></div>
+        <div class="field"><label>إنستاباي (فاضي = الافتراضي)</label><input type="text" id="aw-insta"></div>
+        <div class="field"><label>كاش/محفظة (فاضي = الافتراضي)</label><input type="text" id="aw-cash"></div>
+        <div class="field"><label>واتساب بالصيغة الدولية</label><input type="text" id="aw-wa" placeholder="2010..."></div>
+      </div>
+      <div class="field"><label>ملاحظة تظهر للطالب</label><input type="text" id="aw-note" maxlength="300"></div>
+      <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700;"><input type="checkbox" id="aw-on" style="width:auto;" checked> فتح الاشتراك الجديد</label>
+      <button class="btn" onclick="awaelSaveSettings()">حفظ</button><div class="status" id="aw-set-status"></div></div>
+    <div class="card"><h3>طلبات الدفع</h3><div id="aw-reqs"></div></div>
+    <div class="card"><h3>المشتركين</h3><div id="aw-subs"></div></div>
+    <div class="card"><h3>المحتوى (أقسام وروابط)</h3>
+      <button class="btn" onclick="awaelImportSeed()">استيراد المحتوى الأولي من أوائل</button>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin:10px 0;"><input type="text" id="aw-new-title" placeholder="اسم قسم جديد"><input type="text" id="aw-new-id" dir="ltr" placeholder="معرّف english-id"><button class="btn" onclick="awaelAddSection()">إضافة قسم</button></div>
+      <div id="aw-content"></div></div>
   </div>
 
   <div class="panel" id="panel-supervisors">
@@ -1128,6 +1149,7 @@ function switchTab(name, btn){
   if(name==='health'){ try{ loadHealth(); }catch(e){} }
   if(name==='attend'){ try{ initAtt(); }catch(e){} }
   if(name==='books'){ try{ loadBooksAdmin(); }catch(e){} }
+  if(name==='awael'){ try{ awaelAdminInit(); }catch(e){ console.warn(e); } }
   if(name==='files'){ try{ loadFiles(); }catch(e){} }
   if(name==='logins'){ try{ loadLogins(); }catch(e){} }
   if(name==='acct'){ try{ renderAcct(); }catch(e){} }
@@ -3127,5 +3149,10 @@ function ambBuild(){
 const _swTab=switchTab; switchTab=function(n,b){ const r=_swTab(n,b); try{ ambMark(); }catch(e){} return r; };
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') ambClose(); });
 </script>
+<style>
+.aw-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:6px 0}.aw-in{padding:6px 8px;border:1px solid var(--line);border-radius:4px;font:inherit;flex:1;min-width:110px}
+#panel-awael .save-btn{background:var(--sage);color:#fff;padding:6px 12px;border-radius:4px;font-size:12px;font-weight:700;border:0;cursor:pointer}
+</style>
+<script src="awael-admin.js"></script>
 </body>
 </html>
