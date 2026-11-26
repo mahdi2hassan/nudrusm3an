@@ -1930,7 +1930,7 @@ html[data-theme=dark] .bdg.on b{color:#fff;}
         <button class="nav-item active" data-views="t-dash" onclick="showView('t-dash', this)"><svg class="icon"><use href="#i-home"></use></svg> الصفحة الرئيسية</button>
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-t" data-views="v-courses v-course-detail v-learn v-quiz v-library v-notebooks v-saved" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-book"></use></svg> التعلم والموارد</button>
-        <button class="nav-item" id="navi-toolshub-t" data-views="v-tools-hub v-helpers v-prep-tools v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
+        <button class="nav-item" id="navi-toolshub-t" data-views="v-tools-hub v-helpers v-prep-tools v-lesson-planner v-questions v-quizzes v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-t" data-views="t-community v-qa v-expert v-problems v-groups v-public-profile" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
         <button class="nav-item" id="navi-chats-t" data-views="v-chats" onclick="showView('v-chats', this)"><svg class="icon"><use href="#i-chat-circle"></use></svg> الدردشات <span class="nav-badge" id="chat-badge-t" style="display:none;">0</span></button>
@@ -1948,7 +1948,7 @@ html[data-theme=dark] .bdg.on b{color:#fff;}
         <button class="nav-item active" data-views="s-home" onclick="showView('s-home', this)"><svg class="icon"><use href="#i-home"></use></svg> الصفحة الرئيسية</button>
         <div class="nav-group-label">التعلم والعمل</div>
         <button class="nav-item" id="navi-learn-s" data-views="v-courses v-course-detail v-learn v-quiz v-library v-notebooks v-saved" onclick="showView('v-courses', this)"><svg class="icon"><use href="#i-book"></use></svg> التعلم والموارد</button>
-        <button class="nav-item" id="navi-toolshub-s" data-views="v-tools-hub v-helpers v-prep-tools v-lesson-planner v-questions v-quizzes v-certificates v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
+        <button class="nav-item" id="navi-toolshub-s" data-views="v-tools-hub v-helpers v-prep-tools v-lesson-planner v-questions v-quizzes v-prep-room v-prep-room-editor v-assistant v-take-quiz-list v-take-quiz" onclick="showView('v-tools-hub', this)"><svg class="icon"><use href="#i-layers"></use></svg> أدوات المعلم</button>
         <button class="nav-item" id="navi-practical-s" data-views="s-practical v-prac-tools s-research s-myresearch v-portfolio v-tasks v-calendar" onclick="showView('s-practical', this)"><svg class="icon"><use href="#i-clipboard"></use></svg> التدريب العملي</button>
         <div class="nav-group-label">المجتمع</div>
         <button class="nav-item" id="navi-community-s" data-views="t-community v-qa v-expert v-problems v-groups v-public-profile" onclick="showView('t-community', this)"><svg class="icon"><use href="#i-users"></use></svg> المجتمع</button>
@@ -2137,29 +2137,6 @@ html[data-theme=dark] .bdg.on b{color:#fff;}
 
         <div class="section-title" style="margin-top:10px;">خططي المحفوظة</div>
         <div id="lesson-plans-list" class="content-list"><div class="empty-state">جاري التحميل...</div></div>
-      </div>
-
-      <!-- ========== مولد الشهادات الديناميكي ========== -->
-      <div class="view" id="v-certificates">
-        <div class="topbar"><div><h1>مولد الشهادات</h1><div class="sub">أصدر شهادات تقدير لطلابك دفعة واحدة بتصميم جاهز</div></div></div>
-        <div class="card-panel">
-          <div class="qb-form">
-            <div class="field field-full"><label>عنوان الشهادة</label><input type="text" id="cert-title" value="شهادة تقدير"></div>
-            <div class="field"><label>التصميم</label>
-              <select id="cert-design">
-                <option value="classic">كلاسيك (إطار ذهبي)</option>
-                <option value="simple">بسيط وعصري</option>
-              </select>
-            </div>
-            <div class="field"><label>اسم المُصدر (المعلم/الجهة)</label><input type="text" id="cert-issuer" placeholder="هيتحط اسمك تلقائيًا"></div>
-          </div>
-          <div class="field field-full"><label>نص التقدير</label><textarea rows="2" id="cert-reason" placeholder="تقديرًا لتميزه وتفوقه خلال..."></textarea></div>
-          <div class="field field-full"><label>أسماء الطلاب (اسم في كل سطر)</label><textarea rows="6" id="cert-names" placeholder="أحمد محمد علي
-سارة إبراهيم
-..."></textarea></div>
-          <button class="btn-primary" onclick="generateCertificates()">إصدار الشهادات وطباعتها</button>
-          <div class="auth-status" id="cert-status"></div>
-        </div>
       </div>
 
       <!-- ========== غرفة التحضير الجماعي ========== -->
@@ -3261,7 +3238,6 @@ function showView(id, btn){
   if(id === 'v-portfolio') renderPortfolio();
   if(id === 'v-calendar') renderCalendar();
   if(id === 'v-lesson-planner') loadLessonPlans();
-  if(id === 'v-certificates'){ const iEl = document.getElementById('cert-issuer'); if(iEl && !iEl.value) iEl.value = pendingUser.name || ''; }
   if(id === 'v-prep-room') loadPrepRooms();
   if(id === 'v-tools-hub') renderToolsHub();
   if(id === 'v-helpers') helpersOpen();
@@ -3790,7 +3766,6 @@ function renderToolsHub(){
     { icon:'edit',      title:'مولد تحضير الدروس',        desc:'خطة درس كاملة: أهداف، تمهيد، شرح، تقويم', view:'v-lesson-planner', key:'v-lesson-planner', roles:['teacher','student'] },
     { icon:'help',      title:'بنك الأسئلة',              desc:'أنشئ وصنّف أسئلتك حسب المادة والصعوبة', view:'v-questions', key:'v-questions', roles:['teacher'] },
     { icon:'clipboard', title:'مصنع الاختبارات وأوراق العمل', desc:'ابنِ اختبارًا أو ورقة عمل واطبعها مع نموذج الإجابة', view:'v-quizzes', key:'v-quizzes', roles:['teacher'] },
-    { icon:'star',      title:'مولد الشهادات',            desc:'أصدر شهادات تقدير لطلابك دفعة واحدة', view:'v-certificates', key:'v-certificates', roles:['teacher'] },
     { icon:'users',     title:'غرفة التحضير الجماعي',     desc:'حرر ملف تحضير مع زمايلك في نفس الوقت', view:'v-prep-room', key:'v-prep-room', roles:['teacher'] },
     { icon:'sparkle',   title:'مساعد المعلم',             desc:'جهّز برومبت جاهز لأي مساعد ذكاء اصطناعي', view:'v-assistant', key:'v-assistant', roles:['teacher','student'] },
     { icon:'edit',      title:'اختبارات متاحة',           desc:'خد اختبارات نشرها معلمون وشوف نتيجتك فورًا', view:'v-take-quiz-list', key:'v-take-quiz-list', roles:['student'] },
@@ -3813,65 +3788,6 @@ function openToolsHubItem(i){
   if(item.action === 'exam'){ openExamform(null); return; }
   if(item.action === 'board'){ window.open('https://plusinmath.vercel.app/x/boardplus','_blank'); return; }
   showView(item.view);
-}
-/* ---------- مولد الشهادات الديناميكي ---------- */
-function generateCertificates(){
-  const title = document.getElementById('cert-title').value.trim() || 'شهادة تقدير';
-  const design = document.getElementById('cert-design').value;
-  const issuer = document.getElementById('cert-issuer').value.trim() || pendingUser.name || 'نُدرس معًا';
-  const reason = document.getElementById('cert-reason').value.trim() || 'تقديرًا لتميزه وتفوقه';
-  const namesRaw = document.getElementById('cert-names').value.trim();
-  const status = document.getElementById('cert-status');
-  const names = namesRaw.split('\n').map(s=>s.trim()).filter(Boolean);
-  if(!names.length){ status.className='auth-status err'; status.textContent='اكتب اسم طالب واحد على الأقل.'; return; }
-  const win = window.open('', '_blank');
-  if(!win){ toast('المتصفح منع فتح نافذة جديدة — اسمح بالنوافذ المنبثقة وجرّب تاني.', {type:'err'}); return; }
-  status.className='auth-status ok'; status.textContent = `✓ جاري تجهيز ${names.length} شهادة للطباعة.`;
-
-  const dateStr = new Date().toLocaleDateString('ar-EG');
-  const certsHtml = names.map(name => `
-    <div class="cert cert-${design}">
-      <div class="cert-inner">
-        <div class="cert-brand">نُدرس معًا</div>
-        <div class="cert-title">${escapeHtml(title)}</div>
-        <div class="cert-sub">تُمنح هذه الشهادة إلى</div>
-        <div class="cert-name">${escapeHtml(name)}</div>
-        <div class="cert-reason">${escapeHtml(reason)}</div>
-        <div class="cert-footer">
-          <div class="cert-sig"><div class="line"></div><div>${escapeHtml(issuer)}</div></div>
-          <div class="cert-date">${dateStr}</div>
-        </div>
-      </div>
-    </div>`).join('');
-
-  const html = `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
-<title>${escapeHtml(title)}</title>
-<style>
-  *{ box-sizing:border-box; }
-  body{ font-family:'Segoe UI', Tahoma, Arial, sans-serif; margin:0; color:#1b2a41; }
-  .cert{ width:100%; height:100vh; display:flex; align-items:center; justify-content:center; page-break-after:always; padding:30px; }
-  .cert:last-child{ page-break-after:auto; }
-  .cert-inner{ width:100%; max-width:760px; text-align:center; padding:50px 40px; border-radius:8px; }
-  .cert-classic .cert-inner{ border:10px double #c79a2b; background:#fffdf6; }
-  .cert-simple .cert-inner{ border:2px solid #1b2a41; background:#fff; }
-  .cert-brand{ font-size:13px; letter-spacing:2px; color:#8a6a1c; font-weight:800; margin-bottom:10px; }
-  .cert-simple .cert-brand{ color:#1b2a41; }
-  .cert-title{ font-size:34px; font-weight:900; margin-bottom:18px; }
-  .cert-sub{ font-size:15px; color:#555; }
-  .cert-name{ font-size:30px; font-weight:800; margin:10px 0 18px; color:#1b2a41; border-bottom:2px solid #c79a2b; display:inline-block; padding-bottom:6px; }
-  .cert-simple .cert-name{ border-bottom-color:#1b2a41; }
-  .cert-reason{ font-size:14.5px; color:#444; max-width:560px; margin:0 auto 34px; line-height:1.8; }
-  .cert-footer{ display:flex; justify-content:space-between; align-items:flex-end; font-size:12.5px; color:#555; margin-top:20px; }
-  .cert-sig .line{ border-bottom:1px solid #999; width:160px; height:26px; }
-  @media print{ .cert{ height:100vh; } }
-</style></head>
-<body>
-  ${certsHtml}
-</body></html>`;
-  win.document.open();
-  win.document.write(html);
-  win.document.close();
-  setTimeout(() => { try{ win.focus(); win.print(); }catch(e){} }, 400);
 }
 /* ---------- مركز الخصوصية والأمان ---------- */
 async function downloadMyData(){
@@ -6045,7 +5961,7 @@ const NAV_FAMILIES = {
   tools: { also:['v-prep-room-editor','v-take-quiz'], tabs:[
     ['v-tools-hub','كل الأدوات','layers'], ['v-lesson-planner','تحضير الدروس','edit'], ['v-prep-tools','أدوات التحضير','sparkle'], ['v-helpers','أدوات مساعدة','check'],
     ['v-questions','بنك الأسئلة','help','teacher'], ['v-quizzes','الاختبارات','clipboard','teacher'],
-    ['v-certificates','الشهادات','star','teacher'], ['v-prep-room','التحضير الجماعي','users','teacher'],
+    ['v-prep-room','التحضير الجماعي','users','teacher'],
     ['v-assistant','مساعد المعلم','sparkle'], ['v-take-quiz-list','اختبارات متاحة','edit','student'] ] },
   community: { also:['v-public-profile'], tabs:[
     ['t-community','المجتمع','users'], ['v-qa','الأسئلة','help'], ['v-expert','اسأل خبيرًا','star'],
@@ -7194,8 +7110,8 @@ function hpMakeGroups(){
 /* ---------- الدرجات ---------- */
 let hpGMode = 'calc';
 function hpGradesHtml(){
-  const modes = [['calc', 'حاسبة النسبة'], ['gpa', 'المعدل التراكمي'], ['class', 'تحليل نتيجة فصل', 't']].filter(m => !m[2] || hpIsTeacher());
-  return `<div class="hp-chips">${modes.map(m => `<button class="hp-chip ${m[0] === hpGMode ? 'on' : ''}" onclick="hpGMode='${m[0]}'; hpShow('grades')">${m[1]}</button>`).join('')}</div>` + ({ calc: hpCalcHtml, gpa: hpGpaHtml, class: hpClassHtml })[hpGMode]();
+  const modes = [['calc', 'حاسبة النسبة'], ['class', 'تحليل نتيجة فصل', 't']].filter(m => !m[2] || hpIsTeacher());
+  return `<div class="hp-chips">${modes.map(m => `<button class="hp-chip ${m[0] === hpGMode ? 'on' : ''}" onclick="hpGMode='${m[0]}'; hpShow('grades')">${m[1]}</button>`).join('')}</div>` + ({ calc: hpCalcHtml, class: hpClassHtml })[hpGMode]();
 }
 function hpRows(prefix, n, cols){ return Array.from({ length: n }, (_, i) => `<div class="hp-row">${cols.map(c => `<input type="${c[1]}" id="${prefix}${i}-${c[0]}" placeholder="${c[2]}" ${c[1] === 'number' ? 'step="any"' : ''}>`).join('')}</div>`).join(''); }
 function hpCalcHtml(){
@@ -7214,16 +7130,6 @@ function hpCalc(){
   const out = document.getElementById('hp-calc-out'); if(!used){ out.innerHTML = '<div class="hp-note">اكتب صف واحد على الأقل.</div>'; return; }
   const p = wsum > 0 ? (wacc / wsum) * 100 : (ss / mm) * 100;
   out.innerHTML = `<div class="hp-result"><b>${p.toFixed(1)}%</b> — ${hpGradeLabel(p)}${wsum > 0 ? `<div class="hp-note">محسوبة بالأوزان (مجموع الأوزان ${wsum}%).</div>` : `<div class="hp-note">المجموع ${ss} من ${mm}.</div>`}</div>`;
-}
-function hpGpaHtml(){
-  return `<div class="hp-card"><h3>المعدل التراكمي (GPA)</h3><div class="hp-note">اكتب لكل مادة عدد الساعات والنقاط (مثلًا من 4).</div>
-    ${hpRows('gp', 8, [['n', 'text', 'المادة'], ['h', 'number', 'الساعات'], ['p', 'number', 'النقاط']])}
-    <div class="hp-actions"><button class="btn-primary" onclick="hpGpa()">احسب</button></div><div id="hp-gpa-out"></div></div>`;
-}
-function hpGpa(){
-  let h = 0, q = 0;
-  for(let i = 0; i < 8; i++){ const hh = parseFloat(hpV(`gp${i}-h`)), pp = parseFloat(hpV(`gp${i}-p`)); if(isNaN(hh) || isNaN(pp) || hh <= 0) continue; h += hh; q += hh * pp; }
-  document.getElementById('hp-gpa-out').innerHTML = h ? `<div class="hp-result"><b>${(q / h).toFixed(2)}</b> <span class="hp-note">من ${h} ساعة</span></div>` : '<div class="hp-note">اكتب مادة واحدة على الأقل.</div>';
 }
 function hpClassHtml(){
   return `<div class="hp-card"><h3>تحليل نتيجة فصل</h3><div class="hp-note">اكتب في كل سطر: الاسم، الدرجة (بفاصلة). أو الصق من Excel.</div>
@@ -7338,7 +7244,7 @@ function hpMsgRender(){
 
 /* ---------- كروت الرئيسية (اختصارات منظّمة) ---------- */
 const HOME_CARDS = {
-  teacher: [['v-lesson-planner','تحضير الدروس','edit','مولد خطة درس جاهز'],['v-prep-tools','أدوات التحضير','sparkle','أهداف، مواصفات، أنشطة'],['v-helpers','أدوات مساعدة','check','مؤقت، حضور، جدول'],['v-quizzes','الاختبارات','clipboard','مصنع اختبارات وأوراق عمل'],['v-questions','بنك الأسئلة','help','أسئلتك مصنّفة'],['v-certificates','الشهادات','award','شهادات جاهزة للطباعة'],['v-prep-room','تحضير جماعي','users','غرفة مشتركة مع زملائك'],['t-community','المجتمع','chat-square','منشورات وزملاء'],['v-chats','الدردشات','chat-circle','رسائلك'],['v-profile','ملفي','user','بياناتك وهويتك']],
+  teacher: [['v-lesson-planner','تحضير الدروس','edit','مولد خطة درس جاهز'],['v-prep-tools','أدوات التحضير','sparkle','أهداف، مواصفات، أنشطة'],['v-helpers','أدوات مساعدة','check','مؤقت، حضور، جدول'],['v-quizzes','الاختبارات','clipboard','مصنع اختبارات وأوراق عمل'],['v-questions','بنك الأسئلة','help','أسئلتك مصنّفة'],['v-prep-room','تحضير جماعي','users','غرفة مشتركة مع زملائك'],['t-community','المجتمع','chat-square','منشورات وزملاء'],['v-chats','الدردشات','chat-circle','رسائلك'],['v-profile','ملفي','user','بياناتك وهويتك']],
   student: [['s-practical','التربية العملية','cap','سجّل زياراتك'],['v-prac-tools','أدوات التربية العملية','sparkle','يوميات، ساعات، تقييم ذاتي'],['v-prep-tools','أدوات التحضير','edit','أهداف، أنشطة، مواصفات'],['v-lesson-planner','تحضير الدروس','book','مولد خطة درس'],['v-helpers','أدوات مساعدة','check','مؤقت، جدول، بطاقات'],['v-take-quiz-list','اختبارات','clipboard','اختبارات متاحة'],['v-tasks','المهام','check','سجل مهامك'],['v-portfolio','ملف الإنجاز','award','إنجازاتك'],['v-calendar','التقويم','bookmark','مواعيدك'],['t-community','المجتمع','chat-square','منشورات وزملاء'],['v-chats','الدردشات','chat-circle','رسائلك'],['v-profile','ملفي','user','بياناتك وهويتك']]
 };
 function homeCardsRender(){
@@ -8850,54 +8756,11 @@ function svEwsHtml(){
   return `<div class="hp-card"><h3>🚨 لوحة الإنذار المبكر</h3><div class="hp-note">مبنية على تسليماتهم لك، وآخر دخول، وزياراتك المسجّلة.</div><div class="hp-actions"><button class="hp-chip" onclick="ndEwsLoad(true); svShow('ews')">↻ تحديث</button></div>
     ${rows.map(r => `<div class="hp-trow" style="align-items:flex-start;"><span><b>${hpE(r.n)}</b><br><small>${r.reasons.map(hpE).join(' · ') || 'لا توجد مؤشرات'}</small></span><span>${r.score >= 4 ? '🔴 تدخل عاجل' : r.score >= 2 ? '🟠 متابعة' : '🟢 مستقر'}</span></div>`).join('') || '<div class="hp-note">مفيش حسابات تابعة.</div>'}</div>`;
 }
-Object.assign(SV_FN, { ews: svEwsHtml, cert: svCertHtml });
+Object.assign(SV_FN, { ews: svEwsHtml });
 SUPT.expert.splice(SUPT.expert.length - 1, 0, ['ews', '🚨 إنذار مبكر']);
-SUPT.academic.splice(SUPT.academic.length - 1, 0, ['ews', '🚨 إنذار مبكر'], ['cert', '🏅 شهادات إتمام']);
-SUPT.office.splice(SUPT.office.length - 1, 0, ['ews', '🚨 إنذار مبكر'], ['cert', '🏅 اعتماد شهادات']);
+SUPT.academic.splice(SUPT.academic.length - 1, 0, ['ews', '🚨 إنذار مبكر']);
+SUPT.office.splice(SUPT.office.length - 1, 0, ['ews', '🚨 إنذار مبكر']);
 
-/* ----- 10) شهادات إتمام التربية العملية ----- */
-let ndCerts = null;
-function ndCertLoad(force){
-  if(force) ndCerts = null; if(ndCerts !== null) return; ndCerts = { loading: true };
-  const c = db.collection('pracCerts');
-  Promise.all([c.where('issuedBy', '==', currentUid).get(), c.where('approverUid', '==', currentUid).get()]).then(([a, b]) => { const m = {}; a.docs.concat(b.docs).forEach(d => { m[d.id] = { id: d.id, ...d.data() }; }); ndCerts = { list: Object.values(m).sort((x, y) => y.issuedMs - x.issuedMs) }; if(svTab === 'cert') svShow('cert'); }).catch(() => { ndCerts = { list: [] }; if(svTab === 'cert') svShow('cert'); });
-}
-function svCertHtml(){
-  ndCertLoad(); if(ndCerts.loading) return '<div class="hp-card"><div class="hp-note">جاري التحميل…</div></div>';
-  const office = svKind() === 'office', up = userStatus && userStatus.supervisorId;
-  return `${office ? '' : `<div class="hp-card"><h3>🏅 إصدار شهادة إتمام</h3><div class="hp-row hp-row-wrap">${svTeacherSel('ce-t')}<input type="number" id="ce-h" placeholder="عدد الساعات" min="0" style="width:120px;"></div><div class="hp-row hp-row-wrap"><input type="text" id="ce-u" placeholder="الجهة / الكلية"><input type="text" id="ce-p" placeholder="الفترة (مثال: الفصل الأول 2026)"></div>
-    <div class="hp-note">${up ? 'هتروح للإدارة للاعتماد قبل ما المتدرب يقدر يطبعها.' : 'مفيش إدارة مرتبطة بك — هتتعتمد مباشرة.'}</div><div class="hp-actions"><button class="btn-primary" onclick="svCertIssue()">إصدار</button></div></div>`}
-    <div class="hp-card"><h3>${office ? 'طلبات الاعتماد' : 'الشهادات الصادرة'} <small>${ndCerts.list.length}</small></h3>${ndCerts.list.map(c => `<div class="hp-trow"><span><b>${hpE(c.name)}</b> <small>${hpE(c.period || '')} · ${hpE(c.code)} · من ${hpE(c.issuedByName || '')}</small></span><span>${c.status === 'approved' ? '✅ معتمدة' : office && c.approverUid === currentUid ? `<button class="hp-chip" onclick="svCertApprove('${c.id}')">اعتماد</button>` : '⏳ بانتظار الاعتماد'}</span></div>`).join('') || '<div class="hp-note">لا يوجد.</div>'}</div>`;
-}
-async function svCertIssue(){
-  const t = svTeacherVal('ce-t'), m = (svMembers || []).find(x => (x.name || x.email) === t); if(!m){ toast('اختر المتدرب من حساباتك.', { type: 'err' }); return; }
-  const code = Array.from(crypto.getRandomValues(new Uint8Array(6)), b => 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[b % 31]).join(''), up = (userStatus && userStatus.supervisorId) || '';
-  try{ await db.collection('pracCerts').doc(code).set({ code, uid: m.id, name: m.name || m.email, hours: +hpV('ce-h') || 0, uni: hpV('ce-u').trim(), period: hpV('ce-p').trim(), issuedBy: currentUid, issuedByName: pendingUser.name || '', approverUid: up, status: up ? 'pending' : 'approved', issuedMs: Date.now() }); toast('اتصدرت الشهادة ' + code); ndCertLoad(true); setTimeout(() => svShow('cert'), 300); }
-  catch(e){ toast('تعذّر الإصدار: ' + (e.code || e.message), { type: 'err' }); }
-}
-async function svCertApprove(id){ try{ await db.collection('pracCerts').doc(id).update({ status: 'approved', approvedMs: Date.now(), approvedByName: pendingUser.name || '' }); ndCertLoad(true); setTimeout(() => svShow('cert'), 300); }catch(e){ toast('تعذّر الاعتماد.', { type: 'err' }); } }
-const ndCertUrl = c => location.origin + location.pathname + '#cert=' + c;
-let ndMyCerts = null;
-function prCertHtml(){
-  if(ndMyCerts === null){ ndMyCerts = []; db.collection('pracCerts').where('uid', '==', currentUid).get().then(s => { ndMyCerts = s.docs.map(d => d.data()).filter(c => c.status === 'approved'); if(PT.prac.tab === 'mycert') ptShow('prac', 'mycert'); }).catch(() => {}); }
-  return `<div class="hp-card"><h3>🏅 شهادة إتمام التربية العملية</h3>${ndMyCerts.map(c => `<div class="hp-trow"><span><b>${hpE(c.period || 'شهادة')}</b> <small>${c.hours ? c.hours + ' ساعة · ' : ''}كود ${hpE(c.code)}</small></span><button class="hp-chip" onclick="prCertPrint('${c.code}')">🖨️ طباعة</button></div>`).join('') || '<div class="hp-note">لسه مفيش شهادة معتمدة. هتظهر هنا بعد ما مشرفك يصدرها والإدارة تعتمدها.</div>'}</div>`;
-}
-function prCertPrint(code){
-  const c = ndMyCerts.find(x => x.code === code); if(!c) return;
-  ptPrint('شهادة إتمام التربية العملية', `<div style="border:6px double #1f3a6e;padding:40px 30px;text-align:center;margin-top:20px"><h1 style="color:#1f3a6e;font-size:30px">شهادة إتمام التربية العملية</h1><p style="font-size:18px;margin-top:30px">تشهد منصة <b>نُدرس معًا</b> بأن</p><h2 style="font-size:28px;color:#b8860b">${hpE(c.name)}</h2><p style="font-size:17px;line-height:2">قد أتمّ فترة التربية العملية ${c.period ? '(' + hpE(c.period) + ')' : ''} ${c.hours ? 'بإجمالي <b>' + c.hours + '</b> ساعة' : ''} ${c.uni ? '— ' + hpE(c.uni) : ''}</p><p style="margin-top:30px">تاريخ الإصدار: ${new Date(c.issuedMs).toLocaleDateString('ar-EG')} — أصدرها: ${hpE(c.issuedByName || '')}</p><p style="margin-top:24px;font-size:13px;color:#444">كود التحقق: <b dir="ltr">${hpE(c.code)}</b><br>للتحقق من صحة الشهادة: <span dir="ltr">${hpE(ndCertUrl(c.code))}</span></p></div>`);
-}
-PT.prac.tabs.push(['mycert', '🏅 شهادتي']); PT_FN.mycert = prCertHtml;
-/* صفحة التحقق العامة (#cert=CODE) — من غير تسجيل دخول */
-async function ndCertVerify(){
-  const m = location.hash.match(/^#cert=([A-Za-z0-9]+)$/); if(!m) return;
-  const ov = document.createElement('div'); ov.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#f4f6fb;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Cairo,Tahoma,sans-serif;direction:rtl'; ov.innerHTML = '<div style="background:#fff;border-radius:20px;padding:28px;max-width:440px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.12);text-align:center" id="cv-box">جاري التحقق…</div>'; document.body.appendChild(ov);
-  const box = document.getElementById('cv-box');
-  try{ const d = await db.collection('pracCerts').doc(m[1].toUpperCase()).get(), c = d.exists && d.data();
-    box.innerHTML = c && c.status === 'approved' ? `<div style="font-size:48px">✅</div><h2 style="color:#1f3a6e">شهادة صحيحة</h2><p style="font-size:18px"><b>${hpE(c.name)}</b></p><p>${hpE(c.period || '')} ${c.hours ? '· ' + c.hours + ' ساعة' : ''}</p><p style="color:#666;font-size:13px">صدرت ${new Date(c.issuedMs).toLocaleDateString('ar-EG')} — ${hpE(c.issuedByName || '')}</p>` : '<div style="font-size:48px">❌</div><h2 style="color:#b3261e">الشهادة غير موجودة أو غير معتمدة</h2>';
-  }catch(e){ box.innerHTML = 'تعذّر التحقق الآن. حاول لاحقًا.'; }
-  const x = document.createElement('button'); x.textContent = 'فتح المنصة'; x.style.cssText = 'margin-top:16px;padding:10px 20px;border:0;border-radius:12px;background:#1f3a6e;color:#fff;cursor:pointer;font:inherit'; x.onclick = () => { ov.remove(); history.replaceState(null, '', location.pathname); }; box.appendChild(x);
-}
-setTimeout(ndCertVerify, 400);
 
 /* ----- ربط تبويبات الأدوات ----- */
 HP_TABS.push(['attrep', '📊 تقرير الحضور', 't'], ['sitlib', '🧩 مواقف صفية'], ['refl', '📝 مفكرة الدرس']);
