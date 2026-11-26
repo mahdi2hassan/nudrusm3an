@@ -86,7 +86,8 @@
      "desc": "",
      "url": "https://www.bsu.edu.eg/Sector_Home.aspx?cat_id=53"
     }
-   ]
+   ],
+   "group": "services"
   },
   {
    "id": "results",
@@ -166,7 +167,8 @@
      "desc": "",
      "url": "https://www.bsu.edu.eg/Graduate_Services.aspx"
     }
-   ]
+   ],
+   "group": "services"
   },
   {
    "id": "financial",
@@ -239,7 +241,8 @@
      "desc": "بعد تسجيل الدخول",
      "url": "https://www.mis.bsu.edu.eg/umisswf/Registration/ED/OR_Stud_EXPENSES.aspx"
     }
-   ]
+   ],
+   "group": "services"
   },
   {
    "id": "digital",
@@ -345,7 +348,8 @@
      "desc": "",
      "url": "https://scholar.google.com.eg/citations?hl=en&view_op=search_authors&mauthors=beni+suef"
     }
-   ]
+   ],
+   "group": "services"
   },
   {
    "id": "affairs",
@@ -475,7 +479,8 @@
      "desc": "",
      "url": "https://forms.gle/C67Wj8yAJTkE5agx7/"
     }
-   ]
+   ],
+   "group": "univ"
   },
   {
    "id": "military",
@@ -513,7 +518,8 @@
      "desc": "",
      "url": "https://www.bsu.edu.eg/Backend/Uploads/PDF/خدمات الكترونيه/تأجيل تجنيد.pdf"
     }
-   ]
+   ],
+   "group": "univ"
   },
   {
    "id": "research",
@@ -601,7 +607,8 @@
      "desc": "",
      "url": "https://www.bsu.edu.eg/FrmStudentRegister.aspx"
     }
-   ]
+   ],
+   "group": "research"
   },
   {
    "id": "mis-egypt",
@@ -841,7 +848,8 @@
      "desc": "",
      "url": "https://sis-bsnu.bsu.edu.eg/DefaultApplicantNew.aspx"
     }
-   ]
+   ],
+   "group": "egypt"
   },
   {
    "id": "reg",
@@ -914,7 +922,8 @@
      "desc": "",
      "url": "https://sis-bsnu.bsu.edu.eg/DefaultApplicantNew.aspx"
     }
-   ]
+   ],
+   "group": "univ"
   },
   {
    "id": "faculties",
@@ -1160,7 +1169,8 @@
      "desc": "",
      "url": "http://www.projectsinst.bsu.edu.eg"
     }
-   ]
+   ],
+   "group": "univ"
   },
   {
    "id": "centers",
@@ -1311,7 +1321,30 @@
      "desc": "",
      "url": "http://www.bsu.edu.eg/Sector_Home.aspx?cat_id=289"
     }
-   ]
+   ],
+   "group": "univ"
+  }
+ ],
+ "groups": [
+  {
+   "id": "services",
+   "title": "الخدمات",
+   "icon": "🎓"
+  },
+  {
+   "id": "univ",
+   "title": "الجامعة",
+   "icon": "🏛️"
+  },
+  {
+   "id": "research",
+   "title": "البحث",
+   "icon": "🔬"
+  },
+  {
+   "id": "egypt",
+   "title": "كل الجامعات",
+   "icon": "🌍"
   }
  ]
 }
